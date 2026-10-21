@@ -127,6 +127,10 @@ Bun loads a project-root `.env` file automatically. Environment variables can al
 
 Normal asset serving uses the local archive. The development upstream fallback is off by default. The downloaded client archive and media directories are allowed by this repository's current ignore rules; credentials and raw HAR captures remain ignored.
 
+## Admin panel design
+
+The selected admin panel design is in [docs/admin-panel/](docs/admin-panel/README.md), including the editable [browser preview](docs/admin-panel/index.html), local fonts, light/dark screenshots, a working appearance selector, and the implementation handoff. Use this design as the starting point when building real admin functionality.
+
 ## Development
 
 Use the official client to verify compatibility. An endpoint returning successfully is only part of a working page: navigation, player behavior, and persisted state need browser checks too.
