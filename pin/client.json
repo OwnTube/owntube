@@ -1,0 +1,2758 @@
+{
+	"fetchedAt": "2026-10-21T19:39:07.008Z",
+	"pageBuildLabel": "youtube.desktop.web_20261020_05_RC00",
+	"clientVersion": "2.20261020.05.00",
+	"desktopVersion": "71381699",
+	"player": {
+		"id": "55de7e60",
+		"jsUrl": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/base.js",
+		"cssUrl": "https://www.youtube.com/s/player/55de7e60/www-player.css",
+		"version": "1.20261019.09.00",
+		"modules": [
+			"annotations_module",
+			"asmjs",
+			"captions",
+			"embed",
+			"endscreen",
+			"heartbeat",
+			"kids",
+			"miniplayer",
+			"offline",
+			"remote",
+			"unplugged",
+			"webgl",
+			"ypc"
+		]
+	},
+	"app": {
+		"key": "ytmainappweb.kevlar_base.en_US.rPz13CJWUHw.es5.O",
+		"jsUrl": "https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.rPz13CJWUHw.es5.O/am=AAAACAAACEBK/d=1/br=1/rs=AGKMywFj9KhE3PJy-5jfFs48fKDO_1KlBw/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk",
+		"cssUrl": "https://www.youtube.com/s/_/ytmainappweb/_/ss/k=ytmainappweb.kevlar_base.H_lDA2WhgfA.L.B1.O/am=AAAACABgCGBP/d=0/br=1/rs=AGKMywFhvc7MuoxZRVNS_RljZHe4wIYNog",
+		"graph": "kevlar_base_module/gAOYx/W0gSKb/sy4:1,2/sy5/sy6/sy1l/n7eo2/sy9:6,7/syi/sy11/sy1r/sya:9,a,b/syb/syc/syd/Osm49c/sy15:g/sy14/sye:5,f,h,i/syj/sym/syn:l/syr/Tbao1e/syq:n,o/syt/syu:f/syv/syw/syx:t/syy/sy10/syz:a,w/sy13:f,i/sy16/sy17:1/sy1a/sy1b/sy1c/sy1d/sy1f/gUBjBd/sy1h:16/sy1j/sy1k/sy1m/sy1o/sy1n:1b/sy1p/sy1q/sy1s/sy1t/ha1Ii/sy1u:1h/uRIaC/sy1x:1j/oPp5Le/vDck1d/iToIBd/CBuQbd/Mub4Yb/lPWjkb/d2LTxb/PpBpbf/WFRaF/PbxJ0b/sy1y/fofpXe/sy20/kevlar_main_module:3,4,8,c,d,e,j,k,m,p,q,r,s,u,v,x,y,z,10,11,12,13,14,15,17,18,19,1a,1c,1d,1e,1f,1g,1i,1k,1l,1m,1n,1o,1p,1q,1r,1s,1t,1u/sy21/sy22/sy23/sy24:21/sy25:p/sy26/CuTUU/sy28:21,24/yM0Kic/sy2a:4,n,o,24/jLov1/vvxGsf/y9noOb/sy2e:t/sy2f:14/va7TQb/hPIp5b/Le4Nlc/Wqoahc/sy2j:2h/sy2x/sy34:18,2j/sy2k:2k/r5COHf/UZrvfc/sy2n:10/sy2o:e,w/FsoXzc/sy2q:d,17,1o/sy2r:2j/sy2s:w/sy2t:9,k/an7FC/sy2v:r/sy2w:3,12,1d,1g/sy2y/tPgYzd/haouOe/sy3x/sy31:13,1d,1v,31/KWwWed/sy33/sy35:19,20/EL7BEc/sy36:w,10,36/sy37:u/sy38:11,12,31/blZZXe/sy3b:34/sy3c:m,34/sy3d:v,34/sy3e:l/r9KMjb/sy3g:1z/VcGS8/LswnMb/sy3j:1z/sy3k:1g/sy3m:5/acFuVc/QHAtef/sy3p:1d/CUDeyd/Tx5i5b/sy3s:s/XKqo3b/sy3u:1d/sy3v:w/sy3w:w/sJCo9e/sy3y:1a,3w/sy40:18/sy41:w,1q/IbxxOe/gizfA/iai2ic/sy45:2y/sy46:2y/oXBWHf/WqlcVb/YtlrJd/bzj0jd/sy4b:b,1g/cgSEob/XeRXBd/pevtvc/mm2N0c/sy4g:1f/adyZP/eMs2Sd/nBvByd/eDUDoc/sy4l:p/sy4m:21,24/OZkO0e/ZEfdxb/sy4p:46/qruKRb/DvZC9/sYDUQe/LJAJJb/hU04te/rEJS/sy4w:10/Vzo0Sd/sy4y:z/zGksAf/ilQSAf/lBaCsb/LjGSoc/s649j/b0Vvlc/JWTrfb/LA5gyd/YWuuGe/SgHA8d/XVA3We/UkZuWb/BJcdPd/NUSad/DH4Aaf/sy5e:1b,1e/XQMkFb/HHD51d/sy5h:u,1d/sy5i:1c/sy5j:2n/sy5k:22/sy5l:22/uSxdnb/U3mzsd/yP0JBd/RqaJsd/E3Hebc/j4CAef/sy5r:5p/mFp4nf/D98rie/sy5v:15,19/sy5w:20/jgx8me/jJfCod/sy5z:18/AEc80e/sy60:5y/Xp0Qr/gCOMDf/U3HMFd/nFrksc/fdYPfe/Ov4lJf/hNelvd/RWAuRe/sy6a:1d/sy6b:4r/bGmj1b/sy6d:8/kevlar_base_sync_mod_chunk:c,j,q,x,y,1i,1k,1l,1m,1n,1p,1r,1s,1t,1u,1w,23,25,26,27,28,29,2a,2b,2c,2d,2e,2f,2g,2i,2l,2m,2o,2p,2q,2r,2s,2t,2u,2v,2w,2x,2z,30,32,33,35,37,38,39,3a,3b,3c,3d,3e,3f,3g,3h,3i,3j,3k,3l,3m,3n,3o,3p,3q,3r,3s,3t,3u,3v,3x,3y,3z,40,41,42,43,44,45,47,48,49,4a,4b,4c,4d,4e,4f,4g,4h,4i,4j,4k,4l,4m,4n,4o,4p,4q,4s,4t,4u,4v,4w,4x,4y,4z,50,51,52,53,54,55,56,57,58,59,5a,5b,5c,5d,5e,5f,5g,5h,5i,5j,5k,5l,5m,5n,5o,5q,5r,5s,5t,5u,5v,5w,5x,5z,60,61,62,63,64,65,66,67,68,69,6a,6b/KmBfcc:43/SU3ui:4e/nO5dTd/OtKSJe/Raq4cb/DlvF1d/jBisaf/a66Lfe/HDmU1e/IWpUrf/f90tCb:u/dHcoIf:44/A4oAVe/ITuCUb/LViMM:2k/hb0Wmf/PzUdZb/UA8GSe:3v/izjmP/nvX4Vb/Z8kqPb:10/dm1PRe:2o,6x/qTLdQ/uhlLGb/FqHcGe/cyCVld/PDv6Me:h/LHP7Jd/osTtxe/wSn4ac:23/OM7xob:1i/Nr0kfe/FiNGOc/WsiMic:26/ioVqHf/UAM5m/haZpfb:4j/rMx50:17/ASE5sd:5i/HJBpQd:5j/D9WMd/n0DHg/U6hftf:4w/afKLpc/JAontb/HwlOhd/VbXrUe:38,6n/pESlDb/qVDgBd:3l/pe2ojb/hjrNn/Hxjlbb/Tu3MB/Q7FC3c:2l,6r/i2vusb:5h/VOUP9d/LnzJzc/dpUCFd/U9vrqd/nw34mb/vQucV/SCQObc/DpqsDe/dIvQ6c/wcpITe:4n/OaToWd/F1rsJf:3x/zDYN:r/Cst4hf:j,73/bJzpwf/RfUS8b:5z/cVdUG:2d/UG0mqc:3j/Wff6Bd:2s/ZQKx1/p1vESd:5u/AT8LTe:5t/sj3DJ:3g/YZG94/xgv4kf/bQb2pb:5f,6n/C7eYCf:4k/RZekJ/hnUp9b/zCkKBc/vIuYDd:3e/mtTdRd:3b/d1nLV:3c/Yi0iU:3d/H2eScb:2w,88/i6Xome:3r/zL59zc/kn8kmd/neNTs:68/RCG9Xe:69/JoU6vf/m9Vw4/mcjWUc/lTbA0c/wHZukc/xdYm6d/xuzkce/QiZf0e:32/h6bgsf/Um7iMb:39/Vam5wd/INc1Ef:37,6x/ojGT6d:x/HZ41Od:3u/e3UtW:3y/aU1GTb:3z/viUWV:49/fAzdT:2x/fglJNb:4u,6x/l8aKDb:2p/cnq5Qb:5q/X1YXsd:5x/n9DJBf:2t/NI3Pbd:2u/fKE8qd:c/ohktsd:6b/PkgoAe:2r,7e/NQc1Id:35/C7k5Qb/II1oUe:2c/u4exy:28/XwMZve/AV9xBd:3t/VWqxF:3o/pZekSe:5c/SxFhdc:5g/HeP1je:y/dVWT2d:3k/byHIYc:2i/sy6e/EDZfb:a3/wWz5Ld:a3/pSTbRd:a3/e98F:a3/XULhze:a3/UJGPCb:a3/FGAKLd:a3/czZQve:a3/EPZBnb/UJ7l1b:1k/De8mUc/yTIahe/QlbBce",
+		"initial": [
+			"gAOYx",
+			"W0gSKb",
+			"sy4",
+			"sy5",
+			"sy6",
+			"sy1l",
+			"n7eo2",
+			"sy9",
+			"syi",
+			"sy11",
+			"sy1r",
+			"sya",
+			"syb",
+			"syc",
+			"syd",
+			"Osm49c",
+			"sy15",
+			"sy14",
+			"sye",
+			"syj",
+			"sym",
+			"syn",
+			"syr",
+			"Tbao1e",
+			"syq",
+			"syt",
+			"syu",
+			"syv",
+			"syw",
+			"syx",
+			"syy",
+			"sy10",
+			"syz",
+			"sy13",
+			"sy16",
+			"sy17",
+			"sy1a",
+			"sy1b",
+			"sy1c",
+			"sy1d",
+			"sy1f",
+			"gUBjBd",
+			"sy1h",
+			"sy1j",
+			"sy1k",
+			"sy1m",
+			"sy1o",
+			"sy1n",
+			"sy1p",
+			"sy1q",
+			"sy1s",
+			"sy1t",
+			"ha1Ii",
+			"sy1u",
+			"uRIaC",
+			"sy1x",
+			"oPp5Le",
+			"vDck1d",
+			"iToIBd",
+			"CBuQbd",
+			"Mub4Yb",
+			"lPWjkb",
+			"d2LTxb",
+			"PpBpbf",
+			"WFRaF",
+			"PbxJ0b",
+			"kevlar_main_module",
+			"sy1y",
+			"fofpXe",
+			"sy21",
+			"sy22",
+			"sy23",
+			"sy24",
+			"sy25",
+			"sy26",
+			"CuTUU",
+			"sy28",
+			"yM0Kic",
+			"sy2a",
+			"jLov1",
+			"vvxGsf",
+			"y9noOb",
+			"sy2e",
+			"sy2f",
+			"va7TQb",
+			"hPIp5b",
+			"Le4Nlc",
+			"Wqoahc",
+			"sy2j",
+			"sy2x",
+			"sy34",
+			"sy2k",
+			"r5COHf",
+			"UZrvfc",
+			"sy2n",
+			"sy2o",
+			"FsoXzc",
+			"sy2q",
+			"sy2r",
+			"sy2s",
+			"sy2t",
+			"an7FC",
+			"sy2v",
+			"sy2w",
+			"sy2y",
+			"tPgYzd",
+			"haouOe",
+			"sy3x",
+			"sy31",
+			"KWwWed",
+			"sy33",
+			"sy35",
+			"EL7BEc",
+			"sy36",
+			"sy37",
+			"sy38",
+			"blZZXe",
+			"sy3b",
+			"sy3c",
+			"sy3d",
+			"sy3e",
+			"r9KMjb",
+			"sy3g",
+			"VcGS8",
+			"LswnMb",
+			"sy3j",
+			"sy3k",
+			"sy3m",
+			"acFuVc",
+			"QHAtef",
+			"sy3p",
+			"CUDeyd",
+			"Tx5i5b",
+			"sy3s",
+			"XKqo3b",
+			"sy3u",
+			"sy3v",
+			"sy3w",
+			"sJCo9e",
+			"sy3y",
+			"sy40",
+			"sy41",
+			"IbxxOe",
+			"gizfA",
+			"iai2ic",
+			"sy45",
+			"sy46",
+			"oXBWHf",
+			"WqlcVb",
+			"YtlrJd",
+			"bzj0jd",
+			"sy4b",
+			"cgSEob",
+			"XeRXBd",
+			"pevtvc",
+			"mm2N0c",
+			"sy4g",
+			"adyZP",
+			"eMs2Sd",
+			"nBvByd",
+			"eDUDoc",
+			"sy4l",
+			"sy4m",
+			"OZkO0e",
+			"ZEfdxb",
+			"sy4p",
+			"qruKRb",
+			"DvZC9",
+			"sYDUQe",
+			"LJAJJb",
+			"hU04te",
+			"rEJS",
+			"sy4w",
+			"Vzo0Sd",
+			"sy4y",
+			"zGksAf",
+			"ilQSAf",
+			"lBaCsb",
+			"LjGSoc",
+			"s649j",
+			"b0Vvlc",
+			"JWTrfb",
+			"LA5gyd",
+			"YWuuGe",
+			"SgHA8d",
+			"XVA3We",
+			"UkZuWb",
+			"BJcdPd",
+			"NUSad",
+			"DH4Aaf",
+			"sy5e",
+			"XQMkFb",
+			"HHD51d",
+			"sy5h",
+			"sy5i",
+			"sy5j",
+			"sy5k",
+			"sy5l",
+			"uSxdnb",
+			"U3mzsd",
+			"yP0JBd",
+			"RqaJsd",
+			"E3Hebc",
+			"j4CAef",
+			"sy5r",
+			"mFp4nf",
+			"D98rie",
+			"sy5v",
+			"sy5w",
+			"jgx8me",
+			"jJfCod",
+			"sy5z",
+			"AEc80e",
+			"sy60",
+			"Xp0Qr",
+			"gCOMDf",
+			"U3HMFd",
+			"nFrksc",
+			"fdYPfe",
+			"Ov4lJf",
+			"hNelvd",
+			"RWAuRe",
+			"sy6a",
+			"sy6b",
+			"bGmj1b",
+			"sy6d",
+			"kevlar_base_sync_mod_chunk"
+		],
+		"modules": {
+			"kevlar_base_module": {
+				"sha256": "53b1ccd15cdf2b2d6c59a95d25e36438d9242078ffdf645b8ab6cbefc555e017",
+				"size": 152
+			},
+			"KmBfcc": {
+				"sha256": "d10af1bb132c722954e07de813ee4ee13098d4a2cbcd86b2486f41284b51ce1a",
+				"size": 213
+			},
+			"sy20": {
+				"sha256": "53b1ccd15cdf2b2d6c59a95d25e36438d9242078ffdf645b8ab6cbefc555e017",
+				"size": 152
+			},
+			"OtKSJe": {
+				"sha256": "c7f3803a1f9489096fd6af957531c598d7f211d4b7efb122fe33bbe4809bfca2",
+				"size": 213
+			},
+			"SU3ui": {
+				"sha256": "b05d9521d0e738d72ba73036ad4aa45c58d5f6af6d5bbc2c843ca175df85a931",
+				"size": 212
+			},
+			"DlvF1d": {
+				"sha256": "39bbb1965fba8854ff4733d1cfb7ccd589c7a2ef178fee64e913e616e1f3d400",
+				"size": 213
+			},
+			"jBisaf": {
+				"sha256": "9599c2491cf48677da3ee60f4177f0bd12d8a495f3acc0a923350dcf2aeac74b",
+				"size": 213
+			},
+			"Raq4cb": {
+				"sha256": "6f04e8b04bce11579abc5c851b1b79f973c2387cc271f48627c3a84273667368",
+				"size": 213
+			},
+			"a66Lfe": {
+				"sha256": "d712eaa2f8c2d963aaefa389728ced8da57c70714f5f2c945c91694d34a93aec",
+				"size": 213
+			},
+			"A4oAVe": {
+				"sha256": "573ff23974c7839e41284be4f3f897aaaa8bf3268f96538d5dfa790ebd0061ad",
+				"size": 213
+			},
+			"IWpUrf": {
+				"sha256": "f6cd6322aa56923f45693a4d822de3078ff703264f8b18a4bab0ba282f396471",
+				"size": 213
+			},
+			"dHcoIf": {
+				"sha256": "476fd14674af63947df265393448997f8911b895df087293dda50aa7ec0c64c5",
+				"size": 213
+			},
+			"ITuCUb": {
+				"sha256": "ac58ff4cb393df624ee24a38ab12ee76ef52d665324edbedbf5abbe192b5495c",
+				"size": 213
+			},
+			"LViMM": {
+				"sha256": "53b1ccd15cdf2b2d6c59a95d25e36438d9242078ffdf645b8ab6cbefc555e017",
+				"size": 152
+			},
+			"nO5dTd": {
+				"sha256": "c40800fdd7c69a6af3fa30fe53034dcb8019bfa60889758db03602cf792ad305",
+				"size": 213
+			},
+			"hb0Wmf": {
+				"sha256": "0a98fc123b55f837436664a7f1d3c88967b4f5d65c55c75e6c872752c0b8ad5f",
+				"size": 213
+			},
+			"UA8GSe": {
+				"sha256": "e1c71f2b5d93e26d745df8aa08ef6e96251c8d25ba67c2f5f4776adc98771237",
+				"size": 213
+			},
+			"PzUdZb": {
+				"sha256": "b7ad303048497473be6d31c942d6a3bac99590e6ff1262363eab3646f0bdfba8",
+				"size": 213
+			},
+			"izjmP": {
+				"sha256": "81d5505e2273958bdb5b2145a35903869d08cf6ba794e9c3760c96757a39ba4c",
+				"size": 212
+			},
+			"dm1PRe": {
+				"sha256": "918097f1473280be4e9c7eb83259eb932ad10cda38f7b47f25539fddbef32d57",
+				"size": 213
+			},
+			"nvX4Vb": {
+				"sha256": "a3134bfbbe66b2721a7fbe1236d3f68999957b6dc8174964aa7ff91fa2276b89",
+				"size": 213
+			},
+			"Z8kqPb": {
+				"sha256": "53b1ccd15cdf2b2d6c59a95d25e36438d9242078ffdf645b8ab6cbefc555e017",
+				"size": 152
+			},
+			"HDmU1e": {
+				"sha256": "7729f9df90127759a0ccc53c9ab535eb512357cc8b68be4a3730821d0069541a",
+				"size": 213
+			},
+			"FqHcGe": {
+				"sha256": "58e85f24b40797e48958e3b571fdd57601dbd7cd446d5c3240c3b85ebef1d350",
+				"size": 213
+			},
+			"qTLdQ": {
+				"sha256": "b890cca1685aa66226cb1196a789687258df0081d328326f31d566fbc9339e8e",
+				"size": 212
+			},
+			"cyCVld": {
+				"sha256": "69000b3ecebc6c405baac9aa7c727449861b389688019224bee048f91cd1e509",
+				"size": 213
+			},
+			"uhlLGb": {
+				"sha256": "91fb33fca17fe2480214676291768415d64194a2b31c85951ddcb54cc7607fe1",
+				"size": 213
+			},
+			"f90tCb": {
+				"sha256": "53b1ccd15cdf2b2d6c59a95d25e36438d9242078ffdf645b8ab6cbefc555e017",
+				"size": 152
+			},
+			"PDv6Me": {
+				"sha256": "53b1ccd15cdf2b2d6c59a95d25e36438d9242078ffdf645b8ab6cbefc555e017",
+				"size": 152
+			},
+			"wSn4ac": {
+				"sha256": "a0bdca215d37fed6dd0fc097256abeb38d6e10047a9d21d23a35a33b3d9c5208",
+				"size": 213
+			},
+			"OM7xob": {
+				"sha256": "0e6b227113836a11960587408726ba520e0c224c06b4b2831325faef7986aaac",
+				"size": 213
+			},
+			"LHP7Jd": {
+				"sha256": "2e41144747c30962d5b7e7701fa6b951198ddd254967341ac3eb6710fd316e18",
+				"size": 213
+			},
+			"osTtxe": {
+				"sha256": "e1328c4bcd96225c7c1178282ae8e46a5c3d77484592a8d71db93cba703f6205",
+				"size": 213
+			},
+			"Nr0kfe": {
+				"sha256": "516f12fe18870ab502e4f96377128b8b7057f9a1d330574f8c1495dc898ef094",
+				"size": 213
+			},
+			"WsiMic": {
+				"sha256": "c9cd004a1ba578abb93e69dcd1aeeee2c513807aa424208a1d30b50b08525e40",
+				"size": 213
+			},
+			"FiNGOc": {
+				"sha256": "30ba12376b4fa2ffcc92b82239cb21c2c68c0472275b982a05e7935bc2a6bd10",
+				"size": 213
+			},
+			"UAM5m": {
+				"sha256": "eeb3f76d64bc15f75e34b681b0d5af37a2d91cc0499d99713a6146cd03c07c72",
+				"size": 212
+			},
+			"rMx50": {
+				"sha256": "53b1ccd15cdf2b2d6c59a95d25e36438d9242078ffdf645b8ab6cbefc555e017",
+				"size": 152
+			},
+			"HJBpQd": {
+				"sha256": "31ccdf4873b539c6c7b51ae6bdc47e34114c466f9edef8348b84268445055b73",
+				"size": 213
+			},
+			"D9WMd": {
+				"sha256": "66a76cd716a7cada246fc955aa245ac5468b79195387b4ef42a18948171851c6",
+				"size": 212
+			},
+			"n0DHg": {
+				"sha256": "c798aafb5a0afb9560cca1c9365434d404a785486c02c0639bd8ee92647ca2e8",
+				"size": 212
+			},
+			"ASE5sd": {
+				"sha256": "9aa13dc2d0270278093c8710e475dbd232b73113872c89ddf9b4950d961a748e",
+				"size": 213
+			},
+			"U6hftf": {
+				"sha256": "82e9e67a6c038ffad8d21c1c72724dc8c9217bccb517050fce85f27b0a3ab6e7",
+				"size": 213
+			},
+			"afKLpc": {
+				"sha256": "5e8c37904047a2afec16ab44ebde97dd89c396b946114fcd8ef078ac8f983cbe",
+				"size": 213
+			},
+			"HwlOhd": {
+				"sha256": "fe4d90ee8ec3e4570267417a7fe0e0b097b7f34ef94375bb1bfe034ef0dbf6c6",
+				"size": 213
+			},
+			"JAontb": {
+				"sha256": "cc3c6085b9a26d7b51ad9802edb314d8d958b58f195e15471fa9325789a53cb9",
+				"size": 213
+			},
+			"qVDgBd": {
+				"sha256": "4f1d9660536821a265c391a7a2681d3b09b87504a1f5e6e249477b71f1fd8e98",
+				"size": 213
+			},
+			"pESlDb": {
+				"sha256": "eea5ab9f2669a8fe4a6ec89123004092950993d70b271a3cf3b17de95398b2a9",
+				"size": 213
+			},
+			"VbXrUe": {
+				"sha256": "10dd43e88975636034de3ccfae4b1211ab25528dcc4f296bc5bdb8fc2d452bc0",
+				"size": 213
+			},
+			"pe2ojb": {
+				"sha256": "bcc2fea9b6cba54479c40084c5876443e5bd8f4e9605a4122530848437536dfd",
+				"size": 213
+			},
+			"Hxjlbb": {
+				"sha256": "ebe7e11abcc82aebab1cc39d57ad648572e5f8e128a4dface4275df2b27c0a4f",
+				"size": 213
+			},
+			"Q7FC3c": {
+				"sha256": "6df15145661978adf98e56b8803cf06c3e012601fb32c82f26cf710193149be6",
+				"size": 213
+			},
+			"Tu3MB": {
+				"sha256": "4b3a917aa6656a2231cc00b3915dee07dfed5277cdccea87a75e4a98c9910405",
+				"size": 212
+			},
+			"hjrNn": {
+				"sha256": "d1e563942fcb98196652e42d653507c7c09f3520ecebe18823464ff71ab407a7",
+				"size": 212
+			},
+			"i2vusb": {
+				"sha256": "b6a1ecd7cb574381645a76b4213c87c0879956187e3ee5d49890b183c24b5b10",
+				"size": 213
+			},
+			"LnzJzc": {
+				"sha256": "9b0df67f63f85a3bdf8c93f50aad1acb32b306e6b70a2fe35d4f6c7fc1de05a8",
+				"size": 213
+			},
+			"dpUCFd": {
+				"sha256": "cc5402b524b486bbe0111c9ecf20c171e1a8e9571decc4687eeb74722389bdc5",
+				"size": 213
+			},
+			"VOUP9d": {
+				"sha256": "eac57de311ba5b19ac9bff0ca2f764b8db5a373d842854282c0eea0651724470",
+				"size": 213
+			},
+			"vQucV": {
+				"sha256": "3f3ee446c8b163b0cbf2073025655f30fa77668caa44246f3d9741f062c9ee0c",
+				"size": 212
+			},
+			"SCQObc": {
+				"sha256": "bff3fde4f3d3939f067302e7ce4f3b664be020f914be0959b7376f4515ea6ecf",
+				"size": 213
+			},
+			"ioVqHf": {
+				"sha256": "b3e062718788352134a23be85d7f980a562772e78f0399c1a066d116d24bac50",
+				"size": 213
+			},
+			"U9vrqd": {
+				"sha256": "f720d02b6e7527c9b8fd67bc09eb0e69d4b96618a085db22706944ff1eb51958",
+				"size": 213
+			},
+			"nw34mb": {
+				"sha256": "3c7e9f13dd03c5bc5441b913020320a3fbc404893236a71dae7c978f0e7bd3f3",
+				"size": 213
+			},
+			"DpqsDe": {
+				"sha256": "d9903c286b47f81a6f55f3a1de1baf7aa6fc6c88bcb15bef24d09035db3b687d",
+				"size": 213
+			},
+			"dIvQ6c": {
+				"sha256": "39192d8b32f54304f2e5f09a73865cfd9885331ecd1e70ebbc9c03d0a0414546",
+				"size": 213
+			},
+			"F1rsJf": {
+				"sha256": "95c3632b467c3055a2b6e7f0ae3cccb38809cd0721870318b4152efaef870118",
+				"size": 213
+			},
+			"wcpITe": {
+				"sha256": "977dd0ee9bc11bd58b211d262e3f294a17d4b00d002b0ee2326f1f3101473a29",
+				"size": 213
+			},
+			"OaToWd": {
+				"sha256": "b15f2443185f912d1109ce1024aa89fe3736e70ad9cc611b468e06abdb28cd8c",
+				"size": 213
+			},
+			"Cst4hf": {
+				"sha256": "7e29db346e35ef9d82092d6e715ba95237efdab6ad1d692ff4232f49f575a4fe",
+				"size": 213
+			},
+			"bJzpwf": {
+				"sha256": "50c5f6ed1f4a43b11d5a9bf8b22e89411c17d96a8e8f6989bc3ba9552fc03696",
+				"size": 213
+			},
+			"UG0mqc": {
+				"sha256": "afbb264201f205dca2de366382c03e026cd6d00318339503707368e68b892514",
+				"size": 213
+			},
+			"zDYN": {
+				"sha256": "53b1ccd15cdf2b2d6c59a95d25e36438d9242078ffdf645b8ab6cbefc555e017",
+				"size": 152
+			},
+			"RfUS8b": {
+				"sha256": "7bbd6d20378189028832f57785af7c993d4a05f549af91e633a5d7dfc88fc011",
+				"size": 213
+			},
+			"Wff6Bd": {
+				"sha256": "35fc0e6897a4f48e7a9a6f7b2fd59ad1b5511580f7caf934944ee867e8961f62",
+				"size": 213
+			},
+			"cVdUG": {
+				"sha256": "8a7b0f4e99bab295aadaad0df411175a22402a5136ef1c1242ec5a9e53211aa9",
+				"size": 212
+			},
+			"AT8LTe": {
+				"sha256": "ff66580ee9148c76a9546693bb5836164e24e42683eab9c8699444755275c5f2",
+				"size": 213
+			},
+			"ZQKx1": {
+				"sha256": "8557e330e7ee1e45fbdcef73ded70620b673e9a0dc30dd6514da309966e5a70c",
+				"size": 212
+			},
+			"sj3DJ": {
+				"sha256": "f9a78fcdfd5d0839d25ecc5851c814c857b8b82558fa4f162d7224b0ad0a7c3e",
+				"size": 212
+			},
+			"p1vESd": {
+				"sha256": "d9ba30e2ec09d46fecfddb8f60c2e55c28db4fee845434fae63dc4a903844fc0",
+				"size": 213
+			},
+			"bQb2pb": {
+				"sha256": "b745c4b8fcc30287504e6c9c6a64ac4740ef95de46ea3d2567b809089dcd8bc7",
+				"size": 213
+			},
+			"YZG94": {
+				"sha256": "d8def44203f0c5bd7a0897acb02ee46f7d9297f4c4a3d7b6eaecdcf6f5375901",
+				"size": 212
+			},
+			"xgv4kf": {
+				"sha256": "1f3cff1d357f36bb046c4c64aecb1e5a77300d4cdd21decc04b86dc17368cce7",
+				"size": 213
+			},
+			"C7eYCf": {
+				"sha256": "784bc46ea22bf11f5cf8f05c592649e9e1b58f6088277bd53dc35e05c58f16a1",
+				"size": 213
+			},
+			"hnUp9b": {
+				"sha256": "7542710d1de6011be2350b8280f8b1c459ef6f8b6a89d6ee9e9fe93c8439a747",
+				"size": 213
+			},
+			"zCkKBc": {
+				"sha256": "d3614c602f6392a7730447f1f3d4a890664d16a1683594c841e57e18b11204e7",
+				"size": 213
+			},
+			"mtTdRd": {
+				"sha256": "9baf177f44d2a1a24a0d19d8c66cf2f70a4459d08e52875b9bf30162aaeed6c2",
+				"size": 213
+			},
+			"vIuYDd": {
+				"sha256": "2f10b9331c31337173484356ab6bff1b1f89c2deacd9d55d456570fde42b377c",
+				"size": 213
+			},
+			"Yi0iU": {
+				"sha256": "fc06488cfd45c66ab2dd9ce84152d0b1c815bac32775662c27affb6168fb247e",
+				"size": 212
+			},
+			"H2eScb": {
+				"sha256": "f6e91d14ff1a7c2a0c1ecfd7472acef98178fd5e0ac2e22ba83bd624eddf8082",
+				"size": 213
+			},
+			"i6Xome": {
+				"sha256": "de2ac6ff15f82bf2c35dcb1bd0f4e9bd13d06928a0a1bb0e217112f58ff5ce4e",
+				"size": 213
+			},
+			"zL59zc": {
+				"sha256": "7e4412b0e2e4d03c992db92ba9b2e2e09490adc31bc65f09d62da7c490047731",
+				"size": 213
+			},
+			"RZekJ": {
+				"sha256": "431695850c08e461252cd9fba0efad1912377f08e945c027bd271af91cd27b1e",
+				"size": 212
+			},
+			"neNTs": {
+				"sha256": "92acb0415fd2d0f31eee61a8a9f1f6613e18b5d36bb3f8fd3c9f8ddda49ba1a1",
+				"size": 212
+			},
+			"kn8kmd": {
+				"sha256": "d1b8c79a4d01c00da909173fc371481dfb20ecd9509893c42acb0adf9dc16824",
+				"size": 213
+			},
+			"RCG9Xe": {
+				"sha256": "db3844212d4acbd281053a4cfb52116121cca383d3d742518a040dacadb87817",
+				"size": 213
+			},
+			"mcjWUc": {
+				"sha256": "27dec68b8c98c38b522606942a89f20e433d46c2c379ed6f43f2edc5954b2e5e",
+				"size": 213
+			},
+			"JoU6vf": {
+				"sha256": "9c85f70cb4ae91b472fd689cd9b8e18cc052b98ff38ce487f64dff92ce4f6a65",
+				"size": 213
+			},
+			"lTbA0c": {
+				"sha256": "df319b5eefe11ca7eee9e613fc909b69bf707533b6cf04c4417af8be802b4a35",
+				"size": 213
+			},
+			"m9Vw4": {
+				"sha256": "a604611b8f7f71d187de0a8bc41ed5ae25f18ebed97b641334f51cd164dbb655",
+				"size": 212
+			},
+			"wHZukc": {
+				"sha256": "0f06f60cdeee1a49bf50356b1c14602a95eca13b394ac3d2dc0b0dda1c8b7c86",
+				"size": 213
+			},
+			"xdYm6d": {
+				"sha256": "7509aca7d47356e273f2fe23b737c09310aa9021222346776093f367441b454d",
+				"size": 213
+			},
+			"h6bgsf": {
+				"sha256": "3e6334a78e27eb70781a05a07d86fe951cb004205ce17080bed7a5fc90586816",
+				"size": 213
+			},
+			"xuzkce": {
+				"sha256": "21fbb28c517a2899c2975af61c8bc684436825ff2c3d4a56357d4ed07334bf88",
+				"size": 213
+			},
+			"Um7iMb": {
+				"sha256": "31ea1200b8eec39b82430c69d1245fe902236162f5b8183824fc6095ad75d2e6",
+				"size": 213
+			},
+			"ojGT6d": {
+				"sha256": "8ad5385dd6a063a0caf9192315ea981773d668baa4aae28f6b190ff38dd63996",
+				"size": 213
+			},
+			"QiZf0e": {
+				"sha256": "649167ed8b00a5cca80d6d2906de40ec755eacc91a3d4005cba1792f1e3c30e1",
+				"size": 213
+			},
+			"INc1Ef": {
+				"sha256": "184efa425f221ca441644fd273f66c03e12d42b17cc4368e157f79d392ab5a84",
+				"size": 213
+			},
+			"d1nLV": {
+				"sha256": "fb7cc51d0c7fde8d4267de985cc2668a6cd07687df9b0ccd218a772243c123df",
+				"size": 212
+			},
+			"e3UtW": {
+				"sha256": "6d67d7d08da4c68a36fc6f9e2f21319bb8dfd4d8784a7bab2e0b897a23af3a67",
+				"size": 212
+			},
+			"viUWV": {
+				"sha256": "51f15d45c0327a51ddc011b82eaa07bb34ccade82b109cb6308f440e4e3e14f0",
+				"size": 212
+			},
+			"aU1GTb": {
+				"sha256": "b6a428fe377b7249dfe682c59221e5aa9a1fd4832e550b60185e360415b6d199",
+				"size": 213
+			},
+			"fAzdT": {
+				"sha256": "dda57904180a66ef84f37a29f8e2389a8cb52b2519bfe26a30af879b78e347b7",
+				"size": 212
+			},
+			"l8aKDb": {
+				"sha256": "25c8f8018f7486b96253f4d126272a3fe2b5bf84b4616deb41598b474b4a1f49",
+				"size": 213
+			},
+			"fglJNb": {
+				"sha256": "77ea661741dde588faf9e86f7fe63c4c846fb1457041cff50ec1892a100faaae",
+				"size": 213
+			},
+			"cnq5Qb": {
+				"sha256": "52e1541a1df6f43aef802a7ea68e0d2656421a326920fdb4a0e04e12cea9f91a",
+				"size": 213
+			},
+			"X1YXsd": {
+				"sha256": "3fcd6692f867f791694b6ceec43c3696d3ebe728eec54341d4a56ce672a9ca3f",
+				"size": 213
+			},
+			"n9DJBf": {
+				"sha256": "a6bbdb2728d95412b688b7de01d44312876a192d27e8068ead366fc16e6179e7",
+				"size": 213
+			},
+			"ohktsd": {
+				"sha256": "2f246427bf1150ed47051d2653b357d74377fc92f7aaf119336ee777ab39a9de",
+				"size": 213
+			},
+			"fKE8qd": {
+				"sha256": "66a3be656b966b69be32a2e2e8c20a138a00098e24564928926a97fe35c7dfad",
+				"size": 213
+			},
+			"NI3Pbd": {
+				"sha256": "387e5309c6a06792d02e5c786acc416f8f080efb314fe2f32d456b3c420dc98d",
+				"size": 213
+			},
+			"PkgoAe": {
+				"sha256": "0c805667e42af79f558c55c04270cf50929031d862de2a333f324506194bfb70",
+				"size": 213
+			},
+			"C7k5Qb": {
+				"sha256": "9a6df18cf08683dd1058fb8d3de313e6d05eeb6f9920f22bcf910cea67f9ec0c",
+				"size": 213
+			},
+			"NQc1Id": {
+				"sha256": "a7ae2acec47d1c5a51ae0df10204b29d663efd47bff9632be663e61070453c08",
+				"size": 213
+			},
+			"II1oUe": {
+				"sha256": "3f5fd4096083d9f39883c4ac5a3c2f45a3690bdb06fc5c448006e8b4f73d1858",
+				"size": 213
+			},
+			"u4exy": {
+				"sha256": "655926afd45bfb6849025538501c4e5317cc2b5125377dd11151e267fd5ae24c",
+				"size": 212
+			},
+			"XwMZve": {
+				"sha256": "f81a998dd4224380a0e2bf927b5cedefe4d3f7e85a92445634d341b84cd881ba",
+				"size": 213
+			},
+			"AV9xBd": {
+				"sha256": "b7f937db868348a31ed6185baf02d566da0622bf1eab2e1fefcf27a4569f6aa7",
+				"size": 213
+			},
+			"pZekSe": {
+				"sha256": "40f9cec0451938a1669d1bb1aa62afa180a0102b6f6845cc112b07caace10c02",
+				"size": 213
+			},
+			"VWqxF": {
+				"sha256": "609a38734c5ff959ff9c98925720c86b2eaa95bfd7f8e87b20eb48e27965bafe",
+				"size": 212
+			},
+			"SxFhdc": {
+				"sha256": "53a72b83573e88267b1b7d560fea867d3ab8fb6da1a7f05628399972c9df4495",
+				"size": 213
+			},
+			"HeP1je": {
+				"sha256": "7a98f1a6bb7b8c45a42b94fff5c73e3c75a54abbbb71817b06dd84976c408126",
+				"size": 213
+			},
+			"dVWT2d": {
+				"sha256": "1692c65d231a10cf012e1e1fb5d65c0bab8a98d5704db2d099e50b3b1e4761cf",
+				"size": 213
+			},
+			"sy6e": {
+				"sha256": "53b1ccd15cdf2b2d6c59a95d25e36438d9242078ffdf645b8ab6cbefc555e017",
+				"size": 152
+			},
+			"byHIYc": {
+				"sha256": "d3fa75c4555823c1cab861383d6df30a33ffbe6ee2647b6f3b29167f9e81bbaa",
+				"size": 213
+			},
+			"Vam5wd": {
+				"sha256": "ad4d4ed260ee86d11edf0d2ac7d43d73777ecfe38ad0e2700b9a8f7e56189b5e",
+				"size": 213
+			},
+			"wWz5Ld": {
+				"sha256": "a1efa50ea1792c124f950900bec00dc2e0ea53e21412bd91e166b09c6a3c9e74",
+				"size": 111603
+			},
+			"EDZfb": {
+				"sha256": "766a38fd68108a744c02958e09e33ddf61286e835fec9c8a08a1e3c72d5968cd",
+				"size": 111333
+			},
+			"XULhze": {
+				"sha256": "5d0854eb6e91a6b922408cfa8e672369a45efe8fdc466b567ad98eca04be3a8b",
+				"size": 110773
+			},
+			"HZ41Od": {
+				"sha256": "63b798edbb63f42624ff3884b99cf203e054ef88c70d864a068f005cd5cadcb8",
+				"size": 213
+			},
+			"UJGPCb": {
+				"sha256": "9a98c98e29efe3a6cf386339990cb2b5f584cf3d8c9aa1cc608be568a9cda455",
+				"size": 110789
+			},
+			"EPZBnb": {
+				"sha256": "fb4c015afce6a2b1fd9f21dd04f9e904e014ce825ec338ef2e4cbe8fce6632c7",
+				"size": 213
+			},
+			"UJ7l1b": {
+				"sha256": "81cd0e43efb5739831349c1439fa48bec85558f180f40b58237e3071ca4ac02d",
+				"size": 213
+			},
+			"De8mUc": {
+				"sha256": "3b375b8f1c26832724910995b35284ec9cae826d669cf3de6a5507d830d0109b",
+				"size": 388
+			},
+			"yTIahe": {
+				"sha256": "6061feec632d5939de5ab4e9d9ef936399f22c54faa120e06c50a596eee7e204",
+				"size": 282
+			},
+			"QlbBce": {
+				"sha256": "0fa3f2841c1f834021047f94402a0d16abeb3925965d3eacc61cd471adeba042",
+				"size": 7415
+			},
+			"FGAKLd": {
+				"sha256": "b63c6b628a8e8746b6981ef42a7769c0a7ed762636233641c9d6a8e6ba472867",
+				"size": 4408593
+			},
+			"e98F": {
+				"sha256": "052631b69fd145898b4b2eb03c56f41da4f89fcaf12f0dcf311283a98c8278aa",
+				"size": 4157619
+			},
+			"pSTbRd": {
+				"sha256": "17219f2657870eaadd3bae898f3bcfa8114f6d0dce49aa611aa5cbe51e7fceae",
+				"size": 4156600
+			},
+			"czZQve": {
+				"sha256": "1899b944f1508ead3524620e1df37d97b426cf05abf2b2b1755ad85aa9204cab",
+				"size": 4409604
+			},
+			"haZpfb": {
+				"sha256": "c78fa5d4bd92a746b8fdcf0fac125ae07471e530e6c03e289506083a7a27a871",
+				"size": 213
+			}
+		}
+	},
+	"pages": {
+		"watch": {
+			"url": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+			"sha256": "5b1630ba6f9ac7ccc888c8b7417f9cebdd1ba7f51ead6ba3566fc45d3da2091b",
+			"size": 1284465
+		},
+		"home": {
+			"url": "https://www.youtube.com/",
+			"sha256": "edb80ebbf5ed2a0e3b888e01c5a046aeeddf5d4d9a2d6d807fe1211a76965792",
+			"size": 961704
+		},
+		"results": {
+			"url": "https://www.youtube.com/results?search_query=blender",
+			"sha256": "5dd32b0686a9e0ed49ccce349e8ad8b3c1e3205ed0dcbe97c98b5c650d2dee5f",
+			"size": 1386023
+		},
+		"channel": {
+			"url": "https://www.youtube.com/@BlenderStudio",
+			"sha256": "74ce39d762512d7cd961c0361b1e80fca35aa90ca2ab199d19feb310c17bc3da",
+			"size": 1326787
+		},
+		"playlist": {
+			"url": "https://www.youtube.com/playlist?list=PLav47HAVZMjnTFVZL-aImCQIC0uLZtNCz",
+			"sha256": "18e0a4ac30e4daa52562eb0c5949fecde1255da7e0c28785cec0b1eff82d99a7",
+			"size": 1123080
+		},
+		"shorts": {
+			"url": "https://www.youtube.com/shorts",
+			"sha256": "1bb0e3cca4b650ac50a4f1de64522e35183abf05e990c93ad389bac0ac75968a",
+			"size": 1087485
+		}
+	},
+	"assets": [
+		{
+			"url": "https://fonts.googleapis.com/css?family=Roboto:300italic,400italic,500italic,700italic",
+			"sha256": "a3b6199a857a89780ddf2bf32d766defe0f7b99c06aba66338cba6c4f77786f9",
+			"size": 21576,
+			"kind": "font-css"
+		},
+		{
+			"url": "https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic",
+			"sha256": "15e7d0aaeef94cadf6c1715cdbd6b75c0dc14b30d74b48f089f43b9a6191195b",
+			"size": 43048,
+			"kind": "font-css"
+		},
+		{
+			"url": "https://fonts.googleapis.com/css?family=Roboto+Mono:400",
+			"sha256": "32cab6cbc69ef64037cafa8b4a6ff8e7754f262dcd6014e96881a47f4c942cfe",
+			"size": 2191,
+			"kind": "font-css"
+		},
+		{
+			"url": "https://fonts.googleapis.com/css?family=Roboto+Mono:400,700",
+			"sha256": "401539aee0931da3ffd15613e342f6ebee9602c405197a9c1ad6e9aef36f06f3",
+			"size": 4178,
+			"kind": "font-css"
+		},
+		{
+			"url": "https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=YouTube+Marquee+Beta:ROND,wdth,wght@0..100,25..125,300..800&display=swap",
+			"sha256": "3ac15b2d363c6f2bac0e21f7505d7d7e5bd030eedcf650db683529c599ab3cb0",
+			"size": 4631,
+			"kind": "font-css"
+		},
+		{
+			"url": "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=YouTube+Sans:wght@300..900&display=swap",
+			"sha256": "c5366f6f7f05c4c1e0fb869cbd8105d26c80a51f5d55cd44aab2979986bc17d5",
+			"size": 86082,
+			"kind": "font-css"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/add_circle/v6/24px.svg",
+			"sha256": "323dada014a44d2062cbc0fb544696877de23e9dc8cd324bbcc01c7ac52c2391",
+			"size": 292,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/alert_triangle/v10/24px.svg",
+			"sha256": "5002cdf6baa551333f2635771768faa2489eb2ab2139995fe546a71b373b58d2",
+			"size": 359,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/audio_badge/v3/24px.svg",
+			"sha256": "a180322a68d30342ee3079ef73d48841c62b5cd2d871bd882db155125b39ca62",
+			"size": 536,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/audio/v14/12px.svg",
+			"sha256": "8a649e81c534dd0f000dcbc1466462f05c265e534f91207be6edec311286ada9",
+			"size": 247,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/audio/v14/24px.svg",
+			"sha256": "eeb2b0644c579cabd61a11ff220bc8731a943b0f101d6eb4ae655e802465913c",
+			"size": 251,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/bag/v7/24px.svg",
+			"sha256": "eb7d8be9e6119e1eb1ce3234dcf16b57b6bde8dc75cc47a8b6f6a889540c903c",
+			"size": 518,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/bell/v11/24px.svg",
+			"sha256": "f0a38c3fb4af5bdb93e6068feab244a4105515200377f7b19617049832f508ef",
+			"size": 331,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/check_circle/v10/24px.svg",
+			"sha256": "5c63ee93bf63ea0081179bb166af09d70acd3d84a082bb186e679ec7f0f1d76c",
+			"size": 302,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/clapperboard/v3/24px.svg",
+			"sha256": "3fbf1a9c663dbf47172e93cd54474ec0ccfeceabedf7a7bddcace48830d1636e",
+			"size": 320,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/clock/v10/24px.svg",
+			"sha256": "21ff167ee9a43669e296ad209a29073f737041e39d0ddb9b0d17aaee6e8aafa0",
+			"size": 281,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/fashion/v4/24px.svg",
+			"sha256": "52b35bed9f554c7d1e50dc214beec71871995b91c3eb232648aaed8a0103a3aa",
+			"size": 482,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/flag/v10/24px.svg",
+			"sha256": "988bdb7cce89da05d1289f9ebac6a48d9480213a3da9a7cb965e1bd810b1c62a",
+			"size": 361,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/gaming/v3/24px.svg",
+			"sha256": "2bb852c8cf005d07bb9ff3f6e44432794e31c2ccb155d79fc0cf4edcf29141ec",
+			"size": 501,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/gear/v10/24px.svg",
+			"sha256": "232ba1572fc422b3dddd683115b6eee5a2ba19bec006ac9e038b3d613a36a77b",
+			"size": 880,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/heart/v19/24px.svg",
+			"sha256": "be280805e6b7bc0131718b8288a16aef5869af2557190accdf1076e0ae654737",
+			"size": 385,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/home/v10/24px.svg",
+			"sha256": "3d7112aa8d76dbca49638be56994ba823adb110b654bab22243780376c98fca0",
+			"size": 274,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/lightbulb/v4/24px.svg",
+			"sha256": "8a785710d45cb6e45eba09e067180d3590f76859ea32f548271f96db498c8df8",
+			"size": 201,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/mic/v14/24px.svg",
+			"sha256": "b4e2971d306aeadf032fd97386fb1db546f80a987298a19522badcab5d176f70",
+			"size": 373,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/news/v3/24px.svg",
+			"sha256": "33852e8f0811522585454a27e05f6058cd8fd2aa1926175fe752c29c1a55f54d",
+			"size": 329,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/pause/v9/24px.svg",
+			"sha256": "9001f8dc7b935048c5b3e76562e82ad871cea4fdea2a86ff9128883d154f5db6",
+			"size": 310,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/person_waves/v1/24px.svg",
+			"sha256": "9479c62b20295ebe6bd8d1dc95cf93119f061b483b3a0081337c55d2e94c3353",
+			"size": 527,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/play_square_stack/v1/24px.svg",
+			"sha256": "1402096a374ebb7a3832296da7db4e432521025368ea5c004e81e1a64610d72f",
+			"size": 256,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/play/v4/24px.svg",
+			"sha256": "faca7f5c33f4a5eadb4c96801c868a0829dca78c8f1174bc6b21b75fca7b7801",
+			"size": 194,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/podcast/v6/24px.svg",
+			"sha256": "6913ff91f5a55984fdf83efcb8828d9e5fda792e7fbef98423609f096602ff25",
+			"size": 320,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/search/v15/24px.svg",
+			"sha256": "fd98566bc234e405111f9c704d685c86b2689fe2dd9a3969a22211da171dd476",
+			"size": 333,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/share/v12/24px.svg",
+			"sha256": "5e791a43ac210b4cbecc7ca5d96cfec2955e8fba6eabc571a3e4236339066534",
+			"size": 289,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/shorts/v3/24px.svg",
+			"sha256": "af17e8059904471c95a0ecf4465f6f7ae410610ebdef8c4968e72704f5b0ad19",
+			"size": 290,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/subscriptions/v12/24px.svg",
+			"sha256": "430c4ddd05a53fad0e4fde05d77b97dff1bb76aa08b4e70c03fd33416ec357b9",
+			"size": 243,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/text_bubble/v4/24px.svg",
+			"sha256": "57920ab1455cc7ba689dda711b78d2bc9c3ca1fdc9e8305558f2c5cbc7315a2b",
+			"size": 309,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/thumb_down/v25/24px.svg",
+			"sha256": "e8e9ea38adf47a4d65d2887ca72c40d14392d634310e326c6246fd6e2234d9cd",
+			"size": 593,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/thumb_up/v24/24px.svg",
+			"sha256": "c511f91da62bc91470d3c8cfbdd5e62bb166cc4dc0ea2022117ec3dd2eb13fd0",
+			"size": 594,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/trash_can/v10/24px.svg",
+			"sha256": "70eb564d0e5f6f49eecefd77e2fb7302a3009a4323279cd80ba3dab68d6eff9d",
+			"size": 317,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/trending/v2/24px.svg",
+			"sha256": "745c8b18448a9077748222f9e8b2ee772959921ca4c96076ce849dc95ba928a0",
+			"size": 314,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/trophy/v3/24px.svg",
+			"sha256": "e97366324e21b3f647cc503f49539c33fc7ad3b800977ec8d94312e89c5edc68",
+			"size": 462,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/video/v3/24px.svg",
+			"sha256": "ab30a307c0a3f36c9435741827cd7f7787a01686cdde1ee9d7a8c15015be3045",
+			"size": 209,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/volume_max/v2/24px.svg",
+			"sha256": "335d384abf16feed546c0d9ead5b045ad5bdd4d00dd32e136d82efb4e44705ef",
+			"size": 453,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/volume_mute/v2/24px.svg",
+			"sha256": "cc6cd6a9002b8341e7d655f3b0cca1fdca838268c9575598aad7c167cc2fdf48",
+			"size": 429,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_fill_experimental/youtube_shorts/v11/24px.svg",
+			"sha256": "e2a570823965e0a19930faed9a0c8213af0092327bfe7041f5a50d7e6312360f",
+			"size": 415,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/add_circle/v6/24px.svg",
+			"sha256": "703a93304c292c31ac5cf0c5a5461aa35cee2ffc87795fb1546b2ee74cabb1f7",
+			"size": 312,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/adjust/v10/24px.svg",
+			"sha256": "08adc0a23cb6f29f12eb90459bb0c87b09ebae7b8349a326ebd3fa862ca80bef",
+			"size": 381,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/alert_bubble/v2/24px.svg",
+			"sha256": "b4086c2b1c0284d8f623c22c440631a978dadd948a7423b9e906c074e6642920",
+			"size": 418,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/arrow_down/v3/24px.svg",
+			"sha256": "5a20360b97aed2ebe9f25cb952ce1200fb068d40f9c8e6f214b7d16187de411a",
+			"size": 249,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/arrow_up/v3/24px.svg",
+			"sha256": "220b372ad7360f6d5ba1f872e99affaf6eac3efef3785c0c29721a4090dae1da",
+			"size": 240,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/audio/v14/24px.svg",
+			"sha256": "079b9a20758316474520bac2616aaff5bd1219d93c0d135cf5c480fc21ba8af2",
+			"size": 329,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/bag/v7/24px.svg",
+			"sha256": "a4d314c64aec6039ccdcc5116653242b6c7f94b89d22e70c6b504fbde49df574",
+			"size": 559,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/bell/v11/24px.svg",
+			"sha256": "76cb23ec576f8d92532299d43c5565221e81f771723f3468ba31eaf24efcae21",
+			"size": 422,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/bookmark/v10/24px.svg",
+			"sha256": "5804ab6128dab5c3c7b8b9b2ff683da75ba52d4f52272df540d4474dba9aa075",
+			"size": 313,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/calendar/v4/24px.svg",
+			"sha256": "ca4115b2c1128d45b91cfd0f1e469b60155427fd711a503936e6904217ca124b",
+			"size": 305,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/check/v13/12px.svg",
+			"sha256": "bf219145f5cbddd705415502a2eba907d135b9843d3c449c278292691798b9c5",
+			"size": 230,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/chevron_down/v9/24px.svg",
+			"sha256": "9363e832aa6ce06f0383607ee12530faced61731d5ac0ad084bc5eb62eb708a4",
+			"size": 233,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/chevron_left/v9/24px.svg",
+			"sha256": "b7c25ce204a77c51dc712db96611f95ee30512fbb800a7243228438c47ffbf82",
+			"size": 218,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/chevron_right/v7/24px.svg",
+			"sha256": "21e90c5923a221071ca9560d3de5a84474c6d04990d305fbf689040c142de0bf",
+			"size": 233,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/chevron_up/v9/24px.svg",
+			"sha256": "4d064a372b9664d83ff84076872aebdd5eb7bd28cf949e432730e49fd4235c78",
+			"size": 230,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/clapperboard/v3/24px.svg",
+			"sha256": "87b9b064ad48871a41a878a3298bbb89a1882830f41835c908fdf3f3a8206fda",
+			"size": 488,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/clock/v10/24px.svg",
+			"sha256": "22b9ea84b042075177d189b591148a41d298045cac0380b245527d59d1a52e6c",
+			"size": 311,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/copy/v3/24px.svg",
+			"sha256": "a2871d6a4c31e9a07a357afe77eb16309b6311461faa6364ca3caaa81dd61e6c",
+			"size": 256,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/download/v11/24px.svg",
+			"sha256": "baa736e0eddf5979ea4ba453b9ddec4d1f5414e742230d5026e3c23c4a038c27",
+			"size": 284,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/eye_slash/v1/24px.svg",
+			"sha256": "025f2cd9b6169e091e030a3af33486f07d01b236f7292055897d9eeaa35a5e8f",
+			"size": 825,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/fashion/v4/24px.svg",
+			"sha256": "bf0a4536c5b4abc5437a5b507e879e801f9f218b5afe4797c0ed95ab396bd884",
+			"size": 464,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/flag/v10/24px.svg",
+			"sha256": "2e1b25885d6b16c57862cb30fd46451a062b531201cce2ca15e608937d7d453f",
+			"size": 508,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/gaming/v3/24px.svg",
+			"sha256": "4493a2f1d4255ab845fe2381ab6a89fb7a81e59ec8f0ce081983c9270be1454b",
+			"size": 548,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/gear/v10/24px.svg",
+			"sha256": "04c5ee6ea132cb1ce5200c17b75278373a73b4f51bd05c6ac4f605714bc9410d",
+			"size": 992,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/heart/v19/24px.svg",
+			"sha256": "11b9f8c5032fb3c78cdf96a63bf05401e8dfcecdd9dcd390aee7aa7867f4ae41",
+			"size": 729,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/help_circle/v2/24px.svg",
+			"sha256": "7de70213b4552e64b087638d9c8b5cb25f35707a27c51904555c7a933a22d0d1",
+			"size": 473,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/history/v1/24px.svg",
+			"sha256": "b333b633a4e909dcbdd8176472b1f76876e9465e27b7051f26032c1fb9301908",
+			"size": 366,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/home/v10/24px.svg",
+			"sha256": "c9db28cb2ae16b98d8ff701266e2a83fb47a5a7505eb31ae148a41e164c3260b",
+			"size": 360,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/info_circle/v11/24px.svg",
+			"sha256": "e612e908944ecda79271e4ee166ececa5a9eda01d12dd2ef8fcaede7d5fabef9",
+			"size": 339,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/lightbulb/v4/24px.svg",
+			"sha256": "c9f749f062c36f332c7e9414c1512e4649d4c1582a605b16c9704fd690b54c74",
+			"size": 291,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/link/v8/24px.svg",
+			"sha256": "6ef841f43e68b80020999087797137b15ffe070deaca9f074d83f07a95223e1a",
+			"size": 393,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/live/v3/24px.svg",
+			"sha256": "1e2d70aba68333fa035264885ca06aed08ea32b5e3c17585fb992645a0fefbb7",
+			"size": 671,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/location_pin/v2/24px.svg",
+			"sha256": "b60216590b7a2cedaedce708ac42fa4517af98d8d7711a28e6713a9d287b4297",
+			"size": 447,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/menu/v1/24px.svg",
+			"sha256": "c86fc58d53ed3d6f96a7fdec4facbafb465a8514e56704df71dfe72656bed2d1",
+			"size": 224,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/mic/v14/24px.svg",
+			"sha256": "a41529ad91b6032d9dc29c47d893670d653957ab2902045ef9a6e1ca9297569c",
+			"size": 421,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/news/v3/24px.svg",
+			"sha256": "9e165da543ea2b2ad3a92fb7165097f43675850bece5694ec3228c4351c1821c",
+			"size": 388,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/overflow_horizontal/v6/24px.svg",
+			"sha256": "4473353290ac826450183b90c7cc95d0db2638009568512bd7e2e199ea949000",
+			"size": 209,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/overflow_vertical/v13/24px.svg",
+			"sha256": "03c24538ddb081be8c40d283f8d192d48890714bade71540978cd916ea79dae1",
+			"size": 209,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/person_circle/v10/24px.svg",
+			"sha256": "d567e990cc4a19110608d2c55cf48c6c5ad971505023c61f280f3202833f8e1a",
+			"size": 414,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/person_square/v2/24px.svg",
+			"sha256": "48df7ce7d72f9fc0d107c0e6fbfa87e2423e3d014b31abfee3d1175a2a910220",
+			"size": 348,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/pin/v7/24px.svg",
+			"sha256": "8cf3ed98d73091df2fdf8e6251bb853bae5b08e1e78ec44f2d11c3e1f65939f5",
+			"size": 584,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/play_square_stack/v1/24px.svg",
+			"sha256": "7062f2196e4f314f2f675dcc536c01972147ff75faa1814f71432edc314b4f4e",
+			"size": 273,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/play/v4/24px.svg",
+			"sha256": "1ad5db215bedfebe59023ae48ece72c84befe866977b8866282882a93d795790",
+			"size": 260,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/playlist/v5/12px.svg",
+			"sha256": "655bfe49350c0f1418dfec07ee831e36725b6d1956ff461e69a06316b91b11f5",
+			"size": 295,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/playlist/v5/24px.svg",
+			"sha256": "c0988b45fbd59119b193a211a49cce49aa9a3e72c056a8cbfbda6fe4dd71f8e9",
+			"size": 295,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/podcast/v6/24px.svg",
+			"sha256": "ad9cd70d3e80bd6d0fc26125f910bff25e2f7cc33e266068e70e02e8cf193346",
+			"size": 365,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/remix/v2/24px.svg",
+			"sha256": "fa1ae0843c14923e2615b792fa0f804252eca98a90248863b12142729c507162",
+			"size": 457,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/search/v15/24px.svg",
+			"sha256": "2c94a302ba3aba0e8c94ec5f898b31aebed65fa08a2e55626c6f01430f877b02",
+			"size": 288,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/share/v12/24px.svg",
+			"sha256": "2e76660f8340e7744dec779e15c2badd679f7f39964a9541fa37ab843980c078",
+			"size": 591,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/shorts/v3/24px.svg",
+			"sha256": "05a0061b7985b3d4522e3a19f6e01107b87fbef566c1f4d008c3bf199897ead1",
+			"size": 482,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/sort/v3/24px.svg",
+			"sha256": "1cfc51d583ef3cae5cad5ad0d87f73a515405827850422658ec2c253a84dc696",
+			"size": 225,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/subscriptions/v12/24px.svg",
+			"sha256": "3c0be3a657b8c12a524972c8ef34bfba3cf45162cefa81fba9d5a92bf0bfa7ac",
+			"size": 261,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/text_bubble/v4/24px.svg",
+			"sha256": "e33c3883a00ae869b236f1f800815d12e89aea12e964265f61dbcce2b7216593",
+			"size": 405,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/thumb_down/v25/18px.svg",
+			"sha256": "7085432a6a47713a73b985286b68e2c84d2474d5c742f5a034515483fffa2974",
+			"size": 926,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/thumb_down/v25/24px.svg",
+			"sha256": "dd3f58c1f47f6c4d4d6143ff2fde62251cc55be27d613cdb67aa999c183752a9",
+			"size": 982,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/thumb_up/v24/18px.svg",
+			"sha256": "142b9f02a03ab8e2a1f97149182914a5bb7f6446b11bd7f2c27cf330ca7b1231",
+			"size": 904,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/thumb_up/v24/24px.svg",
+			"sha256": "1712a2b4977a5c90577318e39c10a7683596b186aad50af949bc9efc0c5c74ed",
+			"size": 910,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/trash_can/v10/24px.svg",
+			"sha256": "6ed4b8f453014af82161d9d801a3adec704315b9487a1ff665146de9f945974a",
+			"size": 364,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/trending/v2/24px.svg",
+			"sha256": "05941d6e32865149253b09244c9c8dd5499a1cb7c15e3849c6de2f0a6c538dff",
+			"size": 385,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/trophy/v3/24px.svg",
+			"sha256": "53efa448743a784d2c97c872ff1114ac4d26db2559f3b9508920aed6cb0b56c0",
+			"size": 529,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/video_camera_add/v2/24px.svg",
+			"sha256": "5e9d3bc5a81b532004b8c3707ab38d6c549c45b46694c4bbf0fa45ccf26549a9",
+			"size": 456,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/video/v3/24px.svg",
+			"sha256": "f22a0043d69e7d159a1842921d08e4dc62e87b67713ae2809d1dc32e9a0bd50d",
+			"size": 223,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/volume_max/v2/24px.svg",
+			"sha256": "8f6338ecef520ff0cbab307840817459b369795ece7edc40633eab92a76b21aa",
+			"size": 548,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/volume_mute/v2/24px.svg",
+			"sha256": "1a76b0b843dc07614bb95bfc6e663ca86899cee909c501ec5742c68aea18dd23",
+			"size": 511,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/x/v11/24px.svg",
+			"sha256": "9ebd4fb84d38392230ad85aadb06ff9a824e8f432372c0dfe1cab6dd798c2586",
+			"size": 306,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/i/youtube_outline_experimental/youtube_shorts/v11/24px.svg",
+			"sha256": "15308d594c7b489c6ac3f05c0cb895eef01dc2f0589ff08b3332c9500cdf7152",
+			"size": 709,
+			"kind": "observed"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/pressstart2p/v16/e3t4euO8T-267oIAQAu6jDQyK3nbivN04w.woff2",
+			"sha256": "3c7df3a15e173b8fa04ec9191171e72c314ddbac1b395e2b2e2092bb4f47cc8c",
+			"size": 9856,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/pressstart2p/v16/e3t4euO8T-267oIAQAu6jDQyK3nRivN04w.woff2",
+			"sha256": "c2a20dcb95ec8f4d1e8db6bd01dfedb669913f5e691e7baa3981b2d88a3b9ae3",
+			"size": 6864,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/pressstart2p/v16/e3t4euO8T-267oIAQAu6jDQyK3nVivM.woff2",
+			"sha256": "afec86997fdaf54af1f59358fa2c1e2a0f1d04146edad18e5cd141d0384a7548",
+			"size": 12512,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/pressstart2p/v16/e3t4euO8T-267oIAQAu6jDQyK3nWivN04w.woff2",
+			"sha256": "fb54a8f8c24cd5c532c5d52ece3d82b9a08ed83bad076446b938f8f50353753f",
+			"size": 6592,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/pressstart2p/v16/e3t4euO8T-267oIAQAu6jDQyK3nYivN04w.woff2",
+			"sha256": "954380ff6f96dcb0cde857bb1cb906401908729cfbdd98140174bb1965f025c7",
+			"size": 6704,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO5CnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmkaHkaWzU.woff2",
+			"sha256": "3c9dec1a3e93c3effb3ec8805a71890dc81d0a0c3e64fd95f4d138d8e300aeff",
+			"size": 22440,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO5CnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmkAnkaWzU.woff2",
+			"sha256": "f2ab3c15c750e03fb1bc8887786a9ef826d134c461f830877366399295861e55",
+			"size": 25464,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO5CnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmkBnka.woff2",
+			"sha256": "14f23757c6b41b4b6c0b967ca3fa74ff47a868728158373461c4e6e4b6368f19",
+			"size": 47208,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO5CnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmkBXkaWzU.woff2",
+			"sha256": "abf79b1a281be8135c1bde7bf807267b1507adbdbe3023d5f5a8781ab6655371",
+			"size": 18780,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO5CnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmkC3kaWzU.woff2",
+			"sha256": "d8d0c88eea1036dc3e7322cd0a1a3eb6fc1dd86da24c7de690e70aac1bd62f05",
+			"size": 40480,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO5CnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmkCHkaWzU.woff2",
+			"sha256": "7f21d061a9de1ea78a858938ff3b8e677869656b10bad470fc6039f8f3daf329",
+			"size": 31820,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO5CnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmkCnkaWzU.woff2",
+			"sha256": "75697119399fa9c3be54924e02b42ba6dc2a430b2984479cb5d8f291f09a44f3",
+			"size": 4452,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO5CnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmkCXkaWzU.woff2",
+			"sha256": "3e6b22d2171656f2f886c209e04c70555a6bdb4903c011811726830492cd6ba9",
+			"size": 15344,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO5CnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmkenkaWzU.woff2",
+			"sha256": "1c6486a3a539bc8cfb0d9586787438282dfbe21b745fee24b12b376991286215",
+			"size": 45184,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3-UBGEe.woff2",
+			"sha256": "97fbf7bd0b4579e632392a4f483acdae73cbf59ad90c1e5d2c5ec4044c377fce",
+			"size": 17624,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3CUBGEe.woff2",
+			"sha256": "ec7769b089813996276482bbe7017adfffdd6c7543fd1f76244e2ffc1138ed86",
+			"size": 4348,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3GUBGEe.woff2",
+			"sha256": "01f94d674db55952c35898fa4da22c3e7065c3cc4dbbcc9cb7beb8b6b017fbc9",
+			"size": 36652,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3iUBGEe.woff2",
+			"sha256": "481dd0c01e6bbb129fd147eb5d8571016193cba141c4627ca60ceabdb5a46ea8",
+			"size": 23664,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3KUBGEe.woff2",
+			"sha256": "cedb374b05a35034cf96db185db4eeb8f8ce49e1a56197673702ff11b5533d6e",
+			"size": 29392,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3OUBGEe.woff2",
+			"sha256": "0b60bbe04e9c479444b31270a72179f53e400beee57b7dd176c08e5e2e716831",
+			"size": 14340,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2",
+			"sha256": "1404ca348bd75ef836f4dd8b6f2cc719458642d1237c368296b2fc652dca47dc",
+			"size": 43136,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMawCUBGEe.woff2",
+			"sha256": "7cb4281a0ccc84cc18617842c639fc66541cbef94a9dd245c754700210b4fcec",
+			"size": 41348,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMaxKUBGEe.woff2",
+			"sha256": "2addf2d86d7a5778653b36d551e97a39da52855f82fac7461cfc1bd86d460aed",
+			"size": 20556,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhEq3-OXg.woff2",
+			"sha256": "a4f562a288609dcb8f13e2b52296f1f3360957f09060735d4f00b5886e5bc7e0",
+			"size": 10308,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhFq3-OXg.woff2",
+			"sha256": "4cc0d52e0fa37c28084e0cbce3589a8ab32dd21e6ea619489c5f7c6e8c43b922",
+			"size": 22916,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhGq3-OXg.woff2",
+			"sha256": "6d72c2150c28b5305e7bfd0290edcf6038e556a9dd11a6ef15a1652548a35693",
+			"size": 35912,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhIq3-OXg.woff2",
+			"sha256": "308f763acd5f648b0556c1f79b848102f494d0450072cfd2fd8064ddf287f4f8",
+			"size": 14044,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhLq38.woff2",
+			"sha256": "b81cd55177300649be8f95b3b747d721ce607e8ed2856e25bd0c630cfd631faf",
+			"size": 32796,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhPq3-OXg.woff2",
+			"sha256": "4052cc0b0f8b1b39da6cfaf90460f8b3c84dfc4b7562e9308ffa0998c3b9a005",
+			"size": 18592,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/robotomono/v31/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_3vq_QOW4Ep0.woff2",
+			"sha256": "e3e9abf60b61dbf89160e8ad6cbc60ba0116a6d7297f5173c787aaeb6a6772dc",
+			"size": 7456,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/robotomono/v31/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_3vq_R-W4Ep0.woff2",
+			"sha256": "4b1c9b0ba29c3f32c0a04915792aeab9d614d147d8c695d955dc069c285b329e",
+			"size": 5940,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/robotomono/v31/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_3vq_ROW4.woff2",
+			"sha256": "e03013e0baa5690a803c188da2214d920c3245b25ad78421ecc8ae86cd842ae9",
+			"size": 12680,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/robotomono/v31/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_3vq_S-W4Ep0.woff2",
+			"sha256": "90237ead9085efcdb757ba498a2d46460e009c2907c83291ec56f59813976593",
+			"size": 4636,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/robotomono/v31/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_3vq_SeW4Ep0.woff2",
+			"sha256": "de9d9d69c7140eb0ba951986b1181ff1725c14c79a9deffc13cc645cfd312a3e",
+			"size": 13732,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/robotomono/v31/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_3vq_SuW4Ep0.woff2",
+			"sha256": "3d1e72bf2f7f579e5680e87a492bf14f156c01d09da741d5bb657f2841787157",
+			"size": 9592,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2isfFJU.woff2",
+			"sha256": "8ddbebcc1048154132e1d78eb9b1f7850bca1b7d857035ccf1cb4318ebc615b6",
+			"size": 17936,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2isQFJXGdg.woff2",
+			"sha256": "84b335a53b55c33f919f11b5cf83d857f053097171461eaba10d44be1c623609",
+			"size": 7932,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2isRFJXGdg.woff2",
+			"sha256": "4435f062ebe744d097d0d618ac5ad6b8ea25ee3bd6004c5369c24518e70af1f0",
+			"size": 16372,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubemarqueebeta/v4/Y4GhYbZrVTASt-zIZqrNvxdaLTAjgv2NJyQLaXG4YQVwleibBFlDMypU.woff2",
+			"sha256": "20eb2616646436049b682cd90c87d05a7c0b5cb0cdffe23c57e8591aa43ac3b8",
+			"size": 197520,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubemarqueebeta/v4/Y4GhYbZrVTASt-zIZqrNvxdaLTAjgv2NJyQLaXG4YQVwleibBFlDPCpUrcg.woff2",
+			"sha256": "389ffaaeb6f1cd92ce9ce9047bca1c7a1de15fa04c7ad8e47c6aebe74faa188f",
+			"size": 39292,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubemarqueebeta/v4/Y4GhYbZrVTASt-zIZqrNvxdaLTAjgv2NJyQLaXG4YQVwleibBFlDPSpUrcg.woff2",
+			"sha256": "63c121975bbf64e8f7fc12e777d8121fa152d06ad6447e0bec3df4362b9f6ddd",
+			"size": 154120,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.10.woff2",
+			"sha256": "68bb2276c65d417737ea5ac168bc4b8116500d450a334bd4bc5917caa782f6a4",
+			"size": 24176,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.100.woff2",
+			"sha256": "44d5786708ff85437269a3b709c9259eb4e7fbd56289a7ed7b1a0b2d52e5ce00",
+			"size": 12316,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.101.woff2",
+			"sha256": "8444a4cf3ed64bbf0993acc6241e896e174024c1c9ea32179b2a8fabd09cdba8",
+			"size": 11172,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.102.woff2",
+			"sha256": "f27be04a3fca35864049dc107e673ae5c132220aa7c2051a286595be724f002b",
+			"size": 13056,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.103.woff2",
+			"sha256": "876f20782f56aac72c2293280d8779753a01ca174eaeb36702772797b925aeb8",
+			"size": 13228,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.104.woff2",
+			"sha256": "de4877e1b22c55283272dbdd4c6cd33ef7bc7270f65230699cdae022cc45e99c",
+			"size": 13840,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.105.woff2",
+			"sha256": "a52c84876ea63aa59e4b3df16601067a54faf5b7d0146d18032e5666819cc184",
+			"size": 15876,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.106.woff2",
+			"sha256": "481975ee5b507218062a089309a76ac4cfcc8f232fb2dc2a6d4cdb3abb4b4924",
+			"size": 17572,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.107.woff2",
+			"sha256": "37c94b917078c6f230c373b89ea4efc9195faeed28aca7f222e64de2af936010",
+			"size": 18956,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.108.woff2",
+			"sha256": "083010db7e24d7afba657df561e7625632237a9c37f02a80a0c147c2cd1dc0de",
+			"size": 20476,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.109.woff2",
+			"sha256": "e7e7340109017b5fc32a7a13df2d1753beddd449fb7ab1e18f6ff1fec9055cc6",
+			"size": 20932,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.11.woff2",
+			"sha256": "7c49ede556d9a642828fd9d52ed13e08e87b5a44de9f9bf200478235c1f7bd35",
+			"size": 20392,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.110.woff2",
+			"sha256": "3d10b8d9a29578b10c89163f6aafa9601a4efa84f25def375aaad78229bd4f38",
+			"size": 21568,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.111.woff2",
+			"sha256": "f671c7cb04f4e2fd7373b56626f5ebc7857b34d3261eb082f7f2620be955c836",
+			"size": 20412,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.112.woff2",
+			"sha256": "867e3ea943d49a63052721cb19d8884f13464d5d92825258112d8f96e70281ab",
+			"size": 19496,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.113.woff2",
+			"sha256": "a2f7076722814eb0aecc6bce141fd398623347f4226ad2f9976380b846f69292",
+			"size": 20664,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.114.woff2",
+			"sha256": "cca710327e3c8fbe990bbd305d6ec3387830cdc98fe81de82104afd592f36586",
+			"size": 20764,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.115.woff2",
+			"sha256": "2605ffe08f7442f3648466e66c5e0c06be73d34207487e29c5fcaef8901908fd",
+			"size": 20180,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.116.woff2",
+			"sha256": "d55260059fe02153e208ca1c3f9b11dacbf6819dd0cab47996b7acd1130bccfe",
+			"size": 20076,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.117.woff2",
+			"sha256": "f0dff26b407ec38c1fea77695772798efb2c42ea1c98871a1606726039bef378",
+			"size": 18136,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.118.woff2",
+			"sha256": "6c92bfa467f5b8503ad93a0e5dcb17d96c26ea71b43988e5572cd402e64231bc",
+			"size": 17280,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.119.woff2",
+			"sha256": "194c54ca1f05da580405f80a506f42a136417eb374b9b910ce734759110c15ca",
+			"size": 20340,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.12.woff2",
+			"sha256": "b8c1dfb8040b3aeae1a1d3a5689bafb2beb0c8328fdf5c740072fdb59719ed95",
+			"size": 26968,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.13.woff2",
+			"sha256": "0cace26a09ab5a670335496ba71fd50788d1f01c689021d8641b92862cdca471",
+			"size": 27688,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.14.woff2",
+			"sha256": "053d3253d4d42ef44c9f9bb62080cfb95f54270f7480acc1fd4163819ea32410",
+			"size": 24932,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.15.woff2",
+			"sha256": "b744bee91f3ba3bce1ebcb51dcc85d7d09aefb49d3818f96812233da373dbc86",
+			"size": 22592,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.16.woff2",
+			"sha256": "e1ac5aa34b54fd7d7af4ec4bb0a867f8ad7dc58b2bb2c0f04e0508fada70f724",
+			"size": 24420,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.17.woff2",
+			"sha256": "140b0569b8e02738f63b10d8ba8efdd923f47d4a43770b0b64b77cf59f29c602",
+			"size": 26352,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.18.woff2",
+			"sha256": "5c84bc0b257fbed9d1608954f2239bf96f1ec6c3f376049f5053397a53ab25a6",
+			"size": 19472,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.19.woff2",
+			"sha256": "9e8319a39be58537f131df81311761157cf4a4b342aa056fd51c6a97945289f0",
+			"size": 31012,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.2.woff2",
+			"sha256": "96ac2f39312cf9aa495010bda906736df917e885619d8764facb442d0d4a8070",
+			"size": 22112,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.20.woff2",
+			"sha256": "01d47e46e5582721ac90f4691414e730c92312111c58e646568b1b48f6072005",
+			"size": 30820,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.21.woff2",
+			"sha256": "c645f13a365c2176de11e553a3d13fd1ff85eba91a10288f36bbdf18ca35a9e0",
+			"size": 25640,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.22.woff2",
+			"sha256": "e46b6edf9bb5767412cc7791180cfe7998b4724973514e1ae0246e8123a416e0",
+			"size": 24352,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.23.woff2",
+			"sha256": "fc1a4b9d8eb2c2cfbf37fcb4f40dd1167d71917dcfa98f13ffaf498dd95937f1",
+			"size": 24980,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.24.woff2",
+			"sha256": "61c548adc307904a279024ba035d6f709ed025487a33128c340d04a874052021",
+			"size": 27300,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.25.woff2",
+			"sha256": "3e79c3a0881c1c17ff260c50e5f836a04385d6650f6b22d60f9b4406e6b9bcc7",
+			"size": 18940,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.26.woff2",
+			"sha256": "fe4fd2b85d461b36228dcb2a06f89bad1777ceffb8b58ac3f5450e532d70ace3",
+			"size": 26864,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.27.woff2",
+			"sha256": "146ea9fd67c649a1f2d33b2ee1a10779bbd80acfbc1c5ce9388ccfadd010bd2f",
+			"size": 26484,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.28.woff2",
+			"sha256": "63695c4ddffae86baa80842e9daaa751505c772de13e25d548ab0454608438ff",
+			"size": 21324,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.29.woff2",
+			"sha256": "6aaf3451f5dd59cacba4596b6b69378dd0d3e65b7127958aef56f15b4120979f",
+			"size": 27572,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.3.woff2",
+			"sha256": "17b0dbe56419a8f895abc9a938cecc5ad27ae0e6b6dfc9829cbb69a9449ba7d9",
+			"size": 29488,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.30.woff2",
+			"sha256": "0427f174b7d8f084690b6c5c6a9393258d5ceaad813a99183045f0c588bbc92d",
+			"size": 25124,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.31.woff2",
+			"sha256": "3a3df0e5d3abcd7357badd16df2ee190bdb03b252b5ae91211d9bd471490d2c0",
+			"size": 19724,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.32.woff2",
+			"sha256": "6e10ebe6dd740100aa4d5d4cdf6aa22cb8eb57d9719620e46215bfa3785dcd73",
+			"size": 28580,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.33.woff2",
+			"sha256": "615ef19c0aaa7a083d9cd7aee5da6ca5fabaddba3de84ebe048bed7534b62032",
+			"size": 28260,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.34.woff2",
+			"sha256": "acd067baa540fa3f507ec2484835522ff4489b20988cc1d4eeeb26b849f626f1",
+			"size": 22508,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.35.woff2",
+			"sha256": "51bc3dc285bf77384a3d08b159efb7b9233237cda5290cdb9a719981bd9647ca",
+			"size": 24228,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.36.woff2",
+			"sha256": "1aa31cea4456af6cdae126eb88f0c5d93cc080212877041cc60c0fffbd27d49d",
+			"size": 25304,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.37.woff2",
+			"sha256": "71a7e84804084b558a2382cb42c7cb75dbaabc49a1f8cc0b26806854bc2245b6",
+			"size": 25368,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.38.woff2",
+			"sha256": "8a0d985012b3339681095fb3e8d91b06e63304d38728ab2f05aab6fc5b30eb29",
+			"size": 16028,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.39.woff2",
+			"sha256": "fa6d885d12576fe65f2b29fec675db28b63cc0e21126e8e2a6de790e6b5b33f7",
+			"size": 27296,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.4.woff2",
+			"sha256": "c04bf30ffd4afb74f6108571d3902506c22ad1b1117baddcf22b6dda1372e760",
+			"size": 26292,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.40.woff2",
+			"sha256": "a32b4fa242c5e861a75483c8a7ab6032c67efdbb320b08c07d9ca53e0e1db529",
+			"size": 24808,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.41.woff2",
+			"sha256": "3cf5a89297fbc55087ae90b7d6ee5278922406244b54550c5ff03d6ba7e79f0d",
+			"size": 17872,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.42.woff2",
+			"sha256": "27f7589c83a0380acbb18402ee9385832b194b1d3caf10e0fa0d198fe02885fd",
+			"size": 25884,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.43.woff2",
+			"sha256": "a1eeed12ecbe9304dad865a23086add600804a92dff78e78049e686807ddfb6e",
+			"size": 26596,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.44.woff2",
+			"sha256": "e7a79148c10e38f111a4a9c3e6f333d5ae67f3f28f10606d1df4771a903caca6",
+			"size": 21688,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.45.woff2",
+			"sha256": "f69d1ae935910c1ce5aa7a7515b8d4df8d70bd8ea22a073d50ce4b4c91de11b9",
+			"size": 23168,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.46.woff2",
+			"sha256": "9b5e1e4827f2b9079042b22aa88a573a34ebbddc500f3b2451ec5d045c2e8d92",
+			"size": 24564,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.47.woff2",
+			"sha256": "f69d213a67e905fa46062134e2ddc9834de62fa0b9103472fb860d753ce6a6d5",
+			"size": 25852,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.48.woff2",
+			"sha256": "ec987632140e4343a414b3d0e056f21253491bb83c82b4f9c96d8c23086ded1d",
+			"size": 21504,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.49.woff2",
+			"sha256": "03930e5be1e2da1172712bd823c5e1089d7993003de691313327379eb06bc595",
+			"size": 25836,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.5.woff2",
+			"sha256": "5a64f0f20607970955c87c0a79e3e929c2d0f626b4d962f527fd1873a4a15020",
+			"size": 25376,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.50.woff2",
+			"sha256": "98d25a9cb3e8739450c46a8cdc2e139a9ae05f91cfeacab3f6a1ad102d4ba587",
+			"size": 23940,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.51.woff2",
+			"sha256": "dfeedeb948e0f6d1e9786ae3074dfdf398d97ddb1dcb94ab64dbcb004880938f",
+			"size": 18564,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.52.woff2",
+			"sha256": "4b65d862221273b7b41a04c637c5f824704c7a049984bb380f08878c661ec16d",
+			"size": 26092,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.53.woff2",
+			"sha256": "cda36966f345341bfbd52166f3c5b34a7165c4ae9c2997c338350cce183b3a68",
+			"size": 26500,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.54.woff2",
+			"sha256": "64895fdf764a1763fc67ef46e1e6567ad06fd47867856c6ce21bd48b722b31eb",
+			"size": 22692,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.55.woff2",
+			"sha256": "d2ddfb6d96ad9e48d2faba9a266ca61d9e8cb8fe5aa3e2c5192a6830a136616e",
+			"size": 23280,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.56.woff2",
+			"sha256": "68e4ffe4d6e60f5a6fd8ff1a772a02b74649c5c2f587ebb353d2bef960abd7db",
+			"size": 24812,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.57.woff2",
+			"sha256": "2e4096450a3f1efe53fff7f1e98c42945398023e260e8a30ce091ca4b9ba2a6f",
+			"size": 24760,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.58.woff2",
+			"sha256": "1e0b6f1f852013c1c629c36405482aade06f7b9955fd210647a3f52494e65a41",
+			"size": 21060,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.59.woff2",
+			"sha256": "d9f8d28fc2f1db883ae3c8a345a1786634b805b76a61ffc360088dec44baf31e",
+			"size": 25060,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.6.woff2",
+			"sha256": "85d2e8c11474022f5e04ac44ec41240c51da4c6f8d76450eae99c70718d891fd",
+			"size": 25348,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.60.woff2",
+			"sha256": "bdb1fda75241bbb9dd7b762217da62d2d3419919cb834014e2dcad5c1631c0cf",
+			"size": 26428,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.61.woff2",
+			"sha256": "ef4636243c40fb9971cdb4d2dd1f8f39ef9a0e8ed2a4912bd97b495a77eccdfb",
+			"size": 17716,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.62.woff2",
+			"sha256": "9d076ade4788165da5e79e426423fa1837a27ebf651d008a4f3784aed41f7b3c",
+			"size": 27784,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.63.woff2",
+			"sha256": "a378b8881311680f03e0e536e5c362dd913a95f3c28855a7f968018f30738246",
+			"size": 24668,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.64.woff2",
+			"sha256": "7320f00edd1ff751f59c2824081ed0ab67777777c37c1d62c260ed44e19d0a82",
+			"size": 17244,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.65.woff2",
+			"sha256": "67d614dae5ea010adbd024d5065221eb7c337593d7dcd4751381439e6ed71fe5",
+			"size": 5572,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.7.woff2",
+			"sha256": "499479387eb46ba95256820cfd879152170eefb24d3ee128b2fa717e13c0fcc0",
+			"size": 27960,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.8.woff2",
+			"sha256": "2c4f8a38913b62e82e44bcae738947ce47345f5612a8aa8e50f7f2adb0c5f108",
+			"size": 19544,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.9.woff2",
+			"sha256": "622743c8f841c7612fce3ac35b7e76029a7169728bb5c93ac2791dc8f6703108",
+			"size": 27140,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.94.woff2",
+			"sha256": "380c041a99d3cae5561b24aee4deebd24d883e80f470ae0b91c5983931d00bef",
+			"size": 4728,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.95.woff2",
+			"sha256": "08045550fffb60f1de7123b7c65b195326922839312d0c8e6aac0f5497f410ee",
+			"size": 1736,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.96.woff2",
+			"sha256": "163ce425adb071912c5f96816efc976e70e507e6b6bf8ee23b9d4a7dbf93782b",
+			"size": 2108,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.98.woff2",
+			"sha256": "da64926b0e181b5cbf5975bb52fdc72a665d50060275e3eae5a303c463925562",
+			"size": 4104,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HN_Rj-bIBTKe_JIhoUrEZNLnzQoo4nc.99.woff2",
+			"sha256": "1722781546c7d02d97487c57cdb9ec3c58d708105e52a8390091e8457c11787a",
+			"size": 15232,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HO_c7fH6Cg.woff2",
+			"sha256": "12d83d695d6ab90cfe86fe2809b2d92444c1e38bbc17d98b40b4f7d23797661d",
+			"size": 10096,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HO_d7fH6Cg.woff2",
+			"sha256": "0db505b0f88a0698d9aacfee630b0f01fb0e8779604d69f395f15792f8823bb2",
+			"size": 25464,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HO_e7fH6Cg.woff2",
+			"sha256": "d567e2f7730bb19b2d610b54fd85d4f1f0cf87e064009eb4e0356e416287bc99",
+			"size": 14504,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HO_F7fH6Cg.woff2",
+			"sha256": "3c228f8a103e4a44f719e005b9987ae7f7dab9abe52d369c5681c5249b4f0528",
+			"size": 35592,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HO_H7fH6Cg.woff2",
+			"sha256": "b7724ff34f39324f4f2fd8f70470c03f8dfd59f399332b29fc63735eefa053b5",
+			"size": 21468,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HO_R7fH6Cg.woff2",
+			"sha256": "0eb6d513372deb6857a4bcaa32fc41b9dacafa96cdf39c918df3ee096f01cd2f",
+			"size": 9248,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HO_S7fH6Cg.woff2",
+			"sha256": "1d2598d5ba56be80befcfcf47fbfaba1008cf8d7179ffafba2b960f3763e1fbb",
+			"size": 120512,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HO_T7fE.woff2",
+			"sha256": "9cc1a70e9272a9bbecfbd23237be267dacb4044ffe12b0bf4372b8b6a9104994",
+			"size": 32128,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HO_W7fH6Cg.woff2",
+			"sha256": "6dbb69c92442adda488abfac481792bf43fd5eab22d8636564b6676f5706ec43",
+			"size": 90448,
+			"kind": "font"
+		},
+		{
+			"url": "https://fonts.gstatic.com/s/youtubesans/v32/Qw38ZQNGEDjaO2m6tqIqX5E-AVS5_rSejo46_PCTRspJ0OosolrBEJL3HO_X7fH6Cg.woff2",
+			"sha256": "23a2b45e073b27fdbdda378772347dab7a3236f7b1deddb5c4ffbdf6e16616b3",
+			"size": 20816,
+			"kind": "font"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/emojis/emojis-png-7.json",
+			"sha256": "1239ea485227e73d1196d3dd60c077169735f3aa64802ea1cf3ab2279d490195",
+			"size": 896591,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/icons/web/youtube_fill/creator_studio_red_logo/v2/24px.svg",
+			"sha256": "507726e40da955fc0c77af83c86545b9ff4611263f88290574655d169dd248de",
+			"size": 1158,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/icons/web/youtube_fill/offline_no_content/v1/192px.svg",
+			"sha256": "50f120f926c1520ec05a1c63cab4b2c00fd7b1e8f94a3eca839d7973a144f88b",
+			"size": 11824,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/icons/web/youtube_fill/unplugged_logo/v2/24px.svg",
+			"sha256": "053486cdff1e7f8b5e9adb8d82b26d65ced2a283af5d2a87c9540f04e50fabcc",
+			"size": 554,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/icons/web/youtube_fill/youtube_kids_round/v2/24px.svg",
+			"sha256": "fc5e7333aa61d971e1b565c879790bfe4f96bbbc9ab579b4a9db28d4f79c99a9",
+			"size": 2824,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/icons/web/youtube_fill/youtube_music/v2/24px.svg",
+			"sha256": "119d60cded791e36f9afcd27c04297a746932b6a5f355aab062db4bb11137619",
+			"size": 595,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/icons/web/youtube_fill/youtube_round/v2/24px.svg",
+			"sha256": "dcc07ca87f904ca3adbbf2672e15f2a089c539ba01e8d9a55c6dc96db52901cc",
+			"size": 610,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/icons/web/youtube_fill/youtube_shorts_brand_24/v2/24px.svg",
+			"sha256": "6ffc37ee173ba33123cc36ba3d70cf5320a204ab365867449a98a79818b557a3",
+			"size": 447,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/icons/web/youtube_fill/yt-logo-updated/v3/24px.svg",
+			"sha256": "56c86ce886ab93b159bd6100a2ce66d88470fd590fa4d7cf0f5dbdaf0ddb2e7e",
+			"size": 3313,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/icons/web/youtube_outline/refresh/v1/24px.svg",
+			"sha256": "b60f66156bc26031d7f02cc7caaa6d7277d56f1821ed55280f67446aa3643640",
+			"size": 324,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/icons/web/youtube_outline/spark/v1/24px.svg",
+			"sha256": "05eacb0000c0c47727ab801c3e43a6f7da411c860e188155e31e8320f9e57bbe",
+			"size": 295,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/icons/web/youtube_outline/waveform/v1/24px.svg",
+			"sha256": "952ac1a0ae07753f75fa27bbe483e71c43b29df5c160aae33bb447c0e5b5e751",
+			"size": 511,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/lottie/subscribe_action/subscribe_action_container_light_v5.json",
+			"sha256": "219b702137e350ce46552a2587452e4a148fafaab2342dda4a8fe1b2e9645c5a",
+			"size": 3612,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/lottie/subscribe_action/subscribe_action_sparkles_light_v4.json",
+			"sha256": "73503451f6417c6f5a40cb02eb3cba190c3911858aad047047345a5febb01244",
+			"size": 23163,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.rPz13CJWUHw.es5.O/am=AAAACAAACEBK/d=1/br=1/rs=AGKMywFj9KhE3PJy-5jfFs48fKDO_1KlBw/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk",
+			"sha256": "845b62f90cd63686f9272c01366ab35b1064d6b3b60d315d71a6f98d8dd30503",
+			"size": 10815236,
+			"kind": "app"
+		},
+		{
+			"url": "https://www.youtube.com/s/_/ytmainappweb/_/ss/k=ytmainappweb.kevlar_base.H_lDA2WhgfA.L.B1.O/am=AAAACABgCGBP/d=0/br=1/rs=AGKMywFhvc7MuoxZRVNS_RljZHe4wIYNog",
+			"sha256": "6332ffdd5bfe7b986f8de269eac1519730a3750111da7391c539169f5280511e",
+			"size": 3178776,
+			"kind": "app"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/canvas_advanced_wasm/canvas_advanced_cc.wasm",
+			"sha256": "3564a92a2f931937dd953efbc23f8ccce77a3d0a8cf70442b36a48e9d2d39851",
+			"size": 3034654,
+			"kind": "desktop"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/canvas_lite_wasm/canvas_lite_cc.wasm",
+			"sha256": "fa2d004afdba05dc414aad950922a7fb82d22afc77f8a1b47f5fd730f3f8fe67",
+			"size": 3034661,
+			"kind": "desktop"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/cssbin/www-main-desktop-home-page-skeleton.css",
+			"sha256": "285f7b1db73792a550f5de1aa40048ac1a1fd74e1f961dbec0630134c51f2f2f",
+			"size": 3922,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/cssbin/www-main-desktop-player-skeleton.css",
+			"sha256": "eda5dc20ecd1a942651c52d664d483f9d0373fc63ba410658fe3628303776de3",
+			"size": 2738,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/cssbin/www-main-desktop-watch-page-skeleton.css",
+			"sha256": "81889b3c60c1b7d8a665afc1f9ab0f1f6c08febc8bdcdecaaafd05180037e3a3",
+			"size": 8539,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/cssbin/www-onepick.css",
+			"sha256": "3dacee68a2b41011c915d9fd2986a448f015e79275150135caf69c338145d080",
+			"size": 828,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/img/favicon_144x144.png",
+			"sha256": "e39dc3d8c2f82ad2375132a8efcf521c232d5e2cf08abeb9bebe1ad94afb2157",
+			"size": 5020,
+			"kind": "desktop"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/img/favicon_32x32.png",
+			"sha256": "502b2fa1f09e4b9e4cab7b1e3d1bf8c921b2508c64e131481c221499158f9097",
+			"size": 3214,
+			"kind": "desktop"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/img/favicon_48x48.png",
+			"sha256": "17c65ef4758c47e22cb950ecd41cea506250b8b14f2424b091f9e07c4778a7fa",
+			"size": 3490,
+			"kind": "desktop"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/img/favicon_96x96.png",
+			"sha256": "0b7cb6a8dab37a640f7e3c52d1ce4840886ef43a3047d9b0936e3b6f86e2effd",
+			"size": 4249,
+			"kind": "desktop"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/img/favicon.ico",
+			"sha256": "8f713bc9f87f7260c7ed2b40210c6ece088276a3ed0cf6c5181f26df3fb3cc81",
+			"size": 13942,
+			"kind": "desktop"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/jsbin/custom-elements-es5-adapter.vflset/custom-elements-es5-adapter.js",
+			"sha256": "b93dda0cb58853308c36ae14c0fcec1af29e117b847ecfca7121b5159ef66d00",
+			"size": 2047,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/jsbin/intersection-observer.min.vflset/intersection-observer.min.js",
+			"sha256": "028e3ef4c97c6a1cef02cbb4c688a15bf5b730e96932d19d8ec682e865d27abb",
+			"size": 5559,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/jsbin/lottie-light.vflset/lottie-light.js",
+			"sha256": "d378ddeb8be3cd783dd28de8fda62b8145a686a0875215598b2d12bc0dd51ae4",
+			"size": 210087,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/jsbin/network.vflset/network.js",
+			"sha256": "ea57553d39978e3271c92c5db4763409ba6e2aa5bef7e87c831bdf33c9ee16de",
+			"size": 14351,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/jsbin/scheduler.vflset/scheduler.js",
+			"sha256": "b85fb979e1e75b8111baa6b5535cf27d8952b9a16c29ac0345ad7344902de260",
+			"size": 8197,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/jsbin/spf.vflset/spf.js",
+			"sha256": "f3cd4c97600c9d9ae8a6b26201686cc40e81fcad5479e18afd2ee55d39b57c24",
+			"size": 38482,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/jsbin/web-animations-next-lite.min.vflset/web-animations-next-lite.min.js",
+			"sha256": "3e01c7298c38bc4342874fffd5c5bf4425304f92a5a2779c54d2b4aa1644f17b",
+			"size": 50867,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/jsbin/webcomponents-sd.vflset/webcomponents-sd.js",
+			"sha256": "fe26c065ddda2a478ad2c3cb5369987d8809d47fc97292020363e3b84a3dc756",
+			"size": 78940,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/jsbin/worker-performance.vflset/worker-performance.js",
+			"sha256": "6264f4091c009d75952cd62f765bb716deb40f755a1c541a4a4a65fe7a4399d9",
+			"size": 3105,
+			"kind": "desktop"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/jsbin/worker-serialization.vflset/worker-serialization.js",
+			"sha256": "7b247a2a6270e888ae353784a2f46d1c06e6edaab45026d923c5fa04349c67d8",
+			"size": 29761,
+			"kind": "desktop"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/jsbin/www-i18n-constants-en_US.vflset/www-i18n-constants.js",
+			"sha256": "2e0312a5c34d045d2365c4debd1ae1dfa5fab2be05f1a167e30c4c46ad47cd0d",
+			"size": 5811,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/webgl2_advanced_wasm/webgl2_advanced_cc.wasm",
+			"sha256": "240997ac35a14537efd3cc1ba57aeffc92865b6ed09d5114734c83d8bffb92e8",
+			"size": 3224289,
+			"kind": "desktop"
+		},
+		{
+			"url": "https://www.youtube.com/s/desktop/71381699/webgl2_lite_wasm/webgl2_lite_cc.wasm",
+			"sha256": "82d451aff4bbb8260a113afe9b7ddd44e17916d9bf6a1c5f7ada70dcdc8e48c3",
+			"size": 3224295,
+			"kind": "desktop"
+		},
+		{
+			"url": "https://www.youtube.com/s/gaming/emoji/7ff574f2/emoji_u1f97a.png",
+			"sha256": "d3a61c606e4eb985154643f366b7ebb3f1b5f058d51f12098b819b08d5789f8e",
+			"size": 8053,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/annotations_module.js",
+			"sha256": "c39edd7cfe5fb2721183ba69093016d724dd070abd197566824ee9c4b3b2bba6",
+			"size": 70158,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/asmjs.js",
+			"sha256": "77ed7d56e639f947dfd91350c844bfca33a7612bf14d06011b26d4366fef7fcc",
+			"size": 101219,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/base.js",
+			"sha256": "1ad2a9252ad1bf21c1985cf60557570ad05e88027fd87038e823fe635dff8557",
+			"size": 2621733,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/captions.js",
+			"sha256": "53013657afac2969c4d6b41a7907b3049c60b8c2cc3acba16ed146d2bc8bdaca",
+			"size": 72628,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/embed.js",
+			"sha256": "2fed974081367333804ba4821b44110b6d4c2fc9dcd1783dd87ff78bdbc78e56",
+			"size": 31798,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/endscreen.js",
+			"sha256": "077016df85f5e676d0d7d0e108528e837faca60ce472343fba9c815bf1c98fe4",
+			"size": 27857,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/heartbeat.js",
+			"sha256": "a1832a5b674d7af7cdb08f41e448703c9268b631b30ae2b91f053ac255f2aa15",
+			"size": 26343,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/kids.js",
+			"sha256": "fd7e06ad890e7a411bd8614c54b6f42873ae3aea60673eb57f57525566246a57",
+			"size": 7289,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/miniplayer.js",
+			"sha256": "60e5236445d7d2a52c594358ac130f8448aadf05d17461aa013b120910d304cb",
+			"size": 7582,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/offline.js",
+			"sha256": "5606003bf38a4bba54f8f762344ae7c5f30786e5d4ae0181fdb03f4eb2390b44",
+			"size": 103485,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/remote.js",
+			"sha256": "bdd881343efdcccc92fe5f68237ad513e62bd2a26876f8de0062b44f68e257a9",
+			"size": 120622,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/unplugged.js",
+			"sha256": "c250532e02b559161920fbdb3a5fa1a20083c23aea631a0d7dcf6f2e5c267ab6",
+			"size": 11025,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/webgl.js",
+			"sha256": "5b493af58039897b891e60c1387ca0eb66f1125e60b45886ba33c4214d2c94cc",
+			"size": 43363,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/player_es6.vflset/en_US/ypc.js",
+			"sha256": "ee6bea8e090246096233178e3c6626124ebcc8c9c0d88e986c1c5636883d32a5",
+			"size": 5952,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/player/55de7e60/www-player.css",
+			"sha256": "03eb60d18d9d641cceb62a6aa95ddc41e747aa7674920db94612e6d65b4c29fa",
+			"size": 550424,
+			"kind": "player"
+		},
+		{
+			"url": "https://www.youtube.com/s/search/audio/failure.mp3",
+			"sha256": "704a5e15ae1068e4df52a8bcff04270efdad595cf685e0eccff86ab335471a46",
+			"size": 6529,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/search/audio/no_input.mp3",
+			"sha256": "18d91a4732d34f80e3b785f0ee2f3fa5102582d5da3bc44c76afbcf87d5e4a50",
+			"size": 6953,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/search/audio/open.mp3",
+			"sha256": "3b1f3e116bb9e9fbdd0d1643d703caa562e235ebc0b814214a83c23b8cc271d6",
+			"size": 6167,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.youtube.com/s/search/audio/success.mp3",
+			"sha256": "4b4a165585bba9da803f7be0c0f06ea2b97bc1c61b4bf6921ad44e8c6369bf2f",
+			"size": 6636,
+			"kind": "observed"
+		}
+	]
+}

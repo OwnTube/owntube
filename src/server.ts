@@ -1,0 +1,95 @@
+import { getViewer } from "./auth";
+import { serveClientAsset } from "./client/assets";
+import { renderPage } from "./client/page";
+import { loadPin } from "./client/store";
+import { PORT, PUBLIC_ORIGIN } from "./config";
+import { migrate } from "./db";
+import { recordMiss, startDiagnostics } from "./diagnostics";
+import { innertube } from "./innertube/router";
+import "./innertube/watch-routes";
+import { startProcessing } from "./media/process";
+import { thumbnail, videoplayback } from "./media/serve";
+import { pageFor } from "./pages";
+import { instanceRoutes } from "./instance";
+
+// Pages may only talk to this origin; anything else is blocked by the
+// browser and reported to /_csp, which feeds the diagnostics view.
+const CSP = [
+	"default-src 'self'",
+	"script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:",
+	"style-src 'self' 'unsafe-inline'",
+	"img-src 'self' data: blob:",
+	"media-src 'self' blob: data:",
+	"font-src 'self' data:",
+	"connect-src 'self' blob: data:",
+	"worker-src 'self' blob:",
+	"frame-src 'self'",
+	"report-uri /_csp",
+].join("; ");
+
+const SECURITY_HEADERS = { "x-content-type-options": "nosniff", "referrer-policy": "strict-origin-when-cross-origin" };
+
+function nonce() {
+	return Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString("base64url");
+}
+
+async function handle(req: Request): Promise<Response> {
+	const url = new URL(req.url);
+	const path = url.pathname;
+	if (path.startsWith("/s/") || path.startsWith("/_up/")) return (await serveClientAsset(req, url)) ?? new Response("not found", { status: 404 });
+	if (path === "/videoplayback") return videoplayback(req, url);
+	if (path.startsWith("/vi/") || path.startsWith("/vi_webp/")) return thumbnail(url);
+	// beacons the client sends; nothing to record
+	if (/^\/(generate_204|csi_204|ptracking|pagead\/.*|api\/stats\/(qoe|atr|delayplay))$/.test(path)) return new Response(null, { status: 204 });
+	if (path === "/error_204") {
+		recordMiss(`client error ${url.searchParams.get("msg")?.slice(0, 120) ?? ""}`, url.search.slice(0, 400));
+		return new Response(null, { status: 204 });
+	}
+	if (path === "/_csp") {
+		const report = await req.text().catch(() => "");
+		const blocked = /"blocked-uri"\s*:\s*"([^"]*)"/.exec(report)?.[1] ?? "?";
+		recordMiss(`csp blocked ${blocked.replace(/^(https?:\/\/[^/]+).*/, "$1")}`, report.slice(0, 400));
+		return new Response(null, { status: 204 });
+	}
+	const viewer = await getViewer(req);
+	if (path.startsWith("/youtubei/v1/")) return innertube(req, url, viewer);
+	const own = await instanceRoutes(req, url, viewer);
+	if (own) return own;
+	if (req.method !== "GET" && req.method !== "HEAD") return new Response("method not allowed", { status: 405 });
+	const page = await pageFor(url, viewer);
+	if (page instanceof Response) return page;
+	if (!page) {
+		recordMiss(`page ${path.replace(/\/[A-Za-z0-9_-]{11,}/g, "/*")}`, path);
+		return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
+	}
+	const n = nonce();
+	return new Response(renderPage(page, viewer, n), {
+		headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "content-security-policy": CSP, ...SECURITY_HEADERS },
+	});
+}
+
+if (!loadPin()) console.warn("no client pinned yet: run `bun scripts/fetch-client.ts` before opening the site");
+await migrate();
+startDiagnostics();
+if (process.env.NO_WORKER !== "1") startProcessing();
+
+Bun.serve({
+	port: PORT,
+	idleTimeout: 120,
+	maxRequestBodySize: Number(process.env.MAX_UPLOAD_BYTES ?? 2 * 1024 ** 3),
+	async fetch(req) {
+		const started = performance.now();
+		try {
+			const res = await handle(req);
+			if (process.env.LOG_REQUESTS) {
+				const u = new URL(req.url);
+				console.log(`${res.status} ${req.method} ${u.pathname}${u.pathname === "/videoplayback" ? u.search.replace(/&sig=[^&]*/, "") : ""} ${(performance.now() - started).toFixed(0)}ms`);
+			}
+			return res;
+		} catch (e) {
+			console.error(`${req.method} ${req.url} failed`, e);
+			return new Response("internal error", { status: 500 });
+		}
+	},
+});
+console.log(`owntube listening on ${PUBLIC_ORIGIN} (port ${PORT})`);

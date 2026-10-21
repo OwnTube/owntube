@@ -1,0 +1,11 @@
+node_modules/
+client/
+data/
+captures/
+media/
+.env
+*.har
+profiles/
+test-results/
+client-research/
+evidence/*.png

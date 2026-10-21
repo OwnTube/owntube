@@ -1,0 +1,16 @@
+{
+  "name": "owntube",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun src/server.ts",
+    "fetch-client": "bun scripts/fetch-client.ts",
+    "check-patches": "bun scripts/check-patches.ts",
+    "seed": "bun scripts/seed.ts",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "playwright-core": "1.56.1"
+  }
+}
