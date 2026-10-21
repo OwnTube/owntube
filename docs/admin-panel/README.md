@@ -23,7 +23,7 @@ The preview uses local fonts, the repository's OwnTube logo, and sample data. Th
 The owner asked to restore the Studio-style structure and give it modest OwnTube branding. This reference supersedes the horizontal-navigation Control room design.
 
 - Keep the 64 px top bar, left navigation, and three columns of dashboard cards.
-- Use OwnTube's logo, Manrope typography, consistent Lucide icons, and restrained red accents.
+- Use OwnTube's logo, locally bundled Roboto in 400/500/700 weights, consistent Lucide icons, red selection accents, and blue action links. Keep 14 px body text, 18 px card titles, and the aligned card grid with 24 px spacing.
 - Use neutral gray/charcoal surfaces in dark mode and white/light gray surfaces in light mode.
 - Keep dashboard, video, analytics, report, service, processing, and client information in clear cards.
 - Use direct admin labels and factual text. Avoid slogans, large promotional headings, decorative headline scribbles, and invented feature names.
@@ -142,10 +142,10 @@ Capture updated screenshots and record what works. Do not report the static prev
 | `preview.png` | Dark-theme desktop screenshot |
 | `preview-light.png` | Light-theme desktop screenshot |
 | `assets/fonts.css` | Local font declarations |
-| `assets/fonts/` | Manrope variable Latin font |
+| `assets/fonts/` | Roboto Latin 400/500/700 fonts |
 | `assets/mandelbrot.png` | Generated sample-video thumbnail |
 | `../images/owntube-logo.png` | OwnTube's widened white scribble triangle logo |
 
-Manrope was obtained from `@fontsource-variable/manrope@5.3.0`; its font license is included in `assets/LICENSE-Manrope.txt`. Icons are embedded from `lucide-static@1.61.0`, with its license notice in `assets/LICENSE-Lucide.txt`. The Mandelbrot thumbnail is a locally generated mathematical test image; the other sample thumbnails are CSS graphics.
+Roboto was obtained from `@fontsource/roboto@5.3.0`; its font license is included in `assets/LICENSE-Roboto.txt`. Google describes Roboto as YouTube's system and body-copy font in its [typeface case study](https://design.google/library/youtube-sans-font). Icons are embedded from `lucide-static@1.61.0`, with its license notice in `assets/LICENSE-Lucide.txt`. The Mandelbrot thumbnail is a locally generated mathematical test image; the other sample thumbnails are CSS graphics.
 
 Architecture references: [Xitter admin source](https://github.com/Xittered/xitter/blob/main/src/admin.html), [Xitter](https://github.com/Xittered/xitter), and [Meowcord](https://github.com/meowcorded/meowcord/).
