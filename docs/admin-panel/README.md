@@ -16,27 +16,20 @@ python3 -m http.server 8000
 
 Then visit http://localhost:8000/docs/admin-panel/.
 
-The preview uses local fonts, the repository's OwnTube logo, and sample data. The Appearance button in the top bar has working Light theme, Dark theme, and Use device theme choices, with a browser-local saved preference. It does not need npm installation, an API server, a database, or an internet connection. It also includes working sample-table filtering and row selection. Most buttons demonstrate layout and feedback; they are not production admin actions.
+The preview uses local fonts, the repository's OwnTube logo, and sample data. The Appearance button in the top bar has working Light theme, Dark theme, and Use device theme choices, with a browser-local saved preference. It does not need npm installation, an API server, a database, or an internet connection. Most buttons demonstrate layout and feedback; they are not production admin actions.
 
-## Keep OwnTube's own identity
+## Preserve the selected layout
 
-The owner revised the direction: the admin interface should feel like OwnTube and should not closely resemble YouTube Creator Studio. This version supersedes the earlier Studio-like reference.
+The owner asked to restore the Studio-style structure and give it modest OwnTube branding. This reference supersedes the horizontal-navigation Control room design.
 
-Use these design decisions as the starting point:
+- Keep the 64 px top bar, left navigation, and three columns of dashboard cards.
+- Use OwnTube's logo, Manrope typography, consistent Lucide icons, and restrained red accents.
+- Use neutral gray/charcoal surfaces in dark mode and white/light gray surfaces in light mode.
+- Keep dashboard, video, analytics, report, service, processing, and client information in clear cards.
+- Use direct admin labels and factual text. Avoid slogans, large promotional headings, decorative headline scribbles, and invented feature names.
+- On smaller screens, reduce the column count and collapse the sidebar while keeping controls usable.
 
-- Manrope variable typography with a clear, larger headline and readable data text.
-- Lucide line icons with one consistent stroke treatment.
-- A horizontal top navigation: Overview, Library, People, Safety, and Instance.
-- An 84 px header, open workspace, and no creator-profile sidebar.
-- A single statistics strip, a library table and recent activity, and a narrower operations column.
-- Warm light neutrals: `#f7f6f2` workspace, white surfaces, and `#242720` text.
-- Warm dark neutrals: `#151612` workspace, `#1e1f1a` surfaces, and `#f3f2e9` text.
-- OwnTube red accents, a small scribbled headline underline echoing the logo, restrained 7–11 px corners, and minimal shadows.
-- Plain operator controls with a little personality in the copy, rather than copying Studio's labels and card layout.
-
-Preserve this visual identity and extend the existing source for new screens. Avoid replacing it with either a Creator Studio clone or an unrelated generic dashboard. Keep controls readable and useful as real backend functionality is added.
-
-This is a custom operator interface. The public OwnTube browsing and playback experience continues to use the actual YouTube web client.
+Extend this structure for real admin screens. The public browsing and playback experience continues to use the actual YouTube web client.
 
 ## Appearance is a required feature
 
@@ -112,7 +105,7 @@ Every hardcoded number, status, video, report, account, and build value in the p
 - Read build and asset information from the actual pin.
 - List unhandled operations and processing failures from the real diagnostic sources.
 - Treat client updates or rollback as explicit operations and only offer them once safely implemented.
-- Connect Settings, feedback/help destinations, search, and every top navigation entry to a meaningful screen or explicitly mark unavailable features.
+- Connect Settings, feedback/help destinations, search, and every sidebar entry to a meaningful screen or explicitly mark unavailable features.
 
 ## Authorization and reliability
 
