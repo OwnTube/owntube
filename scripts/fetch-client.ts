@@ -15,6 +15,7 @@
 // are used; their ytInitialData (other people's videos) is never served.
 
 import { existsSync, readFileSync, readdirSync } from "node:fs";
+import vm from "node:vm";
 import { jsonEnd } from "../src/client/json";
 import {
 	ORIGINAL_DIR,
@@ -313,6 +314,38 @@ await pool(lazy, 6, async (name) => {
 	pin!.app.modules[name] = { sha256: sha256(data), size: data.byteLength };
 });
 failures += moduleFailures;
+
+// ---- icons ----
+// Every icon the client can request: the resolver tables (name ->
+// [[styleIndex, version, size, mirror], ...]) and the URL builders they are
+// paired with, found by their call sites rather than minified names.
+function iconUrls(main: string): string[] {
+	const literal = (start: number) => {
+		const open = main.indexOf(main[start] === "[" ? "[" : "{", start);
+		return main.slice(open, jsonEnd(main, open));
+	};
+	const evalLiteral = (src: string) => vm.runInNewContext(`(${src})`, Object.create(null), { timeout: 2000 });
+	const builder = /([\w$]+)=function\(T,P,y,c\)\{return T\+\(""\+([\w$]+)\[y\[0\]\]\+\(\(c===void 0\?0:c\)\?"_experimental":""\)\+"\/"\+P\+"\/v"\+y\[1\]\+"\/"\)\+\(y\[2\]\+"px\.svg"\)\}/.exec(main);
+	if (!builder) {
+		console.log("icon URL builder not found; icons will not be pinned");
+		return [];
+	}
+	const styles: string[] = evalLiteral(literal(main.indexOf(`${builder[2]}=[`) + builder[2].length + 1));
+	const urls = new Set<string>();
+	for (const m of main.matchAll(/([\w$]+)\(([\w$]+),\w+,\(\(\w+=this\.(?:iconUrlProvider|urlProvider)\)==null\?void 0:\w+\.(?:getYtStandardUrl|getUrl)\)\|\|([\w$]+),\w+\)/g)) {
+		const [, , table, fn] = m;
+		const def = new RegExp(`${fn.replace(/\$/g, "\\$")}=function\\(T,P\\)\\{return ${builder[1].replace(/\$/g, "\\$")}\\("([^"]+)",T,P(,!0)?\\)\\}`).exec(main);
+		const at = main.indexOf(`${table}={`);
+		if (!def || at < 0) continue;
+		const entries: Record<string, [number, number, number][]> = evalLiteral(literal(at + table.length + 1));
+		for (const [name, variants] of Object.entries(entries))
+			for (const [style, version, size] of variants) urls.add(`${def[1]}${styles[style]}${def[2] ? "_experimental" : ""}/${name}/v${version}/${size}px.svg`);
+	}
+	return [...urls];
+}
+const icons = iconUrls(mainJs.toString());
+console.log(`icons named by the client: ${icons.length}`);
+await pool(icons, 16, async (u) => void (await archive(u, "icon", pinned.get(u))));
 
 // ---- fonts ----
 for (const m of mainJs.toString().matchAll(/"((?:https:)?\/\/fonts\.googleapis\.com\/css2?\?[^"]+)"/g)) fontCss.add(absolute(m[1]));

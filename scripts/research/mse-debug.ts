@@ -29,7 +29,7 @@ await page.addInitScript(() => {
 		return sb;
 	};
 	const of = window.fetch;
-	window.fetch = async function (input: any, init?: any) {
+	window.fetch = async function (this: unknown, input: any, init?: any) {
 		const u = String(input?.url ?? input);
 		const r = await of.call(this, input, init);
 		if (u.includes("videoplayback")) log.push(`fetch ${init?.method ?? "GET"} ${u.replace(/.*itag=(\d+).*range=([\d-]+).*/, "itag=$1 range=$2")} -> ${r.status} ${r.headers.get("content-type")} ${r.headers.get("content-length")} body=${!!r.body}`);

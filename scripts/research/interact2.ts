@@ -1,0 +1,15 @@
+import { launch, signIn, watchPage } from "../probe";
+const { browser, ctx } = await launch();
+const page = await ctx.newPage();
+const r = watchPage(page);
+await signIn(page, "bob", "owntube-demo");
+const bodies: string[] = [];
+page.on("request", (q) => { if (q.url().includes("/youtubei/") && !q.url().includes("log_event")) bodies.push(`${new URL(q.url()).pathname} ${(q.postData() ?? "").slice(0, 0)}`); });
+await page.goto("http://localhost:8080/watch?v=Ib21Xm-oD7h");
+await page.waitForTimeout(5000);
+await page.locator("button[aria-label='Save to playlist']").first().click().catch((e) => console.log("no save button", String(e).slice(0, 100)));
+await page.waitForTimeout(3000);
+await page.screenshot({ path: "evidence/interact-save.png" });
+console.log(bodies.join("\n"));
+console.log("errors:", r.pageErrors.join(" | "), r.consoleErrors.filter((e) => !e.includes("Refused")).join(" | ").slice(0, 500));
+await browser.close();

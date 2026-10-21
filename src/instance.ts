@@ -137,6 +137,15 @@ export async function instanceRoutes(req: Request, url: URL, viewer: Viewer): Pr
 		return new Response("self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.map(n=>caches.delete(n)))).then(()=>self.registration.unregister())));", {
 			headers: { "content-type": "text/javascript", "cache-control": "no-store" },
 		});
+	if (path === "/about")
+		return instancePage(
+			`About ${INSTANCE_NAME}`,
+			`<main class="wide"><h1>About ${esc(INSTANCE_NAME)}</h1>
+<p class="sub">A self-hosted video site. The interface is YouTube's own web client, served from this instance and pointed at this instance's database, accounts and media. Nothing on this site comes from YouTube's servers, and accounts here are local accounts, not Google accounts.</p>
+<h2 id="terms">Terms</h2><p>Upload only videos you have the right to share. The operator of this instance may remove videos, comments and accounts.</p>
+<h2 id="privacy">Privacy</h2><p>This instance stores your username, a password hash, what you upload, your comments, likes, subscriptions, playlists and watch history. It sends nothing to third parties; the page is not allowed to contact any other site.</p>
+<p><a href="/">Back to the home page</a></p></main>`,
+		);
 	if (path === "/robots.txt") return new Response("User-agent: *\nDisallow: /youtubei/\nDisallow: /videoplayback\n", { headers: { "content-type": "text/plain" } });
 	const up = await uploadRoutes(req, url, viewer);
 	if (up) return up;

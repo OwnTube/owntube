@@ -7,6 +7,12 @@ import { migrate } from "./db";
 import { recordMiss, startDiagnostics } from "./diagnostics";
 import { innertube } from "./innertube/router";
 import "./innertube/watch-routes";
+import "./innertube/browse";
+import "./innertube/search";
+import "./innertube/guide";
+import "./innertube/actions";
+import "./innertube/playlists";
+import "./innertube/comments";
 import { startProcessing } from "./media/process";
 import { thumbnail, videoplayback } from "./media/serve";
 import { pageFor } from "./pages";
@@ -46,9 +52,10 @@ async function handle(req: Request): Promise<Response> {
 		return new Response(null, { status: 204 });
 	}
 	if (path === "/_csp") {
-		const report = await req.text().catch(() => "");
-		const blocked = /"blocked-uri"\s*:\s*"([^"]*)"/.exec(report)?.[1] ?? "?";
-		recordMiss(`csp blocked ${blocked.replace(/^(https?:\/\/[^/]+).*/, "$1")}`, report.slice(0, 400));
+		const report = ((await req.json().catch(() => ({}))) as { "csp-report"?: Record<string, unknown> })["csp-report"] ?? {};
+		const blocked = String(report["blocked-uri"] ?? "?");
+		const where = `${String(report["source-file"] ?? "").replace(/^https?:\/\/[^/]+/, "").slice(0, 120)}:${report["line-number"] ?? ""}:${report["column-number"] ?? ""}`;
+		recordMiss(`csp blocked ${blocked.replace(/^(https?:\/\/[^/]+).*/, "$1")}`, `${blocked.split("?")[0].slice(0, 200)} (${report["effective-directive"] ?? report["violated-directive"]}) from ${where}`);
 		return new Response(null, { status: 204 });
 	}
 	const viewer = await getViewer(req);

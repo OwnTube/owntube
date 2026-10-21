@@ -1,0 +1,24 @@
+// Ad-hoc UI interaction for developing selectors: signs in, opens a page, runs actions.
+import { launch, signIn, watchPage } from "../probe";
+const [login, path] = process.argv.slice(2);
+const { browser, ctx } = await launch();
+const page = await ctx.newPage();
+const r = watchPage(page);
+const [u, pw] = login.split(":");
+await signIn(page, u, pw);
+await page.goto(`http://localhost:8080${path}`);
+await page.waitForTimeout(5000);
+const like = page.locator("like-button-view-model button").first();
+console.log("like pressed before:", await like.getAttribute("aria-pressed"), await like.textContent());
+await like.click();
+await page.waitForTimeout(1500);
+console.log("like pressed after:", await like.getAttribute("aria-pressed"), await like.textContent());
+const sub = page.locator("#owner #subscribe-button button, ytd-video-owner-renderer ~ #subscribe-button button").first();
+console.log("sub before:", (await sub.textContent())?.trim());
+await sub.click();
+await page.waitForTimeout(1500);
+console.log("sub after:", (await sub.textContent())?.trim());
+await page.screenshot({ path: "evidence/interact.png" });
+console.log("api:", r.api.join(", "));
+console.log("errors:", r.pageErrors.join(" | "));
+await browser.close();
