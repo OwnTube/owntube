@@ -57,6 +57,12 @@ export const FLAG_OVERRIDES: Record<string, unknown> = {
 	service_worker_push_watch_page_prompt: false,
 	// no ads are served; keep the ad modules from waiting on ad responses
 	web_player_ads_control_config: false,
+	// the advertising id (googleads.g.doubleclick.net/pagead/id)
+	disable_biscotti_fetch_entirely_for_all_web_clients: true,
+	// Chromecast: the cast_sender.js bootstrap from www.gstatic.com
+	mdx_load_cast_api_bootstrap_script: false,
+	// search suggestions from this origin's /complete/search
+	use_url_origin_for_desktop_web_suggest_requests: true,
 };
 
 // flags in the player's own serialized flag string
@@ -140,6 +146,13 @@ export function buildYtcfg(kind: PageKind, viewer: Viewer, pageUrl: string, nonc
 	cfg.SBOX_SETTINGS.SEARCHBOX_HOST_OVERRIDE = new URL(PUBLIC_ORIGIN).host;
 	cfg.EMERGENCY_BASE_URL = "/error_204?t=jserror&level=ERROR";
 	cfg.VALID_SESSION_TEMPDATA_DOMAINS = [new URL(PUBLIC_ORIGIN).hostname];
+	// IS_DBSC only gates the signed-in RotateCookiesPage iframe on accounts.youtube.com
+	cfg.IS_DBSC = true;
+	// no Chromecast/DIAL discovery (would load cast_sender.js from gstatic)
+	cfg.MDX_CONFIG = { disableCastApi: true, disableDial: true };
+	// privembed=1 turns off the ad-blocker probe (static.doubleclick.net/instream/ad_status.js)
+	// and the advertising id fetch; nothing else in this build reads it
+	cfg.PLAYER_VARS = { privembed: "1" };
 	Object.assign(cfg.EXPERIMENT_FLAGS, FLAG_OVERRIDES);
 	// the player: always the pinned one
 	const playerPath = new URL(pin.player.jsUrl).pathname;
@@ -228,7 +241,8 @@ export function renderPage(data: PageData, viewer: Viewer, nonce: string): strin
 		{ name: "player-urls", find: /\/s\/player\/[0-9a-f]{8}\//g, replace: () => `/s/player/${pin.player.id}/`, optional: true },
 		{ name: "static-host", find: /https:\/\/www\.youtube\.com\/s\//g, replace: () => "/s/" },
 		{ name: "fonts-host", find: /(?:https:)?\/\/fonts\.googleapis\.com\//g, replace: () => "/_up/fonts.googleapis.com/" },
-		{ name: "title", find: /<title>[^<]*<\/title>/g, replace: () => `<title>${escapeHtml(data.title ? `${data.title} - ${INSTANCE_NAME}` : INSTANCE_NAME)}</title>` },
+		// the results page ships without <title> (the app sets it); give it one
+		{ name: "title", find: /<title>[^<]*<\/title>|(?<=<head>)(?![\s\S]*<title>)/g, replace: () => `<title>${escapeHtml(data.title ? `${data.title} - ${INSTANCE_NAME}` : INSTANCE_NAME)}</title>` },
 		{ name: "meta-title", find: /<meta name="title" content="[^"]*">/g, replace: () => `<meta name="title" content="${escapeHtml(data.title)}">`, optional: true },
 		{ name: "meta-description", find: /<meta name="description" content="[^"]*">/g, replace: () => `<meta name="description" content="${escapeHtml(data.description ?? "")}">`, optional: true },
 		// the guide's footer: this instance's pages instead of YouTube's

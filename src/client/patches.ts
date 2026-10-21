@@ -21,6 +21,8 @@ export type Patch = {
 };
 
 const quote = (s: string) => JSON.stringify(s);
+// the instance hostname as it must appear inside a RegExp("...") string literal
+const regexHost = (c: PatchContext) => new URL(c.origin).hostname.replace(/\./g, "\\\\.");
 
 export const PATCHES: Patch[] = [
 	{
@@ -32,12 +34,12 @@ export const PATCHES: Patch[] = [
 		why: "The icon manager builds SVG icon URLs from this literal prefix (functions MM9/A_9 in this build). Points them at the instance's archived copies instead of fonts.gstatic.com.",
 	},
 	{
-		id: "icons-web-host",
+		id: "gstatic-youtube-img-host",
 		asset: "app",
-		find: '"https://www.gstatic.com/youtube/img/icons/web/"',
-		replace: (c) => quote(`${c.origin}/_up/www.gstatic.com/youtube/img/icons/web/`),
-		expect: 1,
-		why: "Second icon family (function euN): YouTube-branded icons from www.gstatic.com. Same treatment as icons-material-host.",
+		find: '"https://www.gstatic.com/youtube/img/',
+		replace: (c) => `"${c.origin}/_up/www.gstatic.com/youtube/img/`,
+		expect: 60,
+		why: "Every www.gstatic.com/youtube/img/ URL the app names, across the main bundle and lazy modules: the second icon family (icons/web/, function euN), Lottie animations (like, subscribe, loading), and illustrations. Points them at the archived copies under /_up/.",
 	},
 	{
 		id: "icons-allowed-hosts",
@@ -48,17 +50,50 @@ export const PATCHES: Patch[] = [
 		why: "The icon manager only fetches and inlines .svg icons whose URL starts with one of these origins (pUs). Adds the instance origin so the relocated icons above are inlined like upstream ones.",
 	},
 	{
-		id: "player-trusted-stream-origin",
+		id: "player-trusted-stream-host",
 		asset: "player",
-		// the Trusted Stream URL allowlist (lp/uva); its host alternation
-		// begins with these two entries
-		find: String.raw`^https?://(([A-Za-z0-9-]{1,63}\\.)*(corp\\.google\\.com|proxy\\.googleprod\\.com|c\\.googlers\\.com|proxy\\.googlers\\.com|borg\\.google\\.com|docs\\.google\\.com|drive\\.google\\.com|googleplex\\.com|googlevideo\\.com`,
-		replace: (c) =>
-			`^${c.origin.replace(/[.]/g, "\\\\.").replace(/\//g, "\\\\/")}/|` +
-			String.raw`^https?://(([A-Za-z0-9-]{1,63}\\.)*(corp\\.google\\.com|proxy\\.googleprod\\.com|c\\.googlers\\.com|proxy\\.googlers\\.com|borg\\.google\\.com|docs\\.google\\.com|drive\\.google\\.com|googleplex\\.com|googlevideo\\.com`,
+		// the Trusted Stream URL allowlist (uva): ^https?://(sub.)*(host|host|...)(:port)?/
+		find: String.raw`googlevideo\\.com|prod\\.google\\.com`,
+		replace: (c) => String.raw`googlevideo\\.com|` + regexHost(c) + String.raw`|prod\\.google\\.com`,
 		expect: 1,
 		when: (c) => !c.localOrigin,
-		why: "The player refuses media URLs ('Untrusted URL') unless they match its stream allowlist or start with http://local / https://local. A localhost instance needs nothing; any other origin is prepended to the allowlist.",
+		why: "The player refuses media URLs ('Untrusted URL') unless they match its stream allowlist or start with http://local / https://local. A localhost instance needs nothing; any other host is added to the allowlist's host alternation.",
+	},
+	{
+		id: "player-trusted-image-host",
+		asset: "player",
+		// the Trusted Image URL allowlist (wva); the ad-domain list (yva) also
+		// names ytimg.com but not chat.google.com right after it
+		find: String.raw`|ytimg\\.com|ytimg\\.sandbox\\.google\\.com|chat\\.google\\.com)`,
+		replace: (c) => String.raw`|ytimg\\.com|` + regexHost(c) + String.raw`|ytimg\\.sandbox\\.google\\.com|chat\\.google\\.com)`,
+		expect: 1,
+		why: "The player keeps only thumbnail URLs on its trusted image hosts (videoDetails.thumbnail -> poster, miniplayer, end screen); for anything else it builds http(s)://i1.ytimg.com/vi/<id>/... itself. Adds the instance host so it uses this instance's thumbnails.",
+	},
+	{
+		id: "player-base-host",
+		asset: "player",
+		// the allowlist (sva) for the player's own base URL: corp proxies and
+		// youtube.com hosts; anything else falls back to www.youtube.com
+		find: 'sva=RegExp("',
+		replace: (c) => 'sva=RegExp("^https?://' + regexHost(c) + String.raw`(:[0-9]+)?/|`,
+		expect: 1,
+		why: "The player derives its base URL from the page location only if the host is on this allowlist, else uses www.youtube.com. That base URL hosts the QoE stats (/api/stats/qoe) and ptracking beacons. Adds the instance host so those go to this instance.",
+	},
+	{
+		id: "fonts-stylesheet-host",
+		asset: "app",
+		find: '"https://fonts.googleapis.com/css',
+		replace: (c) => `"${c.origin}/_up/fonts.googleapis.com/css`,
+		expect: 5,
+		why: "The app inserts five font stylesheets (italic Roboto, Roboto Mono, a games font) at run time from fonts.googleapis.com. Points them at the archived copies; the page's own stylesheet link is rewritten by the page renderer.",
+	},
+	{
+		id: "no-redirect-prefetch",
+		asset: "app",
+		find: 'this.redirectsToPreload=["https://youtube.com"]',
+		replace: () => "this.redirectsToPreload=[]",
+		expect: 1,
+		why: "On every load the app fetches https://youtube.com once to warm the youtube.com -> www redirect. Nothing to warm here; the list is emptied.",
 	},
 ];
 

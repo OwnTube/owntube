@@ -347,6 +347,21 @@ const icons = iconUrls(mainJs.toString());
 console.log(`icons named by the client: ${icons.length}`);
 await pool(icons, 16, async (u) => void (await archive(u, "icon", pinned.get(u))));
 
+// ---- images and animations under www.gstatic.com/youtube/img/ ----
+// Complete file URLs written literally in the app (Lottie JSON, illustrations).
+// URLs the client assembles from a literal prefix plus a theme/version suffix
+// are only known once requested: run with UPSTREAM_ASSET_FETCH=1 and pin them
+// with --observed client/observed.txt.
+const imgUrls = new Set<string>();
+for (const text of [mainJs.toString(), ...Object.keys(pin.app.modules).map((n) => (existsSync(modulePath(n)) ? readFileSync(modulePath(n), "utf8") : ""))]) {
+	for (const m of text.matchAll(/"(https:\/\/www\.gstatic\.com\/youtube\/img\/[^"]+\.(?:json|svg|png|jpg|gif|webp))"/g)) imgUrls.add(m[1]);
+	// prefix + (dark ? "dark" : "light") + "_v5.json"
+	for (const m of text.matchAll(/"(https:\/\/www\.gstatic\.com\/youtube\/img\/[^"]+_)"\+[^;"]{0,120}\?"dark":"light"\)\+"(_v\d+\.json)"/g))
+		for (const theme of ["dark", "light"]) imgUrls.add(`${m[1]}${theme}${m[2]}`);
+}
+console.log(`images and animations named by the client: ${imgUrls.size}`);
+await pool([...imgUrls], 8, async (u) => void (await archive(u, "image", pinned.get(u))));
+
 // ---- fonts ----
 for (const m of mainJs.toString().matchAll(/"((?:https:)?\/\/fonts\.googleapis\.com\/css2?\?[^"]+)"/g)) fontCss.add(absolute(m[1]));
 for (const a of pin.assets ?? []) if (a.kind === "font-css") fontCss.add(a.url);

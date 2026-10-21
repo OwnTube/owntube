@@ -66,11 +66,14 @@ function avatarSvg(seed: string, letter: string) {
 	return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88"><rect width="88" height="88" fill="hsl(${h},55%,45%)"/><text x="44" y="58" font-family="Roboto,Arial,sans-serif" font-size="40" text-anchor="middle" fill="#fff">${esc(letter.toUpperCase())}</text></svg>`;
 }
 
+// signed-out viewers (comment box) and deleted channels
+const PLACEHOLDER_AVATAR = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88"><rect width="88" height="88" fill="#bdbdbd"/><circle cx="44" cy="34" r="16" fill="#fff"/><path d="M14 80c4-17 16-25 30-25s26 8 30 25z" fill="#fff"/></svg>`;
+
 async function ggpht(url: URL): Promise<Response> {
 	const m = /^\/ggpht\/(UC[A-Za-z0-9_-]{22})\/(avatar|banner)/.exec(url.pathname);
 	if (!m) return new Response("not found", { status: 404 });
 	const [c] = await sql`select title, avatar_path, banner_path from channels where id = ${m[1]}`;
-	if (!c) return new Response("not found", { status: 404 });
+	if (!c) return m[2] === "avatar" ? new Response(PLACEHOLDER_AVATAR, { headers: { "content-type": "image/svg+xml", "cache-control": "public, max-age=3600" } }) : new Response("not found", { status: 404 });
 	const p = m[2] === "avatar" ? c.avatar_path : c.banner_path;
 	if (p && existsSync(join(MEDIA_DIR, p))) return new Response(Bun.file(join(MEDIA_DIR, p)), { headers: { "cache-control": "public, max-age=3600" } });
 	if (m[2] === "banner") return new Response("not found", { status: 404 });
