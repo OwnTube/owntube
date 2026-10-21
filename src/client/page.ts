@@ -1,0 +1,248 @@
+// Renders the official app page for a route, from the pinned page HTML of
+// the matching kind. The markup, inline bootstrap scripts and skeletons stay
+// as upstream served them; these parts are replaced, each by a rule that must
+// match exactly once (or `optional`):
+//   - the ytcfg.set({...}) bootstrap configuration      -> buildYtcfg()
+//   - var ytInitialData / ytInitialPlayerResponse        -> this instance's data
+//   - window.ytAtN({...}) BotGuard attestation challenge -> removed
+//   - serverContract() ytPageType/ytCommand/ytUrl        -> this route
+//   - the passive Google sign-in iframe                  -> removed
+//   - preload/preconnect hints to googlevideo/i.ytimg    -> removed
+//   - absolute www.youtube.com/s/ and fonts.googleapis.com URLs -> this origin
+// ytcfg comes from the pinned watch page for every kind, so all pages run
+// the same experiment set and the same player.
+
+import { existsSync, readFileSync } from "node:fs";
+import { INSTANCE_NAME, PUBLIC_ORIGIN } from "../config";
+import { recordMiss } from "../diagnostics";
+import { jsonEnd } from "./json";
+import { loadPin, pagePath } from "./store";
+
+export type PageKind = "watch" | "home" | "results" | "channel" | "playlist" | "shorts";
+
+export const ROOT_VE: Record<PageKind, number> = { watch: 3832, home: 3854, results: 4724, channel: 3611, playlist: 5754, shorts: 37414 };
+const PAGE_TYPE: Record<PageKind, string> = { watch: "watch", home: "browse", results: "search", channel: "channel", playlist: "playlist", shorts: "shorts" };
+const COLD_FLAG: Partial<Record<PageKind, string>> = { watch: "IS_WATCH_PAGE_COLD", home: "IS_HOMEPAGE_COLD", results: "IS_RESULTS_PAGE_COLD", shorts: "IS_SHORTS_PAGE_COLD" };
+
+export type Viewer = {
+	userId: string;
+	channelId: string;
+	handle: string;
+	title: string;
+	apiSecret: string;
+	sessionId: string;
+	isAdmin: boolean;
+} | null;
+
+export type PageData = {
+	kind: PageKind;
+	url: string; // path + query of this page, e.g. /watch?v=x
+	title: string;
+	description?: string;
+	initialData: unknown;
+	playerResponse?: unknown;
+	command: unknown; // the navigation endpoint that leads here
+	thumbnail?: string;
+};
+
+// experiment flags this instance sets over the pinned build's values
+export const FLAG_OVERRIDES: Record<string, unknown> = {
+	// The page installs a service worker for offline app-shell caching and
+	// push. A worker that outlives a client upgrade would keep serving old
+	// bundles; this instance serves none, see docs/architecture.md.
+	service_worker_enabled: false,
+	kevlar_appshell_service_worker: false,
+	service_worker_push_enabled: false,
+	service_worker_push_home_page_prompt: false,
+	service_worker_push_watch_page_prompt: false,
+	// no ads are served; keep the ad modules from waiting on ad responses
+	web_player_ads_control_config: false,
+};
+
+// flags in the player's own serialized flag string
+export const PLAYER_FLAG_OVERRIDES: Record<string, string> = {
+	// With UMP on, the player asks googlevideo for range responses wrapped in
+	// UMP parts (ump=1). Off, it takes the plain bytes of the range, which is
+	// what /videoplayback serves.
+	html5_use_ump: "false",
+	// Proof-of-origin tokens come from BotGuard, which this instance doesn't
+	// load; without these the player stops minting placeholder tokens (pot=).
+	html5_generate_content_po_token: "false",
+	html5_generate_session_po_token: "false",
+	html5_non_onesie_attach_po_token: "false",
+	html5_bandaid_attach_content_po_token: "false",
+	html5_attach_po_token_to_bandaid: "false",
+};
+
+let base: { cfg: Record<string, any>; ytcfgJson: string } | undefined;
+function baseConfig() {
+	if (base) return base;
+	const html = readFileSync(pagePath("watch"), "utf8");
+	const start = html.indexOf("ytcfg.set({") + "ytcfg.set(".length;
+	const json = html.slice(start, jsonEnd(html, start));
+	base = { cfg: JSON.parse(json), ytcfgJson: json };
+	return base;
+}
+
+// string values in config that address youtube.com; they become this origin
+function rehost(v: unknown): unknown {
+	if (typeof v === "string") {
+		if (v.startsWith("https://www.youtube.com/")) return PUBLIC_ORIGIN + v.slice("https://www.youtube.com".length);
+		return v;
+	}
+	if (Array.isArray(v)) return v.map(rehost);
+	if (v && typeof v === "object") return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, rehost(x)]));
+	return v;
+}
+
+function serializedFlags(s: string, overrides: Record<string, unknown>): string {
+	const params = new URLSearchParams(s);
+	for (const [k, v] of Object.entries(overrides)) params.set(k, String(v));
+	return params.toString();
+}
+
+export function visitorData(): string {
+	return "Cgt" + Buffer.from(INSTANCE_NAME).toString("base64url");
+}
+
+export function buildYtcfg(kind: PageKind, viewer: Viewer, pageUrl: string, nonce: string): Record<string, any> {
+	const pin = loadPin()!;
+	const cfg = structuredClone(baseConfig().cfg);
+	for (const k of ["IS_WATCH_PAGE_COLD", "IS_HOMEPAGE_COLD", "IS_RESULTS_PAGE_COLD", "IS_SHORTS_PAGE_COLD"]) delete cfg[k];
+	const cold = COLD_FLAG[kind];
+	if (cold) cfg[cold] = true;
+	cfg.ROOT_VE_TYPE = ROOT_VE[kind];
+	// account and request specifics: ours, never the capture's
+	const visitor = visitorData();
+	cfg.VISITOR_DATA = visitor;
+	cfg.EVENT_ID = Buffer.from(crypto.getRandomValues(new Uint8Array(12))).toString("base64url");
+	cfg.TIME_CREATED_MS = Date.now();
+	cfg.XSRF_TOKEN = viewer ? viewer.apiSecret : "";
+	cfg.LOGGED_IN = !!viewer;
+	cfg.DATASYNC_ID = viewer ? `${viewer.channelId}||` : `${visitor}||`;
+	if (viewer) {
+		cfg.DELEGATED_SESSION_ID = undefined;
+		cfg.SESSION_INDEX = "0";
+		cfg.ID_TOKEN = undefined;
+	}
+	cfg.SIGNIN_URL = `${PUBLIC_ORIGIN}/signin?next=${encodeURIComponent(pageUrl)}`;
+	cfg.INNERTUBE_API_KEY = "AIzaSyOwnTubeLocalInstanceKeyNotGoogle01";
+	for (const k of ["LINK_API_KEY", "LINK_API_KEY_REDIRECT", "VOZ_API_KEY", "RECAPTCHA_V3_SITEKEY", "GAPI_HINT_PARAMS", "GAPI_HOST", "YPC_MB_URL", "LINK_GAL_DOMAIN", "LINK_OIS_DOMAIN", "PERSIST_IDENTITY_IFRAME_URL", "YTR_FAMILY_CREATION_URL", "LIVE_CHAT_BASE_TANGO_CONFIG"]) delete cfg[k];
+	const client = cfg.INNERTUBE_CONTEXT.client;
+	delete client.remoteHost;
+	delete client.configInfo;
+	delete client.deviceExperimentId;
+	delete client.rolloutToken;
+	client.visitorData = visitor;
+	client.originalUrl = PUBLIC_ORIGIN + pageUrl;
+	cfg.INNERTUBE_CONTEXT.clickTracking = { clickTrackingParams: "" };
+	cfg.SBOX_SETTINGS.VISITOR_DATA = visitor;
+	cfg.SBOX_SETTINGS.SEARCHBOX_HOST_OVERRIDE = new URL(PUBLIC_ORIGIN).host;
+	cfg.EMERGENCY_BASE_URL = "/error_204?t=jserror&level=ERROR";
+	cfg.VALID_SESSION_TEMPDATA_DOMAINS = [new URL(PUBLIC_ORIGIN).hostname];
+	Object.assign(cfg.EXPERIMENT_FLAGS, FLAG_OVERRIDES);
+	// the player: always the pinned one
+	const playerPath = new URL(pin.player.jsUrl).pathname;
+	const playerCss = new URL(pin.player.cssUrl).pathname;
+	cfg.PLAYER_JS_URL = playerPath;
+	cfg.PLAYER_CSS_URL = playerCss;
+	cfg.PLAYER_CLIENT_VERSION = pin.player.version;
+	for (const ctx of Object.values(cfg.WEB_PLAYER_CONTEXT_CONFIGS) as any[]) {
+		ctx.jsUrl = playerPath;
+		ctx.cssUrl = playerCss;
+		ctx.trustedJsUrl = { privateDoNotAccessOrElseTrustedResourceUrlWrappedValue: playerPath };
+		ctx.trustedCssUrl = { privateDoNotAccessOrElseTrustedResourceUrlWrappedValue: playerCss };
+		ctx.innertubeApiKey = cfg.INNERTUBE_API_KEY;
+		ctx.cspNonce = nonce;
+		ctx.datasyncId = cfg.DATASYNC_ID;
+		ctx.serializedExperimentFlags = serializedFlags(ctx.serializedExperimentFlags, PLAYER_FLAG_OVERRIDES);
+	}
+	return rehost(cfg) as Record<string, any>;
+}
+
+const FOOTER_LINKS = [
+	["primary", "/about", "About"],
+	["primary", "/upload", "Upload"],
+	["secondary", "/about#terms", "Terms"],
+	["secondary", "/about#privacy", "Privacy"],
+]
+	.map(([slot, href, label]) => `<a slot="guide-links-${slot}" href="${href}" style="display: none;">${label}</a>`)
+	.join("");
+
+type Rule = { name: string; find: RegExp; replace: (m: RegExpExecArray) => string; optional?: boolean };
+
+const json = (v: unknown) => JSON.stringify(v).replace(/</g, "\\u003c").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029");
+const escapeHtml = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
+// replaces the JSON value that starts right after `marker`
+function replaceJsonAfter(html: string, marker: string, value: string, name: string): string {
+	// the marker must be followed by the value's first character
+	const i = html.indexOf(marker);
+	if (i < 0) throw new PageRuleError(name);
+	const start = i + marker.length - 1;
+	return html.slice(0, start) + value + html.slice(jsonEnd(html, start));
+}
+
+class PageRuleError extends Error {
+	constructor(rule: string) {
+		super(`page rule did not match: ${rule}`);
+	}
+}
+
+const templates = new Map<PageKind, string>();
+function template(kind: PageKind): string {
+	let t = templates.get(kind);
+	if (!t) {
+		const p = pagePath(kind);
+		if (!existsSync(p)) throw new Error(`no pinned page for ${kind}; run bun scripts/fetch-client.ts`);
+		t = readFileSync(p, "utf8");
+		templates.set(kind, t);
+	}
+	return t;
+}
+
+export function renderPage(data: PageData, viewer: Viewer, nonce: string): string {
+	const pin = loadPin()!;
+	let html = template(data.kind);
+	const cfg = buildYtcfg(data.kind, viewer, data.url, nonce);
+	html = replaceJsonAfter(html, "ytcfg.set({", json(cfg), "ytcfg");
+	if (html.includes("var ytInitialPlayerResponse = ")) {
+		html = data.playerResponse
+			? replaceJsonAfter(html, "var ytInitialPlayerResponse = {", json(data.playerResponse), "ytInitialPlayerResponse")
+			: replaceJsonAfter(html, "var ytInitialPlayerResponse = {", "null", "ytInitialPlayerResponse");
+	}
+	html = replaceJsonAfter(html, "var ytInitialData = {", json(data.initialData), "ytInitialData");
+	const thumb = data.thumbnail ?? "";
+	const rules: Rule[] = [
+		{ name: "nonce", find: /nonce="[^"]*"/g, replace: () => `nonce="${nonce}"` },
+		{ name: "attestation", find: /\(function\(\) \{if \(window\.ytAtN\) \{window\.ytAtN\(\{[\s\S]*?\}\);\}\}\)\(\);/g, replace: () => "", optional: true },
+		{
+			name: "server-contract",
+			find: /window\['ytPageType'\] = "[^"]*";window\['ytCommand'\] = (\{[\s\S]*?\});window\['ytUrl'\] = '[^']*';/g,
+			replace: () => `window['ytPageType'] = ${json(PAGE_TYPE[data.kind])};window['ytCommand'] = ${json(data.command)};window['ytUrl'] = ${json(data.url)};`,
+		},
+		{ name: "passive-signin-iframe", find: /<iframe name="passive_signin"[^>]*><\/iframe>/g, replace: () => "", optional: true },
+		{ name: "media-host-hints", find: /<link rel="(?:preload|preconnect|dns-prefetch)" href="https:\/\/[^"]*(?:googlevideo\.com|c\.youtube\.com|i\.ytimg\.com)[^"]*"[^>]*>/g, replace: () => "", optional: true },
+		{ name: "thumbnail-preload", find: /<link as="image" rel="preload" href="https:\/\/i\.ytimg\.com\/[^"]*"[^>]*>/g, replace: () => (thumb ? `<link as="image" rel="preload" href="${escapeHtml(thumb)}">` : ""), optional: true },
+		{ name: "player-placeholder", find: /background-image: url\('https:\/\/i\.ytimg\.com\/[^']*'\);/g, replace: () => `background-image: url('${escapeHtml(thumb)}');`, optional: true },
+		{ name: "player-urls", find: /\/s\/player\/[0-9a-f]{8}\//g, replace: () => `/s/player/${pin.player.id}/`, optional: true },
+		{ name: "static-host", find: /https:\/\/www\.youtube\.com\/s\//g, replace: () => "/s/" },
+		{ name: "fonts-host", find: /(?:https:)?\/\/fonts\.googleapis\.com\//g, replace: () => "/_up/fonts.googleapis.com/" },
+		{ name: "title", find: /<title>[^<]*<\/title>/g, replace: () => `<title>${escapeHtml(data.title ? `${data.title} - ${INSTANCE_NAME}` : INSTANCE_NAME)}</title>` },
+		{ name: "meta-title", find: /<meta name="title" content="[^"]*">/g, replace: () => `<meta name="title" content="${escapeHtml(data.title)}">`, optional: true },
+		{ name: "meta-description", find: /<meta name="description" content="[^"]*">/g, replace: () => `<meta name="description" content="${escapeHtml(data.description ?? "")}">`, optional: true },
+		// the guide's footer: this instance's pages instead of YouTube's
+		{ name: "guide-footer-links", find: /(?:<a slot="guide-links-(?:primary|secondary)"[^>]*>[^<]*<\/a>)+/g, replace: () => FOOTER_LINKS },
+		{ name: "copyright", find: /<div id="copyright" slot="copyright"[^>]*>[\s\S]*?<\/div><\/div>/g, replace: () => `<div id="copyright" slot="copyright" style="display: none;"><div dir="ltr" style="display:inline">${escapeHtml(INSTANCE_NAME)}</div></div>`, optional: true },
+		{ name: "app-links", find: /<link rel="(?:alternate|canonical|search)"[^>]*>|<meta name="apple-itunes-app"[^>]*>|<meta http-equiv="origin-trial"[^>]*\/>/g, replace: () => "", optional: true },
+	];
+	for (const r of rules) {
+		let n = 0;
+		html = html.replace(r.find, (...m) => {
+			n++;
+			return r.replace(m as unknown as RegExpExecArray);
+		});
+		if (!n && !r.optional) recordMiss(`page rule ${r.name} on ${data.kind}`, "");
+	}
+	return html;
+}

@@ -1,0 +1,60 @@
+<svg viewBox="-50 -50 100 100" width="100">
+  <style>
+    .fade-in {
+      opacity: 0;
+      animation: fade-in 0.1s forwards var(--yt-timer-to-cross-animation-duration, 5s);
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .countdown-text {
+      fill: currentcolor;
+      font-family: "Roboto", "Arial", sans-serif;
+      font-size: 70px;
+      font-weight: 300;
+      opacity: 0;
+      text-anchor: middle;
+      dominant-baseline: central;
+      animation: text-display var(--yt-timer-to-cross-animation-duration, 1s);
+    }
+
+    @keyframes text-display {
+      0% {
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  </style>
+  <text class="countdown-text" style="animation-delay: 0s">
+    5
+  </text>
+  <text class="countdown-text" style="animation-delay: 1s">
+    4
+  </text>
+  <text class="countdown-text" style="animation-delay: 2s">
+    3
+  </text>
+  <text class="countdown-text" style="animation-delay: 3s">
+    2
+  </text>
+  <text class="countdown-text" style="animation-delay: 4s">
+    1
+  </text>
+  <path stroke-width="2" stroke="currentcolor" d="M-28,-28 L28,28" class="fade-in" />
+  <path stroke-width="2" stroke="currentcolor" d="M28,-28 L-28,28" class="fade-in" />
+</svg>
