@@ -1,8 +1,7 @@
 node_modules/
-/client/
-data/
+/data/*
+!/data/media/
 captures/
-/media/
 .env
 *.har
 profiles/
