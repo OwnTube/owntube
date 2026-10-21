@@ -6,7 +6,7 @@ OwnTube serves the actual YouTube web client against an independent database, ba
 
 Before implementing or changing the admin panel, read [docs/admin-panel/README.md](docs/admin-panel/README.md), open [docs/admin-panel/index.html](docs/admin-panel/index.html), and inspect [docs/admin-panel/preview.png](docs/admin-panel/preview.png).
 
-The project owner selected this YouTube Studio-style design and explicitly asked that it be used and extended with real functioning features. Preserve its Roboto typography, Material icons, OwnTube branding, light/dark palettes, navigation, and overall layout. Reuse the reference code and add new screens consistently.
+The project owner revised the design to give OwnTube its own identity. Use the current Control room reference: Manrope typography, Lucide line icons, horizontal navigation, warm light/dark palettes, red scribble accents, a statistics strip, a library table, and an operations column. This supersedes the earlier Creator Studio-like layout. Preserve the current OwnTube identity and extend it with real functioning features. Reuse the reference code and add new screens consistently.
 
 The reference contains sample data and demo feedback only. Replace those with real authenticated admin routes, database queries, persisted mutations, media/job integration, and working navigation. Implement server-side operator authorization for every admin API operation. Verify the behavior in the browser and preserve the public client's functionality.
 

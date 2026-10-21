@@ -129,7 +129,7 @@ Normal asset serving uses the local archive. The development upstream fallback i
 
 ## Admin panel design
 
-The selected admin panel design is in [docs/admin-panel/](docs/admin-panel/README.md), including the editable [browser preview](docs/admin-panel/index.html), local fonts, light/dark screenshots, a working appearance selector, and the implementation handoff. Use this design as the starting point when building real admin functionality.
+OwnTube's distinct Control room admin design is in [docs/admin-panel/](docs/admin-panel/README.md), including the editable [browser preview](docs/admin-panel/index.html), local fonts, light/dark screenshots, a working appearance selector, and the implementation handoff. Use this design as the starting point when building real admin functionality.
 
 ## Development
 
