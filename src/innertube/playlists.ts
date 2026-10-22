@@ -7,7 +7,7 @@ import { baseVars, videoVars } from "./vars";
 import { viewerVars } from "./chrome";
 import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
-import { type Channel, type Video, avatarUrl, compact, grouped, shortAgo, videoThumbnails, browseEndpoint, channelEndpoint, content, duration, durationLabel, label, playlistEndpoint, plural, responseContext, runs, serviceEndpoint, signInModal, text, watchEndpoint } from "./r";
+import { type Channel, type Video, avatarUrl, compact, grouped, lockupSources, shortAgo, videoThumbnails, browseEndpoint, channelEndpoint, content, duration, durationLabel, label, playlistEndpoint, plural, responseContext, runs, serviceEndpoint, signInModal, text, watchEndpoint } from "./r";
 import { sql } from "../db";
 import { encodeToken, isVideoId, newPlaylistId, randomId } from "../ids";
 import { continuationItem } from "./items";
@@ -492,7 +492,8 @@ route(
 			responseContext: responseContext(viewer),
 			status: "STATUS_SUCCEEDED",
 			playlistEditResults: [],
-			actions: toasts.length ? [{ addToToastAction: { item: { notificationActionRenderer: { responseText: runs(toasts[toasts.length - 1]) } } } }] : [],
+			// the Save sheet's rows (params set) show their own snackbar
+			actions: toasts.length && !body.params ? [{ addToToastAction: { item: { notificationActionRenderer: { responseText: runs(toasts[toasts.length - 1]) } } } }] : [],
 		};
 	},
 	{ mutation: true },
@@ -509,105 +510,43 @@ route(
 	{ mutation: true },
 );
 
-// the "Save video to..." sheet (get_panel PAadd_to_playlist): one toggle row
-// per playlist, Watch later first, and "New playlist", which opens the
-// client's create-playlist dialog form; its Create button builds the
-// createPlaylistServiceEndpoint itself from the form's values.
-const CREATE_FORM_ID = "owntube-create-playlist";
-
-function checkRow(title: string, subtitle: string, checked: boolean, command: unknown) {
-	return {
-		listItemViewModel: {
-			title: content(title),
-			subtitle: content(subtitle),
-			leadingImage: { sources: [{ clientResource: { imageName: checked ? "CHECK_BOX" : "CHECK_BOX_OUTLINE_BLANK" } }] },
-			rendererContext: { commandContext: { onTap: { innertubeCommand: command } } },
-		},
-	};
-}
-
-function createPlaylistDialog(videoId: string) {
-	const option = (title: string, value: string, icon: string, selected: boolean) => ({ title: content(title), leadingImage: { sources: [{ clientResource: { imageName: icon } }] }, value: { privacyStatusValue: value }, isSelected: selected });
-	return {
-		showDialogCommand: {
-			panelLoadingStrategy: {
-				inlineContent: {
-					dialogViewModel: {
-						header: { dialogHeaderViewModel: { headline: content("New playlist") } },
-						content: {
-							createPlaylistDialogFormViewModel: {
-								createPlaylistDialogFormSchema: { id: CREATE_FORM_ID, initialValues: { title: "", visibility: "PRIVATE", isCollaborative: false } },
-								playlistTitle: { textFieldViewModel: { contentProperties: { labelText: "Title", placeholderText: "Choose a title", maxCharacterCount: 150 }, displayProperties: { disableNewLines: true } } },
-								playlistVisibility: {
-									dropdownViewModel: {
-										label: "Visibility",
-										type: "SELECTION_TYPE_PRIVACY_STATUS",
-										options: [option("Public", "PUBLIC", "PRIVACY_PUBLIC", false), option("Unlisted", "UNLISTED", "PRIVACY_UNLISTED", false), option("Private", "PRIVATE", "PRIVACY_PRIVATE", true)],
-									},
-								},
-								videoIds: [videoId],
-								createPlaylistParamsCollaborationDisabled: "CAQ%3D",
-								createPlaylistParamsCollaborationEnabled: "CAQ%3D",
-							},
-						},
-						footer: {
-							formFooterViewModel: {
-								formId: CREATE_FORM_ID,
-								panelFooter: {
-									panelFooterViewModel: {
-										primaryButton: { buttonViewModel: { title: "Create", style: "BUTTON_VIEW_MODEL_STYLE_CALL_TO_ACTION", type: "BUTTON_VIEW_MODEL_TYPE_TEXT", buttonSize: "BUTTON_VIEW_MODEL_SIZE_DEFAULT" } },
-										secondaryButton: { buttonViewModel: { title: "Cancel", onTap: { innertubeCommand: { dismissDialogEndpoint: {} } }, style: "BUTTON_VIEW_MODEL_STYLE_MONO", type: "BUTTON_VIEW_MODEL_TYPE_TEXT", buttonSize: "BUTTON_VIEW_MODEL_SIZE_DEFAULT" } },
-										shouldHideDivider: true,
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	};
-}
-
+// the "Save to..." sheet (get_panel PAadd_to_playlist; templates
+// playlist/save_sheet and item/save_row): a toggle row per playlist, Watch
+// later first, and New playlist, which opens the client's create dialog
 export async function addToPlaylistSheet(videoId: string, viewer: Viewer) {
 	if (!viewer || !isVideoId(videoId)) return { responseContext: responseContext(viewer) };
 	const wl = await watchLaterId(viewer);
-	const lists = await sql`select p.id, p.title, p.kind, p.visibility, exists(select 1 from playlist_items i where i.playlist_id = p.id and i.video_id = ${videoId}) as has
-		from playlists p where p.user_id = ${viewer.userId} order by p.kind = 'watch_later' desc, p.updated_at desc`;
-	const rows = lists.map((p: { id: string; title: string; visibility: string; has: boolean }) => {
-		const pid = p.id === wl ? "WL" : p.id;
-		const vis = p.visibility === "private" ? "Private" : p.visibility === "unlisted" ? "Unlisted" : "Public";
-		const add = serviceEndpoint("/youtubei/v1/browse/edit_playlist", { playlistEditEndpoint: { playlistId: pid, actions: [{ addedVideoId: videoId, action: "ACTION_ADD_VIDEO" }] } });
-		const remove = serviceEndpoint("/youtubei/v1/browse/edit_playlist", { playlistEditEndpoint: { playlistId: pid, actions: [{ action: "ACTION_REMOVE_VIDEO_BY_VIDEO_ID", removedVideoId: videoId }] } });
-		return {
-			toggleableListItemViewModel: {
-				defaultListItem: checkRow(p.title, vis, false, add),
-				toggledListItem: checkRow(p.title, vis, true, remove),
-				initialState: { isToggled: p.has },
-			},
-		};
-	});
-	rows.push({
-		listItemViewModel: {
-			title: content("New playlist"),
-			leadingImage: { sources: [{ clientResource: { imageName: "ADD" } }] },
-			rendererContext: { commandContext: { onTap: { innertubeCommand: createPlaylistDialog(videoId) } } },
-		},
-	} as never);
-	return {
-		responseContext: responseContext(viewer),
-		content: { sheetViewModel: { header: { panelHeaderViewModel: { title: content("Save video to...") } }, content: { listViewModel: { listItems: rows } } } },
-	};
+	const lists = await sql`select p.id, p.title, p.visibility,
+			exists(select 1 from playlist_items i where i.playlist_id = p.id and i.video_id = ${videoId}) as has,
+			(select i.video_id from playlist_items i join videos v on v.id = i.video_id where i.playlist_id = p.id and ${PLAYABLE(viewer)} order by i.position limit 1) as first_video
+		from playlists p where p.user_id = ${viewer.userId} and p.kind in ${sql(["user", "watch_later"])} order by p.kind = 'watch_later' desc, p.updated_at desc`;
+	const vars = { ...baseVars(viewer, `/watch?v=${videoId}`), VIDEO_ID: videoId, VIDEO_THUMBS: lockupSources(videoId) };
+	const items = lists.map((p: { id: string; title: string; visibility: keyof typeof VISIBILITY; has: boolean; first_video: string | null }) =>
+		make("item/save_row", {
+			...vars,
+			PLAYLIST_ID: p.id === wl ? "WL" : p.id,
+			TITLE: p.id === wl ? "Watch later" : p.title,
+			VISIBILITY: VISIBILITY[p.visibility],
+			TOGGLED: p.has,
+			THUMBS: [{ url: thumb(p.first_video), width: 480, height: 360 }],
+		}),
+	);
+	return { responseContext: responseContext(viewer), ...make("playlist/save_sheet", { ...vars, ITEMS: items, TIMESTAMP: { seconds: String(Math.floor(Date.now() / 1000)), nanos: 0 } }) };
+}
+
+// the sheet's params: YouTube's (the video id in a nested message, as the
+// templates carry them) or a bare base64url video id
+export function saveSheetVideoId(params: string): string {
+	try {
+		const bytes = Buffer.from(decodeURIComponent(params), "base64url").toString("latin1");
+		return /\x0a\x0b([A-Za-z0-9_-]{11})/.exec(bytes)?.[1] ?? bytes;
+	} catch {
+		return "";
+	}
 }
 
 route("get_panel", async ({ body, viewer }) => {
-	if (body.panelId === "PAadd_to_playlist") {
-		let id = "";
-		try {
-			id = Buffer.from(String(body.params ?? ""), "base64url").toString();
-		} catch {}
-		return addToPlaylistSheet(id, viewer);
-	}
+	if (body.panelId === "PAadd_to_playlist") return addToPlaylistSheet(saveSheetVideoId(String(body.params ?? "")), viewer);
 	return { responseContext: responseContext(viewer) };
 });
 

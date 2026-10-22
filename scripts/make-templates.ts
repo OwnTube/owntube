@@ -1296,6 +1296,15 @@ function sortChip(chip: any, targetId: string) {
 		cc.command.showReloadUiCommand.targetId = targetId;
 	});
 }
+// New playlist dialogs: collaborative playlists are not offered
+function noCollaboration(o: any) {
+	const form = find(o, "createPlaylistDialogFormViewModel");
+	if (!form) return;
+	delete form.playlistCollaborate;
+	delete form.createPlaylistParamsCollaborationEnabled;
+	form.disablePlaylistCollaborate = true;
+	delete form.createPlaylistDialogFormSchema.fieldSchemas.visibility; // its only rule concerns collaboration
+}
 function library() {
 	const own = pageVar(body("in-own-channel", /^001-/)).metadata.channelMetadataRenderer;
 	const vid: string = own.externalId;
@@ -1330,14 +1339,7 @@ function library() {
 	const ll = lockupFrom(shelves["Liked videos"], LOCKUP_MENU);
 	const lll = videoLockup(ll);
 	save("item/video_lockup_you", resumeFree(lll.item), lll.samples);
-	// New playlist: collaborative playlists are not offered
-	const form = find(shelves.Playlists, "createPlaylistDialogFormViewModel");
-	if (form) {
-		delete form.playlistCollaborate;
-		delete form.createPlaylistParamsCollaborationEnabled;
-		form.disablePlaylistCollaborate = true;
-		delete form.createPlaylistDialogFormSchema.fieldSchemas.visibility; // its only rule concerns collaboration
-	}
+	noCollaboration(shelves.Playlists);
 	for (const [title, name] of [["History", "history"], ["Playlists", "playlists"], ["Watch later", "wl"], ["Liked videos", "ll"]] as const) {
 		const s = clean(shelves[title]);
 		const sh = shelfOf(s);
@@ -1394,6 +1396,42 @@ function library() {
 	save("item/channel_subscribed", chItem, [cr.channelId, contentOf(cr.title)]);
 	shelf.items = "{{ITEMS}}";
 	save("subscriptions/channels", tokenize(ch, []));
+}
+
+// ======================================================================
+// the Save sheet (get_panel PAadd_to_playlist): one toggle row per playlist
+// and New playlist in the footer
+function saveSheet() {
+	const [[req, resp]] = bodies("in-save", /get_panel\.resp$/);
+	const params: string = req.params;
+	const sheet = clean(resp);
+	const sv = sheet.content.sheetViewModel;
+	const rows = sv.content.listViewModel.listItems;
+	const vid: string = find(rows, "addedVideoId");
+	noCollaboration(sv.footer);
+	sv.content.listViewModel.listItems = "{{ITEMS}}";
+	delete sv.content.listViewModel.visibleElementCount;
+	sheet.frameworkUpdates.entityBatchUpdate.timestamp = "{{TIMESTAMP}}";
+	save("playlist/save_sheet", tokenize(sheet, [[params, "PARAMS"]], [[vid, "VIDEO_ID"]], [[vid, "VIDEO_ID"]]), [vid]);
+
+	// a user playlist's row (Watch later's differs only in its values)
+	const row = rows.find((r: any) => find(r, "playlistId") !== "WL").toggleableListItemViewModel;
+	const pid: string = find(row, "playlistId");
+	const title = contentOf(row.defaultListItem.listItemViewModel.title);
+	delete row.rendererContext;
+	row.initialState.isToggled = "{{TOGGLED}}";
+	for (const li of [row.defaultListItem, row.toggledListItem]) {
+		const lv = li.listItemViewModel;
+		const a = lv.rendererContext.accessibilityContext;
+		a.label = a.label.replace(`${title}, ${contentOf(lv.subtitle)}`, "{{TITLE}}, {{VISIBILITY}}");
+		lv.title.content = "{{TITLE}}";
+		lv.subtitle.content = "{{VISIBILITY}}";
+		wholeToken(lv.leadingAccessory, "sources", "THUMBS");
+		const snack = find(lv, "snackbarViewModel");
+		snack.text.content = snack.text.content.replace(title, "{{TITLE}}");
+		if (snack.image) wholeToken(snack.image, "sources", "VIDEO_THUMBS");
+	}
+	save("item/save_row", tokenize({ toggleableListItemViewModel: row }, [[pid, "PLAYLIST_ID"]], [[vid, "VIDEO_ID"]], [[vid, "VIDEO_ID"], [params, "PARAMS"]]), [vid, pid, title]);
 }
 
 // ======================================================================
@@ -1557,6 +1595,7 @@ const steps: [string, () => void][] = [
 	["history", history],
 	["library", library],
 	["comments", comments],
+	["save", saveSheet],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;

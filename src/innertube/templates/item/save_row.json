@@ -1,0 +1,245 @@
+{
+	"toggleableListItemViewModel": {
+		"defaultListItem": {
+			"listItemViewModel": {
+				"title": {
+					"content": "{{TITLE}}",
+					"lineBreakMode": "LINE_BREAK_MODE_BY_WORD_WRAPPING"
+				},
+				"subtitle": {
+					"content": "{{VISIBILITY}}"
+				},
+				"trailingImage": {
+					"sources": [
+						{
+							"clientResource": {
+								"imageName": "BOOKMARK_BORDER"
+							}
+						}
+					]
+				},
+				"leadingAccessory": {
+					"collectionThumbnailViewModel": {
+						"primaryThumbnail": {
+							"thumbnailViewModel": {
+								"image": {
+									"sources": "{{THUMBS}}"
+								}
+							}
+						},
+						"stackColor": {
+							"lightTheme": 3432606571,
+							"darkTheme": 3432216182
+						},
+						"maxHeight": 44
+					}
+				},
+				"rendererContext": {
+					"accessibilityContext": {
+						"label": "{{TITLE}}, {{VISIBILITY}}, Not selected"
+					},
+					"commandContext": {
+						"onTap": {
+							"parallelCommand": {
+								"commands": [
+									{
+										"innertubeCommand": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"sendPost": true,
+													"apiUrl": "/youtubei/v1/browse/edit_playlist"
+												}
+											},
+											"playlistEditEndpoint": {
+												"playlistId": "{{PLAYLIST_ID}}",
+												"actions": [
+													{
+														"addedVideoId": "{{VIDEO_ID}}",
+														"action": "ACTION_ADD_VIDEO"
+													}
+												],
+												"params": "IAE%3D"
+											}
+										}
+									},
+									{
+										"serialCommand": {
+											"commands": [
+												{
+													"innertubeCommand": {
+														"hideSheetCommand": {}
+													}
+												},
+												{
+													"innertubeCommand": {
+														"showSnackbarCommand": {
+															"content": {
+																"snackbarViewModel": {
+																	"image": {
+																		"sources": "{{VIDEO_THUMBS}}"
+																	},
+																	"text": {
+																		"content": "Saved to {{TITLE}}"
+																	},
+																	"buttons": [
+																		{
+																			"buttonViewModel": {
+																				"title": "Change",
+																				"onTap": {
+																					"serialCommand": {
+																						"commands": [
+																							{
+																								"innertubeCommand": {
+																									"hideSnackbarCommand": {
+																										"hack": true
+																									}
+																								}
+																							},
+																							{
+																								"innertubeCommand": {
+																									"commandMetadata": {
+																										"interactionLoggingCommandMetadata": {
+																											"screenVisualElement": {
+																												"uiType": 264491
+																											}
+																										}
+																									},
+																									"showSheetCommand": {
+																										"panelLoadingStrategy": {
+																											"requestTemplate": {
+																												"panelId": "PAadd_to_playlist",
+																												"params": "{{b64:VIDEO_ID:-gYPCgt-fn5-fn5-fn5-figE}}"
+																											},
+																											"screenVe": 264491
+																										},
+																										"contextualSheetPresentationConfig": {
+																											"expandToFullWidth": true
+																										}
+																									}
+																								}
+																							}
+																						]
+																					}
+																				},
+																				"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																				"type": "BUTTON_VIEW_MODEL_TYPE_TONAL"
+																			}
+																		}
+																	]
+																}
+															},
+															"animationStyle": "SNACKBAR_ANIMATION_STYLE_DEFAULT",
+															"durationSeconds": 3
+														}
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		"toggledListItem": {
+			"listItemViewModel": {
+				"title": {
+					"content": "{{TITLE}}",
+					"lineBreakMode": "LINE_BREAK_MODE_BY_WORD_WRAPPING"
+				},
+				"subtitle": {
+					"content": "{{VISIBILITY}}"
+				},
+				"trailingImage": {
+					"sources": [
+						{
+							"clientResource": {
+								"imageName": "BOOKMARK"
+							}
+						}
+					]
+				},
+				"leadingAccessory": {
+					"collectionThumbnailViewModel": {
+						"primaryThumbnail": {
+							"thumbnailViewModel": {
+								"image": {
+									"sources": "{{THUMBS}}"
+								}
+							}
+						},
+						"stackColor": {
+							"lightTheme": 3432606571,
+							"darkTheme": 3432216182
+						},
+						"maxHeight": 44
+					}
+				},
+				"rendererContext": {
+					"accessibilityContext": {
+						"label": "{{TITLE}}, {{VISIBILITY}}, Selected"
+					},
+					"commandContext": {
+						"onTap": {
+							"parallelCommand": {
+								"commands": [
+									{
+										"innertubeCommand": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"sendPost": true,
+													"apiUrl": "/youtubei/v1/browse/edit_playlist"
+												}
+											},
+											"playlistEditEndpoint": {
+												"playlistId": "{{PLAYLIST_ID}}",
+												"actions": [
+													{
+														"action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+														"removedVideoId": "{{VIDEO_ID}}"
+													}
+												],
+												"params": "IAE%3D"
+											}
+										}
+									},
+									{
+										"serialCommand": {
+											"commands": [
+												{
+													"innertubeCommand": {
+														"hideSheetCommand": {}
+													}
+												},
+												{
+													"innertubeCommand": {
+														"showSnackbarCommand": {
+															"content": {
+																"snackbarViewModel": {
+																	"text": {
+																		"content": "Removed from {{TITLE}}"
+																	}
+																}
+															},
+															"animationStyle": "SNACKBAR_ANIMATION_STYLE_DEFAULT",
+															"durationSeconds": 3
+														}
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		"initialState": {
+			"isToggled": "{{TOGGLED}}"
+		}
+	}
+}
