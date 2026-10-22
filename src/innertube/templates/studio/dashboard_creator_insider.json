@@ -1,0 +1,75 @@
+{
+	"body": {
+		"carouselCard": {
+			"items": [
+				{
+					"basicItemLargeImage": {
+						"title": "New! Ask YouTube on the Search Page",
+						"content": "Discover info from videos & explore topics instantly on desktop, TV, and now mobile with Ask YouTube's real-time conversational search",
+						"buttonActions": [
+							{
+								"text": "Watch on YouTube",
+								"url": "{{YOUTUBE}}/watch?v=xGxx6NksmU4"
+							}
+						],
+						"imageAction": {
+							"imageUrl": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/promos/0186cae4257a5381e8ca4d2bfdf956a6f6054fbde96b95c09cd344c7bae717d3_1280x720.jpeg",
+							"url": "{{YOUTUBE}}/watch?v=xGxx6NksmU4"
+						},
+						"isDismissable": false
+					},
+					"interactionRecordingParams": {
+						"communicationType": "COMMUNICATION_TYPE_CHANNEL_DASHBOARD_CREATOR_INSIDER",
+						"promoId": "group-id-162901-76215721a"
+					},
+					"id": "group-id-162901-76215721a"
+				},
+				{
+					"basicItemLargeImage": {
+						"title": "Inside YouTube: New live features",
+						"content": "‪@JennyHoyos‬ joins head of YouTube Live ‪@BarbaraEMac‬ and Creator Liaison ‪@ReneRitchie‬ to talk all about new live features",
+						"buttonActions": [
+							{
+								"text": "Watch on YouTube",
+								"url": "{{YOUTUBE}}/watch?v=cxCBk6uouHM"
+							}
+						],
+						"imageAction": {
+							"imageUrl": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/promos/5a6a021f2fbb1dfb638d6c5ceff735e50a4267a1a038ad3453ddfdcf09581439_1280x720.jpeg",
+							"url": "{{YOUTUBE}}/watch?v=cxCBk6uouHM"
+						},
+						"isDismissable": false
+					},
+					"interactionRecordingParams": {
+						"communicationType": "COMMUNICATION_TYPE_CHANNEL_DASHBOARD_CREATOR_INSIDER",
+						"promoId": "group-id-162901-1132938409a"
+					},
+					"id": "group-id-162901-1132938409a"
+				},
+				{
+					"basicItemLargeImage": {
+						"title": "Views (Co-Viewed) & Branded Content",
+						"content": "US creators can now tag Amazon products in YouTube Shopping, see more accurate TV audience stats, and get updates on branded content deals",
+						"buttonActions": [
+							{
+								"text": "Watch on YouTube",
+								"url": "{{YOUTUBE}}/watch?v=8DgguXIU4L8"
+							}
+						],
+						"imageAction": {
+							"imageUrl": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/promos/eac856335d5aaf4e8ffa99072f444cf2d45b6f8f351105cf3e041f670c53678d_1280x720.jpeg",
+							"url": "{{YOUTUBE}}/watch?v=8DgguXIU4L8"
+						},
+						"isDismissable": false
+					},
+					"interactionRecordingParams": {
+						"communicationType": "COMMUNICATION_TYPE_CHANNEL_DASHBOARD_CREATOR_INSIDER",
+						"promoId": "group-id-162901-3603233a"
+					},
+					"id": "group-id-162901-3603233a"
+				}
+			]
+		}
+	},
+	"id": "creator_insider"
+}

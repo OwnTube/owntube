@@ -1735,6 +1735,24 @@ function studio() {
 	save("studio/channel", tokenize(ch, []), [id, title]);
 }
 
+// YouTube's own cards on Studio's dashboard, as the capture has them: the
+// Creator Insider carousel and "What's new in Studio" (help center articles).
+// Their impression/click tokens are the signed-in account's and are dropped;
+// the videos and articles they link to stay on YouTube and its help center.
+function studioDashboard() {
+	const [, r] = bodies("studio-all", /creator_get_channel_dashboard\.resp$/)[0];
+	const card = (id: string) => {
+		const c = r.cards.find((c: any) => c.id === id);
+		if (!c) throw new Error(`no ${id} card`);
+		return c;
+	};
+	const insider = dropKey(clean(card("creator_insider")), "feedbackTokens");
+	// tokenize sends www.youtube.com links to this instance; these are YouTube's videos
+	const youtube = strings(insider, (s) => s.replace(/^https:\/\/www\.youtube\.com\/watch\?/, "{{YOUTUBE}}/watch?"));
+	save("studio/dashboard_creator_insider", tokenize(youtube, []));
+	save("studio/dashboard_product_updates", tokenize(clean(card("product_updates")), []));
+}
+
 // ======================================================================
 const only = process.argv.slice(2);
 personalValues();
@@ -1755,6 +1773,7 @@ const steps: [string, () => void][] = [
 	["share", sharePanel],
 	["playlist-panel", playlistPanelTpl],
 	["studio", studio],
+	["studio-dashboard", studioDashboard],
 	["badges", badges],
 ];
 for (const [name, fn] of steps) {

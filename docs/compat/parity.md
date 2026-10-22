@@ -57,7 +57,10 @@ Status: ✅ works · 🟡 partial · ❌ not implemented
 | Edit | Title, description, visibility | ✅ | manual |
 | Edit | Custom thumbnail, playlists, audience, tags, category, language, license, comments settings | ❌ | — |
 | Edit | Editor (trim, blur), subtitles, end screens, cards | ❌ | — |
-| Dashboard, Analytics, Community, Subtitles, Copyright, Earn, Customization, Audio library, Settings | | ❌ | pages load without data |
+| Dashboard | Channel analytics, latest video performance, real-time views and top content, published videos, Creator Insider, What's new | ✅ | studio-walk screenshot |
+| Dashboard | Latest comments, recent subscribers | ❌ | — |
+| Analytics, Community, Subtitles, Copyright, Earn, Customization, Audio library, Settings | | ❌ | pages load without data |
+| Appearance | Dark theme | ❌ | Studio's dark build isn't pinned, so a dark page shows light backgrounds |
 | Checks | Copyright and guidelines checks | ❌ | Studio shows "Checks complete" |
 
 ## Admin panel

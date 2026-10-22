@@ -1,0 +1,25 @@
+{
+	"body": {
+		"basicCard": {
+			"item": {
+				"helpCenterIssuesItem": {
+					"currentIssues": [
+						{
+							"title": "Increasing Shorts length",
+							"url": "https://support.google.com/youtube/answer/11286863?hl=en"
+						},
+						{
+							"title": "Expansion of channel permissions",
+							"url": "https://support.google.com/youtube/answer/11286864?hl=en"
+						},
+						{
+							"title": "Upcoming changes to Community Guidelines warnings",
+							"url": "https://support.google.com/youtube/answer/11287076?hl=en"
+						}
+					]
+				}
+			}
+		}
+	},
+	"id": "product_updates"
+}

@@ -5919,6 +5919,24 @@
 			"kind": "image"
 		},
 		{
+			"url": "https://www.gstatic.com/youtube/img/promos/0186cae4257a5381e8ca4d2bfdf956a6f6054fbde96b95c09cd344c7bae717d3_1280x720.jpeg",
+			"sha256": "0186cae4257a5381e8ca4d2bfdf956a6f6054fbde96b95c09cd344c7bae717d3",
+			"size": 88895,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/promos/5a6a021f2fbb1dfb638d6c5ceff735e50a4267a1a038ad3453ddfdcf09581439_1280x720.jpeg",
+			"sha256": "5a6a021f2fbb1dfb638d6c5ceff735e50a4267a1a038ad3453ddfdcf09581439",
+			"size": 253430,
+			"kind": "observed"
+		},
+		{
+			"url": "https://www.gstatic.com/youtube/img/promos/eac856335d5aaf4e8ffa99072f444cf2d45b6f8f351105cf3e041f670c53678d_1280x720.jpeg",
+			"sha256": "eac856335d5aaf4e8ffa99072f444cf2d45b6f8f351105cf3e041f670c53678d",
+			"size": 185385,
+			"kind": "observed"
+		},
+		{
 			"url": "https://www.gstatic.com/youtube/img/shopping/product_drops/placeholder_thumbnails/shopping_bag_center/dark/Image-0.png",
 			"sha256": "90b2a1187a3a0170e7f29e711496e76819aa23250ab5563a5ee7c25ddd56b7c4",
 			"size": 31626,

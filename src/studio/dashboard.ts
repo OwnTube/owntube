@@ -12,6 +12,8 @@
 import type { Viewer } from "../client/page";
 import { responseContext } from "../innertube/r";
 import { ApiError, type Ctx, route } from "../innertube/router";
+import { make } from "../innertube/tpl";
+import { baseVars } from "../innertube/vars";
 import { type ChannelVideo, type Query, channelVideos, runQuery } from "./analytics";
 import { creatorVideo, maskedVideo, videosFor } from "./video";
 
@@ -103,7 +105,12 @@ route("creator/get_channel_dashboard", async (ctx: Ctx) => {
 	if (params.channelId && params.channelId !== viewer.channelId) return { responseContext: responseContext(viewer), cards: [] };
 	const videos = await channelVideos(viewer.channelId);
 	const f = params.factsAnalyticsParams ?? {};
-	const cards: unknown[] = [await facts(viewer, f.nodes ?? [], f.connectors ?? [], videos)];
+	const youtube = { ...baseVars(viewer), YOUTUBE: "https://www.youtube.com" };
+	const cards: unknown[] = [
+		await facts(viewer, f.nodes ?? [], f.connectors ?? [], videos),
+		make("studio/dashboard_product_updates", youtube),
+		make("studio/dashboard_creator_insider", youtube),
+	];
 	const snap = await snapshot(viewer, videos);
 	if (snap) cards.push(snap);
 	// the channel's latest uploads, with their details sent along so the card
