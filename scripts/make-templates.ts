@@ -1123,6 +1123,13 @@ function playlistPage() {
 	);
 	out = strings(out, (x) => x.split(first).join("{{FIRST_VIDEO_ID}}").split(shuffleId).join("{{SHUFFLE_VIDEO_ID}}").replace(/&pp=[^&"]*/, ""));
 	save("playlist/page_out", out, [plId, title, chId, chName, first, shuffleId, description]);
+
+	// signed in, Save adds the playlist to the library (like/like with the playlist as target)
+	const inPage = pageOnly(pageVar(body("in-playlist-other", /^001-/)));
+	const toggle = clean(find(inPage.header, "toggleButtonViewModel"));
+	toggle.isToggled = "{{SAVED}}";
+	const inId: string = find(toggle, "likeEndpoint").target.playlistId;
+	save("playlist/save_toggle_in", tokenize({ toggleButtonViewModel: toggle }, [[inId, "PLAYLIST_ID"]], [[inId, "PLAYLIST_ID"]]), [inId]);
 }
 
 // "Learn more" runs that link to Google's help centre
@@ -1438,6 +1445,59 @@ function saveSheet() {
 }
 
 // ======================================================================
+// the playlist beside a watch page (&list=): its rows, loop and shuffle,
+// and Save playlist to Library. Left out: verification badges, Download,
+// the rows' sampled colour palettes and collaborator dialogs (one channel
+// per video here)
+function playlistPanelTpl() {
+	const [[, resp]] = bodies("playlist-watch", /get_watch\.resp$/);
+	const pl = clean(find(resp, "playlist")).playlist;
+	const pid: string = pl.playlistId;
+	const total = String(pl.totalVideos);
+	const owner = contentOf(pl.ownerName);
+	const ownerEp = find(pl.shortBylineText, "browseEndpoint");
+	const sample = pl.contents.find((c: any) => !find(c, "showDialogCommand") && !c.playlistPanelVideoRenderer.selected);
+	const r = sample.playlistPanelVideoRenderer;
+	const vid: string = r.videoId;
+	const ep = find(r.longBylineText, "browseEndpoint");
+	const title = contentOf(r.title);
+	const index: number = r.navigationEndpoint.watchEndpoint.index;
+	for (const k of ["lightColorPalette", "darkColorPalette"]) delete r[k];
+	const menu = r.menu.menuRenderer;
+	menu.items = menu.items.filter((i: any) => !i.menuServiceItemDownloadRenderer);
+	r.indexText.simpleText = "{{INDEX_TEXT}}";
+	r.selected = "{{SELECTED}}";
+	r.navigationEndpoint.watchEndpoint.index = "{{INDEX}}";
+	delete r.navigationEndpoint.watchEndpoint.loggingContext;
+	delete r.navigationEndpoint.watchEndpoint.playerParams;
+	r.navigationEndpoint.commandMetadata.webCommandMetadata.url = `/watch?v={{VIDEO_ID}}&list={{PLAYLIST_ID}}&index={{INDEX_1}}`;
+	r.playlistSetVideoId = "{{SET_VIDEO_ID}}";
+	wholeToken(r.thumbnail, "thumbnails", "THUMBS");
+	const row = tokenize(
+		sample,
+		[[pid, "PLAYLIST_ID"], [vid, "VIDEO_ID"], [ep.canonicalBaseUrl, "CHANNEL_URL"], [ep.browseId, "CHANNEL_ID"]],
+		[[vid, "VIDEO_ID"], [pid, "PLAYLIST_ID"]],
+		[[title, "TITLE"], [contentOf(r.lengthText), "DURATION"], [r.lengthText.accessibility.accessibilityData.label, "DURATION_LABEL"], [contentOf(r.longBylineText), "CHANNEL_NAME"], [`${title} ${r.lengthText.accessibility.accessibilityData.label}`, "TITLE_LABEL"]],
+	);
+	save("item/playlist_panel_video", row, [vid, pid, title, ep.browseId]);
+
+	delete pl.ownerBadges;
+	pl.contents = "{{ITEMS}}";
+	pl.currentIndex = pl.localCurrentIndex = "{{CURRENT_INDEX}}";
+	pl.totalVideos = "{{TOTAL_VIDEOS}}";
+	pl.playlistShareUrl = "{{SHARE_URL}}";
+	pl.videoCountText.runs = [{ text: "{{CURRENT_1}}" }, { text: " / " }, { text: total }];
+	find(pl.menu, "toggleMenuServiceItemRenderer").isToggled = "{{SAVED}}";
+	const panel = tokenize(
+		{ playlist: pl },
+		[[pid, "PLAYLIST_ID"], [ownerEp.canonicalBaseUrl, "CHANNEL_URL"], [ownerEp.browseId, "CHANNEL_ID"]],
+		[[pid, "PLAYLIST_ID"]],
+		[[contentOf(pl.titleText), "TITLE"], [owner, "OWNER_NAME"], [total, "TOTAL_TEXT"]],
+	);
+	save("watch/playlist_panel", panel, [pid, owner, ownerEp.browseId]);
+}
+
+// ======================================================================
 // the Share dialog (share/get_share_panel): the link, Start at, and the
 // share targets, which open the link on other sites. Left out: Embed (no
 // embed player here) and the attribution id YouTube adds to shared links
@@ -1629,6 +1689,7 @@ const steps: [string, () => void][] = [
 	["comments", comments],
 	["save", saveSheet],
 	["share", sharePanel],
+	["playlist-panel", playlistPanelTpl],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;

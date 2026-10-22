@@ -1,0 +1,62 @@
+{
+	"toggleButtonViewModel": {
+		"defaultButtonViewModel": {
+			"buttonViewModel": {
+				"iconName": "PLAYLIST_ADD",
+				"onTap": {
+					"innertubeCommand": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"sendPost": true,
+								"apiUrl": "/youtubei/v1/like/like"
+							}
+						},
+						"likeEndpoint": {
+							"status": "LIKE",
+							"target": {
+								"playlistId": "{{PLAYLIST_ID}}"
+							},
+							"likeParams": "{{b64:PLAYLIST_ID:CiQSIn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4%3D}}"
+						}
+					}
+				},
+				"accessibilityText": "Save playlist",
+				"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY",
+				"isFullWidth": false,
+				"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+				"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+				"tooltip": "Save playlist"
+			}
+		},
+		"toggledButtonViewModel": {
+			"buttonViewModel": {
+				"iconName": "PLAYLIST_ADD_CHECK",
+				"onTap": {
+					"innertubeCommand": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"sendPost": true,
+								"apiUrl": "/youtubei/v1/like/removelike"
+							}
+						},
+						"likeEndpoint": {
+							"status": "INDIFFERENT",
+							"target": {
+								"playlistId": "{{PLAYLIST_ID}}"
+							},
+							"removeLikeParams": "{{b64:PLAYLIST_ID:CiQSIn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4%3D}}"
+						}
+					}
+				},
+				"accessibilityText": "Remove from Library",
+				"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY",
+				"isFullWidth": false,
+				"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+				"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+				"tooltip": "Remove from Library"
+			}
+		},
+		"isToggled": "{{SAVED}}",
+		"identifier": ""
+	}
+}

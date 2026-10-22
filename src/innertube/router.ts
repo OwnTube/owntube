@@ -76,5 +76,10 @@ export async function innertube(req: Request, url: URL, viewer: Viewer): Promise
 }
 
 // telemetry the client sends; accepted and dropped
-// att/get would hand out a BotGuard challenge; without one the client skips attestation
-for (const m of ["log_event", "att/get", "att/log", "visitor_id", "stats/qoe", "stats/watchtime"]) route(m, () => ({ responseContext: {} }));
+for (const m of ["log_event", "att/log", "visitor_id", "stats/qoe", "stats/watchtime"]) route(m, () => ({ responseContext: {} }));
+// att/get: a challenge without a BotGuard program. The client then marks
+// BotGuard as not needed (window.bgens = 1) and sends player and get_watch
+// requests without waiting for a PO token it could never mint; with no
+// challenge at all it retries and holds in-app watch navigation forever.
+// t is the challenge's lifetime in seconds
+route("att/get", () => ({ responseContext: {}, challenge: "a=5&t=86400" }));

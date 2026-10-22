@@ -7,7 +7,7 @@ import { baseVars, videoVars } from "./vars";
 import { viewerVars } from "./chrome";
 import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
-import { type Channel, type Video, avatarUrl, compact, grouped, lockupSources, shortAgo, videoThumbnails, browseEndpoint, channelEndpoint, content, duration, durationLabel, label, playlistEndpoint, plural, responseContext, runs, serviceEndpoint, signInModal, text, watchEndpoint } from "./r";
+import { type Channel, type Video, avatarUrl, compact, grouped, lockupSources, shortAgo, videoThumbnails, content, duration, durationLabel, playlistEndpoint, plural, responseContext, runs, serviceEndpoint, text, watchEndpoint } from "./r";
 import { sql } from "../db";
 import { encodeToken, isVideoId, newPlaylistId, randomId } from "../ids";
 import { continuationItem } from "./items";
@@ -79,16 +79,18 @@ export async function userPlaylists(viewer: Viewer, ownerUserId?: string, includ
 }
 
 // the viewer's library (Playlists feed and the You page): Liked videos,
-// Watch later and their own playlists, most recently changed first or A-Z.
-// "Owned" leaves out the two automatic lists
+// Watch later, their own playlists and the ones they saved, most recently
+// changed (or saved) first, or A-Z. "Owned" keeps only their own playlists
 export async function libraryPlaylists(viewer: NonNullable<Viewer>, owned = false, az = false): Promise<Playlist[]> {
 	if (!owned) await watchLaterId(viewer);
 	const rows = await sql`select p.*, c.id as owner_channel, c.title as owner_title, c.handle as owner_handle,
 		(select count(*)::int from playlist_items i join videos v on v.id = i.video_id where i.playlist_id = p.id and ${PLAYABLE(viewer)}) as video_count,
 		(select i.video_id from playlist_items i join videos v on v.id = i.video_id where i.playlist_id = p.id and ${PLAYABLE(viewer)} order by i.position limit 1) as first_video,
-		greatest(p.updated_at, (select max(i.added_at) from playlist_items i where i.playlist_id = p.id)) as activity
+		coalesce(s.saved_at, greatest(p.updated_at, (select max(i.added_at) from playlist_items i where i.playlist_id = p.id))) as activity
 		from playlists p join channels c on c.user_id = p.user_id
-		where p.user_id = ${viewer.userId} and p.kind in ${sql(owned ? ["user"] : ["user", "watch_later"])}`;
+		left join saved_playlists s on s.playlist_id = p.id and s.user_id = ${viewer.userId}
+		where (p.user_id = ${viewer.userId} and p.kind in ${sql(owned ? ["user"] : ["user", "watch_later"])})
+			or (${!owned} and s.user_id is not null and p.visibility <> 'private')`;
 	const lists = rows.map((p: Playlist & { activity: Date }) => ({ ...p, id: p.kind === "watch_later" ? "WL" : p.id, user_id: String(p.user_id) }));
 	if (!owned) {
 		const liked = await getPlaylist("LL", viewer);
@@ -99,6 +101,22 @@ export async function libraryPlaylists(viewer: NonNullable<Viewer>, owned = fals
 }
 
 const VISIBILITY = { public: "Public", unlisted: "Unlisted", private: "Private" } as const;
+
+// someone else's playlist in the viewer's library
+async function isSaved(p: Playlist, viewer: Viewer) {
+	if (!viewer || p.kind !== "user" || p.user_id === viewer.userId) return false;
+	const [r] = await sql`select 1 from saved_playlists where user_id = ${viewer.userId} and playlist_id = ${p.id}`;
+	return !!r;
+}
+
+// Save playlist / Remove from Library (like/like and like/removelike with a playlist target)
+export async function setSaved(id: string, viewer: NonNullable<Viewer>, saved: boolean) {
+	const p = await getPlaylist(id, viewer);
+	if (!p || p.kind !== "user") throw new ApiError(404, "Playlist not found");
+	if (p.user_id === viewer.userId) throw new ApiError(400, "This is your own playlist.");
+	if (saved) await sql`insert into saved_playlists (user_id, playlist_id) values (${viewer.userId}, ${p.id}) on conflict do nothing`;
+	else await sql`delete from saved_playlists where user_id = ${viewer.userId} and playlist_id = ${p.id}`;
+}
 
 // a playlist card as the Playlists feed and the You page show it (template
 // item/playlist_lockup_feed); only the viewer's own playlists can be deleted
@@ -113,7 +131,7 @@ export function playlistCard(p: Playlist, viewer: Viewer, page = "/feed/playlist
 		THUMBS: [{ url: thumb(p.first_video), width: 480, height: 270 }],
 	});
 	const lv = find(item, "lockupViewModel");
-	if (p.kind !== "user") delete lv.metadata.lockupMetadataViewModel.menuButton;
+	if (p.kind !== "user" || p.user_id !== viewer?.userId) delete lv.metadata.lockupMetadataViewModel.menuButton;
 	if (!p.first_video) {
 		// nothing to play: the card opens the playlist
 		delete lv.itemPlayback;
@@ -320,8 +338,11 @@ async function otherPage(p: Playlist, viewer: Viewer) {
 	const ph = page.header.pageHeaderRenderer.content.pageHeaderViewModel;
 	if (!desc) delete ph.description;
 	const actions = ph.actions.flexibleActionsViewModel.actionsRows[0].actions;
-	// signed in, saving someone's playlist to the library isn't offered here
-	if (viewer) ph.actions.flexibleActionsViewModel.actionsRows[0].actions = actions.filter((a: any) => !a.toggleButtonViewModel);
+	// signed in, Save adds the playlist to the library
+	if (viewer) {
+		const i = actions.findIndex((a: any) => a.toggleButtonViewModel);
+		if (i >= 0) actions[i] = make("playlist/save_toggle_in", { PLAYLIST_ID: p.id, SAVED: await isSaved(p, viewer) });
+	}
 	if (!items.length) ph.actions.flexibleActionsViewModel.actionsRows[0].actions = ph.actions.flexibleActionsViewModel.actionsRows[0].actions.filter((a: any) => !find(a, "watchEndpoint"));
 	return page;
 }
@@ -338,42 +359,53 @@ export async function playlistBrowse(id: string, viewer: Viewer): Promise<Browse
 	};
 }
 
-// the playlist column on a watch page with &list=
+// the playlist beside a watch page with &list= (templates watch/playlist_panel
+// and item/playlist_panel_video)
 export async function playlistPanel(id: string, videoId: string, viewer: Viewer, index?: number): Promise<unknown> {
 	const p = await getPlaylist(id, viewer);
 	if (!p) return undefined;
 	const vids = await playlistVideos(p, viewer, 200, 0);
-	const current = index !== undefined && vids[index]?.id === videoId ? index : vids.findIndex((v) => v.id === videoId);
-	return {
-		playlist: {
-			title: p.title,
-			contents: vids.map((v, i) => ({
-				playlistPanelVideoRenderer: {
-					title: { accessibility: label(v.title), simpleText: v.title },
-					longBylineText: runs({ text: v.channel_title, navigationEndpoint: channelEndpoint({ id: v.channel_id, handle: v.channel_handle }) }),
-					shortBylineText: runs({ text: v.channel_title, navigationEndpoint: channelEndpoint({ id: v.channel_id, handle: v.channel_handle }) }),
-					thumbnail: { thumbnails: [{ url: `${PUBLIC_ORIGIN}/vi/${v.id}/default.jpg`, width: 120, height: 90 }, { url: `${PUBLIC_ORIGIN}/vi/${v.id}/mqdefault.jpg`, width: 320, height: 180 }] },
-					lengthText: { accessibility: label(durationLabel(v.duration_ms)), simpleText: duration(v.duration_ms) },
-					indexText: text(i === current ? "▶" : String(i + 1)),
-					selected: i === current,
-					navigationEndpoint: watchEndpoint(v.id, { playlistId: p.id, index: i }),
-					videoId: v.id,
-					playlistSetVideoId: v.set_id,
-				},
-			})),
-			currentIndex: Math.max(0, current),
-			playlistId: p.id,
-			ownerName: text(p.owner_title),
-			isInfinite: false,
-			playlistShareUrl: `${PUBLIC_ORIGIN}/playlist?list=${p.id}`,
-			shortBylineText: runs({ text: p.owner_title, navigationEndpoint: channelEndpoint({ id: p.owner_channel, handle: p.owner_handle }) }),
-			isEditable: !!viewer && p.user_id === viewer.userId && p.kind === "user",
-			totalVideos: vids.length,
-			titleText: runs({ text: p.title, navigationEndpoint: playlistEndpoint(p.id) }),
-			endpoint: playlistEndpoint(p.id),
-			localCurrentIndex: Math.max(0, current),
-		},
-	};
+	const current = Math.max(0, index !== undefined && vids[index]?.id === videoId ? index : vids.findIndex((v) => v.id === videoId));
+	const vars = baseVars(viewer, `/watch?v=${videoId}&list=${p.id}`);
+	const items = vids.map((v, i) => {
+		const item = make("item/playlist_panel_video", {
+			...vars,
+			...videoVars(v),
+			PLAYLIST_ID: p.id,
+			TITLE_LABEL: `${v.title} ${durationLabel(v.duration_ms)}`,
+			THUMBS: lockupSources(v.id),
+			INDEX: i,
+			INDEX_1: String(i + 1),
+			INDEX_TEXT: i === current ? "▶" : String(i + 1),
+			SELECTED: i === current,
+			SET_VIDEO_ID: v.set_id,
+		});
+		// signed in, Save to playlist opens the sheet itself
+		if (viewer) {
+			const save = find(item, "menuNavigationItemRenderer");
+			if (save?.navigationEndpoint?.signInEndpoint) save.navigationEndpoint = save.navigationEndpoint.signInEndpoint.nextEndpoint;
+		}
+		return item;
+	});
+	const panel = make<any>("watch/playlist_panel", {
+		...vars,
+		PLAYLIST_ID: p.id,
+		TITLE: p.title,
+		OWNER_NAME: p.owner_title,
+		CHANNEL_ID: p.owner_channel,
+		CHANNEL_URL: `/@${p.owner_handle}`,
+		CURRENT_INDEX: current,
+		CURRENT_1: String(current + 1),
+		TOTAL_VIDEOS: vids.length,
+		TOTAL_TEXT: String(vids.length),
+		SHARE_URL: `${PUBLIC_ORIGIN}/watch?v=${videoId}&list=${p.id}`,
+		SAVED: await isSaved(p, viewer),
+		ITEMS: items,
+	});
+	// Save playlist to Library is for other people's playlists
+	if (p.kind !== "user" || p.user_id === viewer?.userId) delete panel.playlist.menu;
+	if (viewer && p.kind === "user" && p.user_id === viewer.userId) panel.playlist.isEditable = true;
+	return panel;
 }
 
 // ---- mutations ----
@@ -550,4 +582,4 @@ route("get_panel", async ({ body, viewer }) => {
 	return { responseContext: responseContext(viewer) };
 });
 
-export { getPlaylist, signInModal, browseEndpoint, label };
+export { getPlaylist };

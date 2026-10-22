@@ -10,7 +10,7 @@ import { isChannelId, isVideoId } from "../ids";
 import { avatarThumbnails, channelEndpoint, label, responseContext, runs, text } from "./r";
 import { ApiError, route } from "./router";
 import { likeKey, subscriptionKey } from "./watch";
-import { getPlaylist } from "./playlists";
+import { getPlaylist, setSaved } from "./playlists";
 import { decode, fromBase64, str } from "./proto";
 import { make } from "./tpl";
 
@@ -32,6 +32,12 @@ for (const [method, kind] of [["like/like", "like"], ["like/dislike", "dislike"]
 	route(
 		method,
 		async ({ body, viewer }) => {
+			// a playlist target saves it to (or removes it from) the library
+			const playlistId = body.target?.playlistId;
+			if (typeof playlistId === "string" && kind !== "dislike") {
+				await setSaved(playlistId, viewer!, kind === "like");
+				return { responseContext: responseContext(viewer), actions: [toast(kind === "like" ? "Added to Library" : "Removed from Library")] };
+			}
 			const id = body.target?.videoId;
 			if (!isVideoId(id)) throw new ApiError(400, "Invalid video id");
 			if (!(await getVideo(id, viewer))) throw new ApiError(404, "Video not found");
