@@ -42,6 +42,7 @@ Applied to JavaScript and CSS on the way out. A patch whose match count differs 
 | `static-host`, `fonts-host` | `www.youtube.com/s/` and `fonts.googleapis.com` URLs to this origin. |
 | `title`, `meta-title`, `meta-description`, `social-meta` | This page's title and description with the instance name. |
 | `image-src`, `page-keywords`, `structured-data`, `microdata`, `app-links` (optional) | Removes YouTube's own metadata, canonical links, app links and origin trials. |
+| `gif-picker` (only with `KLIPY_API_KEY`, signed in) | Adds `<script src="/_ot/gifs.js">` first in `<head>`: the GIF button and picker for comment boxes ([`assets/gifs.js`](../assets/gifs.js)). Its fetch wrapper adds the picked GIF's signed token as `owntubeGif` to `comment/create_comment` and `create_comment_reply`; nothing else in the client changes. |
 | `guide-footer-links`, `copyright` | Removes YouTube's footer links (About, Press, Terms, ...) and hides the copyright line. |
 
 ## Experiment flags

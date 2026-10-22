@@ -40,7 +40,7 @@ Anything not listed here gets an empty `{responseContext}` envelope and appears 
 | `share/get_share_panel` | `actions.ts` | Instance-local links; no embed tab. |
 | `history/clear_watch_history` | `actions.ts` | Mutation. |
 | `feedback` | [`history.ts`](../../src/innertube/history.ts) | Removing one entry or clearing watch history (signed tokens issued by this instance); other feedback tokens are accepted and ignored. |
-| `comment/create_comment`, `comment/create_comment_reply`, `comment/perform_comment_action` | [`comments.ts`](../../src/innertube/comments.ts) | Mutation. Posting, replying, liking and unliking, and deleting your own comments. |
+| `comment/create_comment`, `comment/create_comment_reply`, `comment/perform_comment_action` | [`comments.ts`](../../src/innertube/comments.ts) | Mutation. Posting, replying, liking and unliking, and deleting your own comments. Accepts `owntubeGif` (a GIF token from `/_ot/gifs/search`). |
 | `playlist/create`, `browse/edit_playlist`, `playlist/delete` | [`playlists.ts`](../../src/innertube/playlists.ts) | Mutation. Create, add/remove/move videos, rename, privacy, description, delete. |
 | `get_panel` | `playlists.ts` | `PAadd_to_playlist` (the Save sheet). |
 | `att/get` | [`router.ts`](../../src/innertube/router.ts) | A challenge without a BotGuard program. |
@@ -78,5 +78,6 @@ Anything not listed here gets an empty `{responseContext}` envelope and appears 
 | `/sw.js` | main | A worker that unregisters itself |
 | `/signin`, `/register`, `/logout` | main | Local accounts |
 | `/admin/…` | main | Operator admin panel |
+| `/_ot/gifs.js`, `/_ot/gifs/search?q=&page=`, `/_ot/gifs/favorites` (GET, POST JSON), `/_ot/gifs/media/<id>/<sm\|md>.webp` | main | GIFs in comments, only with `KLIPY_API_KEY` ([`gifs.ts`](../../src/gifs.ts)); search and favorites need a signed-in viewer |
 | `/upload/studio` and the session URLs it returns | Studio | Resumable uploads (Scotty protocol) |
 | `/channel/UC…/…` | Studio | Studio pages for the signed-in channel |

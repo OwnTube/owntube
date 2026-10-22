@@ -27,3 +27,6 @@ export const INSTANCE_NAME = process.env.INSTANCE_NAME ?? "OwnTube";
 export const UPSTREAM_ASSET_FETCH = process.env.UPSTREAM_ASSET_FETCH === "1";
 export const MAX_UPLOAD_BYTES = Number(process.env.MAX_UPLOAD_BYTES ?? 2 * 1024 ** 3);
 export const SECURE_COOKIES = PUBLIC_ORIGIN.startsWith("https://");
+// GIFs in comments (src/gifs.ts): off unless the host supplies a KLIPY API key
+export const KLIPY_API_KEY = process.env.KLIPY_API_KEY ?? "";
+export const KLIPY_CONTENT_FILTER = process.env.KLIPY_CONTENT_FILTER ?? "high";

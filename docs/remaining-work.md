@@ -19,6 +19,7 @@ The goal is every page, setting and creator workflow of the official clients wor
 - Notifications: generated on uploads from subscriptions, comment replies and likes; the bell preferences persisted.
 - Captions (upload in Studio, `timedtext`), chapters from descriptions, storyboards for seek previews, end screens and cards.
 - Clips, Download (offline), Thanks, Report, "Add to queue".
+- The comment box's emoji picker (the client's own, fed with its emoji data).
 - Live streaming (RTMP ingest, live chat) and premieres.
 - `/embed/<id>` with the embedded player.
 - Hashtag pages (`/hashtag/<tag>`), `/feed/trending`, `/feed/storefront`.

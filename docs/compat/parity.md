@@ -19,6 +19,8 @@ Status: ✅ works · 🟡 partial · ❌ not implemented
 | Watch | Like / dislike, persisted and shown after reload | ✅ | e2e |
 | Watch | Subscribe / unsubscribe, persisted | ✅ | e2e |
 | Watch | Comments: post, reply, like, sort, delete own | ✅ | e2e (post, delete), manual (rest) |
+| Watch | GIFs in comments and replies: picker, search, favorites, shown by the client's own attachment view | ✅ | e2e (`gifs.ts`) |
+| Watch | Emoji picker in the comment box | ❌ | — |
 | Watch | Save to playlist sheet, Watch later, new playlist | ✅ | e2e (Watch later), manual |
 | Watch | Share panel with instance links | ✅ | manual |
 | Watch | Playlist panel, play all, autoplay next | ✅ | manual |

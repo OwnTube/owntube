@@ -15,6 +15,7 @@ import { isVideoId } from "./ids";
 import { rateLimit } from "./ratelimit";
 import { accountRoutes, instanceAsset } from "./signin";
 import { adminRoutes } from "./admin";
+import { gifRoutes } from "./gifs";
 import { suggest } from "./innertube/search";
 import { recordWatch } from "./innertube/history";
 
@@ -86,6 +87,8 @@ export async function instanceRoutes(req: Request, url: URL, viewer: Viewer): Pr
 	const path = url.pathname;
 	const account = await accountRoutes(req, url, viewer, safeNext(url.searchParams.get("next")));
 	if (account) return account;
+	const gifs = await gifRoutes(req, url, viewer);
+	if (gifs) return gifs;
 	if (path.startsWith("/_ot/")) return instanceAsset(path) ?? new Response("not found", { status: 404 });
 	if (path === "/logout") {
 		if (req.method !== "POST" && req.method !== "GET") return new Response("method not allowed", { status: 405 });

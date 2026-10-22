@@ -79,6 +79,12 @@ Studio runs as the pinned creator client on its own origin ([`src/studio/`](../s
 
 Operators can verify a channel or mark it as an Official Artist Channel, and give an account the YouTube Premium logo (`channels.verification`, `users.premium`). Item templates leave out the captured channels' badges; [`src/innertube/badges.ts`](../src/innertube/badges.ts) puts YouTube's own badge structures (templates from the captures, step `badges` in make-templates) into every response that names a verified channel, after the response is built, so each builder gets them without its own code. The client draws the badges from them: `metadataBadgeRenderer` on older renderers, an icon on a lockup's channel-name part, an image attached after the name in a channel header, and `isVerified` / `isArtist` on comment authors. The Premium logo is the topbar logo's icon type (`YOUTUBE_PREMIUM_LOGO`).
 
+## GIFs in comments
+
+YouTube's desktop client already draws a GIF under a comment: `commentSurfaceEntity.imageAttachmentViewModel.commentImageAttachmentViewModel` (`image.sources`, `aspectRatio`, an accessibility label) is rendered by `ytw-comment-image-attachment-view-model`. It has no way to pick one, so with `KLIPY_API_KEY` set the page gets [`assets/gifs.js`](../assets/gifs.js) (page rule `gif-picker`): a GIF button after the composer's emoji button and a picker above the box, styled in YouTube's light and dark colours (the pinned build's own colour variables have generated names). [`src/gifs.ts`](../src/gifs.ts) proxies KLIPY search and trending with the server's key, returns each result with a token the instance signs, caches GIF files in `MEDIA_DIR/gifs`, and stores starred GIFs per account (`gif_favorites`). The picker adds the token to the create-comment request as `owntubeGif`; [`comments.ts`](../src/innertube/comments.ts) accepts only signed tokens and stores the GIF in `comments.gif`. A comment may then have no text; the zero-width space the picker types into an empty box, so the client enables Comment, is dropped.
+
+The idea comes from the desktop_gifs browser extension; this is a separate implementation (its code is GPL-licensed and isn't used).
+
 ## Admin panel
 
 `/admin` ([`src/admin/`](../src/admin/)) is server-rendered HTML. Operators only: anyone else gets a 404. Every mutation is a same-origin POST with the session's form token and is recorded in `admin_actions`. See the README for what each page does.

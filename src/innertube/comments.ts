@@ -16,6 +16,7 @@ import { continuationItem } from "./items";
 import { viewerVars } from "./chrome";
 import { ago, avatarThumbnails, avatarUrl, compact, grouped, responseContext, runs, serviceEndpoint } from "./r";
 import { ApiError, route } from "./router";
+import { type Gif, gifFromToken, GIFS_ENABLED, imageAttachment } from "../gifs";
 import { rateLimit } from "../ratelimit";
 import { make, type Vars } from "./tpl";
 import { baseVars } from "./vars";
@@ -23,7 +24,7 @@ import { baseVars } from "./vars";
 const PAGE = 20;
 const REPLY_PAGE = 10;
 
-type Row = { id: string; video_id: string; parent_id: string | null; text: string; like_count: number; reply_count: number; created_at: Date; author_channel_id: string; author_handle: string; author_title: string; video_channel_id: string; liked: boolean };
+type Row = { id: string; video_id: string; parent_id: string | null; text: string; gif: Gif | null; like_count: number; reply_count: number; created_at: Date; author_channel_id: string; author_handle: string; author_title: string; video_channel_id: string; liked: boolean };
 
 const key = (kind: string, id: string) => Buffer.from(`${kind}:${id}`).toString("base64url");
 const SHARED_KEY = key("shared", "comments");
@@ -96,6 +97,8 @@ function entities(c: Row, viewer: Viewer, vars: Vars) {
 		const p = m.payload;
 		if (p.engagementToolbarStateEntityPayload) p.engagementToolbarStateEntityPayload.likeState = c.liked ? "TOOLBAR_LIKE_STATE_LIKED" : "TOOLBAR_LIKE_STATE_INDIFFERENT";
 		if (p.engagementToolbarSurfaceEntityPayload && !(vars.MENU_ITEMS as unknown[] | undefined)?.length) delete p.engagementToolbarSurfaceEntityPayload.menuCommand;
+		// a GIF (gifs.ts), shown by the client under the text
+		if (p.commentSurfaceEntityPayload && c.gif) p.commentSurfaceEntityPayload.imageAttachmentViewModel = imageAttachment(c.gif);
 	}
 	return mutations;
 }
@@ -120,7 +123,7 @@ function replyItem(c: Row, viewer: Viewer) {
 
 async function load(videoId: string, viewer: Viewer, opts: { parent?: string; sort?: string; offset: number; limit: number }): Promise<Row[]> {
 	const order = opts.parent ? sql`c.created_at asc` : opts.sort === "new" ? sql`c.created_at desc` : sql`c.like_count desc, c.reply_count desc, c.created_at desc`;
-	return (await sql`select c.id, c.video_id, c.parent_id, c.text, c.like_count, c.reply_count, c.created_at, c.author_channel_id, ch.handle as author_handle, ch.title as author_title,
+	return (await sql`select c.id, c.video_id, c.parent_id, c.text, c.gif, c.like_count, c.reply_count, c.created_at, c.author_channel_id, ch.handle as author_handle, ch.title as author_title,
 		v.channel_id as video_channel_id, exists(select 1 from comment_reactions r where r.comment_id = c.id and r.user_id = ${viewer?.userId ?? "0"} and r.kind = 'like') as liked
 		from comments c join channels ch on ch.id = c.author_channel_id join videos v on v.id = c.video_id
 		where c.video_id = ${videoId} and c.deleted_at is null and ${opts.parent ? sql`c.parent_id = ${opts.parent}` : sql`c.parent_id is null`}
@@ -177,14 +180,20 @@ export async function commentsContinuation(tok: { v: string; s?: string; c?: str
 	};
 }
 
-function cleanText(body: any): string {
-	const t = String(body.commentText ?? "").replace(/\r\n?/g, "\n").trim();
-	if (!t) throw new ApiError(400, "Comments can't be empty.");
-	if (t.length > 10000) throw new ApiError(400, "Comments are limited to 10,000 characters.");
-	return t;
+// the text and GIF of a new comment; with a GIF the text may be empty (the
+// picker types a zero-width space so the client lets an empty box submit)
+function content(body: any): { text: string; gif: Gif | null } {
+	const gif = body.owntubeGif !== undefined && GIFS_ENABLED ? gifFromToken(body.owntubeGif) : null;
+	if (body.owntubeGif !== undefined && !gif) throw new ApiError(400, "That GIF can't be attached. Pick it again.");
+	let text = String(body.commentText ?? "").replace(/\r\n?/g, "\n");
+	if (gif) text = text.replace(/\u200b/g, "");
+	text = text.trim();
+	if (!text && !gif) throw new ApiError(400, "Comments can't be empty.");
+	if (text.length > 10000) throw new ApiError(400, "Comments are limited to 10,000 characters.");
+	return { text, gif: gif ?? null };
 }
 
-async function insertComment(videoId: string, viewer: NonNullable<Viewer>, text: string, parent: string | null) {
+async function insertComment(videoId: string, viewer: NonNullable<Viewer>, { text, gif }: { text: string; gif: Gif | null }, parent: string | null) {
 	if (!(await rateLimit(`comment:${viewer.userId}`, 30, 600))) throw new ApiError(429, "You're commenting too fast. Try again in a few minutes.", "rateLimitExceeded");
 	const video = await getVideo(videoId, viewer);
 	if (!video || video.status !== "ready") throw new ApiError(404, "Video not found");
@@ -195,7 +204,7 @@ async function insertComment(videoId: string, viewer: NonNullable<Viewer>, text:
 			if (!p) throw new ApiError(404, "The comment you're replying to was removed.");
 			await tx`update comments set reply_count = reply_count + 1 where id = ${parent}`;
 		}
-		await tx`insert into comments (id, video_id, author_channel_id, parent_id, text) values (${id}, ${videoId}, ${viewer.channelId}, ${parent}, ${text})`;
+		await tx`insert into comments (id, video_id, author_channel_id, parent_id, text, gif) values (${id}, ${videoId}, ${viewer.channelId}, ${parent}, ${text}, ${gif ? JSON.stringify(gif) : null}::text::jsonb)`;
 		await tx`update videos set comment_count = comment_count + 1 where id = ${videoId}`;
 	});
 	const [row] = await load(videoId, viewer, { parent: parent ?? undefined, offset: 0, limit: 1000 }).then((rs) => rs.filter((r) => r.id === id));
@@ -207,7 +216,7 @@ route(
 	async ({ body, viewer }) => {
 		const params = decodeToken<{ v: string }>(body.createCommentParams);
 		if (!params) throw new ApiError(400, "Invalid comment parameters");
-		const row = await insertComment(params.v, viewer!, cleanText(body), null);
+		const row = await insertComment(params.v, viewer!, content(body), null);
 		const t = thread(row, viewer);
 		return { responseContext: responseContext(viewer), actions: [{ createCommentAction: { contents: t.item } }], ...entityUpdate([sharedPayload(viewer), ...t.mutations]) };
 	},
@@ -219,7 +228,7 @@ route(
 	async ({ body, viewer }) => {
 		const params = decodeToken<{ v: string; p: string }>(body.createReplyParams);
 		if (!params) throw new ApiError(400, "Invalid reply parameters");
-		const row = await insertComment(params.v, viewer!, cleanText(body), params.p);
+		const row = await insertComment(params.v, viewer!, content(body), params.p);
 		const r = replyItem(row, viewer);
 		return { responseContext: responseContext(viewer), actions: [{ createCommentReplyAction: { contents: r.item } }], ...entityUpdate([sharedPayload(viewer), ...r.mutations]) };
 	},

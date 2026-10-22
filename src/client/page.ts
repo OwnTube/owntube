@@ -16,6 +16,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { prefCookieDomain } from "../appearance";
 import { INSTANCE_NAME, PUBLIC_ORIGIN } from "../config";
 import { recordMiss } from "../diagnostics";
+import { GIFS_ENABLED } from "../gifs";
 import { jsonEnd } from "./json";
 import { loadPin, pagePath } from "./store";
 
@@ -272,6 +273,9 @@ export function renderPage(data: PageData, viewer: Viewer, nonce: string, dark =
 		{ name: "guide-footer-links", find: /(?:<a slot="guide-links-(?:primary|secondary)"[^>]*>[^<]*<\/a>)+/g, replace: () => "" },
 		{ name: "copyright", find: /<div id="copyright" slot="copyright"[^>]*>[\s\S]*?<\/div><\/div>/g, replace: () => `<div id="copyright" slot="copyright" style="display: none;"><div dir="ltr" style="display:inline">${escapeHtml(INSTANCE_NAME)}</div></div>`, optional: true },
 		{ name: "app-links", find: /<link rel="(?:alternate|canonical|search)"[^>]*>|<meta name="apple-itunes-app"[^>]*>|<meta http-equiv="origin-trial"[^>]*\/>/g, replace: () => "", optional: true },
+		// the GIF picker for comment boxes (src/gifs.ts), first in <head> so its
+		// request hook is in place before the app's scripts run
+		...(GIFS_ENABLED && viewer ? [{ name: "gif-picker", find: /<head>/g, replace: () => `<head><script nonce="${nonce}" src="/_ot/gifs.js"></script>` }] : []),
 	];
 	for (const r of rules) {
 		let n = 0;
