@@ -4,6 +4,7 @@
 
 import type { Viewer } from "../client/page";
 import { sql } from "../db";
+import { deleteMedia } from "../media/process";
 import { isVideoId, newVideoId } from "../ids";
 import { responseContext } from "../innertube/r";
 import { ApiError, type Ctx, route } from "../innertube/router";
@@ -111,3 +112,84 @@ route(
 	},
 	{ mutation: true },
 );
+
+// Saves from the details editor and the upload dialog. Each changed field
+// comes as its own entry (title: {newTitle}, privacy: {newPrivacy}, ...);
+// the answer carries the video read back through videoReadMask.
+route(
+	"video_manager/metadata_update",
+	async (ctx) => {
+		const viewer = owner(ctx);
+		const b = ctx.body;
+		const id = String(b.encryptedVideoId ?? "");
+		const [v] = isVideoId(id) ? await videosFor(viewer.channelId, [id]) : [];
+		if (!v) throw new ApiError(404, "Video not found.", "notFound");
+		const set: Record<string, unknown> = {};
+		if (typeof b.title?.newTitle === "string") {
+			const t = b.title.newTitle.trim().slice(0, 100);
+			if (!t) return ok(viewer, { overallResult: { resultCode: "SOME_ERRORS" }, title: { success: false, errorCode: "TITLE_REQUIRED" } });
+			set.title = t;
+		}
+		if (typeof b.description?.newDescription === "string") set.description = b.description.newDescription.slice(0, 5000);
+		const publish = b.draftState?.operation === "MDE_DRAFT_STATE_UPDATE_OPERATION_REMOVE_DRAFT_STATE";
+		if (publish) set.draft = false;
+		// a draft stays private until it is published; the dialog publishes
+		// with the chosen visibility in the same request
+		const privacy = PRIVACY[b.privacy?.newPrivacy ?? b.privacyState?.newPrivacy];
+		if (privacy && (!v.draft || publish)) set.visibility = privacy;
+		const audience = b.madeForKids?.newMfk ?? b.targetedAudience?.newTargetedAudience;
+		if (audience) set.made_for_kids = /MFK$|CROSSWALK/.test(audience) && !/NOT_MFK/.test(audience);
+		if (Object.keys(set).length) {
+			// the publish date is when the video first leaves private
+				const vis = set.visibility ?? v.visibility;
+				const draft = set.draft ?? v.draft;
+				if (vis !== "private" && !draft && !v.published_at) set.published_at = new Date();
+			await sql`update videos set ${sql(set)} where id = ${id}`;
+		}
+		const [after] = await videosFor(viewer.channelId, [id]);
+		return ok(viewer, {
+			overallResult: { resultCode: "UPDATE_SUCCESS" },
+			creatorEntities: { wrappedVideoData: { video: maskedVideo(after, b.videoReadMask ?? null) } },
+		});
+	},
+	{ mutation: true },
+);
+
+// Deleting a selection from the content page: Studio enqueues the job, then polls its status until it is done. Here the
+// job runs at once; the status reports the viewer's last one.
+async function deleteVideos(channelId: string, ids: string[]) {
+	if (!ids.length) return 0;
+	const gone = await sql`update videos set deleted_at = now() where channel_id = ${channelId} and id in ${sql(ids)} and deleted_at is null returning id`;
+	for (const { id } of gone) deleteMedia(id);
+	return gone.length;
+}
+
+// a row's "Delete forever"
+route(
+	"video/delete",
+	async (ctx) => {
+		const viewer = owner(ctx);
+		const id = String(ctx.body.videoId ?? "");
+		return ok(viewer, { success: isVideoId(id) && (await deleteVideos(viewer.channelId, [id])) > 0 });
+	},
+	{ mutation: true },
+);
+
+const lastBulkDelete = new Map<string, { successCount: number; failedCount: number }>();
+
+route(
+	"creator/enqueue_creator_bulk_delete",
+	async (ctx) => {
+		const viewer = owner(ctx);
+		const ids: string[] = (Array.isArray(ctx.body.videos?.videoIds) ? ctx.body.videos.videoIds : []).filter(isVideoId).slice(0, 500);
+		const deleted = await deleteVideos(viewer.channelId, ids);
+		lastBulkDelete.set(viewer.userId, { successCount: deleted, failedCount: ids.length - deleted });
+		return ok(viewer, {});
+	},
+	{ mutation: true },
+);
+
+route("creator/check_creator_bulk_delete", (ctx) => {
+	const viewer = owner(ctx);
+	return ok(viewer, { status: "BULK_ACTION_STATUS_DONE", ...lastBulkDelete.get(viewer.userId) });
+});

@@ -156,7 +156,8 @@ async function thumbnails(videoId: string, src: string, dir: string, p: Probe) {
 }
 
 export async function processVideo(videoId: string) {
-	const [video] = await sql`select id, source_path from videos where id = ${videoId}`;
+	const [video] = await sql`select id, source_path, deleted_at from videos where id = ${videoId}`;
+	if (video?.deleted_at) return;
 	if (!video?.source_path || !existsSync(video.source_path)) throw new Error("the uploaded file is missing");
 	await sql`update videos set status = 'processing', error = null where id = ${videoId}`;
 	const finalDir = join(MEDIA_DIR, videoId);
@@ -177,8 +178,11 @@ export async function processVideo(videoId: string) {
 			for (const f of formats) await tx`insert into video_formats ${tx(f)}`;
 			for (const t of thumbs) await tx`insert into video_thumbnails ${tx(t)}`;
 			await tx`update videos set status = 'ready', duration_ms = ${Math.round(p.duration * 1000)}, width = ${p.width}, height = ${p.height}, fps = ${p.fps},
-				published_at = coalesce(published_at, now()) where id = ${videoId}`;
+				published_at = case when visibility <> 'private' and not draft then coalesce(published_at, now()) else published_at end where id = ${videoId}`;
 		});
+		// deleted while it was processing
+		const [gone] = await sql`select 1 from videos where id = ${videoId} and deleted_at is not null`;
+		if (gone) deleteMedia(videoId);
 	} catch (e) {
 		rmSync(work, { recursive: true, force: true });
 		throw e;
@@ -221,7 +225,9 @@ export async function enqueue(videoId: string) {
 	await sql`insert into processing_jobs (video_id) values (${videoId})`;
 }
 
+// a deleted video's encodes, work directory and uploaded source
 export function deleteMedia(videoId: string) {
 	rmSync(join(MEDIA_DIR, videoId), { recursive: true, force: true });
+	rmSync(join(MEDIA_DIR, "sources", `${videoId}.src`), { force: true });
 	rmSync(join(MEDIA_DIR, `.work-${videoId}`), { recursive: true, force: true });
 }

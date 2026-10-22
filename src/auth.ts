@@ -52,16 +52,21 @@ export function forgetSession(sid: string) {
 }
 
 // SAPISIDHASH <ts>_<sha1> [SAPISID1PHASH ...]: any one valid signature,
-// at most a day old, with one of this instance's origins (main or Studio)
+// at most a day old, with one of this instance's origins (main or Studio).
+// The hash is sha1("<ts> <secret> <origin>"); with a _u suffix (Studio,
+// whose ytcfg has USER_SESSION_ID) it is sha1("<user session> <ts> <secret>
+// <origin>"), the user session id being the channel id this instance sets.
 export function verifyApiSignature(req: Request, viewer: Viewer): boolean {
 	if (!viewer) return false;
 	const auth = req.headers.get("authorization") ?? "";
 	const now = Math.floor(Date.now() / 1000);
-	for (const m of auth.matchAll(/(?:SAPISID|APISID)\w*HASH (\d+)_([0-9a-f]{40})/g)) {
+	for (const m of auth.matchAll(/(?:SAPISID|APISID)\w*HASH (\d+)_([0-9a-f]{40})(?:_(\w+))?/g)) {
 		const ts = Number(m[1]);
 		if (Math.abs(now - ts) > 86400) continue;
+		const prefix = m[3] === "u" ? `${viewer.channelId} ` : m[3] ? undefined : "";
+		if (prefix === undefined) continue;
 		for (const origin of [PUBLIC_ORIGIN, STUDIO_ORIGIN]) {
-			const want = createHash("sha1").update(`${ts} ${viewer.apiSecret} ${origin}`).digest("hex");
+			const want = createHash("sha1").update(`${prefix}${ts} ${viewer.apiSecret} ${origin}`).digest("hex");
 			if (want === m[2]) return true;
 		}
 	}

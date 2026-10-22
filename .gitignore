@@ -1,6 +1,5 @@
 node_modules/
 /data/*
-!/data/media/
 captures/
 .env
 *.har
@@ -10,6 +9,4 @@ client-research/
 evidence/*.png
 # derived serve-time patch output, rebuilt per origin and patch set
 /client/patched/
-# in-progress processing work directories
-/data/media/.work-*
 /client/observed.txt

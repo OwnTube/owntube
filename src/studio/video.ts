@@ -10,6 +10,7 @@ import { PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
 import { sql } from "../db";
 import { videoThumbnails } from "../innertube/r";
 import { type Mask, applyMask } from "./channel";
+import { feedbackToken } from "./feedback";
 
 export type VideoRow = {
 	id: string;
@@ -42,13 +43,9 @@ const USER_SET = { public: "VIDEO_USER_SET_VISIBILITY_PUBLIC", unlisted: "VIDEO_
 const formatted = (s: string) => ({ runs: s ? [{ text: s }] : [] });
 const seconds = (d: Date | null) => (d ? String(Math.floor(new Date(d).getTime() / 1000)) : "");
 
-const OWNER_PERMISSIONS = [
-	"CREATOR_VIDEO_PERMISSION_READ",
-	"CREATOR_VIDEO_PERMISSION_BASIC_METADATA_READ",
-	"CREATOR_VIDEO_PERMISSION_WRITE",
-	"CREATOR_VIDEO_PERMISSION_DELETE",
-	"CREATOR_VIDEO_PERMISSION_COMMENT_READ",
-];
+// what the owner may do here; without WATCH Studio lists a video as
+// "[Private video]", someone else's
+const OWNER_PERMISSIONS = ["CREATOR_VIDEO_PERMISSION_READ", "CREATOR_VIDEO_PERMISSION_WATCH", "CREATOR_VIDEO_PERMISSION_WRITE", "CREATOR_VIDEO_PERMISSION_DELETE"];
 
 export function creatorVideo(v: VideoRow): Record<string, unknown> {
 	const processing = v.status !== "ready" && v.status !== "failed";
@@ -84,7 +81,8 @@ export function creatorVideo(v: VideoRow): Record<string, unknown> {
 		contentType: "CREATOR_CONTENT_TYPE_VIDEO_ON_DEMAND",
 		crowdsourcingEnabled: false,
 		defaultCommentSortOrder: "VIDEO_COMMENT_SORT_ORDER_TOP",
-		draftStatus: v.draft ? undefined : "DRAFT_STATUS_NONE",
+		// the value Studio gives the drafts it creates itself
+		draftStatus: v.draft ? "DRAFT_STATUS_PUBLIC" : "DRAFT_STATUS_NONE",
 		files: [],
 		features: {},
 		inlineEditProcessingStatus: "VIDEO_PROCESSING_STATUS_UNKNOWN",
@@ -118,13 +116,13 @@ export function creatorVideo(v: VideoRow): Record<string, unknown> {
 		sponsorsOnly: { isSponsorsOnly: false },
 		superfansOnly: { isSuperfansOnly: false },
 		status: v.status === "ready" ? "VIDEO_STATUS_PROCESSED" : v.status === "failed" ? "VIDEO_STATUS_FAILED" : "VIDEO_STATUS_UPLOADED",
-		statusDetails: {},
+		statusDetails: processing ? { feedbackServiceContinuationToken: feedbackToken(v.id) } : {},
 		tags: [],
 		thumbnailDetails: videoThumbnails(v.id),
 		thumbnailEditorState: { stillId: 0, stills: [] },
 		thumbnailUrl: v.status === "ready" ? `${PUBLIC_ORIGIN}/vi/${v.id}/hqdefault.jpg` : "",
 		timeCreatedSeconds: seconds(v.created_at),
-		timePublishedSeconds: v.visibility === "public" && !v.draft ? seconds(v.published_at ?? v.created_at) : "",
+		timePublishedSeconds: v.draft ? "" : seconds(v.published_at),
 		uncaptionedReason: "VIDEO_UNCAPTIONED_REASON_UNNECESSARY_OR_NOT_SET",
 		unlistedExpired: false,
 		videoAdvertiserSpecificAgeGates: {},
@@ -144,7 +142,7 @@ export function creatorVideo(v: VideoRow): Record<string, unknown> {
 
 export async function videosFor(channelId: string, ids?: string[]) {
 	return (await sql`select ${VIDEO_COLUMNS} from videos v
-		where v.channel_id = ${channelId} and v.deleted_at is null ${ids ? sql`and v.id = any(${ids})` : sql``}
+		where v.channel_id = ${channelId} and v.deleted_at is null ${ids ? sql`and v.id in ${sql(ids)}` : sql``}
 		order by coalesce(v.published_at, v.created_at) desc`) as unknown as VideoRow[];
 }
 

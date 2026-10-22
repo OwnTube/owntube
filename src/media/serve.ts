@@ -11,6 +11,7 @@
 
 import { existsSync, statSync } from "node:fs";
 import { join, normalize } from "node:path";
+import type { Viewer } from "../client/page";
 import { MEDIA_DIR, PUBLIC_ORIGIN } from "../config";
 import { sql } from "../db";
 import { sign, verify } from "../ids";
@@ -98,14 +99,17 @@ export async function videoplayback(req: Request, url: URL): Promise<Response> {
 	return new Response(req.method === "HEAD" ? null : file, { headers: { ...base, "content-length": String(size) } });
 }
 
-// /vi/<id>/<name>.jpg, also the i.ytimg.com variants with _live or webp
-export async function thumbnail(url: URL): Promise<Response> {
+// /vi/<id>/<name>.jpg, also the i.ytimg.com variants with _live or webp.
+// A private video's thumbnails are for its owner only (Studio shows them).
+export async function thumbnail(url: URL, viewer: Viewer): Promise<Response> {
 	const m = /^\/vi(?:_webp)?\/([A-Za-z0-9_-]{11})\/([a-z0-9]+)(?:_live)?\.(?:jpg|webp)$/.exec(url.pathname);
 	if (!m) return new Response("not found", { status: 404 });
 	const [, id, name] = m;
-	const [row] = await sql`select t.path from video_thumbnails t join videos v on v.id = t.video_id
-		where t.video_id = ${id} and t.name = ${name === "frame0" ? "hqdefault" : name} and v.deleted_at is null and v.visibility <> 'private'`;
+	const [row] = await sql`select t.path, v.visibility from video_thumbnails t join videos v on v.id = t.video_id
+		where t.video_id = ${id} and t.name = ${name === "frame0" ? "hqdefault" : name} and v.deleted_at is null
+		and (v.visibility <> 'private' or v.channel_id = ${viewer?.channelId ?? ""})`;
 	if (!row) return new Response("not found", { status: 404 });
 	const p = normalize(join(MEDIA_DIR, row.path));
-	return new Response(Bun.file(p), { headers: { "content-type": "image/jpeg", "cache-control": "public, max-age=86400" } });
+	const cache = row.visibility === "private" ? "private, no-store" : "public, max-age=86400";
+	return new Response(Bun.file(p), { headers: { "content-type": "image/jpeg", "cache-control": cache } });
 }

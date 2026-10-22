@@ -44,7 +44,7 @@ export async function attachSource(transferId: string, videoId: string) {
 	if (!existsSync(partPath(transferId))) return;
 	try {
 		const p = await probe(partPath(transferId));
-		if (p.duration > 12 * 3600) throw new Error("videos are limited to 12 hours");
+		if (p.duration > 6 * 3600) throw new Error("videos are limited to 6 hours");
 	} catch (e) {
 		rmSync(partPath(transferId), { force: true });
 		await sql`update videos set status = 'failed', error = ${`This file can't be processed: ${e instanceof Error ? e.message : String(e)}`.slice(0, 500)} where id = ${videoId}`;
@@ -53,6 +53,13 @@ export async function attachSource(transferId: string, videoId: string) {
 	renameSync(partPath(transferId), source);
 	await sql`update videos set source_path = ${source} where id = ${videoId}`;
 	await enqueue(videoId);
+}
+
+// transfers that never became a video (the dialog closed mid-upload, or the
+// file was never registered) are dropped after a day
+export async function pruneTransfers() {
+	const stale = await sql`delete from upload_transfers where video_id is null and created_at < now() - interval '1 day' returning id`;
+	for (const { id } of stale) rmSync(partPath(id), { force: true });
 }
 
 export async function uploadRoutes(req: Request, url: URL, viewer: Viewer): Promise<Response | undefined> {

@@ -14,6 +14,7 @@ import "./innertube/actions";
 import "./innertube/playlists";
 import "./innertube/comments";
 import { startProcessing } from "./media/process";
+import { pruneTransfers } from "./studio/upload";
 import { thumbnail, videoplayback } from "./media/serve";
 import { pageFor } from "./pages";
 import { instanceRoutes } from "./instance";
@@ -46,7 +47,7 @@ async function handle(req: Request): Promise<Response> {
 	if (url.host === STUDIO_HOST) return studioRoutes(req, url, await getViewer(req));
 	if (path.startsWith("/s/") || path.startsWith("/_up/")) return (await serveClientAsset(req, url)) ?? new Response("not found", { status: 404 });
 	if (path === "/videoplayback") return videoplayback(req, url);
-	if (path.startsWith("/vi/") || path.startsWith("/vi_webp/")) return thumbnail(url);
+	if (path.startsWith("/vi/") || path.startsWith("/vi_webp/")) return thumbnail(url, await getViewer(req));
 	// beacons the client sends; nothing to record
 	if (/^\/(generate_204|csi_204|ptracking|pagead\/.*|api\/stats\/(qoe|atr|delayplay))$/.test(path)) return new Response(null, { status: 204 });
 	if (path === "/error_204") {
@@ -82,7 +83,11 @@ async function handle(req: Request): Promise<Response> {
 if (!loadPin()) console.warn("no client pinned yet: run `bun scripts/fetch-client.ts` before opening the site");
 await migrate();
 startDiagnostics();
-if (process.env.NO_WORKER !== "1") startProcessing();
+if (process.env.NO_WORKER !== "1") {
+	startProcessing();
+	void pruneTransfers();
+	setInterval(() => void pruneTransfers(), 3600_000);
+}
 
 const serveOptions = {
 	idleTimeout: 120,
