@@ -1,18 +1,19 @@
 // Routes that belong to this instance rather than to the official client:
-// the local sign-in/registration pages (Google's sign-in is a separate app
-// at accounts.google.com, so the client's "Sign in" goes here instead),
-// avatars, view counting from the player's stats pings, and small endpoints
-// the page fetches outside /youtubei.
+// the local sign-in and account pages (signin.ts; the client's "Sign in"
+// goes there instead of accounts.google.com), avatars, view counting from
+// the player's stats pings, and small endpoints the page fetches outside
+// /youtubei.
 
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { createSession, destroySession, login, register } from "./auth";
+import { destroySession } from "./auth";
 import type { Viewer } from "./client/page";
 import { loadPin, archivePath } from "./client/store";
 import { INSTANCE_NAME, MEDIA_DIR, PUBLIC_ORIGIN } from "./config";
 import { sql } from "./db";
 import { isVideoId } from "./ids";
 import { rateLimit } from "./ratelimit";
+import { accountRoutes, instanceAsset } from "./signin";
 import { uploadRoutes } from "./upload";
 import { adminRoutes } from "./admin";
 import { suggest } from "./innertube/search";
@@ -41,22 +42,6 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid var(--li
 
 function safeNext(next: string | null): string {
 	return next && next.startsWith("/") && !next.startsWith("//") ? next : "/";
-}
-
-function authForm(kind: "signin" | "register", next: string, error = "", values: Record<string, string> = {}) {
-	const reg = kind === "register";
-	return instancePage(
-		reg ? "Create account" : "Sign in",
-		`<main><h1>${reg ? "Create an account" : "Sign in"}</h1><p class="sub">to continue to ${esc(INSTANCE_NAME)}. This is an account on this instance, not a Google account.</p>
-<form method="post" action="/${kind}?next=${encodeURIComponent(next)}">
-<label for="login">Username</label><input id="login" name="login" autocomplete="username" required value="${esc(values.login ?? "")}">
-${reg ? `<label for="name">Channel name</label><input id="name" name="name" value="${esc(values.name ?? "")}">` : ""}
-<label for="password">Password</label><input id="password" name="password" type="password" autocomplete="${reg ? "new-password" : "current-password"}" required>
-${error ? `<p class="err" role="alert">${esc(error)}</p>` : ""}
-<button type="submit">${reg ? "Create account" : "Sign in"}</button></form>
-<p class="note">${reg ? `Have an account? <a href="/signin?next=${encodeURIComponent(next)}">Sign in</a>` : `New here? <a href="/register?next=${encodeURIComponent(next)}">Create an account</a>`}</p></main>`,
-		error ? 400 : 200,
-	);
 }
 
 // default avatar: the channel's initial on a colour derived from its id
@@ -98,23 +83,9 @@ async function stats(url: URL, viewer: Viewer): Promise<Response> {
 
 export async function instanceRoutes(req: Request, url: URL, viewer: Viewer): Promise<Response | undefined> {
 	const path = url.pathname;
-	if (path === "/signin" || path === "/register") {
-		const kind = path === "/signin" ? "signin" : "register";
-		const next = safeNext(url.searchParams.get("next"));
-		if (req.method === "GET") return viewer ? Response.redirect(next, 302) : authForm(kind, next);
-		if (req.method !== "POST") return new Response("method not allowed", { status: 405 });
-		const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "local";
-		if (!(await rateLimit(`auth:${ip}`, 20, 600))) return authForm(kind, next, "Too many attempts. Try again in a few minutes.");
-		const form = await req.formData().catch(() => undefined);
-		const loginName = String(form?.get("login") ?? "");
-		const password = String(form?.get("password") ?? "");
-		const result = kind === "register" ? await register(loginName, password, String(form?.get("name") ?? "")) : await login(loginName, password);
-		if ("error" in result) return authForm(kind, next, result.error, { login: loginName, name: String(form?.get("name") ?? "") });
-		const cookies = await createSession(result.userId, req.headers.get("user-agent"));
-		const headers = new Headers({ location: next });
-		for (const c of cookies) headers.append("set-cookie", c);
-		return new Response(null, { status: 303, headers });
-	}
+	const account = await accountRoutes(req, url, viewer, safeNext(url.searchParams.get("next")));
+	if (account) return account;
+	if (path.startsWith("/_ot/")) return instanceAsset(path) ?? new Response("not found", { status: 404 });
 	if (path === "/logout") {
 		if (req.method !== "POST" && req.method !== "GET") return new Response("method not allowed", { status: 405 });
 		// GET only from this origin (the account menu link); a cross-site GET can't sign anyone out
@@ -140,15 +111,6 @@ export async function instanceRoutes(req: Request, url: URL, viewer: Viewer): Pr
 		return new Response("self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.map(n=>caches.delete(n)))).then(()=>self.registration.unregister())));", {
 			headers: { "content-type": "text/javascript", "cache-control": "no-store" },
 		});
-	if (path === "/about")
-		return instancePage(
-			`About ${INSTANCE_NAME}`,
-			`<main class="wide"><h1>About ${esc(INSTANCE_NAME)}</h1>
-<p class="sub">A self-hosted video site. The interface is YouTube's own web client, served from this instance and pointed at this instance's database, accounts and media. Nothing on this site comes from YouTube's servers, and accounts here are local accounts, not Google accounts.</p>
-<h2 id="terms">Terms</h2><p>Upload only videos you have the right to share. The operator of this instance may remove videos, comments and accounts.</p>
-<h2 id="privacy">Privacy</h2><p>This instance stores your username, a password hash, what you upload, your comments, likes, subscriptions, playlists and watch history. It sends nothing to third parties; the page is not allowed to contact any other site.</p>
-<p><a href="/">Back to the home page</a></p></main>`,
-		);
 	if (path === "/robots.txt") return new Response("User-agent: *\nDisallow: /youtubei/\nDisallow: /videoplayback\n", { headers: { "content-type": "text/plain" } });
 	const up = await uploadRoutes(req, url, viewer);
 	if (up) return up;
