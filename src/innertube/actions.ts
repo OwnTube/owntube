@@ -6,6 +6,7 @@ import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
 import { getChannel, getVideo } from "../data";
 import { sql } from "../db";
+import { recordSubscription } from "../stats";
 import { isChannelId, isVideoId } from "../ids";
 import { avatarThumbnails, channelEndpoint, label, responseContext, runs, text } from "./r";
 import { ApiError, route } from "./router";
@@ -67,7 +68,8 @@ route(
 			const c = await getChannel({ id });
 			if (!c) throw new ApiError(404, "Channel not found");
 			if (c.id === viewer!.channelId) throw new ApiError(400, "You can't subscribe to your own channel.");
-			await sql`insert into subscriptions (user_id, channel_id) values (${viewer!.userId}, ${id}) on conflict do nothing`;
+			const added = await sql`insert into subscriptions (user_id, channel_id) values (${viewer!.userId}, ${id}) on conflict do nothing returning 1`;
+			if (added.length) await recordSubscription(id, true);
 			actions.push({ updateSubscribeButtonAction: { subscribed: true, channelId: id } });
 			actions.push({
 				addToGuideSectionAction: {
@@ -89,7 +91,8 @@ route(
 		if (!ids.length) throw new ApiError(400, "No channel");
 		const actions: unknown[] = [];
 		for (const id of ids) {
-			await sql`delete from subscriptions where user_id = ${viewer!.userId} and channel_id = ${id}`;
+			const removed = await sql`delete from subscriptions where user_id = ${viewer!.userId} and channel_id = ${id} returning 1`;
+			if (removed.length) await recordSubscription(id, false);
 			actions.push({ updateSubscribeButtonAction: { subscribed: false, channelId: id } });
 			actions.push({ removeFromGuideSectionAction: { handlerData: "GUIDE_ACTION_REMOVE_FROM_SUBSCRIPTIONS", guideEntryId: id } });
 			actions.push(toast("Subscription removed"));

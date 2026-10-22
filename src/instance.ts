@@ -18,6 +18,7 @@ import { adminRoutes } from "./admin";
 import { gifRoutes } from "./gifs";
 import { suggest } from "./innertube/search";
 import { recordWatch } from "./innertube/history";
+import { playedMs, recordView, recordWatchTime } from "./stats";
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
@@ -68,17 +69,22 @@ async function ggpht(url: URL): Promise<Response> {
 }
 
 // /api/stats/playback is pinged once when playback starts: that is a view.
-// watchtime pings carry the position, which history keeps for resuming.
+// watchtime pings carry the position, which history keeps for resuming,
+// and the segments played, which count as watch time.
 async function stats(url: URL, viewer: Viewer): Promise<Response> {
 	const id = url.searchParams.get("docid") ?? "";
 	if (!isVideoId(id)) return new Response(null, { status: 204 });
 	if (url.pathname.endsWith("/playback")) {
 		const key = `view:${id}:${viewer?.userId ?? url.searchParams.get("cpn") ?? "anon"}`;
-		if (await rateLimit(key, 1, 3600)) await sql`update videos set view_count = view_count + 1 where id = ${id}`;
+		if (await rateLimit(key, 1, 3600)) {
+			const [v] = await sql`update videos set view_count = view_count + 1 where id = ${id} returning id`;
+			if (v) await recordView(id);
+		}
 		if (viewer) await recordWatch(viewer, id);
-	} else if (url.pathname.endsWith("/watchtime") && viewer) {
+	} else if (url.pathname.endsWith("/watchtime")) {
+		await recordWatchTime(id, playedMs(url.searchParams.get("st"), url.searchParams.get("et")));
 		const cmt = Number((url.searchParams.get("cmt") ?? "0").split(",").pop());
-		if (Number.isFinite(cmt)) await recordWatch(viewer, id, Math.round(cmt * 1000));
+		if (viewer && Number.isFinite(cmt)) await recordWatch(viewer, id, Math.round(cmt * 1000));
 	}
 	return new Response(null, { status: 204 });
 }

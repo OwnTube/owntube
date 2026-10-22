@@ -13,6 +13,7 @@ import { renderStudioPage } from "./page";
 import { uploadRoutes } from "./upload";
 import "./api";
 import "./feedback";
+import "./dashboard";
 
 // Studio's pages may load images and media from the main origin (avatars,
 // thumbnails, the player's streams) and nothing from anywhere else

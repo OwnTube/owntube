@@ -16,6 +16,13 @@ import { PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
 import { recordMiss } from "../diagnostics";
 import { creatorChannel } from "./channel";
 
+// Studio-only flags over the pinned build's values (docs/client-patches.md)
+const STUDIO_FLAG_OVERRIDES: Record<string, unknown> = {
+	// the build shows the dashboard's real-time card but without this doesn't
+	// ask for the card's total views (DASHBOARD_FACT_ANALYTICS_REALTIME_VIEWS)
+	WebFEAllStudioByChannel__enable_realtime_dashboard_card: true,
+};
+
 let base: { html: string; cfg: Record<string, any> } | undefined;
 function basePage() {
 	if (base) return base;
@@ -85,7 +92,7 @@ export function buildStudioYtcfg(viewer: NonNullable<Viewer>, pageUrl: string, n
 	const client = cfg.INNERTUBE_CONTEXT.client;
 	client.visitorData = visitor;
 	client.originalUrl = STUDIO_ORIGIN + pageUrl;
-	Object.assign(cfg.EXPERIMENT_FLAGS, FLAG_OVERRIDES);
+	Object.assign(cfg.EXPERIMENT_FLAGS, FLAG_OVERRIDES, STUDIO_FLAG_OVERRIDES);
 	// previews play in the main client's pinned player
 	const pin = loadPin();
 	if (pin) {
