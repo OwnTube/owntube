@@ -6,6 +6,7 @@
 import type { Viewer } from "../client/page";
 import { loadStudioPin } from "../client/store";
 import { PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
+import { sql } from "../db";
 import { innertube } from "../innertube/router";
 import { serveStudioAsset } from "./assets";
 import { renderStudioPage } from "./page";
@@ -28,6 +29,11 @@ const CSP = [
 	`report-uri ${PUBLIC_ORIGIN}/_csp`,
 ].join("; ");
 
+async function ownsVideo(channelId: string, videoId: string) {
+	const [row] = await sql`select 1 from videos where id = ${videoId} and channel_id = ${channelId}`;
+	return !!row;
+}
+
 function nonce() {
 	return Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString("base64url");
 }
@@ -43,10 +49,13 @@ export async function studioRoutes(req: Request, url: URL, viewer: Viewer): Prom
 	if (req.method !== "GET" && req.method !== "HEAD") return new Response("method not allowed", { status: 405 });
 	if (!loadStudioPin()) return new Response("YouTube Studio is not acquired on this instance; run bun scripts/fetch-studio.ts", { status: 503 });
 	if (!viewer) return Response.redirect(`${PUBLIC_ORIGIN}/signin?next=${encodeURIComponent(STUDIO_ORIGIN + path + url.search)}`, 303);
-	// Studio's own routes are /channel/<id>/...; the root and other
-	// channels' pages lead to the viewer's channel
+	// Studio's own routes are /channel/<id>/... and /video/<id>/...; the
+	// root, other channels' pages and other channels' videos lead to the
+	// viewer's channel
 	const m = /^\/channel\/(UC[\w-]{22})(\/.*)?$/.exec(path);
-	if (!m || m[1] !== viewer.channelId) return Response.redirect(`${STUDIO_ORIGIN}/channel/${viewer.channelId}${m?.[2] ?? ""}${url.search}`, 303);
+	const v = /^\/video\/([\w-]{11})(\/.*)?$/.exec(path);
+	if (v ? !(await ownsVideo(viewer.channelId, v[1])) : !m || m[1] !== viewer.channelId)
+		return Response.redirect(`${STUDIO_ORIGIN}/channel/${viewer.channelId}${m?.[2] ?? ""}${url.search}`, 303);
 	const n = nonce();
 	return new Response(await renderStudioPage(viewer, path + url.search, n), {
 		headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "content-security-policy": CSP, "x-content-type-options": "nosniff", "referrer-policy": "strict-origin-when-cross-origin" },

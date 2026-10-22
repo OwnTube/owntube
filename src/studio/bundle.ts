@@ -36,8 +36,10 @@ function piece(name: string): Piece {
 	} else if (t.startsWith('"use strict";')) t = t.slice('"use strict";'.length);
 	const start = t.indexOf(WRAP_HEAD);
 	const end = t.lastIndexOf(WRAP_TAIL);
-	const out = { css, js: start === 0 && end > 0 ? t.slice(WRAP_HEAD.length, end) : "" };
-	if (!out.js) recordMiss(`studio module ${name} unreadable`, name);
+	const readable = start === 0 && end >= WRAP_HEAD.length;
+	// some modules are empty: the wrapper with no code
+	const out = { css, js: readable ? t.slice(WRAP_HEAD.length, end) : "" };
+	if (!readable) recordMiss(`studio module ${name} unreadable`, name);
 	pieces.set(name, out);
 	return out;
 }

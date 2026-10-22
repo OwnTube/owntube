@@ -112,19 +112,20 @@ export async function renderStudioPage(viewer: NonNullable<Viewer>, pageUrl: str
 	const start = html.indexOf("ytcfg.set({") + "ytcfg.set(".length;
 	html = html.slice(0, start) + json(buildStudioYtcfg(viewer, pageUrl, nonce)) + html.slice(jsonEnd(html, start));
 	const channel = await creatorChannel(viewer, null);
-	const rules: [string, RegExp, () => string][] = [
+	// [name, find, replace, optional]: a rule that isn't optional must match
+	const rules: [string, RegExp, () => string, boolean?][] = [
 		["nonce", /nonce=""/g, () => `nonce="${nonce}"`],
 		["prefetch-entity", /"entity_id": ""/g, () => `"entity_id": ${json(viewer.channelId)}`],
 		["prefetch-data", /window\.chunkedPrefetchResolvers\['id-0'\]\.resolve\(null\);/g, () => `window.chunkedPrefetchResolvers['id-0'].resolve(${json(channel)});`],
 		["static-host", /https:\/\/studio\.youtube\.com\/s\//g, () => "/s/"],
 		["gstatic-host", /https:\/\/www\.gstatic\.com\//g, () => "/_up/www.gstatic.com/"],
-		["fonts-host", /(?:https:)?\/\/fonts\.googleapis\.com\//g, () => "/_up/fonts.googleapis.com/"],
-		["font-files-host", /(?:https:)?\/\/fonts\.gstatic\.com\//g, () => "/_up/fonts.gstatic.com/"],
+		["fonts-host", /(?:https:)?\/\/fonts\.googleapis\.com\//g, () => "/_up/fonts.googleapis.com/", true],
+		["font-files-host", /(?:https:)?\/\/fonts\.gstatic\.com\//g, () => "/_up/fonts.gstatic.com/", true],
 	];
-	for (const [name, re, to] of rules) {
+	for (const [name, re, to, optional] of rules) {
 		let n = 0;
 		html = html.replace(re, () => (n++, to()));
-		if (!n) recordMiss(`studio page rule ${name}`, pin.pageBuildLabel);
+		if (!n && !optional) recordMiss(`studio page rule ${name}`, pin.pageBuildLabel);
 	}
 	return html;
 }
