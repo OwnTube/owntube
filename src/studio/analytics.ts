@@ -14,7 +14,7 @@
 // this instance has no data for (impressions, revenue, demographics, ...)
 // come back undefined, which Studio shows as "—".
 
-import { sql } from "../db";
+import { sql, textArray } from "../db";
 
 export type Query = {
 	dimensions?: { type: string }[];
@@ -74,11 +74,11 @@ async function facts(channelId: string, videoIds: string[], start: number, end: 
 	const e = new Date(end);
 	const ids = videoIds.length ? videoIds : [""];
 	const [stats, subs, reactions, comments, published] = await Promise.all([
-		sql`select video_id, hour, views, watch_ms from video_stats_hourly where video_id in ${sql(ids)} and hour >= ${s} and hour < ${e}`,
+		sql`select video_id, hour, views, watch_ms from video_stats_hourly where video_id = any(${textArray(ids)}::text[]) and hour >= ${s} and hour < ${e}`,
 		sql`select hour, subscribers_gained, subscribers_lost from channel_stats_hourly where channel_id = ${channelId} and hour >= ${s} and hour < ${e}`,
-		sql`select video_id, created_at, kind from video_reactions where video_id in ${sql(ids)} and created_at >= ${s} and created_at < ${e}`,
-		sql`select video_id, created_at from comments where video_id in ${sql(ids)} and deleted_at is null and created_at >= ${s} and created_at < ${e}`,
-		sql`select id, published_at from videos where id in ${sql(ids)} and published_at >= ${s} and published_at < ${e}`,
+		sql`select video_id, created_at, kind from video_reactions where video_id = any(${textArray(ids)}::text[]) and created_at >= ${s} and created_at < ${e}`,
+		sql`select video_id, created_at from comments where video_id = any(${textArray(ids)}::text[]) and deleted_at is null and created_at >= ${s} and created_at < ${e}`,
+		sql`select id, published_at from videos where id = any(${textArray(ids)}::text[]) and published_at >= ${s} and published_at < ${e}`,
 	]);
 	const out: Fact[] = [];
 	for (const r of stats as any[]) out.push({ video: r.video_id, at: +new Date(r.hour), add: (a) => ((a.views += r.views), (a.watch += Number(r.watch_ms))) });

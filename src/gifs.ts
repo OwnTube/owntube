@@ -21,7 +21,7 @@ import { existsSync, mkdirSync, renameSync } from "node:fs";
 import { join } from "node:path";
 import type { Viewer } from "./client/page";
 import { KLIPY_API_KEY, KLIPY_CONTENT_FILTER, MEDIA_DIR } from "./config";
-import { sql } from "./db";
+import { sql, textArray } from "./db";
 import { decodeToken, encodeToken, sign } from "./ids";
 import { rateLimit } from "./ratelimit";
 
@@ -57,7 +57,7 @@ const item = (g: Gif, favorite: boolean) => ({ token: gifToken(g), title: g.titl
 
 async function favoriteIds(viewer: NonNullable<Viewer>, ids: string[]) {
 	if (!ids.length) return new Set<string>();
-	const rows = await sql`select gif_id from gif_favorites where user_id = ${viewer.userId} and gif_id in ${sql(ids)}`;
+	const rows = await sql`select gif_id from gif_favorites where user_id = ${viewer.userId} and gif_id = any(${textArray(ids)}::text[])`;
 	return new Set(rows.map((r: any) => r.gif_id as string));
 }
 

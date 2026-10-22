@@ -68,7 +68,9 @@ async function encode(videoId: string, src: string, dir: string, p: Probe) {
 	const gop = Math.max(1, fps * 2);
 	const outFps = ["-r", String(fps)];
 	const silent = p.hasAudio ? [] : ["-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=44100"];
-	const audioMap = p.hasAudio ? ["-map", "0:a:0"] : ["-map", "1:a:0", "-shortest"];
+	// the silence is endless: an audio-only output maps nothing else that ends
+	// it, so -shortest alone never stops; -t bounds it to the video
+	const audioMap = p.hasAudio ? ["-map", "0:a:0"] : ["-map", "1:a:0", "-shortest", "-t", p.duration.toFixed(3)];
 	const formats: any[] = [];
 	const durationMs = Math.round(p.duration * 1000);
 

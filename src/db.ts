@@ -5,6 +5,14 @@ import { DATABASE_URL } from "./config";
 
 export const sql = new SQL(DATABASE_URL, { max: 20 });
 
+// A list as one Postgres text[] literal, for `= any(${textArray(list)}::text[])`.
+// Bun's `in ${sql(list)}` expansion has been seen binding a whole list as a
+// single array-typed parameter, serialized without braces ("malformed array
+// literal"); an explicit literal leaves nothing to infer.
+export function textArray(values: readonly string[]): string {
+	return `{${values.map((v) => `"${String(v).replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`).join(",")}}`;
+}
+
 const MIGRATIONS_DIR = join(import.meta.dir, "..", "migrations");
 
 // Plain SQL files applied once each, in name order, inside a transaction.

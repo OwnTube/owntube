@@ -15,7 +15,7 @@
 // which then reads as processed. This instance runs no copyright or
 // guidelines checks, so the items carry no check results.
 
-import { sql } from "../db";
+import { sql, textArray } from "../db";
 import { isVideoId } from "../ids";
 import { responseContext, videoThumbnails } from "../innertube/r";
 import { ApiError, route } from "../innertube/router";
@@ -36,14 +36,14 @@ const RESOLUTIONS = [
 route("upload/feedback", async (ctx) => {
 	const viewer = ctx.viewer;
 	if (!viewer) throw new ApiError(401, "Sign in to use Studio.", "authError");
-	const ids = [...new Set((Array.isArray(ctx.body.continuations) ? ctx.body.continuations : []).map(tokenVideo).filter((v: string | undefined): v is string => !!v))].slice(0, 50);
+	const ids: string[] = [...new Set<string>((Array.isArray(ctx.body.continuations) ? ctx.body.continuations : []).map(tokenVideo).filter((v: string | undefined): v is string => !!v))].slice(0, 50);
 	const rows = ids.length
 		? await sql`select v.id, v.status,
 				(select max(least(f.width, f.height)) from video_formats f where f.video_id = v.id and f.height is not null) as top,
 				(select count(*)::int from video_thumbnails t where t.video_id = v.id) as thumbs,
 				t.frontend_upload_id, t.received, t.size, t.complete
 			from videos v left join lateral (select * from upload_transfers t where t.video_id = v.id order by t.created_at desc limit 1) t on true
-			where v.id in ${sql(ids)} and v.channel_id = ${viewer.channelId} and v.deleted_at is null`
+			where v.id = any(${textArray(ids)}::text[]) and v.channel_id = ${viewer.channelId} and v.deleted_at is null`
 		: [];
 	const continuationContents = rows.map((v: any) => {
 		const ready = v.status === "ready";

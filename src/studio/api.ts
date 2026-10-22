@@ -3,7 +3,7 @@
 // requests naming another channel or another channel's videos get nothing.
 
 import type { Viewer } from "../client/page";
-import { sql } from "../db";
+import { sql, textArray } from "../db";
 import { deleteMedia } from "../media/process";
 import { isVideoId, newVideoId } from "../ids";
 import { responseContext } from "../innertube/r";
@@ -159,7 +159,7 @@ route(
 // job runs at once; the status reports the viewer's last one.
 async function deleteVideos(channelId: string, ids: string[]) {
 	if (!ids.length) return 0;
-	const gone = await sql`update videos set deleted_at = now() where channel_id = ${channelId} and id in ${sql(ids)} and deleted_at is null returning id`;
+	const gone = await sql`update videos set deleted_at = now() where channel_id = ${channelId} and id = any(${textArray(ids)}::text[]) and deleted_at is null returning id`;
 	for (const { id } of gone) deleteMedia(id);
 	return gone.length;
 }

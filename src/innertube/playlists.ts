@@ -8,7 +8,7 @@ import { viewerVars } from "./chrome";
 import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
 import { type Channel, type Video, avatarUrl, compact, grouped, lockupSources, shortAgo, videoThumbnails, content, duration, durationLabel, playlistEndpoint, plural, responseContext, runs, serviceEndpoint, text, watchEndpoint } from "./r";
-import { sql } from "../db";
+import { sql, textArray } from "../db";
 import { encodeToken, isVideoId, newPlaylistId, randomId } from "../ids";
 import { continuationItem } from "./items";
 import { ApiError, route } from "./router";
@@ -89,7 +89,7 @@ export async function libraryPlaylists(viewer: NonNullable<Viewer>, owned = fals
 		coalesce(s.saved_at, greatest(p.updated_at, (select max(i.added_at) from playlist_items i where i.playlist_id = p.id))) as activity
 		from playlists p join channels c on c.user_id = p.user_id
 		left join saved_playlists s on s.playlist_id = p.id and s.user_id = ${viewer.userId}
-		where (p.user_id = ${viewer.userId} and p.kind in ${sql(owned ? ["user"] : ["user", "watch_later"])})
+		where (p.user_id = ${viewer.userId} and p.kind = any(${textArray(owned ? ["user"] : ["user", "watch_later"])}::text[]))
 			or (${!owned} and s.user_id is not null and p.visibility <> 'private')`;
 	const lists = rows.map((p: Playlist & { activity: Date }) => ({ ...p, id: p.kind === "watch_later" ? "WL" : p.id, user_id: String(p.user_id) }));
 	if (!owned) {
@@ -551,7 +551,7 @@ export async function addToPlaylistSheet(videoId: string, viewer: Viewer) {
 	const lists = await sql`select p.id, p.title, p.visibility,
 			exists(select 1 from playlist_items i where i.playlist_id = p.id and i.video_id = ${videoId}) as has,
 			(select i.video_id from playlist_items i join videos v on v.id = i.video_id where i.playlist_id = p.id and ${PLAYABLE(viewer)} order by i.position limit 1) as first_video
-		from playlists p where p.user_id = ${viewer.userId} and p.kind in ${sql(["user", "watch_later"])} order by p.kind = 'watch_later' desc, p.updated_at desc`;
+		from playlists p where p.user_id = ${viewer.userId} and p.kind = any(${textArray(["user", "watch_later"])}::text[]) order by p.kind = 'watch_later' desc, p.updated_at desc`;
 	const vars = { ...baseVars(viewer, `/watch?v=${videoId}`), VIDEO_ID: videoId, VIDEO_THUMBS: lockupSources(videoId) };
 	const items = lists.map((p: { id: string; title: string; visibility: keyof typeof VISIBILITY; has: boolean; first_video: string | null }) =>
 		make("item/save_row", {

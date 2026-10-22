@@ -6,7 +6,7 @@
 
 import type { Viewer } from "../client/page";
 import { verifyApiSignature } from "../auth";
-import { sql } from "../db";
+import { sql, textArray } from "../db";
 import { decodeToken, encodeToken } from "../ids";
 import { viewerVars } from "./chrome";
 import { type Video, responseContext } from "./r";
@@ -67,7 +67,7 @@ export function entryItem(v: Entry, viewer: Viewer, name = "item/video_lockup_hi
 // how far the viewer got into each video
 export async function watchedPercents(viewer: NonNullable<Viewer>, videos: Video[]): Promise<Map<string, number>> {
 	if (!videos.length) return new Map();
-	const rows = await sql`select video_id, position_ms from watch_history where user_id = ${viewer.userId} and video_id in ${sql(videos.map((v) => v.id))}`;
+	const rows = await sql`select video_id, position_ms from watch_history where user_id = ${viewer.userId} and video_id = any(${textArray(videos.map((v) => v.id))}::text[])`;
 	const pos = new Map(rows.map((r: { video_id: string; position_ms: number }) => [r.video_id, r.position_ms]));
 	return new Map(videos.map((v) => [v.id, watchedPercent(v, Number(pos.get(v.id) ?? 0))]));
 }

@@ -7,7 +7,7 @@
 // upload instead of a stream. Studio reads it through a field mask.
 
 import { PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
-import { sql } from "../db";
+import { sql, textArray } from "../db";
 import { videoThumbnails } from "../innertube/r";
 import { type Mask, applyMask } from "./channel";
 import { feedbackToken } from "./feedback";
@@ -142,7 +142,7 @@ export function creatorVideo(v: VideoRow): Record<string, unknown> {
 
 export async function videosFor(channelId: string, ids?: string[]) {
 	return (await sql`select ${VIDEO_COLUMNS} from videos v
-		where v.channel_id = ${channelId} and v.deleted_at is null ${ids ? sql`and v.id in ${sql(ids)}` : sql``}
+		where v.channel_id = ${channelId} and v.deleted_at is null ${ids ? sql`and v.id = any(${textArray(ids)}::text[])` : sql``}
 		order by coalesce(v.published_at, v.created_at) desc`) as unknown as VideoRow[];
 }
 
