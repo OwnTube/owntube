@@ -1,0 +1,288 @@
+{
+	"actions": [
+		{
+			"openPopupAction": {
+				"popup": {
+					"unifiedSharePanelRenderer": {
+						"contents": [
+							{
+								"thirdPartyNetworkSection": {
+									"shareTargetContainer": {
+										"thirdPartyShareTargetSectionRenderer": {
+											"shareTargets": [
+												{
+													"shareTargetRenderer": {
+														"targetId": 84,
+														"title": {
+															"simpleText": "Messages"
+														},
+														"navigationEndpoint": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "https://messages.google.com/web/share?text={{SHARE_URL_ENC}}&source=yt",
+																	"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																	"rootVe": 83769
+																}
+															},
+															"urlEndpoint": {
+																"url": "https://messages.google.com/web/share?text={{SHARE_URL_ENC}}&source=yt",
+																"target": "TARGET_NEW_WINDOW"
+															}
+														},
+														"serviceName": "ANDROID_MESSENGER"
+													}
+												},
+												{
+													"shareTargetRenderer": {
+														"targetId": 49,
+														"title": {
+															"simpleText": "WhatsApp"
+														},
+														"navigationEndpoint": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "https://wa.me/?text={{SHARE_URL_ENC}}",
+																	"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																	"rootVe": 83769
+																}
+															},
+															"urlEndpoint": {
+																"url": "https://wa.me/?text={{SHARE_URL_ENC}}",
+																"target": "TARGET_NEW_WINDOW"
+															}
+														},
+														"serviceName": "WHATSAPP"
+													}
+												},
+												{
+													"shareTargetRenderer": {
+														"targetId": 10,
+														"title": {
+															"simpleText": "Facebook"
+														},
+														"navigationEndpoint": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "http://www.facebook.com/dialog/share?app_id=87741124305&href={{SHARE_URL_ENC}}&display=popup",
+																	"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																	"rootVe": 83769
+																}
+															},
+															"urlEndpoint": {
+																"url": "http://www.facebook.com/dialog/share?app_id=87741124305&href={{SHARE_URL_ENC}}&display=popup",
+																"target": "TARGET_NEW_WINDOW"
+															}
+														},
+														"serviceName": "FACEBOOK"
+													}
+												},
+												{
+													"shareTargetRenderer": {
+														"targetId": 31,
+														"title": {
+															"simpleText": "X"
+														},
+														"navigationEndpoint": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "https://twitter.com/intent/tweet?url={{SHARE_URL_ENC}}&text={{SHARE_TITLE_ENC}}&via=YouTube&related=YouTube,YouTubeTrends,YTCreators",
+																	"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																	"rootVe": 83769
+																}
+															},
+															"urlEndpoint": {
+																"url": "https://twitter.com/intent/tweet?url={{SHARE_URL_ENC}}&text={{SHARE_TITLE_ENC}}&via=YouTube&related=YouTube,YouTubeTrends,YTCreators",
+																"target": "TARGET_NEW_WINDOW"
+															}
+														},
+														"serviceName": "TWITTER"
+													}
+												},
+												{
+													"shareTargetRenderer": {
+														"targetId": 46,
+														"title": {
+															"simpleText": "Email"
+														},
+														"navigationEndpoint": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "mailto:?body={{SHARE_URL_ENC}}",
+																	"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																	"rootVe": 83769
+																}
+															},
+															"urlEndpoint": {
+																"url": "mailto:?body={{SHARE_URL_ENC}}",
+																"target": "TARGET_NEW_WINDOW"
+															}
+														},
+														"serviceName": "MAIL"
+													}
+												},
+												{
+													"shareTargetRenderer": {
+														"targetId": 4,
+														"title": {
+															"simpleText": "Reddit"
+														},
+														"navigationEndpoint": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "http://reddit.com/submit?url={{SHARE_URL_ENC}}&title={{SHARE_TITLE_ENC}}",
+																	"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																	"rootVe": 83769
+																}
+															},
+															"urlEndpoint": {
+																"url": "http://reddit.com/submit?url={{SHARE_URL_ENC}}&title={{SHARE_TITLE_ENC}}",
+																"target": "TARGET_NEW_WINDOW"
+															}
+														},
+														"serviceName": "REDDIT"
+													}
+												},
+												{
+													"shareTargetRenderer": {
+														"targetId": 45,
+														"title": {
+															"simpleText": "Pinterest"
+														},
+														"navigationEndpoint": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "http://pinterest.com/pin/create/button/?url={{SHARE_URL_ENC}}&description={{SHARE_TITLE_ENC}}&is_video=true&media={{THUMB_ENC}}",
+																	"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																	"rootVe": 83769
+																}
+															},
+															"urlEndpoint": {
+																"url": "http://pinterest.com/pin/create/button/?url={{SHARE_URL_ENC}}&description={{SHARE_TITLE_ENC}}&is_video=true&media={{THUMB_ENC}}",
+																"target": "TARGET_NEW_WINDOW"
+															}
+														},
+														"serviceName": "PINTEREST"
+													}
+												},
+												{
+													"shareTargetRenderer": {
+														"targetId": 42,
+														"title": {
+															"simpleText": "LinkedIn"
+														},
+														"navigationEndpoint": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "http://www.linkedin.com/shareArticle?url={{SHARE_URL_ENC}}&title={{SHARE_TITLE_ENC}}&summary={{SUMMARY_ENC}}&source=Youtube",
+																	"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																	"rootVe": 83769
+																}
+															},
+															"urlEndpoint": {
+																"url": "http://www.linkedin.com/shareArticle?url={{SHARE_URL_ENC}}&title={{SHARE_TITLE_ENC}}&summary={{SUMMARY_ENC}}&source=Youtube",
+																"target": "TARGET_NEW_WINDOW"
+															}
+														},
+														"serviceName": "LINKEDIN"
+													}
+												}
+											],
+											"accessibility": {
+												"accessibilityData": {
+													"label": "Select an application to share with"
+												}
+											}
+										}
+									},
+									"copyLinkContainer": {
+										"copyLinkRenderer": {
+											"copyButton": {
+												"buttonRenderer": {
+													"style": "STYLE_MONO_OUTLINE",
+													"size": "SIZE_DEFAULT",
+													"isDisabled": false,
+													"text": {
+														"runs": [
+															{
+																"text": "Copy"
+															}
+														]
+													},
+													"command": {
+														"commandMetadata": {
+															"webCommandMetadata": {
+																"sendPost": true
+															}
+														},
+														"signalServiceEndpoint": {
+															"signal": "CLIENT_SIGNAL",
+															"actions": [
+																{
+																	"signalAction": {
+																		"signal": "COPY_SHARE_URL"
+																	}
+																},
+																{
+																	"openPopupAction": {
+																		"popup": {
+																			"notificationActionRenderer": {
+																				"responseText": {
+																					"runs": [
+																						{
+																							"text": "Link copied to clipboard"
+																						}
+																					]
+																				}
+																			}
+																		},
+																		"popupType": "TOAST"
+																	}
+																}
+															]
+														}
+													}
+												}
+											},
+											"shortUrl": "{{SHARE_URL}}"
+										}
+									},
+									"startAtContainer": {
+										"startAtRenderer": {
+											"startAtOptionLabel": {
+												"runs": [
+													{
+														"text": "Start at"
+													}
+												]
+											}
+										}
+									}
+								}
+							},
+							{
+								"firstPartyNetworkSectionViewModel": {}
+							}
+						],
+						"header": {
+							"sharePanelHeaderRenderer": {
+								"title": {
+									"sharePanelTitleV15Renderer": {
+										"title": {
+											"runs": [
+												{
+													"text": "Share"
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"sharePanelVersion": 15
+					}
+				},
+				"popupType": "DIALOG"
+			}
+		}
+	]
+}

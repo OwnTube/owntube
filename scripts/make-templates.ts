@@ -1438,6 +1438,35 @@ function saveSheet() {
 }
 
 // ======================================================================
+// the Share dialog (share/get_share_panel): the link, Start at, and the
+// share targets, which open the link on other sites. Left out: Embed (no
+// embed player here) and the attribution id YouTube adds to shared links
+function sharePanel() {
+	const [[req, resp]] = bodies("share-out", /get_share_panel\.resp$/);
+	const id = decodeURIComponent(req.post.serializedSharedEntity);
+	const vid = /\x0a\x0b([A-Za-z0-9_-]{11})/.exec(Buffer.from(id, "base64").toString("latin1"))![1];
+	const r = clean(resp);
+	const u = r.actions[0].openPopupAction.popup.unifiedSharePanelRenderer;
+	const tp = u.contents[0].thirdPartyNetworkSection;
+	const targets = tp.shareTargetContainer.thirdPartyShareTargetSectionRenderer;
+	targets.shareTargets = targets.shareTargets.filter((t: any) => t.shareTargetRenderer.serviceName !== "EMBED");
+	const short: string = tp.copyLinkContainer.copyLinkRenderer.shortUrl;
+	const si = /[?&]si=([\w-]+)/.exec(short)![1];
+	const title = find(targets, "url", (x) => /twitter/.test(x)).match(/&text=([^&]*)/)[1];
+	tp.copyLinkContainer.copyLinkRenderer.shortUrl = "{{SHARE_URL}}";
+	const out = strings(r, (s) =>
+		s
+			.replace(new RegExp(`https%3A//youtu\\.be/${vid}%3Fsi%3D${si}`, "g"), "{{SHARE_URL_ENC}}")
+			.replace(new RegExp(`https%3A//youtube\\.com/watch%3Fv%3D${vid}%26si%3D${si}`, "g"), "{{SHARE_URL_ENC}}")
+			.replace(`https%3A//i.ytimg.com/vi/${vid}/maxresdefault.jpg`, "{{THUMB_ENC}}")
+			.replace(/&summary=[^&]*/, "&summary={{SUMMARY_ENC}}")
+			.split(title)
+			.join("{{SHARE_TITLE_ENC}}"),
+	);
+	save("share/panel", out, [vid, si, title]);
+}
+
+// ======================================================================
 // comments: the section header (count, sort, composer), threads, replies,
 // and the entity payloads each comment's view model points to.
 // Left out: translation, creator hearts, profile cards (the author links
@@ -1599,6 +1628,7 @@ const steps: [string, () => void][] = [
 	["library", library],
 	["comments", comments],
 	["save", saveSheet],
+	["share", sharePanel],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;

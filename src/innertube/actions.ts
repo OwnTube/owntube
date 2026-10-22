@@ -2,6 +2,7 @@
 // page and channel buttons. Each returns the actions and entity updates the
 // client applies, and persists the change so a reload shows the same state.
 
+import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
 import { getChannel, getVideo } from "../data";
 import { sql } from "../db";
@@ -9,6 +10,9 @@ import { isChannelId, isVideoId } from "../ids";
 import { avatarThumbnails, channelEndpoint, label, responseContext, runs, text } from "./r";
 import { ApiError, route } from "./router";
 import { likeKey, subscriptionKey } from "./watch";
+import { getPlaylist } from "./playlists";
+import { decode, fromBase64, str } from "./proto";
+import { make } from "./tpl";
 
 const toast = (message: string) => ({ addToToastAction: { item: { notificationActionRenderer: { responseText: runs(message) } } } });
 const now = () => ({ seconds: String(Math.floor(Date.now() / 1000)), nanos: 0 });
@@ -93,41 +97,36 @@ route(
 // notification bell preferences: accepted, nothing is sent from this instance yet
 route("notification/modify_channel_preference", ({ viewer }) => ({ responseContext: responseContext(viewer), actions: [toast("Notification preferences saved")] }), { mutation: true });
 
-route("share/get_share_panel", async ({ body, viewer }) => {
-	let id = "";
+// the Share dialog (template share/panel). The entity names a video (field
+// 1), a playlist (2) or a channel (3), as the client's share buttons encode it
+async function shareTarget(entity: string, viewer: Viewer) {
+	let f: Map<number, (number | Uint8Array)[]> = new Map();
 	try {
-		id = Buffer.from(String(body.serializedSharedEntity ?? body.serializedShareEntity ?? ""), "base64url").toString();
+		f = decode(fromBase64(decodeURIComponent(entity)));
 	} catch {}
-	const url = isVideoId(id) ? `${PUBLIC_ORIGIN}/watch?v=${id}` : `${PUBLIC_ORIGIN}/`;
+	const [videoId, playlistId, channelId] = [1, 2, 3].map((n) => str(f.get(n)?.[0]) ?? "");
+	if (isVideoId(videoId)) {
+		const v = await getVideo(videoId, viewer);
+		if (v) return { url: `${PUBLIC_ORIGIN}/watch?v=${v.id}`, title: v.title, summary: v.description.slice(0, 200), thumb: `${PUBLIC_ORIGIN}/vi/${v.id}/maxresdefault.jpg` };
+	}
+	if (playlistId) {
+		const p = await getPlaylist(playlistId, viewer);
+		if (p) return { url: `${PUBLIC_ORIGIN}/playlist?list=${playlistId}`, title: p.title, summary: p.description ?? "", thumb: "" };
+	}
+	if (isChannelId(channelId)) {
+		const c = await getChannel({ id: channelId });
+		if (c) return { url: `${PUBLIC_ORIGIN}/@${c.handle}`, title: c.title, summary: c.description.slice(0, 200), thumb: "" };
+	}
+	return undefined;
+}
+
+route("share/get_share_panel", async ({ body, viewer }) => {
+	const t = await shareTarget(String(body.serializedSharedEntity ?? body.serializedShareEntity ?? ""), viewer);
+	if (!t) throw new ApiError(404, "Not found", "notFound");
+	const enc = encodeURIComponent;
 	return {
 		responseContext: responseContext(viewer),
-		actions: [
-			{
-				openPopupAction: {
-					popup: {
-						unifiedSharePanelRenderer: {
-							contents: [
-								{
-									thirdPartyNetworkSection: {
-										shareTargetContainer: { thirdPartyShareTargetSectionRenderer: { shareTargets: [] } },
-										copyLinkRenderer: {
-											copyButton: { buttonRenderer: { style: "STYLE_PRIMARY", size: "SIZE_DEFAULT", isDisabled: false, text: runs("Copy"), accessibilityData: label("Copy") } },
-											shortUrl: url,
-											style: "COPY_LINK_STYLE_INLINE_ROUNDED",
-										},
-										startAtCheckbox: { checkboxRenderer: { checkedState: "CHECKBOX_CHECKED_STATE_UNCHECKED", labelText: runs("Start at") } },
-									},
-								},
-							],
-							header: { sharePanelHeaderRenderer: { title: runs("Share") } },
-							shareType: "SHARE_TYPE_VIDEO",
-						},
-					},
-					popupType: "DIALOG",
-					beReused: true,
-				},
-			},
-		],
+		...make<Record<string, unknown>>("share/panel", { SHARE_URL: t.url, SHARE_URL_ENC: enc(t.url), SHARE_TITLE_ENC: enc(t.title), SUMMARY_ENC: enc(t.summary), THUMB_ENC: enc(t.thumb) }),
 	};
 });
 
