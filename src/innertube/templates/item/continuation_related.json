@@ -1,0 +1,43 @@
+{
+	"continuationItemRenderer": {
+		"trigger": "CONTINUATION_TRIGGER_ON_ITEM_SHOWN",
+		"continuationEndpoint": {
+			"commandMetadata": {
+				"webCommandMetadata": {
+					"sendPost": true,
+					"apiUrl": "/youtubei/v1/next"
+				}
+			},
+			"continuationCommand": {
+				"token": "{{CONTINUATION}}",
+				"request": "CONTINUATION_REQUEST_TYPE_WATCH_NEXT"
+			}
+		},
+		"button": {
+			"buttonRenderer": {
+				"style": "STYLE_SUGGESTIVE",
+				"size": "SIZE_DEFAULT",
+				"isDisabled": false,
+				"text": {
+					"runs": [
+						{
+							"text": "Show more"
+						}
+					]
+				},
+				"command": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"sendPost": true,
+							"apiUrl": "/youtubei/v1/next"
+						}
+					},
+					"continuationCommand": {
+						"token": "{{CONTINUATION}}",
+						"request": "CONTINUATION_REQUEST_TYPE_WATCH_NEXT"
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,109 @@
+{
+	"endScreenVideoRenderer": {
+		"videoId": "{{VIDEO_ID}}",
+		"thumbnail": {
+			"thumbnails": "{{VIDEO_THUMBNAILS}}",
+			"lightColorPalette": {
+				"section2Color": 15923441,
+				"section3Color": 15266535,
+				"primaryTitleColor": 1120528,
+				"secondaryTitleColor": 4877125,
+				"section4Color": 14674909
+			},
+			"darkColorPalette": {
+				"section2Color": 1451539,
+				"section3Color": 923917,
+				"primaryTitleColor": 15269861,
+				"secondaryTitleColor": 11062435,
+				"section4Color": 461830
+			}
+		},
+		"title": {
+			"accessibility": {
+				"accessibilityData": {
+					"label": "{{TITLE}} 21 minutes"
+				}
+			},
+			"simpleText": "{{TITLE}}"
+		},
+		"shortBylineText": {
+			"runs": [
+				{
+					"text": "{{CHANNEL_NAME}}",
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "{{CHANNEL_URL}}",
+								"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+								"rootVe": 3611,
+								"apiUrl": "/youtubei/v1/browse"
+							}
+						},
+						"browseEndpoint": {
+							"browseId": "{{CHANNEL_ID}}",
+							"canonicalBaseUrl": "{{CHANNEL_URL}}"
+						}
+					}
+				}
+			]
+		},
+		"lengthText": {
+			"accessibility": {
+				"accessibilityData": {
+					"label": "{{DURATION_LABEL}}"
+				}
+			},
+			"simpleText": "{{DURATION}}"
+		},
+		"lengthInSeconds": 1298,
+		"navigationEndpoint": {
+			"commandMetadata": {
+				"webCommandMetadata": {
+					"url": "/watch?v={{VIDEO_ID}}",
+					"webPageType": "WEB_PAGE_TYPE_WATCH",
+					"rootVe": 3832
+				}
+			},
+			"watchEndpoint": {
+				"videoId": "{{VIDEO_ID}}"
+			}
+		},
+		"shortViewCountText": {
+			"accessibility": {
+				"accessibilityData": {
+					"label": "{{VIEWS_LABEL}}"
+				}
+			},
+			"simpleText": "{{VIEWS}}"
+		},
+		"publishedTimeText": {
+			"simpleText": "{{PUBLISHED}}"
+		},
+		"thumbnailOverlays": [
+			{
+				"thumbnailOverlayTimeStatusRenderer": {
+					"text": {
+						"accessibility": {
+							"accessibilityData": {
+								"label": "{{DURATION_LABEL}}"
+							}
+						},
+						"simpleText": "{{DURATION}}"
+					},
+					"style": "DEFAULT"
+				}
+			},
+			{
+				"thumbnailOverlayNowPlayingRenderer": {
+					"text": {
+						"runs": [
+							{
+								"text": "Now playing"
+							}
+						]
+					}
+				}
+			}
+		]
+	}
+}

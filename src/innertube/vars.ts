@@ -4,7 +4,7 @@
 
 import { PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
 import type { Viewer } from "../client/page";
-import { type Channel, type Video, avatarUrl, compact, countLabel, duration, durationLabel, grouped, lockupSources, shortAgo, ago } from "./r";
+import { type Channel, type Video, avatarUrl, compact, countLabel, duration, durationLabel, grouped, lockupSources, shortAgo, ago, videoThumbnails } from "./r";
 import type { Vars } from "./tpl";
 
 export const signInUrl = (next = "/") => `/signin?next=${encodeURIComponent(next)}`;
@@ -27,6 +27,7 @@ export function videoVars(v: Video): Vars {
 		PUBLISHED: shortAgo(v.published_at ?? v.created_at),
 		PUBLISHED_LABEL: ago(v.published_at ?? v.created_at),
 		THUMBS: lockupSources(v.id),
+		VIDEO_THUMBNAILS: videoThumbnails(v.id).thumbnails,
 		CHANNEL_ID: v.channel_id,
 		CHANNEL_NAME: v.channel_title,
 		CHANNEL_URL: `/@${v.channel_handle}`,

@@ -10,6 +10,7 @@
 //   {{ek:NAME:TYPE}}    an entity key for the variable (proto.entityKey)
 //   {{b64:NAME:BLOB}}   a base64 protobuf blob from the capture with the id
 //                       blanked out as '~'s; the variable (same length) goes back in
+//                       ({{b64:A+B:BLOB}}: two ids, blanked as '~'s and '^'s)
 // A string that is exactly "{{NAME}}" is replaced by the variable's value
 // whatever its type (image source arrays, numbers, booleans, objects).
 
@@ -35,11 +36,13 @@ export type Vars = Record<string, unknown>;
 const TOKEN = /\{\{(ek:)?([A-Z0-9_]+)(?::(\d+))?\}\}/g;
 const WHOLE = /^\{\{([A-Z0-9_]+)\}\}$/;
 
-const B64 = /\{\{b64:([A-Z0-9_]+):([A-Za-z0-9+/=%_-]+)\}\}/g;
+const B64 = /\{\{b64:([A-Z0-9_+]+):([A-Za-z0-9+/=%_-]+)\}\}/g;
+// one blank character per id, in the order the token names them
+const BLANKS = ["~", "^", "`"];
 
-function refill(blob: string, value: string): string {
-	const bytes = Buffer.from(decodeURIComponent(blob).replace(/-/g, "+").replace(/_/g, "/"), "base64").toString("latin1");
-	const out = bytes.replace("~".repeat(value.length), value);
+function refill(blob: string, values: string[]): string {
+	let out = Buffer.from(decodeURIComponent(blob).replace(/-/g, "+").replace(/_/g, "/"), "base64").toString("latin1");
+	values.forEach((v, i) => (out = out.split(BLANKS[i].repeat(v.length)).join(v)));
 	let enc = Buffer.from(out, "latin1").toString("base64");
 	if (/[-_]/.test(blob)) enc = enc.replace(/\+/g, "-").replace(/\//g, "_");
 	if (/%3D/.test(blob)) enc = enc.replace(/=/g, "%3D");
@@ -49,12 +52,13 @@ function refill(blob: string, value: string): string {
 
 function fillString(s: string, vars: Vars, where: string): unknown {
 	if (s.includes("{{b64:"))
-		s = s.replace(B64, (_, name, blob) => {
-			if (!(name in vars)) {
-				recordMiss(`template token ${name} in ${where}`, "");
+		s = s.replace(B64, (_, names: string, blob) => {
+			const missing = names.split("+").filter((n) => !(n in vars));
+			if (missing.length) {
+				recordMiss(`template token ${missing.join("+")} in ${where}`, "");
 				return "";
 			}
-			return refill(blob, String(vars[name]));
+			return refill(blob, names.split("+").map((n) => String(vars[n])));
 		});
 	const whole = WHOLE.exec(s);
 	if (whole && whole[1] in vars && typeof vars[whole[1]] !== "string") return vars[whole[1]];

@@ -23,7 +23,7 @@ async function next(body: any, viewer: any) {
 		if (tok.k === "related") {
 			const v = await getVideo(tok.v, viewer);
 			if (!v) throw new ApiError(404, "Not found");
-			return { responseContext: responseContext(viewer), onResponseReceivedEndpoints: [{ appendContinuationItemsAction: { continuationItems: await relatedItems(v, viewer, tok.o ?? 0), targetId: "watch-next-feed" } }] };
+			return { responseContext: responseContext(viewer), onResponseReceivedEndpoints: [{ appendContinuationItemsAction: { continuationItems: (await relatedItems(v, viewer, tok.o ?? 0)).items, targetId: "watch-next-feed" } }] };
 		}
 		if (tok.k === "comments" || tok.k === "replies") return commentsContinuation(tok, viewer);
 		throw new ApiError(400, "Unknown continuation");

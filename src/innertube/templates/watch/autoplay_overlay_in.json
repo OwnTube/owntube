@@ -1,0 +1,163 @@
+{
+	"playerOverlayAutoplayRenderer": {
+		"title": {
+			"simpleText": "Up next"
+		},
+		"videoTitle": {
+			"accessibility": {
+				"accessibilityData": {
+					"label": "{{TITLE}} {{DURATION_LABEL}}"
+				}
+			},
+			"simpleText": "{{TITLE}}"
+		},
+		"byline": {
+			"runs": [
+				{
+					"text": "{{CHANNEL_NAME}}",
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "{{CHANNEL_URL}}",
+								"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+								"rootVe": 3611,
+								"apiUrl": "/youtubei/v1/browse"
+							}
+						},
+						"browseEndpoint": {
+							"browseId": "{{CHANNEL_ID}}",
+							"canonicalBaseUrl": "{{CHANNEL_URL}}"
+						}
+					}
+				}
+			]
+		},
+		"pauseText": {
+			"simpleText": "Autoplay is paused"
+		},
+		"background": {
+			"thumbnails": "{{VIDEO_THUMBNAILS}}",
+			"lightColorPalette": {
+				"section2Color": 15856632,
+				"section3Color": 15198962,
+				"primaryTitleColor": 1053465,
+				"secondaryTitleColor": 5398655,
+				"section4Color": 14541547
+			},
+			"darkColorPalette": {
+				"section2Color": 1515315,
+				"section3Color": 1120038,
+				"primaryTitleColor": 15068671,
+				"secondaryTitleColor": 10727372,
+				"section4Color": 724761
+			}
+		},
+		"countDownSecs": 8,
+		"cancelButton": {
+			"buttonRenderer": {
+				"style": "STYLE_DEFAULT",
+				"size": "SIZE_DEFAULT",
+				"isDisabled": false,
+				"text": {
+					"simpleText": "Cancel"
+				},
+				"accessibility": {
+					"label": "Cancel"
+				},
+				"accessibilityData": {
+					"accessibilityData": {
+						"label": "Cancel"
+					}
+				},
+				"command": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"sendPost": true,
+							"apiUrl": "/youtubei/v1/get_survey"
+						}
+					},
+					"getSurveyCommand": {
+						"endpoint": {
+							"watch": {
+								"hack": true
+							}
+						},
+						"action": "SURVEY_TRIGGER_ACTION_AUTOPLAY_CANCEL"
+					}
+				}
+			}
+		},
+		"nextButton": {
+			"buttonRenderer": {
+				"style": "STYLE_DEFAULT",
+				"size": "SIZE_DEFAULT",
+				"isDisabled": false,
+				"navigationEndpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "/watch?v={{VIDEO_ID}}",
+							"webPageType": "WEB_PAGE_TYPE_WATCH",
+							"rootVe": 3832
+						}
+					},
+					"watchEndpoint": {
+						"videoId": "{{VIDEO_ID}}",
+						"params": "8gUCCgA%3D"
+					}
+				},
+				"accessibility": {
+					"label": "Play next video"
+				},
+				"accessibilityData": {
+					"accessibilityData": {
+						"label": "Play next video"
+					}
+				}
+			}
+		},
+		"closeButton": {
+			"buttonRenderer": {
+				"style": "STYLE_DEFAULT",
+				"size": "SIZE_DEFAULT",
+				"isDisabled": false,
+				"icon": {
+					"iconType": "REMOVE"
+				},
+				"accessibility": {
+					"label": "Cancel autoplay for this video"
+				}
+			}
+		},
+		"thumbnailOverlays": [
+			{
+				"thumbnailOverlayTimeStatusRenderer": {
+					"text": {
+						"accessibility": {
+							"accessibilityData": {
+								"label": "{{DURATION_LABEL}}"
+							}
+						},
+						"simpleText": "{{DURATION}}"
+					},
+					"style": "DEFAULT"
+				}
+			}
+		],
+		"preferImmediateRedirect": false,
+		"videoId": "{{VIDEO_ID}}",
+		"publishedTimeText": {
+			"simpleText": "{{PUBLISHED}}"
+		},
+		"webShowNewAutonavCountdown": true,
+		"webShowBigThumbnailEndscreen": false,
+		"shortViewCountText": {
+			"accessibility": {
+				"accessibilityData": {
+					"label": "{{VIEWS_LABEL}}"
+				}
+			},
+			"simpleText": "{{VIEWS}}"
+		},
+		"countDownSecsForFullscreen": 3
+	}
+}

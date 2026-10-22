@@ -1,0 +1,29 @@
+{
+	"autoplay": {
+		"sets": [
+			{
+				"mode": "NORMAL",
+				"autoplayVideo": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "/watch?v={{VIDEO_ID}}",
+							"webPageType": "WEB_PAGE_TYPE_WATCH",
+							"rootVe": 3832
+						}
+					},
+					"watchEndpoint": {
+						"videoId": "{{VIDEO_ID}}",
+						"params": "EAEYAdoBBAgBKgDyBQIKAA%3D%3D",
+						"watchEndpointSupportedPrefetchConfig": {
+							"prefetchHintConfig": {
+								"prefetchPriority": 0,
+								"countdownUiRelativeSecondsPrefetchCondition": -3
+							}
+						}
+					}
+				}
+			}
+		],
+		"countDownSecs": 5
+	}
+}

@@ -8,7 +8,7 @@ import { sql } from "../db";
 import { isChannelId, isVideoId } from "../ids";
 import { avatarThumbnails, channelEndpoint, label, responseContext, runs, text } from "./r";
 import { ApiError, route } from "./router";
-import { entityKey } from "./watch";
+import { likeKey, subscriptionKey } from "./watch";
 
 const toast = (message: string) => ({ addToToastAction: { item: { notificationActionRenderer: { responseText: runs(message) } } } });
 const now = () => ({ seconds: String(Math.floor(Date.now() / 1000)), nanos: 0 });
@@ -36,7 +36,7 @@ for (const [method, kind] of [["like/like", "like"], ["like/dislike", "dislike"]
 			return {
 				responseContext: responseContext(viewer),
 				actions: kind === "like" ? [toast("Added to Liked videos")] : kind === null ? [] : [toast("You dislike this video")],
-				frameworkUpdates: { entityBatchUpdate: { mutations: [{ entityKey: entityKey("like", id), type: "ENTITY_MUTATION_TYPE_REPLACE", payload: { likeStatusEntity: { key: entityKey("like", id), likeStatus: status } } }], timestamp: now() } },
+				frameworkUpdates: { entityBatchUpdate: { mutations: [{ entityKey: likeKey(id), type: "ENTITY_MUTATION_TYPE_REPLACE", payload: { likeStatusEntity: { key: likeKey(id), likeStatus: status } } }], timestamp: now() } },
 			};
 		},
 		{ mutation: true },
@@ -44,7 +44,7 @@ for (const [method, kind] of [["like/like", "like"], ["like/dislike", "dislike"]
 }
 
 function subscriptionMutation(channelId: string, subscribed: boolean) {
-	const key = Buffer.from(`sub:${channelId}`).toString("base64url");
+	const key = subscriptionKey(channelId);
 	return { entityKey: key, type: "ENTITY_MUTATION_TYPE_REPLACE", payload: { subscriptionStateEntity: { key, subscribed } } };
 }
 

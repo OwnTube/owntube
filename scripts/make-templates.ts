@@ -106,12 +106,18 @@ const GLOBAL: [RegExp, string][] = [
 	[/https?:\/\/www\.youtube\.com(?=[/"?]|$)/g, "{{ORIGIN}}"],
 ];
 const assets = new Set<string>();
+// blank characters for ids inside base64 blobs (as tpl.ts refills them)
+const BLANKS = ["~", "^", "`"];
 
 // Replace sample values by tokens. `ids` are ids whose entity keys may appear
 // (base64 protobuf with the id in field 2) -> {{ek:TOKEN:type}}.
-export function tokenize(o: any, pairs: [string, string][], ids: [string, string][] = []): any {
+// `exact` values are replaced only where a whole string equals them (short
+// values such as "2014" or "23M" that also occur inside other strings)
+export function tokenize(o: any, pairs: [string, string][], ids: [string, string][] = [], exact: [string, string][] = []): any {
 	const sorted = pairs.filter(([from]) => from).sort((a, b) => b[0].length - a[0].length);
 	return strings(o, (s) => {
+		const whole = exact.find(([from]) => from && s === from);
+		if (whole) return `{{${whole[1]}}}`;
 		for (const m of s.matchAll(/https:\/\/www\.gstatic\.com\/[^"\s]+/g)) assets.add(m[0]);
 		if (ids.length && /^[A-Za-z0-9+/_-]{16,}(%3D|=){0,2}$/.test(s)) {
 			try {
@@ -130,10 +136,10 @@ export function tokenize(o: any, pairs: [string, string][], ids: [string, string
 			if (b) {
 				let latin = Buffer.from(b).toString("latin1");
 				const hits = ids.filter(([v]) => latin.includes(v));
-				if (hits.length === 1) {
-					const [v, name] = hits[0];
-					latin = latin.split(v).join("~".repeat(v.length));
-					return `{{b64:${name}:${b64style(s, Buffer.from(latin, "latin1"))}}}`;
+				if (hits.length && hits.length <= BLANKS.length) {
+					// each id blanked with its own character, in the order of the names
+					hits.forEach(([v], i) => (latin = latin.split(v).join(BLANKS[i].repeat(v.length))));
+					return `{{b64:${hits.map(([, n]) => n).join("+")}:${b64style(s, Buffer.from(latin, "latin1"))}}}`;
 				}
 			}
 		}
@@ -686,6 +692,190 @@ function feeds() {
 }
 
 // ======================================================================
+// watch page
+// kept: title, counts, like/dislike/share/save, owner and subscribe, the
+// description and comments panels, related videos, autoplay and end screen.
+// left out: ads, premium upsells, download/clip/report, heatmap markers,
+// metadata rows (license, music) and the channel's external links
+const WATCH_PANELS = new Set(["engagement-panel-comments-section", "engagement-panel-structured-description"]);
+const plainDescription = (o: any) => {
+	for (const k of ["attributedDescription", "attributedDescriptionBodyText", "colorSampledDescriptionBodyText"]) for (const h of findAllHolders(o, k)) h[k] = { content: "{{DESCRIPTION}}" };
+	for (const h of findAllHolders(o, "headerRuns")) delete h.headerRuns;
+};
+function findAllHolders(o: any, key: string, out: any[] = []): any[] {
+	if (!o || typeof o !== "object") return out;
+	if (!Array.isArray(o) && key in o) out.push(o);
+	for (const v of Array.isArray(o) ? o : Object.values(o)) findAllHolders(v, key, out);
+	return out;
+}
+
+// another video referred to by a watch page (autoplay, end screen); its
+// values become the usual video tokens
+function otherVideo(node: any, v: { id: string; title: string; channelId: string; channelName: string; channelUrl: string; duration: string; durationLabel: string; views: string; viewsLabel: string; published: string }) {
+	let n = dropKey(clean(node), "playerParams");
+	wholeToken(n, "thumbnails", "VIDEO_THUMBNAILS", (h) => /ytimg/.test(JSON.stringify(h.thumbnails)));
+	n = tokenize(
+		n,
+		[[v.id, "VIDEO_ID"], [v.title, "TITLE"], [v.channelId, "CHANNEL_ID"], [v.channelUrl, "CHANNEL_URL"], [v.durationLabel, "DURATION_LABEL"]],
+		[[v.id, "VIDEO_ID"], [v.channelId, "CHANNEL_ID"]],
+		[[v.channelName, "CHANNEL_NAME"], [v.duration, "DURATION"], [v.views, "VIEWS"], [v.viewsLabel, "VIEWS_LABEL"], [v.published, "PUBLISHED"]],
+	);
+	return strings(n, (x) => x.replace(/&pp=[^&"]*/, ""));
+}
+
+function watchPage(dir: string, signedIn: boolean) {
+	const p = pageOnly(pageVar(body(dir, /^001-/)));
+	delete p.onResponseReceivedEndpoints; // heatmap markers, browser notification prompt
+	const r = p.contents.twoColumnWatchNextResults;
+	const [pri0, sec0] = r.results.results.contents;
+	const pri = pri0.videoPrimaryInfoRenderer;
+	const sec = sec0.videoSecondaryInfoRenderer;
+	const id: string = p.currentVideoEndpoint.watchEndpoint.videoId;
+	const title = contentOf(pri.title);
+	const owner = sec.owner.videoOwnerRenderer;
+	const chId: string = owner.navigationEndpoint.browseEndpoint.browseId;
+	const chUrl: string = owner.navigationEndpoint.browseEndpoint.canonicalBaseUrl;
+	const chName = contentOf(owner.title);
+	const vc = pri.viewCount.videoViewCountRenderer;
+	const likeVm = find(pri, "likeButtonViewModel").likeButtonViewModel.toggleButtonViewModel.toggleButtonViewModel;
+	const likes: string = likeVm.defaultButtonViewModel.buttonViewModel.title;
+	const likesGrouped = /along with ([\d,]+) other/.exec(likeVm.defaultButtonViewModel.buttonViewModel.accessibilityText)![1];
+	const header = find(p, "videoDescriptionHeaderRenderer");
+	const [likeF, , dateF] = header.factoid;
+	const listLike = find(p, "listItemLikeCountViewModel");
+	const commentsPanel = p.engagementPanels.find((e: any) => e.engagementPanelSectionListRenderer.targetId === "engagement-panel-comments-section");
+	const commentCount = contentOf(find(commentsPanel, "contextualInfo"));
+	const subs = owner.subscriberCountText;
+
+	// ---- what this instance doesn't offer ----
+	const menu = pri.videoActions.menuRenderer;
+	menu.items = [];
+	menu.flexibleItems = menu.flexibleItems.filter((it: any) => contentOf(find(it, "menuServiceItemRenderer")?.text) === "Save");
+	delete owner.badges;
+	sec.metadataRowContainer.metadataRowContainerRenderer.rows = [];
+	plainDescription(p);
+	p.engagementPanels = p.engagementPanels.filter((e: any) => WATCH_PANELS.has(e.engagementPanelSectionListRenderer.targetId));
+	for (const h of findAllHolders(p, "creatorCustomUrlButtons")) delete h.creatorCustomUrlButtons;
+	const overlay = p.playerOverlays.playerOverlayRenderer;
+	delete overlay.showPlaybackRateUpsellPanelCommand;
+	const muts = p.frameworkUpdates?.entityBatchUpdate?.mutations;
+	delete p.frameworkUpdates;
+
+	// ---- per-viewer state ----
+	for (const h of findAllHolders(p, "likeStatus")) h.likeStatus = "{{LIKE_STATUS}}";
+	const subBtn = find(sec, "subscribeButtonRenderer");
+	if (subBtn && "subscribed" in subBtn) subBtn.subscribed = "{{SUBSCRIBED}}";
+	const keep = (muts ?? []).filter((m: any) => m.payload && (m.payload.likeStatusEntity || m.payload.subscriptionStateEntity || m.payload.likeButtonAnimationEntity));
+	for (const m of keep) {
+		if (m.payload.likeStatusEntity) m.payload.likeStatusEntity.likeStatus = "{{LIKE_STATUS}}";
+		if (m.payload.subscriptionStateEntity) m.payload.subscriptionStateEntity.subscribed = "{{SUBSCRIBED}}";
+	}
+
+	// ---- lists filled per video ----
+	const comments = r.results.results.contents.find((c: any) => c.itemSectionRenderer?.sectionIdentifier === "comment-item-section");
+	find(comments, "continuationCommand").token = "{{COMMENTS_CONTINUATION}}";
+	const sorts = find(commentsPanel, "subMenuItems");
+	sorts[0].serviceEndpoint.continuationCommand.token = "{{COMMENTS_TOP}}";
+	sorts[1].serviceEndpoint.continuationCommand.token = "{{COMMENTS_NEWEST}}";
+	for (const h of findAllHolders(commentsPanel, "continuationCommand")) if (!/^\{\{/.test(h.continuationCommand.token)) h.continuationCommand.token = "{{COMMENTS_CONTINUATION}}";
+	const related = r.secondaryResults.secondaryResults.results[0].itemSectionRenderer;
+	const relatedSample = related.contents.find((c: any) => c.lockupViewModel?.contentType === "LOCKUP_CONTENT_TYPE_VIDEO");
+	const relatedCont = related.contents.find((c: any) => c.continuationItemRenderer);
+	related.contents = "{{RELATED}}";
+	delete related.header; // "All / From <channel> / Related" filter chips (signed in): not supported yet
+	const auto = overlay.autoplay.playerOverlayAutoplayRenderer;
+	const next = {
+		id: auto.videoId,
+		title: contentOf(auto.videoTitle),
+		channelId: auto.byline.runs[0].navigationEndpoint.browseEndpoint.browseId,
+		channelName: auto.byline.runs[0].text,
+		channelUrl: auto.byline.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl,
+		duration: contentOf(auto.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.text),
+		durationLabel: auto.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.text.accessibility.accessibilityData.label,
+		views: contentOf(auto.shortViewCountText),
+		viewsLabel: auto.shortViewCountText.accessibility.accessibilityData.label,
+		published: contentOf(auto.publishedTimeText),
+	};
+	const nextSamples = [next.id, next.title, next.channelId];
+	const suffix = signedIn ? "in" : "out";
+	save(`watch/autoplay_${suffix}`, otherVideo(r.autoplay, next), nextSamples);
+	save(`watch/autoplay_overlay_${suffix}`, otherVideo(overlay.autoplay, next), nextSamples);
+	r.autoplay = "{{AUTOPLAY}}";
+	overlay.autoplay = "{{AUTOPLAY_OVERLAY}}";
+	const end = overlay.endScreen.watchNextEndScreenRenderer;
+	const e0 = end.results[0].endScreenVideoRenderer;
+	if (!signedIn) {
+		const ev = {
+			id: e0.videoId,
+			title: contentOf(e0.title),
+			channelId: e0.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId,
+			channelName: e0.shortBylineText.runs[0].text,
+			channelUrl: e0.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl,
+			duration: contentOf(e0.lengthText),
+			durationLabel: e0.lengthText.accessibility.accessibilityData.label,
+			views: contentOf(e0.shortViewCountText),
+			viewsLabel: e0.shortViewCountText.accessibility.accessibilityData.label,
+			published: contentOf(e0.publishedTimeText),
+		};
+		save("item/end_screen_video", otherVideo(end.results[0], ev), [ev.id, ev.title, ev.channelId]);
+		const { item, samples } = videoLockup(pruneLockupMenu(structuredClone(relatedSample)));
+		save("item/video_lockup_compact_out", item, samples);
+		const c = clean(relatedCont);
+		for (const h of findAllHolders(c, "continuationCommand")) h.continuationCommand.token = "{{CONTINUATION}}";
+		save("item/continuation_related", c);
+	} else {
+		const { item, samples } = videoLockup(pruneLockupMenu(structuredClone(relatedSample)));
+		save("item/video_lockup_compact", item, samples);
+	}
+	end.results = "{{END_SCREEN}}";
+
+	// ---- the video's own values ----
+	wholeToken(p, "thumbnails", "OWNER_AVATAR", (h) => h.thumbnails?.length === 3 && /ggpht/.test(h.thumbnails[0].url));
+	wholeToken(p, "thumbnails", "AVATAR_88", (h) => h.thumbnails?.length === 1 && /ggpht/.test(h.thumbnails[0].url));
+	if (keep.length) p.mutations = keep;
+	const pairs: [string, string][] = [
+		[id, "VIDEO_ID"],
+		[title, "TITLE"],
+		[chId, "CHANNEL_ID"],
+		[chUrl, "CHANNEL_URL"],
+		[chUrl.slice(1), "AT_HANDLE"],
+		[contentOf(vc.viewCount), "VIEWS_FULL"],
+		[contentOf(vc.shortViewCount), "VIEWS_SHORT"],
+		[contentOf(pri.dateText), "DATE"],
+		[likesGrouped, "LIKES_GROUPED"],
+		[listLike.valueIfLiked, "LIKES_GROUPED_IF_LIKED"],
+		[contentOf(subs), "SUBSCRIBERS"],
+		[subs.accessibility.accessibilityData.label, "SUBSCRIBERS_LABEL"],
+		[`Subscribe to ${chName}.`, "SUBSCRIBE_LABEL"],
+		[`Unsubscribe from ${chName}.`, "UNSUBSCRIBE_LABEL"],
+		[`notification setting for ${chName}`, "BELL_LABEL_SUFFIX"],
+	];
+	const exact: [string, string][] = [
+		[chName, "CHANNEL_NAME"],
+		[vc.originalViewCount, "VIEW_COUNT"],
+		[contentOf(pri.relativeDateText), "PUBLISHED_LABEL"],
+		[likes, "LIKES"],
+		[likeF.factoidRenderer.accessibilityText, "LIKES_LABEL"],
+		[contentOf(dateF.factoidRenderer.value), "YEAR"],
+		[contentOf(dateF.factoidRenderer.label), "MONTH_DAY"],
+		[contentOf(find(header, "viewCountFactoidRenderer").factoid.factoidRenderer.value), "VIEWS_COMPACT"],
+		[find(p, "listItemViewCountViewModel").viewCount, "VIEW_COUNT_GROUPED"],
+		[commentCount, "COMMENT_COUNT"],
+	];
+	let out = tokenize(p, pairs, [[id, "VIDEO_ID"], [chId, "CHANNEL_ID"]], exact);
+	// the like count a viewer's own like adds is computed per video
+	const lv = find(out, "likeButtonViewModel").likeButtonViewModel.toggleButtonViewModel.toggleButtonViewModel;
+	lv.toggledButtonViewModel.buttonViewModel.title = "{{LIKES_IF_LIKED}}";
+	out = strings(out, (x) => x.replace(/^\{\{VIEWS_FULL\}\}$/, "{{VIEWS_FULL}}"));
+	save(`watch/page_${suffix}`, out, [id, title, chId, chName, next.id]);
+}
+
+function watch() {
+	watchPage("watch2", false);
+	watchPage("in-watch", true);
+}
+
+// ======================================================================
 const only = process.argv.slice(2);
 personalValues();
 const steps: [string, () => void][] = [
@@ -694,6 +884,7 @@ const steps: [string, () => void][] = [
 	["guide", guide],
 	["chrome", chrome],
 	["feeds", feeds],
+	["watch", watch],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;

@@ -1,280 +1,72 @@
-// /youtubei/v1/next for a video (and the watch page's ytInitialData):
-// title and actions, owner and subscribe button, description panel, the
-// comments section stub (filled by a continuation, see comments.ts) and
-// related videos.
+// /youtubei/v1/next for a video (and the watch page's ytInitialData), built
+// from YouTube's watch page (templates watch/page_*): title and counts,
+// like/dislike/share/save, owner and subscribe button, description and
+// comments panels (comments load through a continuation, see comments.ts),
+// related videos, autoplay and the end screen.
 
 import type { Viewer } from "../client/page";
 import { getVideo, isSubscribed, reactionOf, relatedVideos } from "../data";
 import { encodeToken } from "../ids";
 import { topbar } from "./chrome";
-import { continuationItem, subscribeButton, videoLockup } from "./items";
-import {
-	type Video,
-	ago,
-	avatarThumbnails,
-	channelEndpoint,
-	compact,
-	content,
-	dateText,
-	grouped,
-	label,
-	responseContext,
-	runs,
-	serviceEndpoint,
-	signInModal,
-	subscribersText,
-	text,
-	viewsText,
-	watchEndpoint,
-} from "./r";
+import { entityKey as protoKey } from "./proto";
+import { type Video, avatarUrl, compact, countLabel, dateText, grouped, responseContext } from "./r";
+import { make } from "./tpl";
+import { baseVars, videoVars } from "./vars";
 
 export const RELATED_PAGE = 20;
+const END_SCREEN = 12;
 
-const entityKey = (kind: string, id: string) => Buffer.from(`${kind}:${id}`).toString("base64url");
+// entity keys the watch page's buttons read their state from
+export const likeKey = (videoId: string) => protoKey(videoId, 62);
+export const subscriptionKey = (channelId: string) => protoKey(channelId, 51);
 
-function toggleButton(opts: { icon: string; title: string; toggledTitle: string; tooltip: string; toggledTooltip: string; onTap: unknown; onToggledTap: unknown; a11y: string; identifier: string; isToggled: boolean; disabled: boolean; accessibilityId: string }) {
-	const bvm = (title: string, tooltip: string, onTap: unknown) => ({
-		buttonViewModel: {
-			iconName: opts.icon,
-			title,
-			onTap,
-			accessibilityText: opts.a11y,
-			style: "BUTTON_VIEW_MODEL_STYLE_MONO",
-			isFullWidth: false,
-			type: "BUTTON_VIEW_MODEL_TYPE_TONAL",
-			buttonSize: "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
-			accessibilityId: opts.accessibilityId,
-			tooltip,
-		},
-	});
-	return {
-		toggleButtonViewModel: {
-			toggleButtonViewModel: {
-				defaultButtonViewModel: bvm(opts.title, opts.tooltip, opts.onTap),
-				toggledButtonViewModel: bvm(opts.toggledTitle, opts.toggledTooltip, opts.onToggledTap),
-				identifier: opts.identifier,
-				isToggled: opts.isToggled,
-				isTogglingDisabled: opts.disabled,
-			},
-		},
-	};
-}
-
-const command = (c: unknown) => ({ serialCommand: { commands: [{ innertubeCommand: c }] } });
-
-export function likeButtons(v: Video, viewer: Viewer, reaction: "like" | "dislike" | null) {
-	const liked = reaction === "like";
-	const disliked = reaction === "dislike";
-	const others = v.like_count - (liked ? 1 : 0);
-	const like = (status: string, api: string) => serviceEndpoint(`/youtubei/v1/like/${api}`, { likeEndpoint: { status, target: { videoId: v.id } } });
-	const key = entityKey("like", v.id);
-	return {
-		segmentedLikeDislikeButtonViewModel: {
-			likeButtonViewModel: {
-				likeButtonViewModel: {
-					toggleButtonViewModel: toggleButton({
-						icon: "LIKE",
-						title: others ? compact(others) : "",
-						toggledTitle: compact(others + 1),
-						tooltip: "I like this",
-						toggledTooltip: "Unlike",
-						a11y: `like this video along with ${grouped(others)} other ${others === 1 ? "person" : "people"}`,
-						identifier: "watch-like",
-						accessibilityId: "id.video.like.button",
-						isToggled: liked,
-						disabled: !viewer,
-						onTap: viewer ? command(like("LIKE", "like")) : command(signInModal("Like this video?", "Sign in to make your opinion count.", `/watch?v=${v.id}`)),
-						onToggledTap: command(like("INDIFFERENT", "removelike")),
-					}).toggleButtonViewModel,
-					likeStatusEntityKey: key,
-					likeStatusEntity: { key, likeStatus: liked ? "LIKE" : disliked ? "DISLIKE" : "INDIFFERENT" },
-				},
-			},
-			dislikeButtonViewModel: {
-				dislikeButtonViewModel: {
-					toggleButtonViewModel: toggleButton({
-						icon: "DISLIKE",
-						title: "",
-						toggledTitle: "",
-						tooltip: "I dislike this",
-						toggledTooltip: "I dislike this",
-						a11y: "Dislike this video",
-						identifier: "watch-dislike",
-						accessibilityId: "id.video.dislike.button",
-						isToggled: disliked,
-						disabled: !viewer,
-						onTap: viewer ? command(like("DISLIKE", "dislike")) : command(signInModal("Don't like this video?", "Sign in to make your opinion count.", `/watch?v=${v.id}`)),
-						onToggledTap: command(like("INDIFFERENT", "removelike")),
-					}).toggleButtonViewModel,
-					dislikeEntityKey: key,
-				},
-			},
-			iconType: "LIKE_ICON_TYPE_UNKNOWN",
-			likeCountEntity: { key: entityKey("likecount", v.id), likeCountIfLiked: content(compact(others + 1)), likeCountIfDisliked: content(compact(others)), likeCountIfIndifferent: content(compact(others)), expandedLikeCountIfLiked: content(grouped(others + 1)), expandedLikeCountIfDisliked: content(grouped(others)), expandedLikeCountIfIndifferent: content(grouped(others)), likeCountLabel: content("likes"), likeButtonA11yText: content(`like this video along with ${grouped(others)} other people`), likeCountIfLikedNumber: String(others + 1), likeCountIfDislikedNumber: String(others), likeCountIfIndifferentNumber: String(others), shouldExpandLikeCount: false, sentimentFactoidA11yTextIfLiked: content(`${grouped(others + 1)} likes`), sentimentFactoidA11yTextIfDisliked: content(`${grouped(others)} likes`) },
-			dynamicLikeCountUpdateData: { updateStatusKey: "like_count_update_status_key", placeholderLikeCountValuesKey: "like_count_placeholder_values_key", updateDelayLoopId: "like_count_update_delay_loop_id", updateDelaySec: 5 },
-			teasersOrderEntityKey: entityKey("teasers", v.id),
-		},
-	};
-}
-
-function shareButton(v: Video) {
-	return {
-		buttonViewModel: {
-			iconName: "SHARE",
-			title: "Share",
-			onTap: {
-				serialCommand: {
-					commands: [
-						{
-							innertubeCommand: serviceEndpoint("/youtubei/v1/share/get_share_panel", {
-								shareEntityServiceEndpoint: { serializedShareEntity: Buffer.from(v.id).toString("base64url"), commands: [{ openPopupAction: { popup: { unifiedSharePanelRenderer: { showLoadingSpinner: true } }, popupType: "DIALOG", beReused: true } }] },
-							}),
-						},
-					],
-				},
-			},
-			accessibilityText: "Share",
-			style: "BUTTON_VIEW_MODEL_STYLE_MONO",
-			isFullWidth: false,
-			type: "BUTTON_VIEW_MODEL_TYPE_TONAL",
-			buttonSize: "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
-			state: "BUTTON_VIEW_MODEL_STATE_ACTIVE",
-			accessibilityId: "id.video.share.button",
-			tooltip: "Share",
-		},
-	};
-}
-
-function saveButton(v: Video, viewer: Viewer) {
-	return {
-		menuFlexibleItemRenderer: {
-			menuItem: {
-				menuServiceItemRenderer: {
-					text: runs("Save"),
-					icon: { iconType: "PLAYLIST_ADD" },
-					serviceEndpoint: viewer ? { showSheetCommand: { panelLoadingStrategy: { requestTemplate: { panelId: "PAadd_to_playlist", params: Buffer.from(v.id).toString("base64url") } } } } : signInModal("Want to watch this again later?", "Sign in to add this video to a playlist.", `/watch?v=${v.id}`),
-				},
-			},
-			topLevelButton: {
-				buttonViewModel: {
-					iconName: "PLAYLIST_ADD",
-					title: "Save",
-					onTap: { innertubeCommand: viewer ? { showSheetCommand: { panelLoadingStrategy: { requestTemplate: { panelId: "PAadd_to_playlist", params: Buffer.from(v.id).toString("base64url") } } } } : signInModal("Want to watch this again later?", "Sign in to add this video to a playlist.", `/watch?v=${v.id}`) },
-					accessibilityText: "Save to playlist",
-					style: "BUTTON_VIEW_MODEL_STYLE_MONO",
-					type: "BUTTON_VIEW_MODEL_TYPE_TONAL",
-					buttonSize: "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
-					tooltip: "Save",
-				},
-			},
-		},
-	};
-}
-
-function primaryInfo(v: Video, viewer: Viewer, reaction: "like" | "dislike" | null) {
-	const when = v.published_at ?? v.created_at;
-	return {
-		videoPrimaryInfoRenderer: {
-			title: runs(v.title),
-			viewCount: { videoViewCountRenderer: { viewCount: text(viewsText(v.view_count)), shortViewCount: text(`${compact(v.view_count)} views`), originalViewCount: String(v.view_count) } },
-			videoActions: {
-				menuRenderer: {
-					items: [],
-					topLevelButtons: [likeButtons(v, viewer, reaction), shareButton(v)],
-					accessibility: label("More actions"),
-					flexibleItems: [saveButton(v, viewer)],
-				},
-			},
-			dateText: text(dateText(when)),
-			relativeDateText: { accessibility: label(ago(when)), simpleText: ago(when) },
-		},
-	};
-}
-
-function secondaryInfo(v: Video, viewer: Viewer, subscribed: boolean) {
-	const ch = { id: v.channel_id, handle: v.channel_handle, title: v.channel_title };
-	const subs = v.subscriber_count ?? 0;
-	return {
-		videoSecondaryInfoRenderer: {
-			owner: {
-				videoOwnerRenderer: {
-					thumbnail: avatarThumbnails(v.channel_id),
-					title: runs({ text: v.channel_title, navigationEndpoint: channelEndpoint(ch) }),
-					subscriptionButton: { type: "FREE" },
-					navigationEndpoint: channelEndpoint(ch),
-					subscriberCountText: { accessibility: label(`${grouped(subs)} subscribers`), simpleText: subscribersText(subs) },
-				},
-			},
-			...(viewer?.channelId === v.channel_id ? {} : { subscribeButton: subscribeButton(ch, subscribed, viewer) }),
-			metadataRowContainer: { metadataRowContainerRenderer: { collapsedItemCount: 0 } },
-			showMoreText: text("...more"),
-			showLessText: text("Show less"),
-			attributedDescription: { content: v.description },
-			descriptionCollapsedLines: 3,
-			showMoreCommand: { commandExecutorCommand: { commands: [{ changeEngagementPanelVisibilityAction: { targetId: "engagement-panel-structured-description", visibility: "ENGAGEMENT_PANEL_VISIBILITY_EXPANDED" } }] } },
-			showLessCommand: { changeEngagementPanelVisibilityAction: { targetId: "engagement-panel-structured-description", visibility: "ENGAGEMENT_PANEL_VISIBILITY_HIDDEN" } },
-		},
-	};
-}
-
-function descriptionPanel(v: Video) {
-	const when = v.published_at ?? v.created_at;
-	return {
-		engagementPanelSectionListRenderer: {
-			panelIdentifier: "engagement-panel-structured-description",
-			header: {
-				engagementPanelTitleHeaderRenderer: {
-					title: runs("Description"),
-					visibilityButton: { buttonRenderer: { icon: { iconType: "CLOSE" }, accessibilityData: label("Close description"), command: { changeEngagementPanelVisibilityAction: { targetId: "engagement-panel-structured-description", visibility: "ENGAGEMENT_PANEL_VISIBILITY_HIDDEN" } } } },
-				},
-			},
-			content: {
-				structuredDescriptionContentRenderer: {
-					items: [
-						{
-							videoDescriptionHeaderRenderer: {
-								title: runs(v.title),
-								channel: text(v.channel_title),
-								views: text(viewsText(v.view_count)),
-								publishDate: text(dateText(when)),
-								factoid: [
-									{ factoidRenderer: { value: text(compact(v.like_count)), label: text("Likes"), accessibilityText: `${grouped(v.like_count)} likes` } },
-									{ factoidRenderer: { value: text(compact(v.view_count)), label: text("Views"), accessibilityText: viewsText(v.view_count) } },
-									{ factoidRenderer: { value: text(String(new Date(when).getFullYear())), label: text(new Date(when).toLocaleDateString("en-US", { month: "short", day: "numeric" })), accessibilityText: dateText(when) } },
-								],
-								channelNavigationEndpoint: channelEndpoint({ id: v.channel_id, handle: v.channel_handle }),
-								channelThumbnail: { thumbnails: [{ url: avatarThumbnails(v.channel_id, [88]).thumbnails[0].url }] },
-							},
-						},
-						{ expandableVideoDescriptionBodyRenderer: { showMoreText: text("...more"), showLessText: text("Show less"), attributedDescriptionBodyText: { content: v.description } } },
-					],
-				},
-			},
-			veType: 124975,
-			targetId: "engagement-panel-structured-description",
-			visibility: "ENGAGEMENT_PANEL_VISIBILITY_HIDDEN",
-		},
-	};
-}
-
-function commentsPanel(v: Video) {
-	return {
-		engagementPanelSectionListRenderer: {
-			panelIdentifier: "engagement-panel-comments-section",
-			header: { engagementPanelTitleHeaderRenderer: { title: runs("Comments"), contextualInfo: runs(grouped(v.comment_count)) } },
-			content: { sectionListRenderer: { contents: [{ itemSectionRenderer: { contents: [continuationItem(encodeToken({ k: "comments", v: v.id, s: "top" }), "/youtubei/v1/next")], sectionIdentifier: "engagement-panel-comments-section" } }] } },
-			veType: 76278,
-			targetId: "engagement-panel-comments-section",
-			visibility: "ENGAGEMENT_PANEL_VISIBILITY_HIDDEN",
-		},
-	};
-}
+const relatedLockup = (v: Video, viewer: Viewer) => make(viewer ? "item/video_lockup_compact" : "item/video_lockup_compact_out", { ...baseVars(viewer, `/watch?v=${v.id}`), ...videoVars(v) });
 
 export async function relatedItems(v: Video, viewer: Viewer, offset: number) {
 	const related = await relatedVideos(v, RELATED_PAGE, offset);
-	const items: unknown[] = related.map((r) => videoLockup(r, viewer));
-	if (related.length === RELATED_PAGE) items.push(continuationItem(encodeToken({ k: "related", v: v.id, o: offset + RELATED_PAGE }), "/youtubei/v1/next"));
-	return items;
+	const items: unknown[] = related.map((r) => relatedLockup(r, viewer));
+	if (related.length === RELATED_PAGE) items.push(make("item/continuation_related", { CONTINUATION: encodeToken({ k: "related", v: v.id, o: offset + RELATED_PAGE }) }));
+	return { items, videos: related };
+}
+
+// the values of the watch page's own video
+function pageVars(v: Video, viewer: Viewer, reaction: "like" | "dislike" | null, subscribed: boolean) {
+	const when = v.published_at ?? v.created_at;
+	const d = new Date(when);
+	const others = v.like_count - (reaction === "like" ? 1 : 0);
+	const subs = v.subscriber_count ?? 0;
+	return {
+		...baseVars(viewer, `/watch?v=${v.id}`),
+		...videoVars(v),
+		AT_HANDLE: `@${v.channel_handle}`,
+		DESCRIPTION: v.description,
+		VIEWS_FULL: v.view_count === 1 ? "1 view" : `${grouped(v.view_count)} views`,
+		VIEWS_SHORT: v.view_count === 1 ? "1 view" : `${compact(v.view_count)} views`,
+		VIEWS_COMPACT: compact(v.view_count),
+		VIEW_COUNT: String(v.view_count),
+		VIEW_COUNT_GROUPED: grouped(v.view_count),
+		DATE: dateText(when),
+		YEAR: String(d.getFullYear()),
+		MONTH_DAY: d.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+		LIKES: others ? compact(others) : "",
+		LIKES_IF_LIKED: compact(others + 1),
+		LIKES_LABEL: countLabel(v.like_count, "like"),
+		LIKES_GROUPED: grouped(others),
+		LIKES_GROUPED_IF_LIKED: grouped(others + 1),
+		LIKE_STATUS: reaction === "like" ? "LIKE" : reaction === "dislike" ? "DISLIKE" : "INDIFFERENT",
+		SUBSCRIBERS: subs === 1 ? "1 subscriber" : `${compact(subs)} subscribers`,
+		SUBSCRIBERS_LABEL: countLabel(subs, "subscriber"),
+		SUBSCRIBE_LABEL: `Subscribe to ${v.channel_title}.`,
+		UNSUBSCRIBE_LABEL: `Unsubscribe from ${v.channel_title}.`,
+		BELL_LABEL_SUFFIX: `notification setting for ${v.channel_title}`,
+		SUBSCRIBED: subscribed,
+		OWNER_AVATAR: [48, 88, 176].map((s) => ({ url: avatarUrl(v.channel_id, s), width: s, height: s })),
+		AVATAR_88: [{ url: avatarUrl(v.channel_id, 88) }],
+		COMMENT_COUNT: compact(v.comment_count),
+		COMMENTS_CONTINUATION: encodeToken({ k: "comments", v: v.id, s: "top" }),
+		COMMENTS_TOP: encodeToken({ k: "comments", v: v.id, s: "top" }),
+		COMMENTS_NEWEST: encodeToken({ k: "comments", v: v.id, s: "new" }),
+	};
 }
 
 export async function watchNext(videoId: string, viewer: Viewer, opts: { playlist?: unknown } = {}) {
@@ -282,60 +74,26 @@ export async function watchNext(videoId: string, viewer: Viewer, opts: { playlis
 	if (!v) return undefined;
 	const [subscribed, reaction] = await Promise.all([isSubscribed(viewer, v.channel_id), reactionOf(viewer, v.id)]);
 	const related = await relatedItems(v, viewer, 0);
+	const io = viewer ? "in" : "out";
+	const next = related.videos[0];
+	const nextVars = next && { ...baseVars(viewer, `/watch?v=${next.id}`), ...videoVars(next) };
+	const page = make(`watch/page_${io}`, {
+		...pageVars(v, viewer, reaction, subscribed),
+		RELATED: related.items,
+		END_SCREEN: related.videos.slice(0, END_SCREEN).map((r) => make("item/end_screen_video", { ...baseVars(viewer), ...videoVars(r) })),
+		AUTOPLAY: nextVars && make(`watch/autoplay_${io}`, nextVars),
+		AUTOPLAY_OVERLAY: nextVars && make(`watch/autoplay_overlay_${io}`, nextVars),
+	});
+	const results = page.contents.twoColumnWatchNextResults;
+	// a channel's owner gets no subscribe button on their own videos
+	if (viewer?.channelId === v.channel_id) delete results.results.results.contents[1].videoSecondaryInfoRenderer.subscribeButton;
+	if (opts.playlist) results.playlist = opts.playlist;
+	const { mutations, ...rest } = page;
 	const response = {
 		responseContext: responseContext(viewer),
-		contents: {
-			twoColumnWatchNextResults: {
-				results: {
-					results: {
-						contents: [
-							primaryInfo(v, viewer, reaction),
-							secondaryInfo(v, viewer, subscribed),
-							{
-								itemSectionRenderer: {
-									contents: [continuationItem(encodeToken({ k: "comments", v: v.id, s: "top" }), "/youtubei/v1/next")],
-									header: { commentsHeaderRenderer: { countText: runs("Comments"), screenReaderOnly: true } },
-									sectionIdentifier: "comment-item-section",
-									targetId: "comments-section",
-								},
-							},
-						],
-						trackingParams: "",
-					},
-				},
-				secondaryResults: {
-					secondaryResults: {
-						results: [{ itemSectionRenderer: { contents: related, sectionIdentifier: "sid-wn-chips", targetId: "watch-next-feed" } }],
-						trackingParams: "",
-						targetId: "watch-next-feed",
-					},
-				},
-				...(opts.playlist ? { playlist: opts.playlist } : {}),
-			},
-		},
-		currentVideoEndpoint: watchEndpoint(v.id),
-		trackingParams: "",
-		playerOverlays: {
-			playerOverlayRenderer: {
-				endScreen: { watchNextEndScreenRenderer: { results: [], title: text("You may also like..."), trackingParams: "" } },
-				autoplay: undefined,
-				shareButton: { buttonRenderer: { style: "STYLE_OPACITY", size: "SIZE_DEFAULT", isDisabled: false, text: runs("Share"), icon: { iconType: "SHARE" }, navigationEndpoint: serviceEndpoint("/youtubei/v1/share/get_share_panel", { shareEntityServiceEndpoint: { serializedShareEntity: Buffer.from(v.id).toString("base64url"), commands: [{ openPopupAction: { popup: { unifiedSharePanelRenderer: { showLoadingSpinner: true } }, popupType: "DIALOG", beReused: true } }] } }), tooltip: "Share" } },
-				addToMenu: { menuRenderer: { trackingParams: "" } },
-				videoDetails: {
-					playerOverlayVideoDetailsRenderer: { title: text(v.title), subtitle: runs(v.channel_title, " • ", viewsText(v.view_count)) },
-				},
-			},
-		},
-		engagementPanels: [commentsPanel(v), descriptionPanel(v)],
+		...rest,
 		topbar: topbar(viewer, `/watch?v=${v.id}`),
-		frameworkUpdates: {
-			entityBatchUpdate: {
-				mutations: [{ entityKey: entityKey("like", v.id), type: "ENTITY_MUTATION_TYPE_REPLACE", payload: { likeStatusEntity: { key: entityKey("like", v.id), likeStatus: reaction === "like" ? "LIKE" : reaction === "dislike" ? "DISLIKE" : "INDIFFERENT" } } }],
-				timestamp: { seconds: String(Math.floor(Date.now() / 1000)), nanos: 0 },
-			},
-		},
+		frameworkUpdates: { entityBatchUpdate: { mutations: mutations ?? [], timestamp: { seconds: String(Math.floor(Date.now() / 1000)), nanos: 0 } } },
 	};
 	return { video: v, response };
 }
-
-export { entityKey };

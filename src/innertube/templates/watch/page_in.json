@@ -1,0 +1,3823 @@
+{
+	"contents": {
+		"twoColumnWatchNextResults": {
+			"results": {
+				"results": {
+					"contents": [
+						{
+							"videoPrimaryInfoRenderer": {
+								"title": {
+									"runs": [
+										{
+											"text": "{{TITLE}}"
+										}
+									]
+								},
+								"viewCount": {
+									"videoViewCountRenderer": {
+										"viewCount": {
+											"simpleText": "{{VIEWS_FULL}}"
+										},
+										"shortViewCount": {
+											"simpleText": "{{VIEWS_SHORT}}"
+										},
+										"originalViewCount": "{{VIEW_COUNT}}"
+									}
+								},
+								"videoActions": {
+									"menuRenderer": {
+										"items": [],
+										"topLevelButtons": [
+											{
+												"segmentedLikeDislikeButtonViewModel": {
+													"likeButtonViewModel": {
+														"likeButtonViewModel": {
+															"toggleButtonViewModel": {
+																"toggleButtonViewModel": {
+																	"defaultButtonViewModel": {
+																		"buttonViewModel": {
+																			"iconName": "LIKE",
+																			"title": "{{LIKES}}",
+																			"onTap": {
+																				"serialCommand": {
+																					"commands": [
+																						{
+																							"logGestureCommand": {
+																								"gestureType": "GESTURE_EVENT_TYPE_LOG_GENERIC_CLICK"
+																							}
+																						},
+																						{
+																							"innertubeCommand": {
+																								"commandMetadata": {
+																									"webCommandMetadata": {
+																										"sendPost": true,
+																										"apiUrl": "/youtubei/v1/like/like"
+																									}
+																								},
+																								"likeEndpoint": {
+																									"status": "LIKE",
+																									"target": {
+																										"videoId": "{{VIDEO_ID}}"
+																									},
+																									"likeParams": "{{b64:VIDEO_ID:Cg0KC35+fn5+fn5+fn5+IAAyDAjQneXWBhCS3tzoAg%3D%3D}}"
+																								}
+																							}
+																						}
+																					]
+																				}
+																			},
+																			"accessibilityText": "like this video along with {{LIKES_GROUPED}} other people",
+																			"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																			"isFullWidth": false,
+																			"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+																			"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+																			"accessibilityId": "id.video.like.button",
+																			"tooltip": "I like this"
+																		}
+																	},
+																	"toggledButtonViewModel": {
+																		"buttonViewModel": {
+																			"iconName": "LIKE",
+																			"title": "{{LIKES_IF_LIKED}}",
+																			"onTap": {
+																				"serialCommand": {
+																					"commands": [
+																						{
+																							"logGestureCommand": {
+																								"gestureType": "GESTURE_EVENT_TYPE_LOG_GENERIC_CLICK"
+																							}
+																						},
+																						{
+																							"innertubeCommand": {
+																								"commandMetadata": {
+																									"webCommandMetadata": {
+																										"sendPost": true,
+																										"apiUrl": "/youtubei/v1/like/removelike"
+																									}
+																								},
+																								"likeEndpoint": {
+																									"status": "INDIFFERENT",
+																									"target": {
+																										"videoId": "{{VIDEO_ID}}"
+																									},
+																									"removeLikeParams": "{{b64:VIDEO_ID:Cg0KC35+fn5+fn5+fn5+GAAqDAjQneXWBhDGm93oAg%3D%3D}}"
+																								}
+																							}
+																						}
+																					]
+																				}
+																			},
+																			"accessibilityText": "like this video along with {{LIKES_GROUPED}} other people",
+																			"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																			"isFullWidth": false,
+																			"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+																			"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+																			"accessibilityId": "id.video.like.button",
+																			"tooltip": "Unlike"
+																		}
+																	},
+																	"identifier": "watch-like",
+																	"isTogglingDisabled": false
+																}
+															},
+															"likeStatusEntityKey": "{{ek:VIDEO_ID:62}}",
+															"likeStatusEntity": {
+																"key": "{{ek:VIDEO_ID:62}}",
+																"likeStatus": "{{LIKE_STATUS}}"
+															}
+														}
+													},
+													"dislikeButtonViewModel": {
+														"dislikeButtonViewModel": {
+															"toggleButtonViewModel": {
+																"toggleButtonViewModel": {
+																	"defaultButtonViewModel": {
+																		"buttonViewModel": {
+																			"iconName": "DISLIKE",
+																			"title": "Dislike",
+																			"onTap": {
+																				"serialCommand": {
+																					"commands": [
+																						{
+																							"logGestureCommand": {
+																								"gestureType": "GESTURE_EVENT_TYPE_LOG_GENERIC_CLICK"
+																							}
+																						},
+																						{
+																							"innertubeCommand": {
+																								"commandMetadata": {
+																									"webCommandMetadata": {
+																										"sendPost": true,
+																										"apiUrl": "/youtubei/v1/like/dislike"
+																									}
+																								},
+																								"likeEndpoint": {
+																									"status": "DISLIKE",
+																									"target": {
+																										"videoId": "{{VIDEO_ID}}"
+																									},
+																									"dislikeParams": "{{b64:VIDEO_ID:Cg0KC35+fn5+fn5+fn5+EAAiDAjQneXWBhDe8t3oAg%3D%3D}}"
+																								}
+																							}
+																						}
+																					]
+																				}
+																			},
+																			"accessibilityText": "Dislike this video",
+																			"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																			"isFullWidth": false,
+																			"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+																			"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+																			"accessibilityId": "id.video.dislike.button",
+																			"tooltip": "I dislike this"
+																		}
+																	},
+																	"toggledButtonViewModel": {
+																		"buttonViewModel": {
+																			"iconName": "DISLIKE",
+																			"title": "Dislike",
+																			"onTap": {
+																				"serialCommand": {
+																					"commands": [
+																						{
+																							"logGestureCommand": {
+																								"gestureType": "GESTURE_EVENT_TYPE_LOG_GENERIC_CLICK"
+																							}
+																						},
+																						{
+																							"innertubeCommand": {
+																								"commandMetadata": {
+																									"webCommandMetadata": {
+																										"sendPost": true,
+																										"apiUrl": "/youtubei/v1/like/removelike"
+																									}
+																								},
+																								"likeEndpoint": {
+																									"status": "INDIFFERENT",
+																									"target": {
+																										"videoId": "{{VIDEO_ID}}"
+																									},
+																									"removeLikeParams": "{{b64:VIDEO_ID:Cg0KC35+fn5+fn5+fn5+GAAqDAjQneXWBhCnl97oAg%3D%3D}}"
+																								}
+																							}
+																						}
+																					]
+																				}
+																			},
+																			"accessibilityText": "Dislike this video",
+																			"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																			"isFullWidth": false,
+																			"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+																			"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+																			"accessibilityId": "id.video.dislike.button",
+																			"tooltip": "I dislike this"
+																		}
+																	},
+																	"isTogglingDisabled": false
+																}
+															},
+															"dislikeEntityKey": "{{ek:VIDEO_ID:62}}"
+														}
+													},
+													"iconType": "LIKE_ICON_TYPE_UNKNOWN",
+													"likeCountEntity": {
+														"key": "unset_like_count_entity_key"
+													},
+													"dynamicLikeCountUpdateData": {
+														"updateStatusKey": "like_count_update_status_key",
+														"placeholderLikeCountValuesKey": "like_count_placeholder_values_key",
+														"updateDelayLoopId": "like_count_update_delay_loop_id",
+														"updateDelaySec": 5
+													},
+													"teasersOrderEntityKey": "{{ek:VIDEO_ID:508}}"
+												}
+											},
+											{
+												"buttonViewModel": {
+													"iconName": "SHARE",
+													"onTap": {
+														"serialCommand": {
+															"commands": [
+																{
+																	"logGestureCommand": {
+																		"gestureType": "GESTURE_EVENT_TYPE_LOG_GENERIC_CLICK"
+																	}
+																},
+																{
+																	"innertubeCommand": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/share/get_share_panel"
+																			}
+																		},
+																		"shareEntityServiceEndpoint": {
+																			"serializedShareEntity": "{{b64:VIDEO_ID:Cgt+fn5+fn5+fn5+fqABAQ%3D%3D}}",
+																			"commands": [
+																				{
+																					"openPopupAction": {
+																						"popup": {
+																							"unifiedSharePanelRenderer": {
+																								"showLoadingSpinner": true
+																							}
+																						},
+																						"popupType": "DIALOG",
+																						"beReused": true
+																					}
+																				}
+																			]
+																		}
+																	}
+																}
+															]
+														}
+													},
+													"accessibilityText": "Share",
+													"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+													"isFullWidth": false,
+													"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+													"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+													"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE",
+													"accessibilityId": "id.video.share.button",
+													"tooltip": "Share"
+												}
+											}
+										],
+										"accessibility": {
+											"accessibilityData": {
+												"label": "More actions"
+											}
+										},
+										"flexibleItems": [
+											{
+												"menuFlexibleItemRenderer": {
+													"menuItem": {
+														"menuServiceItemRenderer": {
+															"text": {
+																"runs": [
+																	{
+																		"text": "Save"
+																	}
+																]
+															},
+															"icon": {
+																"iconType": "PLAYLIST_ADD"
+															},
+															"serviceEndpoint": {
+																"commandMetadata": {
+																	"interactionLoggingCommandMetadata": {
+																		"screenVisualElement": {
+																			"uiType": 264491
+																		}
+																	}
+																},
+																"showSheetCommand": {
+																	"panelLoadingStrategy": {
+																		"requestTemplate": {
+																			"panelId": "PAadd_to_playlist",
+																			"params": "{{b64:VIDEO_ID:-gYPCgt-fn5-fn5-fn5-figE}}"
+																		},
+																		"screenVe": 264491
+																	},
+																	"contextualSheetPresentationConfig": {
+																		"expandToFullWidth": true
+																	}
+																}
+															}
+														}
+													},
+													"topLevelButton": {
+														"buttonViewModel": {
+															"iconName": "PLAYLIST_ADD",
+															"onTap": {
+																"serialCommand": {
+																	"commands": [
+																		{
+																			"logGestureCommand": {
+																				"gestureType": "GESTURE_EVENT_TYPE_LOG_GENERIC_CLICK"
+																			}
+																		},
+																		{
+																			"innertubeCommand": {
+																				"commandMetadata": {
+																					"interactionLoggingCommandMetadata": {
+																						"screenVisualElement": {
+																							"uiType": 264491
+																						}
+																					}
+																				},
+																				"showSheetCommand": {
+																					"panelLoadingStrategy": {
+																						"requestTemplate": {
+																							"panelId": "PAadd_to_playlist",
+																							"params": "{{b64:VIDEO_ID:-gYPCgt-fn5-fn5-fn5-figE}}"
+																						},
+																						"screenVe": 264491
+																					},
+																					"contextualSheetPresentationConfig": {
+																						"expandToFullWidth": true
+																					}
+																				}
+																			}
+																		}
+																	]
+																}
+															},
+															"accessibilityText": "Save to playlist",
+															"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+															"isFullWidth": false,
+															"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+															"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+															"tooltip": "Save"
+														}
+													}
+												}
+											}
+										]
+									}
+								},
+								"dateText": {
+									"simpleText": "{{DATE}}"
+								},
+								"relativeDateText": {
+									"accessibility": {
+										"accessibilityData": {
+											"label": "11 years ago"
+										}
+									},
+									"simpleText": "{{PUBLISHED_LABEL}}"
+								}
+							}
+						},
+						{
+							"videoSecondaryInfoRenderer": {
+								"owner": {
+									"videoOwnerRenderer": {
+										"thumbnail": {
+											"thumbnails": "{{OWNER_AVATAR}}"
+										},
+										"title": {
+											"runs": [
+												{
+													"text": "{{CHANNEL_NAME}}",
+													"navigationEndpoint": {
+														"commandMetadata": {
+															"webCommandMetadata": {
+																"url": "{{CHANNEL_URL}}",
+																"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+																"rootVe": 3611,
+																"apiUrl": "/youtubei/v1/browse"
+															}
+														},
+														"browseEndpoint": {
+															"browseId": "{{CHANNEL_ID}}",
+															"canonicalBaseUrl": "{{CHANNEL_URL}}"
+														}
+													}
+												}
+											]
+										},
+										"subscriptionButton": {
+											"type": "FREE"
+										},
+										"navigationEndpoint": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"url": "{{CHANNEL_URL}}",
+													"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+													"rootVe": 3611,
+													"apiUrl": "/youtubei/v1/browse"
+												}
+											},
+											"browseEndpoint": {
+												"browseId": "{{CHANNEL_ID}}",
+												"canonicalBaseUrl": "{{CHANNEL_URL}}"
+											}
+										},
+										"subscriberCountText": {
+											"accessibility": {
+												"accessibilityData": {
+													"label": "{{SUBSCRIBERS_LABEL}}"
+												}
+											},
+											"simpleText": "{{SUBSCRIBERS}}"
+										}
+									}
+								},
+								"subscribeButton": {
+									"subscribeButtonRenderer": {
+										"buttonText": {
+											"runs": [
+												{
+													"text": "Subscribe"
+												}
+											]
+										},
+										"subscribed": "{{SUBSCRIBED}}",
+										"enabled": true,
+										"type": "FREE",
+										"channelId": "{{CHANNEL_ID}}",
+										"showPreferences": false,
+										"subscribedButtonText": {
+											"runs": [
+												{
+													"text": "Subscribed"
+												}
+											]
+										},
+										"unsubscribedButtonText": {
+											"runs": [
+												{
+													"text": "Subscribe"
+												}
+											]
+										},
+										"unsubscribeButtonText": {
+											"runs": [
+												{
+													"text": "Unsubscribe"
+												}
+											]
+										},
+										"subscribeAccessibility": {
+											"accessibilityData": {
+												"label": "{{SUBSCRIBE_LABEL}}"
+											}
+										},
+										"unsubscribeAccessibility": {
+											"accessibilityData": {
+												"label": "{{UNSUBSCRIBE_LABEL}}"
+											}
+										},
+										"notificationPreferenceButton": {
+											"subscriptionNotificationToggleButtonRenderer": {
+												"states": [
+													{
+														"stateId": 2,
+														"nextStateId": 2,
+														"state": {
+															"buttonRenderer": {
+																"style": "STYLE_TEXT",
+																"size": "SIZE_DEFAULT",
+																"isDisabled": false,
+																"icon": {
+																	"iconType": "NOTIFICATIONS_ACTIVE"
+																},
+																"accessibility": {
+																	"label": "Current setting is all notifications. Tap to change your {{BELL_LABEL_SUFFIX}}"
+																},
+																"accessibilityData": {
+																	"accessibilityData": {
+																		"label": "Current setting is all notifications. Tap to change your {{BELL_LABEL_SUFFIX}}"
+																	}
+																}
+															}
+														}
+													},
+													{
+														"stateId": 3,
+														"nextStateId": 3,
+														"state": {
+															"buttonRenderer": {
+																"style": "STYLE_TEXT",
+																"size": "SIZE_DEFAULT",
+																"isDisabled": false,
+																"icon": {
+																	"iconType": "NOTIFICATIONS_NONE"
+																},
+																"accessibility": {
+																	"label": "Current setting is personalized notifications. Tap to change your {{BELL_LABEL_SUFFIX}}"
+																},
+																"accessibilityData": {
+																	"accessibilityData": {
+																		"label": "Current setting is personalized notifications. Tap to change your {{BELL_LABEL_SUFFIX}}"
+																	}
+																}
+															}
+														}
+													},
+													{
+														"stateId": 0,
+														"nextStateId": 0,
+														"state": {
+															"buttonRenderer": {
+																"style": "STYLE_TEXT",
+																"size": "SIZE_DEFAULT",
+																"isDisabled": false,
+																"icon": {
+																	"iconType": "NOTIFICATIONS_OFF"
+																},
+																"accessibility": {
+																	"label": "Current setting is receive no notifications. Tap to change your {{BELL_LABEL_SUFFIX}}"
+																},
+																"accessibilityData": {
+																	"accessibilityData": {
+																		"label": "Current setting is receive no notifications. Tap to change your {{BELL_LABEL_SUFFIX}}"
+																	}
+																}
+															}
+														}
+													}
+												],
+												"currentStateId": 3,
+												"command": {
+													"commandExecutorCommand": {
+														"commands": [
+															{
+																"openPopupAction": {
+																	"popup": {
+																		"menuPopupRenderer": {
+																			"items": [
+																				{
+																					"menuServiceItemRenderer": {
+																						"text": {
+																							"simpleText": "All"
+																						},
+																						"icon": {
+																							"iconType": "NOTIFICATIONS_ACTIVE"
+																						},
+																						"serviceEndpoint": {
+																							"commandMetadata": {
+																								"webCommandMetadata": {
+																									"sendPost": true,
+																									"apiUrl": "/youtubei/v1/notification/modify_channel_preference"
+																								}
+																							},
+																							"modifyChannelNotificationPreferenceEndpoint": {
+																								"params": "{{b64:VIDEO_ID+CHANNEL_ID:ChheXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl4SAggCGAAgBFITCgIIAxILfn5+fn5+fn5+fn4YAA%3D%3D}}"
+																							}
+																						},
+																						"isSelected": false
+																					}
+																				},
+																				{
+																					"menuServiceItemRenderer": {
+																						"text": {
+																							"simpleText": "Personalized"
+																						},
+																						"icon": {
+																							"iconType": "NOTIFICATIONS_NONE"
+																						},
+																						"serviceEndpoint": {
+																							"commandMetadata": {
+																								"webCommandMetadata": {
+																									"sendPost": true,
+																									"apiUrl": "/youtubei/v1/notification/modify_channel_preference"
+																								}
+																							},
+																							"modifyChannelNotificationPreferenceEndpoint": {
+																								"params": "{{b64:VIDEO_ID+CHANNEL_ID:ChheXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl4SAggBGAAgBFITCgIIAxILfn5+fn5+fn5+fn4YAA%3D%3D}}"
+																							}
+																						},
+																						"isSelected": true
+																					}
+																				},
+																				{
+																					"menuServiceItemRenderer": {
+																						"text": {
+																							"simpleText": "None"
+																						},
+																						"icon": {
+																							"iconType": "NOTIFICATIONS_OFF"
+																						},
+																						"serviceEndpoint": {
+																							"commandMetadata": {
+																								"webCommandMetadata": {
+																									"sendPost": true,
+																									"apiUrl": "/youtubei/v1/notification/modify_channel_preference"
+																								}
+																							},
+																							"modifyChannelNotificationPreferenceEndpoint": {
+																								"params": "{{b64:VIDEO_ID+CHANNEL_ID:ChheXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl4SAggDGAAgBFITCgIIAxILfn5+fn5+fn5+fn4YAA%3D%3D}}"
+																							}
+																						},
+																						"isSelected": false
+																					}
+																				},
+																				{
+																					"menuServiceItemRenderer": {
+																						"text": {
+																							"runs": [
+																								{
+																									"text": "Unsubscribe"
+																								}
+																							]
+																						},
+																						"icon": {
+																							"iconType": "PERSON_MINUS"
+																						},
+																						"serviceEndpoint": {
+																							"commandMetadata": {
+																								"webCommandMetadata": {
+																									"sendPost": true
+																								}
+																							},
+																							"signalServiceEndpoint": {
+																								"signal": "CLIENT_SIGNAL",
+																								"actions": [
+																									{
+																										"openPopupAction": {
+																											"popup": {
+																												"confirmDialogRenderer": {
+																													"dialogMessages": [
+																														{
+																															"runs": [
+																																{
+																																	"text": "Unsubscribe from "
+																																},
+																																{
+																																	"text": "{{CHANNEL_NAME}}"
+																																},
+																																{
+																																	"text": "?"
+																																}
+																															]
+																														}
+																													],
+																													"confirmButton": {
+																														"buttonRenderer": {
+																															"style": "STYLE_BLUE_TEXT",
+																															"size": "SIZE_DEFAULT",
+																															"isDisabled": false,
+																															"text": {
+																																"runs": [
+																																	{
+																																		"text": "Unsubscribe"
+																																	}
+																																]
+																															},
+																															"serviceEndpoint": {
+																																"commandMetadata": {
+																																	"webCommandMetadata": {
+																																		"sendPost": true,
+																																		"apiUrl": "/youtubei/v1/subscription/unsubscribe"
+																																	}
+																																},
+																																"unsubscribeEndpoint": {
+																																	"channelIds": [
+																																		"{{CHANNEL_ID}}"
+																																	],
+																																	"params": "{{b64:VIDEO_ID:CgIIAxILfn5+fn5+fn5+fn4YAA%3D%3D}}"
+																																}
+																															},
+																															"accessibility": {
+																																"label": "Unsubscribe"
+																															}
+																														}
+																													},
+																													"cancelButton": {
+																														"buttonRenderer": {
+																															"style": "STYLE_TEXT",
+																															"size": "SIZE_DEFAULT",
+																															"isDisabled": false,
+																															"text": {
+																																"runs": [
+																																	{
+																																		"text": "Cancel"
+																																	}
+																																]
+																															},
+																															"accessibility": {
+																																"label": "Cancel"
+																															}
+																														}
+																													},
+																													"primaryIsCancel": false
+																												}
+																											},
+																											"popupType": "DIALOG"
+																										}
+																									}
+																								]
+																							}
+																						}
+																					}
+																				}
+																			]
+																		}
+																	},
+																	"popupType": "DROPDOWN"
+																}
+															}
+														]
+													}
+												},
+												"targetId": "notification-bell",
+												"secondaryIcon": {
+													"iconType": "EXPAND_MORE"
+												}
+											}
+										},
+										"targetId": "watch-subscribe",
+										"subscribedEntityKey": "{{ek:CHANNEL_ID:51}}",
+										"onSubscribeEndpoints": [
+											{
+												"commandMetadata": {
+													"webCommandMetadata": {
+														"sendPost": true,
+														"apiUrl": "/youtubei/v1/subscription/subscribe"
+													}
+												},
+												"subscribeEndpoint": {
+													"channelIds": [
+														"{{CHANNEL_ID}}"
+													],
+													"params": "{{b64:VIDEO_ID:EgIIAxgAIgt+fn5+fn5+fn5+fg%3D%3D}}"
+												}
+											}
+										],
+										"onUnsubscribeEndpoints": [
+											{
+												"commandMetadata": {
+													"webCommandMetadata": {
+														"sendPost": true
+													}
+												},
+												"signalServiceEndpoint": {
+													"signal": "CLIENT_SIGNAL",
+													"actions": [
+														{
+															"openPopupAction": {
+																"popup": {
+																	"confirmDialogRenderer": {
+																		"dialogMessages": [
+																			{
+																				"runs": [
+																					{
+																						"text": "Unsubscribe from "
+																					},
+																					{
+																						"text": "{{CHANNEL_NAME}}"
+																					},
+																					{
+																						"text": "?"
+																					}
+																				]
+																			}
+																		],
+																		"confirmButton": {
+																			"buttonRenderer": {
+																				"style": "STYLE_BLUE_TEXT",
+																				"size": "SIZE_DEFAULT",
+																				"isDisabled": false,
+																				"text": {
+																					"runs": [
+																						{
+																							"text": "Unsubscribe"
+																						}
+																					]
+																				},
+																				"serviceEndpoint": {
+																					"commandMetadata": {
+																						"webCommandMetadata": {
+																							"sendPost": true,
+																							"apiUrl": "/youtubei/v1/subscription/unsubscribe"
+																						}
+																					},
+																					"unsubscribeEndpoint": {
+																						"channelIds": [
+																							"{{CHANNEL_ID}}"
+																						],
+																						"params": "{{b64:VIDEO_ID:CgIIAxILfn5+fn5+fn5+fn4YAA%3D%3D}}"
+																					}
+																				},
+																				"accessibility": {
+																					"label": "Unsubscribe"
+																				}
+																			}
+																		},
+																		"cancelButton": {
+																			"buttonRenderer": {
+																				"style": "STYLE_TEXT",
+																				"size": "SIZE_DEFAULT",
+																				"isDisabled": false,
+																				"text": {
+																					"runs": [
+																						{
+																							"text": "Cancel"
+																						}
+																					]
+																				},
+																				"accessibility": {
+																					"label": "Cancel"
+																				}
+																			}
+																		},
+																		"primaryIsCancel": false
+																	}
+																},
+																"popupType": "DIALOG"
+															}
+														}
+													]
+												}
+											}
+										]
+									}
+								},
+								"metadataRowContainer": {
+									"metadataRowContainerRenderer": {
+										"rows": [],
+										"collapsedItemCount": 0
+									}
+								},
+								"showMoreText": {
+									"simpleText": "more"
+								},
+								"showLessText": {
+									"simpleText": "Show less"
+								},
+								"defaultExpanded": false,
+								"descriptionCollapsedLines": 3,
+								"showMoreCommand": {
+									"commandExecutorCommand": {
+										"commands": [
+											{
+												"changeEngagementPanelVisibilityAction": {
+													"targetId": "engagement-panel-structured-description",
+													"visibility": "ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"
+												}
+											},
+											{
+												"scrollToEngagementPanelCommand": {
+													"targetId": "engagement-panel-structured-description"
+												}
+											}
+										]
+									}
+								},
+								"showLessCommand": {
+									"changeEngagementPanelVisibilityAction": {
+										"targetId": "engagement-panel-structured-description",
+										"visibility": "ENGAGEMENT_PANEL_VISIBILITY_HIDDEN"
+									}
+								},
+								"attributedDescription": {
+									"content": "{{DESCRIPTION}}"
+								}
+							}
+						},
+						{
+							"compositeVideoPrimaryInfoRenderer": {}
+						},
+						{
+							"itemSectionRenderer": {
+								"contents": [
+									{
+										"continuationItemRenderer": {
+											"trigger": "CONTINUATION_TRIGGER_ON_ITEM_SHOWN",
+											"continuationEndpoint": {
+												"commandMetadata": {
+													"webCommandMetadata": {
+														"sendPost": true,
+														"apiUrl": "/youtubei/v1/next"
+													}
+												},
+												"continuationCommand": {
+													"token": "{{COMMENTS_CONTINUATION}}",
+													"request": "CONTINUATION_REQUEST_TYPE_WATCH_NEXT"
+												}
+											}
+										}
+									}
+								],
+								"header": {
+									"commentsHeaderRenderer": {
+										"countText": {
+											"runs": [
+												{
+													"text": "Comments"
+												}
+											]
+										},
+										"screenReaderOnly": true
+									}
+								},
+								"sectionIdentifier": "comment-item-section",
+								"targetId": "comments-section"
+							}
+						}
+					]
+				}
+			},
+			"secondaryResults": {
+				"secondaryResults": {
+					"results": [
+						{
+							"itemSectionRenderer": {
+								"contents": "{{RELATED}}",
+								"sectionIdentifier": "sid-wn-chips",
+								"targetId": "watch-next-feed"
+							}
+						}
+					]
+				}
+			},
+			"autoplay": "{{AUTOPLAY}}"
+		}
+	},
+	"currentVideoEndpoint": {
+		"commandMetadata": {
+			"webCommandMetadata": {
+				"url": "/watch?v={{VIDEO_ID}}",
+				"webPageType": "WEB_PAGE_TYPE_WATCH",
+				"rootVe": 3832
+			}
+		},
+		"watchEndpoint": {
+			"videoId": "{{VIDEO_ID}}"
+		}
+	},
+	"playerOverlays": {
+		"playerOverlayRenderer": {
+			"endScreen": {
+				"watchNextEndScreenRenderer": {
+					"results": "{{END_SCREEN}}",
+					"title": {
+						"simpleText": "You may also like..."
+					}
+				}
+			},
+			"autoplay": "{{AUTOPLAY_OVERLAY}}",
+			"shareButton": {
+				"buttonRenderer": {
+					"style": "STYLE_OPACITY",
+					"size": "SIZE_DEFAULT",
+					"isDisabled": false,
+					"icon": {
+						"iconType": "SHARE"
+					},
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"sendPost": true,
+								"apiUrl": "/youtubei/v1/share/get_share_panel"
+							}
+						},
+						"shareEntityServiceEndpoint": {
+							"serializedShareEntity": "{{b64:VIDEO_ID:Cgt+fn5+fn5+fn5+fqABAg%3D%3D}}",
+							"commands": [
+								{
+									"openPopupAction": {
+										"popup": {
+											"unifiedSharePanelRenderer": {
+												"showLoadingSpinner": true
+											}
+										},
+										"popupType": "DIALOG",
+										"beReused": true
+									}
+								}
+							]
+						}
+					},
+					"tooltip": "Share"
+				}
+			},
+			"addToMenu": {
+				"menuRenderer": {
+					"items": [
+						{
+							"menuServiceItemRenderer": {
+								"text": {
+									"runs": [
+										{
+											"text": "Save to Watch later"
+										}
+									]
+								},
+								"icon": {
+									"iconType": "WATCH_LATER"
+								},
+								"serviceEndpoint": {
+									"commandMetadata": {
+										"webCommandMetadata": {
+											"sendPost": true,
+											"apiUrl": "/youtubei/v1/browse/edit_playlist"
+										}
+									},
+									"playlistEditEndpoint": {
+										"playlistId": "WL",
+										"actions": [
+											{
+												"addedVideoId": "{{VIDEO_ID}}",
+												"action": "ACTION_ADD_VIDEO"
+											}
+										]
+									}
+								}
+							}
+						},
+						{
+							"menuNavigationItemRenderer": {
+								"text": {
+									"runs": [
+										{
+											"text": "Save to playlist"
+										}
+									]
+								},
+								"icon": {
+									"iconType": "BOOKMARK_BORDER"
+								},
+								"navigationEndpoint": {
+									"commandMetadata": {
+										"interactionLoggingCommandMetadata": {
+											"screenVisualElement": {
+												"uiType": 264491
+											}
+										}
+									},
+									"showSheetCommand": {
+										"panelLoadingStrategy": {
+											"requestTemplate": {
+												"panelId": "PAadd_to_playlist",
+												"params": "{{b64:VIDEO_ID:-gYNCgt-fn5-fn5-fn5-fg%3D%3D}}"
+											},
+											"screenVe": 264491
+										},
+										"contextualSheetPresentationConfig": {
+											"expandToFullWidth": true
+										}
+									}
+								}
+							}
+						}
+					]
+				}
+			},
+			"videoDetails": {
+				"playerOverlayVideoDetailsRenderer": {
+					"title": {
+						"simpleText": "{{TITLE}}"
+					},
+					"subtitle": {
+						"runs": [
+							{
+								"text": "{{CHANNEL_NAME}}"
+							},
+							{
+								"text": "   "
+							},
+							{
+								"text": "{{VIEWS_FULL}}"
+							},
+							{
+								"text": "   "
+							},
+							{
+								"text": "{{PUBLISHED_LABEL}}"
+							}
+						]
+					},
+					"onTap": {
+						"showEngagementPanelEndpoint": {
+							"identifier": {
+								"tag": "engagement-panel-structured-description"
+							}
+						}
+					}
+				}
+			},
+			"autonavToggle": {
+				"autoplaySwitchButtonRenderer": {
+					"onEnabledCommand": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"sendPost": true,
+								"apiUrl": "/youtubei/v1/account/set_setting"
+							}
+						},
+						"setSettingEndpoint": {
+							"settingItemId": "407",
+							"boolValue": true,
+							"settingItemIdForClient": "AUTONAV_FOR_DESKTOP"
+						}
+					},
+					"onDisabledCommand": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"sendPost": true,
+								"apiUrl": "/youtubei/v1/account/set_setting"
+							}
+						},
+						"setSettingEndpoint": {
+							"settingItemId": "407",
+							"boolValue": false,
+							"settingItemIdForClient": "AUTONAV_FOR_DESKTOP"
+						}
+					},
+					"enabledAccessibilityData": {
+						"accessibilityData": {
+							"label": "Autoplay is on"
+						}
+					},
+					"disabledAccessibilityData": {
+						"accessibilityData": {
+							"label": "Autoplay is off"
+						}
+					},
+					"enabled": true
+				}
+			},
+			"decoratedPlayerBarRenderer": {
+				"decoratedPlayerBarRenderer": {
+					"playerBar": {
+						"multiMarkersPlayerBarRenderer": {
+							"visibleOnLoad": {
+								"key": ""
+							}
+						}
+					}
+				}
+			},
+			"fullscreenQuickActionsBar": {
+				"quickActionsViewModel": {
+					"quickActionButtons": [
+						{
+							"likeButtonViewModel": {
+								"toggleButtonViewModel": {
+									"toggleButtonViewModel": {
+										"defaultButtonViewModel": {
+											"buttonViewModel": {
+												"iconName": "LIKE",
+												"title": "{{LIKES}}",
+												"onTap": {
+													"serialCommand": {
+														"commands": [
+															{
+																"logGestureCommand": {
+																	"gestureType": "GESTURE_EVENT_TYPE_LOG_GENERIC_CLICK"
+																}
+															},
+															{
+																"innertubeCommand": {
+																	"commandMetadata": {
+																		"webCommandMetadata": {
+																			"sendPost": true,
+																			"apiUrl": "/youtubei/v1/like/like"
+																		}
+																	},
+																	"likeEndpoint": {
+																		"status": "LIKE",
+																		"target": {
+																			"videoId": "{{VIDEO_ID}}"
+																		},
+																		"likeParams": "{{b64:VIDEO_ID:Cg0KC35+fn5+fn5+fn5+IAAyDAjQneXWBhDppqjvAg%3D%3D}}"
+																	}
+																}
+															}
+														]
+													}
+												},
+												"accessibilityText": "like this video along with {{LIKES_GROUPED}} other people",
+												"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY",
+												"isFullWidth": false,
+												"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+												"buttonSize": "BUTTON_VIEW_MODEL_SIZE_LARGE",
+												"accessibilityId": "id.video.like.button",
+												"enableIconButton": true,
+												"tooltipData": {
+													"tooltipViewModel": {
+														"tooltipText": "I like this",
+														"placement": "TOOLTIP_VIEW_MODEL_PLACEMENT_TOP",
+														"style": "TOOLTIP_VIEW_MODEL_STYLE_PLAYER"
+													}
+												}
+											}
+										},
+										"toggledButtonViewModel": {
+											"buttonViewModel": {
+												"iconName": "LIKE",
+												"title": "{{LIKES}}",
+												"onTap": {
+													"serialCommand": {
+														"commands": [
+															{
+																"logGestureCommand": {
+																	"gestureType": "GESTURE_EVENT_TYPE_LOG_GENERIC_CLICK"
+																}
+															},
+															{
+																"innertubeCommand": {
+																	"commandMetadata": {
+																		"webCommandMetadata": {
+																			"sendPost": true,
+																			"apiUrl": "/youtubei/v1/like/removelike"
+																		}
+																	},
+																	"likeEndpoint": {
+																		"status": "INDIFFERENT",
+																		"target": {
+																			"videoId": "{{VIDEO_ID}}"
+																		},
+																		"removeLikeParams": "{{b64:VIDEO_ID:Cg0KC35+fn5+fn5+fn5+GAAqDAjQneXWBhDt36jvAg%3D%3D}}"
+																	}
+																}
+															}
+														]
+													}
+												},
+												"accessibilityText": "like this video along with {{LIKES_GROUPED}} other people",
+												"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY",
+												"isFullWidth": false,
+												"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+												"buttonSize": "BUTTON_VIEW_MODEL_SIZE_LARGE",
+												"accessibilityId": "id.video.like.button",
+												"enableIconButton": true,
+												"tooltipData": {
+													"tooltipViewModel": {
+														"tooltipText": "Unlike",
+														"placement": "TOOLTIP_VIEW_MODEL_PLACEMENT_TOP",
+														"style": "TOOLTIP_VIEW_MODEL_STYLE_PLAYER"
+													}
+												}
+											}
+										},
+										"identifier": "watch-like",
+										"isTogglingDisabled": false
+									}
+								},
+								"likeStatusEntityKey": "{{ek:VIDEO_ID:62}}",
+								"likeStatusEntity": {
+									"key": "{{ek:VIDEO_ID:62}}",
+									"likeStatus": "{{LIKE_STATUS}}"
+								}
+							}
+						},
+						{
+							"dislikeButtonViewModel": {
+								"toggleButtonViewModel": {
+									"toggleButtonViewModel": {
+										"defaultButtonViewModel": {
+											"buttonViewModel": {
+												"iconName": "DISLIKE",
+												"onTap": {
+													"serialCommand": {
+														"commands": [
+															{
+																"logGestureCommand": {
+																	"gestureType": "GESTURE_EVENT_TYPE_LOG_GENERIC_CLICK"
+																}
+															},
+															{
+																"innertubeCommand": {
+																	"commandMetadata": {
+																		"webCommandMetadata": {
+																			"sendPost": true,
+																			"apiUrl": "/youtubei/v1/like/dislike"
+																		}
+																	},
+																	"likeEndpoint": {
+																		"status": "DISLIKE",
+																		"target": {
+																			"videoId": "{{VIDEO_ID}}"
+																		},
+																		"dislikeParams": "{{b64:VIDEO_ID:Cg0KC35+fn5+fn5+fn5+EAAiDAjQneXWBhCliKrvAg%3D%3D}}"
+																	}
+																}
+															}
+														]
+													}
+												},
+												"accessibilityText": "Dislike this video",
+												"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY",
+												"isFullWidth": false,
+												"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+												"buttonSize": "BUTTON_VIEW_MODEL_SIZE_LARGE",
+												"accessibilityId": "id.video.dislike.button",
+												"enableIconButton": true,
+												"tooltipData": {
+													"tooltipViewModel": {
+														"tooltipText": "I dislike this",
+														"placement": "TOOLTIP_VIEW_MODEL_PLACEMENT_TOP",
+														"style": "TOOLTIP_VIEW_MODEL_STYLE_PLAYER"
+													}
+												}
+											}
+										},
+										"toggledButtonViewModel": {
+											"buttonViewModel": {
+												"iconName": "DISLIKE",
+												"onTap": {
+													"serialCommand": {
+														"commands": [
+															{
+																"logGestureCommand": {
+																	"gestureType": "GESTURE_EVENT_TYPE_LOG_GENERIC_CLICK"
+																}
+															},
+															{
+																"innertubeCommand": {
+																	"commandMetadata": {
+																		"webCommandMetadata": {
+																			"sendPost": true,
+																			"apiUrl": "/youtubei/v1/like/removelike"
+																		}
+																	},
+																	"likeEndpoint": {
+																		"status": "INDIFFERENT",
+																		"target": {
+																			"videoId": "{{VIDEO_ID}}"
+																		},
+																		"removeLikeParams": "{{b64:VIDEO_ID:Cg0KC35+fn5+fn5+fn5+GAAqDAjQneXWBhC7mKrvAg%3D%3D}}"
+																	}
+																}
+															}
+														]
+													}
+												},
+												"accessibilityText": "Dislike this video",
+												"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY",
+												"isFullWidth": false,
+												"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+												"buttonSize": "BUTTON_VIEW_MODEL_SIZE_LARGE",
+												"accessibilityId": "id.video.dislike.button",
+												"enableIconButton": true,
+												"tooltipData": {
+													"tooltipViewModel": {
+														"tooltipText": "I dislike this",
+														"placement": "TOOLTIP_VIEW_MODEL_PLACEMENT_TOP",
+														"style": "TOOLTIP_VIEW_MODEL_STYLE_PLAYER"
+													}
+												}
+											}
+										},
+										"isTogglingDisabled": false
+									}
+								},
+								"dislikeEntityKey": "{{ek:VIDEO_ID:62}}"
+							}
+						},
+						{
+							"toggleButtonViewModel": {
+								"defaultButtonViewModel": {
+									"buttonViewModel": {
+										"iconName": "COMMENT",
+										"onTap": {
+											"innertubeCommand": {
+												"commandExecutorCommand": {
+													"commands": [
+														{
+															"showEngagementPanelEndpoint": {
+																"panelIdentifier": "engagement-panel-comments-section"
+															}
+														},
+														{
+															"scrollToEngagementPanelCommand": {
+																"targetId": "engagement-panel-comments-section"
+															}
+														}
+													]
+												}
+											}
+										},
+										"accessibilityText": "Comments",
+										"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY",
+										"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+										"buttonSize": "BUTTON_VIEW_MODEL_SIZE_LARGE",
+										"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE",
+										"enableIconButton": true,
+										"tooltipData": {
+											"tooltipViewModel": {
+												"tooltipText": "Show comments",
+												"placement": "TOOLTIP_VIEW_MODEL_PLACEMENT_TOP",
+												"style": "TOOLTIP_VIEW_MODEL_STYLE_PLAYER"
+											}
+										}
+									}
+								},
+								"toggledButtonViewModel": {
+									"buttonViewModel": {
+										"iconName": "COMMENT",
+										"onTap": {
+											"innertubeCommand": {
+												"hideEngagementPanelEndpoint": {
+													"panelIdentifier": "engagement-panel-comments-section"
+												}
+											}
+										},
+										"accessibilityText": "Comments",
+										"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY",
+										"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+										"buttonSize": "BUTTON_VIEW_MODEL_SIZE_LARGE",
+										"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE",
+										"enableIconButton": true,
+										"tooltipData": {
+											"tooltipViewModel": {
+												"tooltipText": "Hide comments",
+												"placement": "TOOLTIP_VIEW_MODEL_PLACEMENT_TOP",
+												"style": "TOOLTIP_VIEW_MODEL_STYLE_PLAYER"
+											}
+										}
+									}
+								},
+								"toggledStateEntitySelectorType": "TOGGLE_BUTTON_ENTITY_SELECTOR_TYPE_COMMENTS_PANEL"
+							}
+						},
+						{
+							"buttonViewModel": {
+								"iconName": "SHARE",
+								"onTap": {
+									"serialCommand": {
+										"commands": [
+											{
+												"logGestureCommand": {
+													"gestureType": "GESTURE_EVENT_TYPE_LOG_GENERIC_CLICK"
+												}
+											},
+											{
+												"innertubeCommand": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"sendPost": true,
+															"apiUrl": "/youtubei/v1/share/get_share_panel"
+														}
+													},
+													"shareEntityServiceEndpoint": {
+														"serializedShareEntity": "{{b64:VIDEO_ID:Cgt+fn5+fn5+fn5+fqABAg%3D%3D}}",
+														"commands": [
+															{
+																"openPopupAction": {
+																	"popup": {
+																		"unifiedSharePanelRenderer": {
+																			"showLoadingSpinner": true
+																		}
+																	},
+																	"popupType": "DIALOG",
+																	"beReused": true
+																}
+															}
+														]
+													}
+												}
+											}
+										]
+									}
+								},
+								"accessibilityText": "Share",
+								"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY",
+								"isFullWidth": false,
+								"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+								"buttonSize": "BUTTON_VIEW_MODEL_SIZE_LARGE",
+								"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE",
+								"accessibilityId": "id.video.share.button",
+								"enableIconButton": true,
+								"tooltipData": {
+									"tooltipViewModel": {
+										"tooltipText": "Share",
+										"placement": "TOOLTIP_VIEW_MODEL_PLACEMENT_TOP",
+										"style": "TOOLTIP_VIEW_MODEL_STYLE_PLAYER"
+									}
+								}
+							}
+						},
+						{
+							"buttonViewModel": {
+								"iconName": "SPARK",
+								"onTap": {
+									"innertubeCommand": {
+										"showEngagementPanelEndpoint": {
+											"panelIdentifier": "PAyouchat",
+											"engagementPanel": {
+												"engagementPanelSectionListRenderer": {
+													"panelIdentifier": "PAyouchat",
+													"header": {
+														"engagementPanelTitleHeaderRenderer": {
+															"title": {
+																"runs": [
+																	{
+																		"text": "Ask about this video"
+																	}
+																]
+															},
+															"visibilityButton": {
+																"buttonRenderer": {
+																	"icon": {
+																		"iconType": "CLOSE"
+																	},
+																	"accessibility": {
+																		"label": "Close"
+																	},
+																	"accessibilityData": {
+																		"accessibilityData": {
+																			"label": "Close"
+																		}
+																	},
+																	"command": {
+																		"changeEngagementPanelVisibilityAction": {
+																			"targetId": "PAyouchat",
+																			"visibility": "ENGAGEMENT_PANEL_VISIBILITY_HIDDEN"
+																		}
+																	}
+																}
+															}
+														}
+													},
+													"content": {
+														"sectionListRenderer": {
+															"contents": [
+																{
+																	"itemSectionRenderer": {
+																		"contents": [
+																			{
+																				"youChatItemViewModel": {
+																					"text": {
+																						"content": "Hello! Curious about what you’re watching? I’m here to help."
+																					},
+																					"hideIcon": false,
+																					"transparentBackground": true,
+																					"removeIcon": false,
+																					"icon": {
+																						"sources": [
+																							{
+																								"clientResource": {
+																									"imageName": "SPARK"
+																								}
+																							}
+																						]
+																					}
+																				}
+																			},
+																			{
+																				"youChatItemViewModel": {
+																					"text": {
+																						"content": "Not sure what to ask? Choose something:"
+																					},
+																					"hideIcon": true,
+																					"transparentBackground": true,
+																					"removeIcon": false,
+																					"icon": {
+																						"sources": [
+																							{
+																								"clientResource": {
+																									"imageName": "SPARK"
+																								}
+																							}
+																						]
+																					}
+																				}
+																			},
+																			{
+																				"youChatItemViewModel": {
+																					"chipsData": {
+																						"chipData": [
+																							{
+																								"id": "01625022330",
+																								"text": {
+																									"content": "Summarize the video"
+																								},
+																								"showIcon": false,
+																								"onClick": {
+																									"listMutationCommand": {
+																										"operations": {
+																											"operations": [
+																												{
+																													"insertItemSectionContent": {
+																														"contents": [
+																															{
+																																"chatUserTurnViewModel": {
+																																	"text": "Summarize the video",
+																																	"backgroundStyle": "CHAT_USER_TURN_BACKGROUND_STYLE_MONO"
+																																}
+																															},
+																															{
+																																"chatLoadingViewModel": {
+																																	"targetId": "loading_response_message_id",
+																																	"animation": {
+																																		"lottieAnimationViewModel": {
+																																			"trustedAnimationUrl": {
+																																				"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json"
+																																			},
+																																			"loop": true
+																																		}
+																																	},
+																																	"loadingAnimationA11yLabel": "Load in progress.",
+																																	"darkThemeAnimation": {
+																																		"lottieAnimationViewModel": {
+																																			"trustedAnimationUrl": {
+																																				"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json"
+																																			},
+																																			"loop": true
+																																		}
+																																	}
+																																}
+																															}
+																														],
+																														"insertByPositionInSection": {
+																															"sectionTargetId": "youchat_messages_section",
+																															"position": "INSERTION_POSITION_LAST"
+																														}
+																													}
+																												}
+																											],
+																											"scrollConfig": {
+																												"scrollToItem": {
+																													"item": {
+																														"itemTargetId": "loading_response_message_id",
+																														"sectionTargetId": "youchat_section_list"
+																													},
+																													"scrollPosition": "SCROLL_POSITION_END"
+																												}
+																											}
+																										}
+																									}
+																								},
+																								"continuation": "kta-ngugARIJUEF5b3VjaGF0GpIBa2dwb0NBRVNDMkZ4ZWkxTFJTMWljRXRSR2hOVGRXMXRZWEpwZW1VZ2RHaGxJSFpwWkdWdklocERTV0ozWnpsbGJIcEtZMFJHWlZkbFEyZG5aRGxMTUhsTWR5b0tDUHEtNzRZR0VBRW9BVUlhUTBremQyYzVaV3g2U21ORVJtVlhaVU5uWjJRNVN6QjVUSGMlM0Q%3D",
+																								"transparentWhenLoading": true,
+																								"rendererContext": {
+																									"loggingContext": {}
+																								}
+																							},
+																							{
+																								"id": "11625022330",
+																								"text": {
+																									"content": "Recommend related content"
+																								},
+																								"showIcon": false,
+																								"onClick": {
+																									"listMutationCommand": {
+																										"operations": {
+																											"operations": [
+																												{
+																													"insertItemSectionContent": {
+																														"contents": [
+																															{
+																																"chatUserTurnViewModel": {
+																																	"text": "Recommend related content",
+																																	"backgroundStyle": "CHAT_USER_TURN_BACKGROUND_STYLE_MONO"
+																																}
+																															},
+																															{
+																																"chatLoadingViewModel": {
+																																	"targetId": "loading_response_message_id",
+																																	"animation": {
+																																		"lottieAnimationViewModel": {
+																																			"trustedAnimationUrl": {
+																																				"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json"
+																																			},
+																																			"loop": true
+																																		}
+																																	},
+																																	"loadingAnimationA11yLabel": "Load in progress.",
+																																	"darkThemeAnimation": {
+																																		"lottieAnimationViewModel": {
+																																			"trustedAnimationUrl": {
+																																				"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json"
+																																			},
+																																			"loop": true
+																																		}
+																																	}
+																																}
+																															}
+																														],
+																														"insertByPositionInSection": {
+																															"sectionTargetId": "youchat_messages_section",
+																															"position": "INSERTION_POSITION_LAST"
+																														}
+																													}
+																												}
+																											],
+																											"scrollConfig": {
+																												"scrollToItem": {
+																													"item": {
+																														"itemTargetId": "loading_response_message_id",
+																														"sectionTargetId": "youchat_section_list"
+																													},
+																													"scrollPosition": "SCROLL_POSITION_END"
+																												}
+																											}
+																										}
+																									}
+																								},
+																								"continuation": "kta-nguoARIJUEF5b3VjaGF0GpoBa2dwdUNBRVNDMkZ4ZWkxTFJTMWljRXRSR2hsU1pXTnZiVzFsYm1RZ2NtVnNZWFJsWkNCamIyNTBaVzUwSWhwRFNXSjNaemxsYkhwS1kwUkdaVmRsUTJkblpEbExNSGxNZHlvS0NQdS03NFlHRUFNb0FVSWFRMHBRZDJjNVpXeDZTbU5FUm1WWFpVTm5aMlE1U3pCNVRIYyUzRA%3D%3D",
+																								"transparentWhenLoading": true,
+																								"rendererContext": {
+																									"loggingContext": {}
+																								}
+																							},
+																							{
+																								"id": "21625022330",
+																								"text": {
+																									"content": "What is Big Buck Bunny?"
+																								},
+																								"showIcon": false,
+																								"onClick": {
+																									"listMutationCommand": {
+																										"operations": {
+																											"operations": [
+																												{
+																													"insertItemSectionContent": {
+																														"contents": [
+																															{
+																																"chatUserTurnViewModel": {
+																																	"text": "What is Big Buck Bunny?",
+																																	"backgroundStyle": "CHAT_USER_TURN_BACKGROUND_STYLE_MONO"
+																																}
+																															},
+																															{
+																																"chatLoadingViewModel": {
+																																	"targetId": "loading_response_message_id",
+																																	"animation": {
+																																		"lottieAnimationViewModel": {
+																																			"trustedAnimationUrl": {
+																																				"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json"
+																																			},
+																																			"loop": true
+																																		}
+																																	},
+																																	"loadingAnimationA11yLabel": "Load in progress.",
+																																	"darkThemeAnimation": {
+																																		"lottieAnimationViewModel": {
+																																			"trustedAnimationUrl": {
+																																				"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json"
+																																			},
+																																			"loop": true
+																																		}
+																																	}
+																																}
+																															}
+																														],
+																														"insertByPositionInSection": {
+																															"sectionTargetId": "youchat_messages_section",
+																															"position": "INSERTION_POSITION_LAST"
+																														}
+																													}
+																												}
+																											],
+																											"scrollConfig": {
+																												"scrollToItem": {
+																													"item": {
+																														"itemTargetId": "loading_response_message_id",
+																														"sectionTargetId": "youchat_section_list"
+																													},
+																													"scrollPosition": "SCROLL_POSITION_END"
+																												}
+																											}
+																										}
+																									}
+																								},
+																								"continuation": "kta-nguiARIJUEF5b3VjaGF0GpQBa2dwc0NBRVNDMkZ4ZWkxTFJTMWljRXRSR2hkWGFHRjBJR2x6SUVKcFp5QkNkV05ySUVKMWJtNTVQeUlhUTBsaWQyYzVaV3g2U21ORVJtVlhaVU5uWjJRNVN6QjVUSGNxQ2dqOHZ1LUdCaEFCS0FaQ0drTkthbmRuT1dWc2VrcGpSRVpsVjJWRFoyZGtPVXN3ZVV4Mw%3D%3D",
+																								"transparentWhenLoading": true,
+																								"rendererContext": {
+																									"loggingContext": {}
+																								}
+																							},
+																							{
+																								"id": "31625022330",
+																								"text": {
+																									"content": "Is the film open source?"
+																								},
+																								"showIcon": false,
+																								"onClick": {
+																									"listMutationCommand": {
+																										"operations": {
+																											"operations": [
+																												{
+																													"insertItemSectionContent": {
+																														"contents": [
+																															{
+																																"chatUserTurnViewModel": {
+																																	"text": "Is the film open source?",
+																																	"backgroundStyle": "CHAT_USER_TURN_BACKGROUND_STYLE_MONO"
+																																}
+																															},
+																															{
+																																"chatLoadingViewModel": {
+																																	"targetId": "loading_response_message_id",
+																																	"animation": {
+																																		"lottieAnimationViewModel": {
+																																			"trustedAnimationUrl": {
+																																				"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json"
+																																			},
+																																			"loop": true
+																																		}
+																																	},
+																																	"loadingAnimationA11yLabel": "Load in progress.",
+																																	"darkThemeAnimation": {
+																																		"lottieAnimationViewModel": {
+																																			"trustedAnimationUrl": {
+																																				"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json"
+																																			},
+																																			"loop": true
+																																		}
+																																	}
+																																}
+																															}
+																														],
+																														"insertByPositionInSection": {
+																															"sectionTargetId": "youchat_messages_section",
+																															"position": "INSERTION_POSITION_LAST"
+																														}
+																													}
+																												}
+																											],
+																											"scrollConfig": {
+																												"scrollToItem": {
+																													"item": {
+																														"itemTargetId": "loading_response_message_id",
+																														"sectionTargetId": "youchat_section_list"
+																													},
+																													"scrollPosition": "SCROLL_POSITION_END"
+																												}
+																											}
+																										}
+																									}
+																								},
+																								"continuation": "kta-nguqARIJUEF5b3VjaGF0GpwBa2dwdENBRVNDMkZ4ZWkxTFJTMWljRXRSR2hoSmN5QjBhR1VnWm1sc2JTQnZjR1Z1SUhOdmRYSmpaVDhpR2tOSlluZG5PV1ZzZWtwalJFWmxWMlZEWjJka09Vc3dlVXgzS2dvSV9iN3ZoZ1lRQVNnR1FocERTamQzWnpsbGJIcEtZMFJHWlZkbFEyZG5aRGxMTUhsTWR3JTNEJTNE",
+																								"transparentWhenLoading": true,
+																								"rendererContext": {
+																									"loggingContext": {}
+																								}
+																							},
+																							{
+																								"id": "41625022330",
+																								"text": {
+																									"content": "How was this film created?"
+																								},
+																								"showIcon": false,
+																								"onClick": {
+																									"listMutationCommand": {
+																										"operations": {
+																											"operations": [
+																												{
+																													"insertItemSectionContent": {
+																														"contents": [
+																															{
+																																"chatUserTurnViewModel": {
+																																	"text": "How was this film created?",
+																																	"backgroundStyle": "CHAT_USER_TURN_BACKGROUND_STYLE_MONO"
+																																}
+																															},
+																															{
+																																"chatLoadingViewModel": {
+																																	"targetId": "loading_response_message_id",
+																																	"animation": {
+																																		"lottieAnimationViewModel": {
+																																			"trustedAnimationUrl": {
+																																				"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json"
+																																			},
+																																			"loop": true
+																																		}
+																																	},
+																																	"loadingAnimationA11yLabel": "Load in progress.",
+																																	"darkThemeAnimation": {
+																																		"lottieAnimationViewModel": {
+																																			"trustedAnimationUrl": {
+																																				"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json"
+																																			},
+																																			"loop": true
+																																		}
+																																	}
+																																}
+																															}
+																														],
+																														"insertByPositionInSection": {
+																															"sectionTargetId": "youchat_messages_section",
+																															"position": "INSERTION_POSITION_LAST"
+																														}
+																													}
+																												}
+																											],
+																											"scrollConfig": {
+																												"scrollToItem": {
+																													"item": {
+																														"itemTargetId": "loading_response_message_id",
+																														"sectionTargetId": "youchat_section_list"
+																													},
+																													"scrollPosition": "SCROLL_POSITION_END"
+																												}
+																											}
+																										}
+																									}
+																								},
+																								"continuation": "kta-ngumARIJUEF5b3VjaGF0GpgBa2dwdkNBRVNDMkZ4ZWkxTFJTMWljRXRSR2hwSWIzY2dkMkZ6SUhSb2FYTWdabWxzYlNCamNtVmhkR1ZrUHlJYVEwbGlkMmM1Wld4NlNtTkVSbVZYWlVObloyUTVTekI1VEhjcUNnai12dS1HQmhBQktBWkNHa05MVkhkbk9XVnNla3BqUkVabFYyVkRaMmRrT1Vzd2VVeDM%3D",
+																								"transparentWhenLoading": true,
+																								"rendererContext": {
+																									"loggingContext": {}
+																								}
+																							}
+																						],
+																						"isHorizontal": false,
+																						"onShowAnimationMs": 400,
+																						"onShowDelayMs": 400,
+																						"pendingStateEntityKey": "EiN5b3VjaGF0X3BlbmRpbmdfcmVzcG9uc2VfZW50aXR5X2tleSCpBCgB",
+																						"lastMessageIdEntityKey": "Eil5b3VjaGF0X2xhc3RfY2xpZW50X21lc3NhZ2VfaWRfZW50aXR5X2tleSD-AigB"
+																					}
+																				}
+																			},
+																			{
+																				"youChatItemViewModel": {
+																					"targetId": "dynamic_welcome_chips_placeholder_chat_id"
+																				}
+																			}
+																		],
+																		"targetId": "youchat_messages_section"
+																	}
+																}
+															],
+															"targetId": "youchat_section_list",
+															"disablePullToRefresh": true,
+															"webComponentHint": {
+																"componentVersion": "WEB_COMPONENT_VERSION_SHARED"
+															}
+														}
+													},
+													"veType": 194796,
+													"disablePullRefresh": true,
+													"footer": {
+														"chatInputViewModel": {
+															"inputComposerViewModel": {
+																"inputComposerViewModel": {
+																	"inputFormField": {
+																		"textFieldViewModel": {
+																			"displayProperties": {
+																				"hideBorder": true
+																			},
+																			"contentProperties": {
+																				"placeholderText": "Ask a question...",
+																				"maxCharacterCount": 500
+																			}
+																		}
+																	},
+																	"youchatPendingResponseEntityKey": "EiN5b3VjaGF0X3BlbmRpbmdfcmVzcG9uc2VfZW50aXR5X2tleSCpBCgB",
+																	"onSubmitCommand": {
+																		"innertubeCommand": {
+																			"listMutationCommand": {
+																				"operations": {
+																					"operations": [
+																						{
+																							"insertItemSectionContent": {
+																								"contents": [
+																									{
+																										"chatLoadingViewModel": {
+																											"targetId": "loading_response_message_id",
+																											"animation": {
+																												"lottieAnimationViewModel": {
+																													"trustedAnimationUrl": {
+																														"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json"
+																													},
+																													"loop": true
+																												}
+																											},
+																											"loadingAnimationA11yLabel": "Load in progress.",
+																											"darkThemeAnimation": {
+																												"lottieAnimationViewModel": {
+																													"trustedAnimationUrl": {
+																														"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json"
+																													},
+																													"loop": true
+																												}
+																											}
+																										}
+																									}
+																								],
+																								"insertByPositionInSection": {
+																									"sectionTargetId": "youchat_messages_section",
+																									"position": "INSERTION_POSITION_LAST"
+																								}
+																							}
+																						}
+																					],
+																					"scrollConfig": {
+																						"scrollToItem": {
+																							"item": {
+																								"itemTargetId": "loading_response_message_id",
+																								"sectionTargetId": "youchat_section_list"
+																							},
+																							"scrollPosition": "SCROLL_POSITION_END"
+																						}
+																					}
+																				}
+																			}
+																		}
+																	},
+																	"sectionTargetId": "youchat_messages_section",
+																	"setPendingResponseOnWelcome": false,
+																	"loadingConfig": {
+																		"loadingAnimationA11yLabel": "Load in progress."
+																	},
+																	"chatUserTurnBackgroundStyle": "CHAT_USER_TURN_BACKGROUND_STYLE_MONO",
+																	"rendererContext": {
+																		"loggingContext": {}
+																	}
+																}
+															},
+															"sendButton": {
+																"buttonViewModel": {
+																	"iconName": "send",
+																	"accessibilityText": "Send",
+																	"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																	"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+																	"buttonSize": "BUTTON_VIEW_MODEL_SIZE_COMPACT",
+																	"iconImageFlipForRtl": true
+																}
+															},
+															"environment": "CHAT_ENVIRONMENT_ENUM_YOUCHAT",
+															"onWelcomeCommand": {
+																"innertubeCommand": {
+																	"continuationCommand": {
+																		"token": "kta-ngvOARIJUEF5b3VjaGF0GsABa2dxSEFRZ0JFZ3RoY1hvdFMwVXRZbkJMVVNJYVEwbGlkMmM1Wld4NlNtTkVSbVZYWlVObloyUTVTekI1VEhjcUFpQUJvZ0VaQ2hkWGFHRjBJR2x6SUVKcFp5QkNkV05ySUVKMWJtNTVQNklCR2dvWVNYTWdkR2hsSUdacGJHMGdiM0JsYmlCemIzVnlZMlVfb2dFY0NocEliM2NnZDJGeklIUm9hWE1nWm1sc2JTQmpjbVZoZEdWa1B3JTNEJTNE",
+																		"request": "CONTINUATION_REQUEST_TYPE_GET_PANEL"
+																	}
+																}
+															},
+															"sendUserQueryCommand": {
+																"innertubeCommand": {
+																	"continuationCommand": {
+																		"token": "kta-ngtREglQQXlvdWNoYXQaRGtnb3JDQUVTQzJGeGVpMUxSUzFpY0V0UklocERTV0ozWnpsbGJIcEtZMFJHWlZkbFEyZG5aRGxMTUhsTWR3JTNEJTNE",
+																		"request": "CONTINUATION_REQUEST_TYPE_GET_PANEL"
+																	}
+																}
+															},
+															"loadingAnimationA11yLabel": "Load in progress.",
+															"disclaimerText": {
+																"content": "AI can make mistakes, so double-check it. Learn more",
+																"commandRuns": [
+																	{
+																		"startIndex": 42,
+																		"length": 10,
+																		"onTap": {
+																			"innertubeCommand": {
+																				"commandMetadata": {
+																					"webCommandMetadata": {
+																						"url": "https://support.google.com/youtube/answer/14110396",
+																						"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																						"rootVe": 83769
+																					}
+																				},
+																				"urlEndpoint": {
+																					"url": "https://support.google.com/youtube/answer/14110396",
+																					"target": "TARGET_NEW_WINDOW"
+																				}
+																			}
+																		}
+																	}
+																],
+																"styleRuns": [
+																	{
+																		"startIndex": 42,
+																		"length": 10,
+																		"fontColor": 4289374890,
+																		"underline": "LINE_STYLE_SINGLE",
+																		"weightLabel": "FONT_WEIGHT_NORMAL"
+																	}
+																]
+															},
+															"promoButton": {
+																"buttonViewModel": {
+																	"onTap": {
+																		"innertubeCommand": {
+																			"commandMetadata": {
+																				"webCommandMetadata": {
+																					"url": "https://gemini.google.com/?utm_medium=xpa&utm_source=yt&utm_campaign=yt-ask&campaign_id=yt-ask",
+																					"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																					"rootVe": 83769
+																				}
+																			},
+																			"urlEndpoint": {
+																				"url": "https://gemini.google.com?utm_medium=xpa&utm_source=yt&utm_campaign=yt-ask&campaign_id=yt-ask",
+																				"target": "TARGET_NEW_WINDOW"
+																			}
+																		}
+																	},
+																	"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																	"type": "BUTTON_VIEW_MODEL_TYPE_OUTLINE",
+																	"buttonSize": "BUTTON_VIEW_MODEL_SIZE_XSMALL",
+																	"titleFormatted": {
+																		"content": "Ask Gemini",
+																		"styleRuns": [
+																			{
+																				"startIndex": 0,
+																				"length": 10
+																			},
+																			{
+																				"startIndex": 0,
+																				"length": 10,
+																				"weightLabel": "FONT_WEIGHT_UNKNOWN"
+																			}
+																		],
+																		"attachmentRuns": [
+																			{
+																				"startIndex": 4,
+																				"length": 0,
+																				"element": {
+																					"type": {
+																						"imageType": {
+																							"image": {
+																								"sources": [
+																									{
+																										"url": "{{ORIGIN}}/_up/www.gstatic.com/images/branding/productlogos/gemini_2025/v1/web-16dp/logo_gemini_2025_color_2x_web_16dp.png"
+																									}
+																								]
+																							}
+																						}
+																					},
+																					"properties": {
+																						"layoutProperties": {
+																							"height": {
+																								"value": 11,
+																								"unit": "DIMENSION_UNIT_POINT"
+																							},
+																							"width": {
+																								"value": 11,
+																								"unit": "DIMENSION_UNIT_POINT"
+																							},
+																							"margin": {
+																								"end": {
+																									"value": 2.75,
+																									"unit": "DIMENSION_UNIT_POINT"
+																								}
+																							}
+																						}
+																					}
+																				},
+																				"alignment": "ALIGNMENT_VERTICAL_CENTER"
+																			},
+																			{
+																				"startIndex": 0,
+																				"length": 0,
+																				"element": {
+																					"type": {
+																						"imageType": {
+																							"image": {
+																								"sources": [
+																									{}
+																								]
+																							}
+																						}
+																					},
+																					"properties": {
+																						"layoutProperties": {
+																							"width": {
+																								"value": 8,
+																								"unit": "DIMENSION_UNIT_POINT"
+																							}
+																						}
+																					}
+																				}
+																			},
+																			{
+																				"startIndex": 10,
+																				"length": 0,
+																				"element": {
+																					"type": {
+																						"imageType": {
+																							"image": {
+																								"sources": [
+																									{}
+																								]
+																							}
+																						}
+																					},
+																					"properties": {
+																						"layoutProperties": {
+																							"width": {
+																								"value": 8,
+																								"unit": "DIMENSION_UNIT_POINT"
+																							}
+																						}
+																					}
+																				}
+																			}
+																		]
+																	}
+																}
+															},
+															"lastMessageIdEntityKey": "Eil5b3VjaGF0X2xhc3RfY2xpZW50X21lc3NhZ2VfaWRfZW50aXR5X2tleSD-AigB"
+														}
+													},
+													"onShowCommands": [
+														{
+															"scrollToEngagementPanelCommand": {
+																"targetId": "PAyouchat"
+															}
+														}
+													],
+													"onCloseCommand": {
+														"elementsCommand": {
+															"setEntityCommand": {
+																"identifier": "EiN5b3VjaGF0X3BlbmRpbmdfcmVzcG9uc2VfZW50aXR5X2tleSCpBCgB",
+																"entity": "CAA="
+															}
+														}
+													},
+													"onDestroyCommand": {
+														"elementsCommand": {
+															"setEntityCommand": {
+																"identifier": "Eil5b3VjaGF0X2xhc3RfY2xpZW50X21lc3NhZ2VfaWRfZW50aXR5X2tleSD-AigB",
+																"entity": "CkBFaWw1YjNWamFHRjBYMnhoYzNSZlkyeHBaVzUwWDIxbGMzTmhaMlZmYVdSZlpXNTBhWFI1WDJ0bGVTRC1BaWdC"
+															}
+														}
+													}
+												}
+											},
+											"sourcePanelIdentifier": "video-description-ep-identifier",
+											"blockIfPanelOpen": true
+										}
+									}
+								},
+								"accessibilityText": "Ask",
+								"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY",
+								"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+								"buttonSize": "BUTTON_VIEW_MODEL_SIZE_LARGE",
+								"targetId": "you-chat-entrypoint-button",
+								"enableIconButton": true,
+								"tooltipData": {
+									"tooltipViewModel": {
+										"tooltipText": "Ask",
+										"placement": "TOOLTIP_VIEW_MODEL_PLACEMENT_TOP",
+										"style": "TOOLTIP_VIEW_MODEL_STYLE_PLAYER"
+									}
+								}
+							}
+						},
+						{
+							"buttonViewModel": {
+								"iconName": "MORE_HORIZ",
+								"onTap": {
+									"innertubeCommand": {
+										"openPopupAction": {
+											"popup": {
+												"menuPopupRenderer": {
+													"items": [
+														{
+															"menuServiceItemRenderer": {
+																"text": {
+																	"runs": [
+																		{
+																			"text": "Save"
+																		}
+																	]
+																},
+																"icon": {
+																	"iconType": "PLAYLIST_ADD"
+																},
+																"serviceEndpoint": {
+																	"commandMetadata": {
+																		"interactionLoggingCommandMetadata": {
+																			"screenVisualElement": {
+																				"uiType": 264491
+																			}
+																		}
+																	},
+																	"showSheetCommand": {
+																		"panelLoadingStrategy": {
+																			"requestTemplate": {
+																				"panelId": "PAadd_to_playlist",
+																				"params": "{{b64:VIDEO_ID:-gYPCgt-fn5-fn5-fn5-figE}}"
+																			},
+																			"screenVe": 264491
+																		},
+																		"contextualSheetPresentationConfig": {
+																			"expandToFullWidth": true
+																		}
+																	}
+																}
+															}
+														},
+														{
+															"menuServiceItemRenderer": {
+																"text": {
+																	"runs": [
+																		{
+																			"text": "Report"
+																		}
+																	]
+																},
+																"icon": {
+																	"iconType": "FLAG"
+																},
+																"serviceEndpoint": {
+																	"showEngagementPanelEndpoint": {
+																		"identifier": {
+																			"tag": "PAabuse_report"
+																		},
+																		"globalConfiguration": {
+																			"params": "{{b64:VIDEO_ID:qgdxCAESC35+fn5+fn5+fn5+GmBFZ3RoY1hvdFMwVXRZbkJMVVVBQldBQjRCWklCTWdvd0VpNW9kSFJ3Y3pvdkwya3VlWFJwYldjdVkyOXRMM1pwTDJGeGVpMUxSUzFpY0V0UkwyUmxabUYxYkhRdWFuQm4%3D}}"
+																		},
+																		"engagementPanelPresentationConfigs": {
+																			"engagementPanelPopupPresentationConfig": {
+																				"popupType": "PANEL_POPUP_TYPE_DIALOG"
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													]
+												}
+											},
+											"popupType": "RESPONSIVE_DROPDOWN"
+										}
+									}
+								},
+								"accessibilityText": "More actions",
+								"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY",
+								"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+								"buttonSize": "BUTTON_VIEW_MODEL_SIZE_LARGE",
+								"tooltipData": {
+									"tooltipViewModel": {
+										"tooltipText": "More actions",
+										"placement": "TOOLTIP_VIEW_MODEL_PLACEMENT_TOP",
+										"style": "TOOLTIP_VIEW_MODEL_STYLE_PLAYER"
+									}
+								}
+							}
+						}
+					]
+				}
+			},
+			"speedmasterUserEdu": {
+				"speedmasterEduViewModel": {
+					"bodyText": {
+						"content": "Playing at 2x speed"
+					}
+				}
+			}
+		}
+	},
+	"engagementPanels": [
+		{
+			"engagementPanelSectionListRenderer": {
+				"panelIdentifier": "engagement-panel-comments-section",
+				"header": {
+					"engagementPanelTitleHeaderRenderer": {
+						"title": {
+							"runs": [
+								{
+									"text": "Comments"
+								}
+							]
+						},
+						"contextualInfo": {
+							"runs": [
+								{
+									"text": "{{COMMENT_COUNT}}"
+								}
+							]
+						},
+						"menu": {
+							"sortFilterSubMenuRenderer": {
+								"subMenuItems": [
+									{
+										"title": "Top",
+										"selected": true,
+										"serviceEndpoint": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"sendPost": true,
+													"apiUrl": "/youtubei/v1/next"
+												}
+											},
+											"continuationCommand": {
+												"token": "{{COMMENTS_TOP}}",
+												"request": "CONTINUATION_REQUEST_TYPE_WATCH_NEXT",
+												"command": {
+													"showReloadUiCommand": {
+														"targetId": "engagement-panel-comments-section"
+													}
+												}
+											}
+										},
+										"accessibility": {
+											"accessibilityData": {
+												"label": "Top. Show featured comments"
+											}
+										},
+										"subtitle": "Show featured comments"
+									},
+									{
+										"title": "Newest",
+										"selected": false,
+										"serviceEndpoint": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"sendPost": true,
+													"apiUrl": "/youtubei/v1/next"
+												}
+											},
+											"continuationCommand": {
+												"token": "{{COMMENTS_NEWEST}}",
+												"request": "CONTINUATION_REQUEST_TYPE_WATCH_NEXT",
+												"command": {
+													"showReloadUiCommand": {
+														"targetId": "engagement-panel-comments-section"
+													}
+												}
+											}
+										},
+										"accessibility": {
+											"accessibilityData": {
+												"label": "Newest. Show recent comments, including potential spam"
+											}
+										},
+										"subtitle": "Show recent comments, including potential spam"
+									}
+								],
+								"icon": {
+									"iconType": "SORT"
+								},
+								"accessibility": {
+									"accessibilityData": {
+										"label": "Sort comments"
+									}
+								}
+							}
+						},
+						"visibilityButton": {
+							"buttonRenderer": {
+								"style": "STYLE_DEFAULT",
+								"size": "SIZE_DEFAULT",
+								"icon": {
+									"iconType": "CLOSE"
+								},
+								"accessibilityData": {
+									"accessibilityData": {
+										"label": "Close"
+									}
+								},
+								"command": {
+									"hideEngagementPanelEndpoint": {
+										"panelIdentifier": "engagement-panel-comments-section"
+									}
+								}
+							}
+						}
+					}
+				},
+				"content": {
+					"sectionListRenderer": {
+						"contents": [
+							{
+								"itemSectionRenderer": {
+									"contents": [
+										{
+											"continuationItemRenderer": {
+												"trigger": "CONTINUATION_TRIGGER_ON_ITEM_SHOWN",
+												"continuationEndpoint": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"sendPost": true,
+															"apiUrl": "/youtubei/v1/next"
+														}
+													},
+													"continuationCommand": {
+														"token": "{{COMMENTS_CONTINUATION}}",
+														"request": "CONTINUATION_REQUEST_TYPE_WATCH_NEXT"
+													}
+												}
+											}
+										}
+									],
+									"sectionIdentifier": "comment-item-section",
+									"targetId": "engagement-panel-comments-section"
+								}
+							}
+						]
+					}
+				},
+				"veType": 76278,
+				"targetId": "engagement-panel-comments-section",
+				"visibility": "ENGAGEMENT_PANEL_VISIBILITY_HIDDEN"
+			}
+		},
+		{
+			"engagementPanelSectionListRenderer": {
+				"panelIdentifier": "engagement-panel-structured-description",
+				"content": {
+					"structuredDescriptionContentRenderer": {
+						"items": [
+							{
+								"videoTitleHeaderViewModel": {
+									"videoTitle": {
+										"content": "{{TITLE}}"
+									},
+									"headerButton": {
+										"buttonViewModel": {
+											"iconName": "CLOSE",
+											"onTap": {
+												"innertubeCommand": {
+													"hideEngagementPanelEndpoint": {
+														"panelIdentifier": "engagement-panel-structured-description"
+													}
+												}
+											},
+											"accessibilityText": "Close",
+											"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+											"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+											"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT"
+										}
+									},
+									"rendererContext": {
+										"loggingContext": {}
+									}
+								}
+							},
+							{
+								"videoDescriptionHeaderRenderer": {
+									"channel": {
+										"simpleText": "{{CHANNEL_NAME}}"
+									},
+									"views": {
+										"simpleText": "{{VIEWS_FULL}}"
+									},
+									"publishDate": {
+										"simpleText": "{{DATE}}"
+									},
+									"factoid": [
+										{
+											"factoidRenderer": {
+												"value": {
+													"simpleText": "{{LIKES}}"
+												},
+												"label": {
+													"simpleText": "Likes"
+												},
+												"accessibilityText": "{{LIKES_LABEL}}",
+												"backgroundColorStyle": "BACKGROUND_COLOR_STYLE_COLOR_SAMPLED"
+											}
+										},
+										{
+											"viewCountFactoidRenderer": {
+												"viewCountEntityKey": "{{ek:VIDEO_ID:194}}",
+												"factoid": {
+													"factoidRenderer": {
+														"value": {
+															"simpleText": "{{VIEWS_COMPACT}}"
+														},
+														"label": {
+															"simpleText": "Views"
+														},
+														"accessibilityText": "{{VIEWS_FULL}}",
+														"backgroundColorStyle": "BACKGROUND_COLOR_STYLE_COLOR_SAMPLED"
+													}
+												},
+												"viewCountType": "VIEW_COUNT_FACTOID_TYPE_TOTAL_VIEWS"
+											}
+										},
+										{
+											"factoidRenderer": {
+												"value": {
+													"simpleText": "{{YEAR}}"
+												},
+												"label": {
+													"simpleText": "{{MONTH_DAY}}"
+												},
+												"accessibilityText": "{{DATE}}",
+												"backgroundColorStyle": "BACKGROUND_COLOR_STYLE_COLOR_SAMPLED",
+												"position": "FACTOID_POSITION_LAST"
+											}
+										}
+									],
+									"channelNavigationEndpoint": {
+										"commandMetadata": {
+											"webCommandMetadata": {
+												"url": "{{CHANNEL_URL}}",
+												"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+												"rootVe": 3611,
+												"apiUrl": "/youtubei/v1/browse"
+											}
+										},
+										"browseEndpoint": {
+											"browseId": "{{CHANNEL_ID}}",
+											"canonicalBaseUrl": "{{CHANNEL_URL}}"
+										}
+									},
+									"channelThumbnail": {
+										"thumbnails": "{{AVATAR_88}}"
+									}
+								}
+							},
+							{
+								"expandableVideoDescriptionBodyRenderer": {
+									"showMoreText": {
+										"accessibility": {
+											"accessibilityData": {
+												"label": "Show more"
+											}
+										},
+										"simpleText": "...more"
+									},
+									"showLessText": {
+										"simpleText": "Show less"
+									},
+									"attributedDescriptionBodyText": {
+										"content": "{{DESCRIPTION}}"
+									},
+									"backgroundColorStyle": "BACKGROUND_COLOR_STYLE_COLOR_SAMPLED",
+									"lightThemeColorPalette": {
+										"baseBackground": 4293984250,
+										"raisedBackground": 4293984250,
+										"additiveBackground": 558287259,
+										"textPrimary": 4278793767,
+										"textSecondary": 4281693022,
+										"invertedBackground": 4279730782,
+										"overlayBackground": 3423155751
+									},
+									"darkThemeColorPalette": {
+										"baseBackground": 4278328339,
+										"raisedBackground": 4278793767,
+										"additiveBackground": 726059419,
+										"textPrimary": 4292934641,
+										"textSecondary": 4289322957,
+										"invertedBackground": 4286374849,
+										"overlayBackground": 3423155751
+									},
+									"colorSampledDescriptionBodyText": {
+										"content": "{{DESCRIPTION}}"
+									},
+									"enableColorSampledDescriptionBodyText": true
+								}
+							},
+							{
+								"videoDescriptionYouchatSectionViewModel": {
+									"sectionTitle": {
+										"content": "Ask"
+									},
+									"subHeaderText": {
+										"content": "Get answers, explore topics, and more"
+									},
+									"primaryButton": {
+										"buttonViewModel": {
+											"iconName": "SPARK",
+											"title": "Ask questions",
+											"onTap": {
+												"innertubeCommand": {
+													"commandExecutorCommand": {
+														"commands": [
+															{
+																"showEngagementPanelEndpoint": {
+																	"panelIdentifier": "PAyouchat",
+																	"engagementPanel": {
+																		"engagementPanelSectionListRenderer": {
+																			"panelIdentifier": "PAyouchat",
+																			"header": {
+																				"engagementPanelTitleHeaderRenderer": {
+																					"title": {
+																						"runs": [
+																							{
+																								"text": "Ask about this video"
+																							}
+																						]
+																					},
+																					"visibilityButton": {
+																						"buttonRenderer": {
+																							"icon": {
+																								"iconType": "CLOSE"
+																							},
+																							"accessibility": {
+																								"label": "Close"
+																							},
+																							"accessibilityData": {
+																								"accessibilityData": {
+																									"label": "Close"
+																								}
+																							},
+																							"command": {
+																								"changeEngagementPanelVisibilityAction": {
+																									"targetId": "PAyouchat",
+																									"visibility": "ENGAGEMENT_PANEL_VISIBILITY_HIDDEN"
+																								}
+																							}
+																						}
+																					}
+																				}
+																			},
+																			"content": {
+																				"sectionListRenderer": {
+																					"contents": [
+																						{
+																							"itemSectionRenderer": {
+																								"contents": [
+																									{
+																										"youChatItemViewModel": {
+																											"text": {
+																												"content": "Hello! Curious about what you’re watching? I’m here to help."
+																											},
+																											"hideIcon": false,
+																											"transparentBackground": true,
+																											"removeIcon": false,
+																											"icon": {
+																												"sources": [
+																													{
+																														"clientResource": {
+																															"imageName": "SPARK"
+																														}
+																													}
+																												]
+																											}
+																										}
+																									},
+																									{
+																										"youChatItemViewModel": {
+																											"text": {
+																												"content": "Not sure what to ask? Choose something:"
+																											},
+																											"hideIcon": true,
+																											"transparentBackground": true,
+																											"removeIcon": false,
+																											"icon": {
+																												"sources": [
+																													{
+																														"clientResource": {
+																															"imageName": "SPARK"
+																														}
+																													}
+																												]
+																											}
+																										}
+																									},
+																									{
+																										"youChatItemViewModel": {
+																											"chipsData": {
+																												"chipData": [
+																													{
+																														"id": "01625022324",
+																														"text": {
+																															"content": "Summarize the video"
+																														},
+																														"showIcon": false,
+																														"onClick": {
+																															"listMutationCommand": {
+																																"operations": {
+																																	"operations": [
+																																		{
+																																			"insertItemSectionContent": {
+																																				"contents": [
+																																					{
+																																						"chatUserTurnViewModel": {
+																																							"text": "Summarize the video",
+																																							"backgroundStyle": "CHAT_USER_TURN_BACKGROUND_STYLE_MONO"
+																																						}
+																																					},
+																																					{
+																																						"chatLoadingViewModel": {
+																																							"targetId": "loading_response_message_id",
+																																							"animation": {
+																																								"lottieAnimationViewModel": {
+																																									"trustedAnimationUrl": {
+																																										"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json"
+																																									},
+																																									"loop": true
+																																								}
+																																							},
+																																							"loadingAnimationA11yLabel": "Load in progress.",
+																																							"darkThemeAnimation": {
+																																								"lottieAnimationViewModel": {
+																																									"trustedAnimationUrl": {
+																																										"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json"
+																																									},
+																																									"loop": true
+																																								}
+																																							}
+																																						}
+																																					}
+																																				],
+																																				"insertByPositionInSection": {
+																																					"sectionTargetId": "youchat_messages_section",
+																																					"position": "INSERTION_POSITION_LAST"
+																																				}
+																																			}
+																																		}
+																																	],
+																																	"scrollConfig": {
+																																		"scrollToItem": {
+																																			"item": {
+																																				"itemTargetId": "loading_response_message_id",
+																																				"sectionTargetId": "youchat_section_list"
+																																			},
+																																			"scrollPosition": "SCROLL_POSITION_END"
+																																		}
+																																	}
+																																}
+																															}
+																														},
+																														"continuation": "kta-ngugARIJUEF5b3VjaGF0GpIBa2dwb0NBRVNDMkZ4ZWkxTFJTMWljRXRSR2hOVGRXMXRZWEpwZW1VZ2RHaGxJSFpwWkdWdklocERUWGt0WnpsbGJIcEtZMFJHWlZkbFEyZG5aRGxMTUhsTWR5b0tDUFMtNzRZR0VBRW9BVUlhUTA1RExXYzVaV3g2U21ORVJtVlhaVU5uWjJRNVN6QjVUSGMlM0Q%3D",
+																														"transparentWhenLoading": true,
+																														"rendererContext": {
+																															"loggingContext": {}
+																														}
+																													},
+																													{
+																														"id": "11625022324",
+																														"text": {
+																															"content": "Recommend related content"
+																														},
+																														"showIcon": false,
+																														"onClick": {
+																															"listMutationCommand": {
+																																"operations": {
+																																	"operations": [
+																																		{
+																																			"insertItemSectionContent": {
+																																				"contents": [
+																																					{
+																																						"chatUserTurnViewModel": {
+																																							"text": "Recommend related content",
+																																							"backgroundStyle": "CHAT_USER_TURN_BACKGROUND_STYLE_MONO"
+																																						}
+																																					},
+																																					{
+																																						"chatLoadingViewModel": {
+																																							"targetId": "loading_response_message_id",
+																																							"animation": {
+																																								"lottieAnimationViewModel": {
+																																									"trustedAnimationUrl": {
+																																										"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json"
+																																									},
+																																									"loop": true
+																																								}
+																																							},
+																																							"loadingAnimationA11yLabel": "Load in progress.",
+																																							"darkThemeAnimation": {
+																																								"lottieAnimationViewModel": {
+																																									"trustedAnimationUrl": {
+																																										"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json"
+																																									},
+																																									"loop": true
+																																								}
+																																							}
+																																						}
+																																					}
+																																				],
+																																				"insertByPositionInSection": {
+																																					"sectionTargetId": "youchat_messages_section",
+																																					"position": "INSERTION_POSITION_LAST"
+																																				}
+																																			}
+																																		}
+																																	],
+																																	"scrollConfig": {
+																																		"scrollToItem": {
+																																			"item": {
+																																				"itemTargetId": "loading_response_message_id",
+																																				"sectionTargetId": "youchat_section_list"
+																																			},
+																																			"scrollPosition": "SCROLL_POSITION_END"
+																																		}
+																																	}
+																																}
+																															}
+																														},
+																														"continuation": "kta-nguoARIJUEF5b3VjaGF0GpoBa2dwdUNBRVNDMkZ4ZWkxTFJTMWljRXRSR2hsU1pXTnZiVzFsYm1RZ2NtVnNZWFJsWkNCamIyNTBaVzUwSWhwRFRYa3RaemxsYkhwS1kwUkdaVmRsUTJkblpEbExNSGxNZHlvS0NQVy03NFlHRUFNb0FVSWFRMDVUTFdjNVpXeDZTbU5FUm1WWFpVTm5aMlE1U3pCNVRIYyUzRA%3D%3D",
+																														"transparentWhenLoading": true,
+																														"rendererContext": {
+																															"loggingContext": {}
+																														}
+																													},
+																													{
+																														"id": "21625022324",
+																														"text": {
+																															"content": "What is Big Buck Bunny?"
+																														},
+																														"showIcon": false,
+																														"onClick": {
+																															"listMutationCommand": {
+																																"operations": {
+																																	"operations": [
+																																		{
+																																			"insertItemSectionContent": {
+																																				"contents": [
+																																					{
+																																						"chatUserTurnViewModel": {
+																																							"text": "What is Big Buck Bunny?",
+																																							"backgroundStyle": "CHAT_USER_TURN_BACKGROUND_STYLE_MONO"
+																																						}
+																																					},
+																																					{
+																																						"chatLoadingViewModel": {
+																																							"targetId": "loading_response_message_id",
+																																							"animation": {
+																																								"lottieAnimationViewModel": {
+																																									"trustedAnimationUrl": {
+																																										"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json"
+																																									},
+																																									"loop": true
+																																								}
+																																							},
+																																							"loadingAnimationA11yLabel": "Load in progress.",
+																																							"darkThemeAnimation": {
+																																								"lottieAnimationViewModel": {
+																																									"trustedAnimationUrl": {
+																																										"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json"
+																																									},
+																																									"loop": true
+																																								}
+																																							}
+																																						}
+																																					}
+																																				],
+																																				"insertByPositionInSection": {
+																																					"sectionTargetId": "youchat_messages_section",
+																																					"position": "INSERTION_POSITION_LAST"
+																																				}
+																																			}
+																																		}
+																																	],
+																																	"scrollConfig": {
+																																		"scrollToItem": {
+																																			"item": {
+																																				"itemTargetId": "loading_response_message_id",
+																																				"sectionTargetId": "youchat_section_list"
+																																			},
+																																			"scrollPosition": "SCROLL_POSITION_END"
+																																		}
+																																	}
+																																}
+																															}
+																														},
+																														"continuation": "kta-nguiARIJUEF5b3VjaGF0GpQBa2dwc0NBRVNDMkZ4ZWkxTFJTMWljRXRSR2hkWGFHRjBJR2x6SUVKcFp5QkNkV05ySUVKMWJtNTVQeUlhUTAxNUxXYzVaV3g2U21ORVJtVlhaVU5uWjJRNVN6QjVUSGNxQ2dqMnZ1LUdCaEFCS0FaQ0drTk9hUzFuT1dWc2VrcGpSRVpsVjJWRFoyZGtPVXN3ZVV4Mw%3D%3D",
+																														"transparentWhenLoading": true,
+																														"rendererContext": {
+																															"loggingContext": {}
+																														}
+																													},
+																													{
+																														"id": "31625022324",
+																														"text": {
+																															"content": "Is the film open source?"
+																														},
+																														"showIcon": false,
+																														"onClick": {
+																															"listMutationCommand": {
+																																"operations": {
+																																	"operations": [
+																																		{
+																																			"insertItemSectionContent": {
+																																				"contents": [
+																																					{
+																																						"chatUserTurnViewModel": {
+																																							"text": "Is the film open source?",
+																																							"backgroundStyle": "CHAT_USER_TURN_BACKGROUND_STYLE_MONO"
+																																						}
+																																					},
+																																					{
+																																						"chatLoadingViewModel": {
+																																							"targetId": "loading_response_message_id",
+																																							"animation": {
+																																								"lottieAnimationViewModel": {
+																																									"trustedAnimationUrl": {
+																																										"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json"
+																																									},
+																																									"loop": true
+																																								}
+																																							},
+																																							"loadingAnimationA11yLabel": "Load in progress.",
+																																							"darkThemeAnimation": {
+																																								"lottieAnimationViewModel": {
+																																									"trustedAnimationUrl": {
+																																										"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json"
+																																									},
+																																									"loop": true
+																																								}
+																																							}
+																																						}
+																																					}
+																																				],
+																																				"insertByPositionInSection": {
+																																					"sectionTargetId": "youchat_messages_section",
+																																					"position": "INSERTION_POSITION_LAST"
+																																				}
+																																			}
+																																		}
+																																	],
+																																	"scrollConfig": {
+																																		"scrollToItem": {
+																																			"item": {
+																																				"itemTargetId": "loading_response_message_id",
+																																				"sectionTargetId": "youchat_section_list"
+																																			},
+																																			"scrollPosition": "SCROLL_POSITION_END"
+																																		}
+																																	}
+																																}
+																															}
+																														},
+																														"continuation": "kta-nguqARIJUEF5b3VjaGF0GpwBa2dwdENBRVNDMkZ4ZWkxTFJTMWljRXRSR2hoSmN5QjBhR1VnWm1sc2JTQnZjR1Z1SUhOdmRYSmpaVDhpR2tOTmVTMW5PV1ZzZWtwalJFWmxWMlZEWjJka09Vc3dlVXgzS2dvSTk3N3ZoZ1lRQVNnR1FocERUblV0WnpsbGJIcEtZMFJHWlZkbFEyZG5aRGxMTUhsTWR3JTNEJTNE",
+																														"transparentWhenLoading": true,
+																														"rendererContext": {
+																															"loggingContext": {}
+																														}
+																													},
+																													{
+																														"id": "41625022324",
+																														"text": {
+																															"content": "How was this film created?"
+																														},
+																														"showIcon": false,
+																														"onClick": {
+																															"listMutationCommand": {
+																																"operations": {
+																																	"operations": [
+																																		{
+																																			"insertItemSectionContent": {
+																																				"contents": [
+																																					{
+																																						"chatUserTurnViewModel": {
+																																							"text": "How was this film created?",
+																																							"backgroundStyle": "CHAT_USER_TURN_BACKGROUND_STYLE_MONO"
+																																						}
+																																					},
+																																					{
+																																						"chatLoadingViewModel": {
+																																							"targetId": "loading_response_message_id",
+																																							"animation": {
+																																								"lottieAnimationViewModel": {
+																																									"trustedAnimationUrl": {
+																																										"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json"
+																																									},
+																																									"loop": true
+																																								}
+																																							},
+																																							"loadingAnimationA11yLabel": "Load in progress.",
+																																							"darkThemeAnimation": {
+																																								"lottieAnimationViewModel": {
+																																									"trustedAnimationUrl": {
+																																										"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json"
+																																									},
+																																									"loop": true
+																																								}
+																																							}
+																																						}
+																																					}
+																																				],
+																																				"insertByPositionInSection": {
+																																					"sectionTargetId": "youchat_messages_section",
+																																					"position": "INSERTION_POSITION_LAST"
+																																				}
+																																			}
+																																		}
+																																	],
+																																	"scrollConfig": {
+																																		"scrollToItem": {
+																																			"item": {
+																																				"itemTargetId": "loading_response_message_id",
+																																				"sectionTargetId": "youchat_section_list"
+																																			},
+																																			"scrollPosition": "SCROLL_POSITION_END"
+																																		}
+																																	}
+																																}
+																															}
+																														},
+																														"continuation": "kta-ngumARIJUEF5b3VjaGF0GpgBa2dwdkNBRVNDMkZ4ZWkxTFJTMWljRXRSR2hwSWIzY2dkMkZ6SUhSb2FYTWdabWxzYlNCamNtVmhkR1ZrUHlJYVEwMTVMV2M1Wld4NlNtTkVSbVZYWlVObloyUTVTekI1VEhjcUNnajR2dS1HQmhBQktBWkNHa05PTmkxbk9XVnNla3BqUkVabFYyVkRaMmRrT1Vzd2VVeDM%3D",
+																														"transparentWhenLoading": true,
+																														"rendererContext": {
+																															"loggingContext": {}
+																														}
+																													}
+																												],
+																												"isHorizontal": false,
+																												"onShowAnimationMs": 400,
+																												"onShowDelayMs": 400,
+																												"pendingStateEntityKey": "EiN5b3VjaGF0X3BlbmRpbmdfcmVzcG9uc2VfZW50aXR5X2tleSCpBCgB",
+																												"lastMessageIdEntityKey": "Eil5b3VjaGF0X2xhc3RfY2xpZW50X21lc3NhZ2VfaWRfZW50aXR5X2tleSD-AigB"
+																											}
+																										}
+																									},
+																									{
+																										"youChatItemViewModel": {
+																											"targetId": "dynamic_welcome_chips_placeholder_chat_id"
+																										}
+																									}
+																								],
+																								"targetId": "youchat_messages_section"
+																							}
+																						}
+																					],
+																					"targetId": "youchat_section_list",
+																					"disablePullToRefresh": true,
+																					"webComponentHint": {
+																						"componentVersion": "WEB_COMPONENT_VERSION_SHARED"
+																					}
+																				}
+																			},
+																			"veType": 194796,
+																			"disablePullRefresh": true,
+																			"footer": {
+																				"chatInputViewModel": {
+																					"inputComposerViewModel": {
+																						"inputComposerViewModel": {
+																							"inputFormField": {
+																								"textFieldViewModel": {
+																									"displayProperties": {
+																										"hideBorder": true
+																									},
+																									"contentProperties": {
+																										"placeholderText": "Ask a question...",
+																										"maxCharacterCount": 500
+																									}
+																								}
+																							},
+																							"youchatPendingResponseEntityKey": "EiN5b3VjaGF0X3BlbmRpbmdfcmVzcG9uc2VfZW50aXR5X2tleSCpBCgB",
+																							"onSubmitCommand": {
+																								"innertubeCommand": {
+																									"listMutationCommand": {
+																										"operations": {
+																											"operations": [
+																												{
+																													"insertItemSectionContent": {
+																														"contents": [
+																															{
+																																"chatLoadingViewModel": {
+																																	"targetId": "loading_response_message_id",
+																																	"animation": {
+																																		"lottieAnimationViewModel": {
+																																			"trustedAnimationUrl": {
+																																				"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json"
+																																			},
+																																			"loop": true
+																																		}
+																																	},
+																																	"loadingAnimationA11yLabel": "Load in progress.",
+																																	"darkThemeAnimation": {
+																																		"lottieAnimationViewModel": {
+																																			"trustedAnimationUrl": {
+																																				"privateDoNotAccessOrElseTrustedResourceUrlWrappedValue": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json"
+																																			},
+																																			"loop": true
+																																		}
+																																	}
+																																}
+																															}
+																														],
+																														"insertByPositionInSection": {
+																															"sectionTargetId": "youchat_messages_section",
+																															"position": "INSERTION_POSITION_LAST"
+																														}
+																													}
+																												}
+																											],
+																											"scrollConfig": {
+																												"scrollToItem": {
+																													"item": {
+																														"itemTargetId": "loading_response_message_id",
+																														"sectionTargetId": "youchat_section_list"
+																													},
+																													"scrollPosition": "SCROLL_POSITION_END"
+																												}
+																											}
+																										}
+																									}
+																								}
+																							},
+																							"sectionTargetId": "youchat_messages_section",
+																							"setPendingResponseOnWelcome": false,
+																							"loadingConfig": {
+																								"loadingAnimationA11yLabel": "Load in progress."
+																							},
+																							"chatUserTurnBackgroundStyle": "CHAT_USER_TURN_BACKGROUND_STYLE_MONO",
+																							"rendererContext": {
+																								"loggingContext": {}
+																							}
+																						}
+																					},
+																					"sendButton": {
+																						"buttonViewModel": {
+																							"iconName": "send",
+																							"accessibilityText": "Send",
+																							"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																							"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+																							"buttonSize": "BUTTON_VIEW_MODEL_SIZE_COMPACT",
+																							"iconImageFlipForRtl": true
+																						}
+																					},
+																					"environment": "CHAT_ENVIRONMENT_ENUM_YOUCHAT",
+																					"onWelcomeCommand": {
+																						"innertubeCommand": {
+																							"continuationCommand": {
+																								"token": "kta-ngvOARIJUEF5b3VjaGF0GsABa2dxSEFRZ0JFZ3RoY1hvdFMwVXRZbkJMVVNJYVEwMTVMV2M1Wld4NlNtTkVSbVZYWlVObloyUTVTekI1VEhjcUFpQUJvZ0VaQ2hkWGFHRjBJR2x6SUVKcFp5QkNkV05ySUVKMWJtNTVQNklCR2dvWVNYTWdkR2hsSUdacGJHMGdiM0JsYmlCemIzVnlZMlVfb2dFY0NocEliM2NnZDJGeklIUm9hWE1nWm1sc2JTQmpjbVZoZEdWa1B3JTNEJTNE",
+																								"request": "CONTINUATION_REQUEST_TYPE_GET_PANEL"
+																							}
+																						}
+																					},
+																					"sendUserQueryCommand": {
+																						"innertubeCommand": {
+																							"continuationCommand": {
+																								"token": "kta-ngtREglQQXlvdWNoYXQaRGtnb3JDQUVTQzJGeGVpMUxSUzFpY0V0UklocERUWGt0WnpsbGJIcEtZMFJHWlZkbFEyZG5aRGxMTUhsTWR3JTNEJTNE",
+																								"request": "CONTINUATION_REQUEST_TYPE_GET_PANEL"
+																							}
+																						}
+																					},
+																					"loadingAnimationA11yLabel": "Load in progress.",
+																					"disclaimerText": {
+																						"content": "AI can make mistakes, so double-check it. Learn more",
+																						"commandRuns": [
+																							{
+																								"startIndex": 42,
+																								"length": 10,
+																								"onTap": {
+																									"innertubeCommand": {
+																										"commandMetadata": {
+																											"webCommandMetadata": {
+																												"url": "https://support.google.com/youtube/answer/14110396",
+																												"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																												"rootVe": 83769
+																											}
+																										},
+																										"urlEndpoint": {
+																											"url": "https://support.google.com/youtube/answer/14110396",
+																											"target": "TARGET_NEW_WINDOW"
+																										}
+																									}
+																								}
+																							}
+																						],
+																						"styleRuns": [
+																							{
+																								"startIndex": 42,
+																								"length": 10,
+																								"fontColor": 4289374890,
+																								"underline": "LINE_STYLE_SINGLE",
+																								"weightLabel": "FONT_WEIGHT_NORMAL"
+																							}
+																						]
+																					},
+																					"promoButton": {
+																						"buttonViewModel": {
+																							"onTap": {
+																								"innertubeCommand": {
+																									"commandMetadata": {
+																										"webCommandMetadata": {
+																											"url": "https://gemini.google.com/?utm_medium=xpa&utm_source=yt&utm_campaign=yt-ask&campaign_id=yt-ask",
+																											"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																											"rootVe": 83769
+																										}
+																									},
+																									"urlEndpoint": {
+																										"url": "https://gemini.google.com?utm_medium=xpa&utm_source=yt&utm_campaign=yt-ask&campaign_id=yt-ask",
+																										"target": "TARGET_NEW_WINDOW"
+																									}
+																								}
+																							},
+																							"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																							"type": "BUTTON_VIEW_MODEL_TYPE_OUTLINE",
+																							"buttonSize": "BUTTON_VIEW_MODEL_SIZE_XSMALL",
+																							"titleFormatted": {
+																								"content": "Ask Gemini",
+																								"styleRuns": [
+																									{
+																										"startIndex": 0,
+																										"length": 10
+																									},
+																									{
+																										"startIndex": 0,
+																										"length": 10,
+																										"weightLabel": "FONT_WEIGHT_UNKNOWN"
+																									}
+																								],
+																								"attachmentRuns": [
+																									{
+																										"startIndex": 4,
+																										"length": 0,
+																										"element": {
+																											"type": {
+																												"imageType": {
+																													"image": {
+																														"sources": [
+																															{
+																																"url": "{{ORIGIN}}/_up/www.gstatic.com/images/branding/productlogos/gemini_2025/v1/web-16dp/logo_gemini_2025_color_2x_web_16dp.png"
+																															}
+																														]
+																													}
+																												}
+																											},
+																											"properties": {
+																												"layoutProperties": {
+																													"height": {
+																														"value": 11,
+																														"unit": "DIMENSION_UNIT_POINT"
+																													},
+																													"width": {
+																														"value": 11,
+																														"unit": "DIMENSION_UNIT_POINT"
+																													},
+																													"margin": {
+																														"end": {
+																															"value": 2.75,
+																															"unit": "DIMENSION_UNIT_POINT"
+																														}
+																													}
+																												}
+																											}
+																										},
+																										"alignment": "ALIGNMENT_VERTICAL_CENTER"
+																									},
+																									{
+																										"startIndex": 0,
+																										"length": 0,
+																										"element": {
+																											"type": {
+																												"imageType": {
+																													"image": {
+																														"sources": [
+																															{}
+																														]
+																													}
+																												}
+																											},
+																											"properties": {
+																												"layoutProperties": {
+																													"width": {
+																														"value": 8,
+																														"unit": "DIMENSION_UNIT_POINT"
+																													}
+																												}
+																											}
+																										}
+																									},
+																									{
+																										"startIndex": 10,
+																										"length": 0,
+																										"element": {
+																											"type": {
+																												"imageType": {
+																													"image": {
+																														"sources": [
+																															{}
+																														]
+																													}
+																												}
+																											},
+																											"properties": {
+																												"layoutProperties": {
+																													"width": {
+																														"value": 8,
+																														"unit": "DIMENSION_UNIT_POINT"
+																													}
+																												}
+																											}
+																										}
+																									}
+																								]
+																							}
+																						}
+																					},
+																					"lastMessageIdEntityKey": "Eil5b3VjaGF0X2xhc3RfY2xpZW50X21lc3NhZ2VfaWRfZW50aXR5X2tleSD-AigB"
+																				}
+																			},
+																			"onShowCommands": [
+																				{
+																					"scrollToEngagementPanelCommand": {
+																						"targetId": "PAyouchat"
+																					}
+																				}
+																			],
+																			"onCloseCommand": {
+																				"elementsCommand": {
+																					"setEntityCommand": {
+																						"identifier": "EiN5b3VjaGF0X3BlbmRpbmdfcmVzcG9uc2VfZW50aXR5X2tleSCpBCgB",
+																						"entity": "CAA="
+																					}
+																				}
+																			},
+																			"onDestroyCommand": {
+																				"elementsCommand": {
+																					"setEntityCommand": {
+																						"identifier": "Eil5b3VjaGF0X2xhc3RfY2xpZW50X21lc3NhZ2VfaWRfZW50aXR5X2tleSD-AigB",
+																						"entity": "CkBFaWw1YjNWamFHRjBYMnhoYzNSZlkyeHBaVzUwWDIxbGMzTmhaMlZmYVdSZlpXNTBhWFI1WDJ0bGVTRC1BaWdC"
+																					}
+																				}
+																			}
+																		}
+																	},
+																	"sourcePanelIdentifier": "video-description-ep-identifier",
+																	"blockIfPanelOpen": true
+																}
+															},
+															{
+																"scrollToEngagementPanelCommand": {
+																	"targetId": "PAyouchat"
+																}
+															}
+														]
+													}
+												}
+											},
+											"accessibilityText": "Ask questions",
+											"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+											"isFullWidth": true,
+											"type": "BUTTON_VIEW_MODEL_TYPE_OUTLINE",
+											"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+											"accessibilityId": "Ask questions",
+											"useYoutubeLoggingDirectives": true,
+											"shouldLogGestures": true,
+											"targetId": "you-chat-entrypoint-button",
+											"enableFullWidthMargins": true
+										}
+									}
+								}
+							},
+							{
+								"videoDescriptionInfocardsSectionRenderer": {
+									"sectionTitle": {
+										"simpleText": "{{CHANNEL_NAME}}"
+									},
+									"creatorVideosButton": {
+										"buttonRenderer": {
+											"style": "STYLE_INACTIVE_OUTLINE",
+											"size": "SIZE_DEFAULT",
+											"isDisabled": false,
+											"text": {
+												"simpleText": "Videos"
+											},
+											"icon": {
+												"iconType": "MY_VIDEOS"
+											},
+											"command": {
+												"commandMetadata": {
+													"webCommandMetadata": {
+														"url": "/channel/{{CHANNEL_ID}}/videos",
+														"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+														"rootVe": 3611,
+														"apiUrl": "/youtubei/v1/browse"
+													}
+												},
+												"browseEndpoint": {
+													"browseId": "{{CHANNEL_ID}}",
+													"params": "EgZ2aWRlb3PyBgkKBzoAogECCAE%3D"
+												}
+											}
+										}
+									},
+									"creatorAboutButton": {
+										"buttonRenderer": {
+											"style": "STYLE_INACTIVE_OUTLINE",
+											"size": "SIZE_DEFAULT",
+											"isDisabled": false,
+											"text": {
+												"simpleText": "About"
+											},
+											"icon": {
+												"iconType": "ACCOUNT_BOX"
+											},
+											"command": {
+												"commandMetadata": {
+													"webCommandMetadata": {
+														"url": "/channel/{{CHANNEL_ID}}/about",
+														"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+														"rootVe": 3611,
+														"apiUrl": "/youtubei/v1/browse"
+													}
+												},
+												"browseEndpoint": {
+													"browseId": "{{CHANNEL_ID}}",
+													"params": "EgVhYm91dPIGBgoCMgBKAA%3D%3D"
+												}
+											}
+										}
+									},
+									"sectionSubtitle": {
+										"accessibility": {
+											"accessibilityData": {
+												"label": "{{SUBSCRIBERS_LABEL}}"
+											}
+										},
+										"simpleText": "{{SUBSCRIBERS}}"
+									},
+									"channelAvatar": {
+										"thumbnails": "{{AVATAR_88}}"
+									},
+									"channelEndpoint": {
+										"commandMetadata": {
+											"webCommandMetadata": {
+												"url": "{{CHANNEL_URL}}",
+												"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+												"rootVe": 3611,
+												"apiUrl": "/youtubei/v1/browse"
+											}
+										},
+										"browseEndpoint": {
+											"browseId": "{{CHANNEL_ID}}",
+											"canonicalBaseUrl": "{{CHANNEL_URL}}"
+										}
+									}
+								}
+							},
+							{
+								"itemSectionRenderer": {
+									"contents": [
+										{
+											"linearLayoutViewModel": {
+												"items": [
+													{
+														"sectionHeaderViewModel": {
+															"headline": {
+																"content": "Video details"
+															},
+															"sectionHeaderSize": "SECTION_HEADER_SIZE_LARGE",
+															"disableHorizontalPadding": true
+														}
+													},
+													{
+														"listViewModel": {
+															"listItems": [
+																{
+																	"listItemViewModel": {
+																		"title": {
+																			"content": "Date"
+																		},
+																		"leadingImage": {
+																			"sources": [
+																				{
+																					"customImageSource": {
+																						"youtubeIconSource": {
+																							"clientResource": {
+																								"icon": "YTICON_OUTLINE_CALENDAR_S24"
+																							}
+																						}
+																					}
+																				}
+																			]
+																		},
+																		"elcShouldLogExplicitGestures": false,
+																		"leadingImageAccessoryType": "LIST_ITEM_IMAGE_ACCESSORY_TYPE_ICON",
+																		"trailingLabel": {
+																			"content": "{{DATE}}"
+																		},
+																		"disableHorizontalPadding": true,
+																		"leadingIconAccessorySize": "LIST_ITEM_ICON_ACCESSORY_SIZE_XSMALL",
+																		"labelTextColorToken": {
+																			"ytSysColorBaselineReference": "YT_SYS_COLOR_BASELINE_REFERENCE_TEXT_SECONDARY"
+																		},
+																		"leadingIconColorToken": {
+																			"ytSysColorBaselineReference": "YT_SYS_COLOR_BASELINE_REFERENCE_TEXT_SECONDARY"
+																		},
+																		"titleMaxLines": 1,
+																		"titleTypographyToken": {
+																			"ytSysTypographyTypestackReference": "YT_SYS_TYPOGRAPHY_TYPESTACK_REFERENCE_BODY_M_DEFAULT"
+																		},
+																		"trailingLabelTypographyToken": {
+																			"ytSysTypographyTypestackReference": "YT_SYS_TYPOGRAPHY_TYPESTACK_REFERENCE_BODY_M_HEAVY"
+																		},
+																		"leadingAssetAccessorySize": {
+																			"ytSysMeasurementReference": "YT_SYS_MEASUREMENT_REFERENCE_ICON_SIZE_STANDARD"
+																		}
+																	}
+																},
+																{
+																	"listItemViewModel": {
+																		"title": {
+																			"content": "Views"
+																		},
+																		"leadingImage": {
+																			"sources": [
+																				{
+																					"customImageSource": {
+																						"youtubeIconSource": {
+																							"clientResource": {
+																								"icon": "YTICON_OUTLINE_VIDEO_S24"
+																							}
+																						}
+																					}
+																				}
+																			]
+																		},
+																		"elcShouldLogExplicitGestures": false,
+																		"leadingImageAccessoryType": "LIST_ITEM_IMAGE_ACCESSORY_TYPE_ICON",
+																		"trailingAccessoriesList": {
+																			"trailingAccessories": [
+																				{
+																					"listItemViewCountViewModel": {
+																						"viewCount": "{{VIEW_COUNT_GROUPED}}",
+																						"entityKey": "{{ek:VIDEO_ID:194}}",
+																						"type": "LIST_ITEM_VIEW_COUNT_TYPE_TOTAL_VIEWS",
+																						"typographyToken": {
+																							"ytSysTypographyTypestackReference": "YT_SYS_TYPOGRAPHY_TYPESTACK_REFERENCE_BODY_M_HEAVY"
+																						}
+																					}
+																				}
+																			]
+																		},
+																		"disableHorizontalPadding": true,
+																		"leadingIconAccessorySize": "LIST_ITEM_ICON_ACCESSORY_SIZE_XSMALL",
+																		"labelTextColorToken": {
+																			"ytSysColorBaselineReference": "YT_SYS_COLOR_BASELINE_REFERENCE_TEXT_SECONDARY"
+																		},
+																		"leadingIconColorToken": {
+																			"ytSysColorBaselineReference": "YT_SYS_COLOR_BASELINE_REFERENCE_TEXT_SECONDARY"
+																		},
+																		"titleMaxLines": 1,
+																		"titleTypographyToken": {
+																			"ytSysTypographyTypestackReference": "YT_SYS_TYPOGRAPHY_TYPESTACK_REFERENCE_BODY_M_DEFAULT"
+																		},
+																		"trailingLabelTypographyToken": {
+																			"ytSysTypographyTypestackReference": "YT_SYS_TYPOGRAPHY_TYPESTACK_REFERENCE_BODY_M_HEAVY"
+																		},
+																		"leadingAssetAccessorySize": {
+																			"ytSysMeasurementReference": "YT_SYS_MEASUREMENT_REFERENCE_ICON_SIZE_STANDARD"
+																		}
+																	}
+																},
+																{
+																	"listItemViewModel": {
+																		"title": {
+																			"content": "Likes"
+																		},
+																		"leadingImage": {
+																			"sources": [
+																				{
+																					"customImageSource": {
+																						"youtubeIconSource": {
+																							"clientResource": {
+																								"icon": "YTICON_OUTLINE_THUMB_UP_S24"
+																							}
+																						}
+																					}
+																				}
+																			]
+																		},
+																		"elcShouldLogExplicitGestures": false,
+																		"leadingImageAccessoryType": "LIST_ITEM_IMAGE_ACCESSORY_TYPE_ICON",
+																		"trailingAccessoriesList": {
+																			"trailingAccessories": [
+																				{
+																					"listItemLikeCountViewModel": {
+																						"valueIfLiked": "{{LIKES_GROUPED_IF_LIKED}}",
+																						"valueIfDisliked": "{{LIKES_GROUPED}}",
+																						"valueIfIndifferent": "{{LIKES_GROUPED}}",
+																						"statusEntityKey": "{{ek:VIDEO_ID:62}}",
+																						"countEntityKey": "{{ek:VIDEO_ID:445}}",
+																						"typographyToken": {
+																							"ytSysTypographyTypestackReference": "YT_SYS_TYPOGRAPHY_TYPESTACK_REFERENCE_BODY_M_HEAVY"
+																						}
+																					}
+																				}
+																			]
+																		},
+																		"disableHorizontalPadding": true,
+																		"leadingIconAccessorySize": "LIST_ITEM_ICON_ACCESSORY_SIZE_XSMALL",
+																		"labelTextColorToken": {
+																			"ytSysColorBaselineReference": "YT_SYS_COLOR_BASELINE_REFERENCE_TEXT_SECONDARY"
+																		},
+																		"leadingIconColorToken": {
+																			"ytSysColorBaselineReference": "YT_SYS_COLOR_BASELINE_REFERENCE_TEXT_SECONDARY"
+																		},
+																		"titleMaxLines": 1,
+																		"titleTypographyToken": {
+																			"ytSysTypographyTypestackReference": "YT_SYS_TYPOGRAPHY_TYPESTACK_REFERENCE_BODY_M_DEFAULT"
+																		},
+																		"trailingLabelTypographyToken": {
+																			"ytSysTypographyTypestackReference": "YT_SYS_TYPOGRAPHY_TYPESTACK_REFERENCE_BODY_M_HEAVY"
+																		},
+																		"leadingAssetAccessorySize": {
+																			"ytSysMeasurementReference": "YT_SYS_MEASUREMENT_REFERENCE_ICON_SIZE_STANDARD"
+																		}
+																	}
+																}
+															]
+														}
+													}
+												],
+												"rendererContext": {
+													"loggingContext": {}
+												}
+											}
+										}
+									],
+									"sectionIdentifier": "video-details-section"
+								}
+							}
+						],
+						"floatingButton": {
+							"floatingButtonViewModel": {
+								"button": {
+									"buttonViewModel": {
+										"iconName": "CLOSE",
+										"onTap": {
+											"innertubeCommand": {
+												"hideEngagementPanelEndpoint": {
+													"panelIdentifier": "engagement-panel-structured-description"
+												}
+											}
+										},
+										"accessibilityText": "Close",
+										"style": "BUTTON_VIEW_MODEL_STYLE_RAISED",
+										"type": "BUTTON_VIEW_MODEL_TYPE_OUTLINE",
+										"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT"
+									}
+								},
+								"buttonPosition": "BUTTON_POSITION_TOP_RIGHT",
+								"triggerMechanism": {
+									"scrollState": {
+										"itemIndex": 0,
+										"condition": "SCROLL_CONDITION_ITEM_SCROLLED_PAST"
+									}
+								}
+							}
+						}
+					}
+				},
+				"veType": 124975,
+				"targetId": "engagement-panel-structured-description",
+				"visibility": "ENGAGEMENT_PANEL_VISIBILITY_HIDDEN"
+			}
+		}
+	],
+	"pageVisualEffects": [
+		{
+			"cinematicContainerRenderer": {
+				"gradientColorConfig": [
+					{
+						"darkThemeColor": 2566914048,
+						"startLocation": 0
+					},
+					{
+						"darkThemeColor": 2130706432
+					},
+					{
+						"darkThemeColor": 4278190080,
+						"startLocation": 1
+					}
+				],
+				"presentationStyle": "CINEMATIC_CONTAINER_PRESENTATION_STYLE_DYNAMIC_BLURRED",
+				"config": {
+					"lightThemeBackgroundColor": 4278190080,
+					"darkThemeBackgroundColor": 4278190080,
+					"animationConfig": {
+						"minImageUpdateIntervalMs": 5000,
+						"crossfadeDurationMs": 5000,
+						"crossfadeStartOffset": 1,
+						"maxFrameRate": 30
+					},
+					"colorSourceSizeMultiplier": 2.5,
+					"applyClientImageBlur": true,
+					"bottomColorSourceHeightMultiplier": 0.67000002,
+					"maxBottomColorSourceHeight": 260,
+					"colorSourceWidthMultiplier": 1.5,
+					"colorSourceHeightMultiplier": 2,
+					"blurStrength": 5,
+					"watchFullscreenConfig": {
+						"colorSourceWidthMultiplier": 2,
+						"colorSourceHeightMultiplier": 2,
+						"scrimWidthMultiplier": 2.5,
+						"scrimHeightMultiplier": 2.5,
+						"flatScrimColor": 2566914048
+					},
+					"enableInLightTheme": true
+				}
+			}
+		}
+	],
+	"microformat": {
+		"microformatDataRenderer": {
+			"videoDetails": {
+				"comments": [
+					{
+						"type": "https://schema.org/Comment",
+						"dateCreated": "2023-12-20T16:36:14-08:00",
+						"text": "Ah.. The classic test video",
+						"author": {
+							"type": "https://schema.org/Person",
+							"name": "@Seed",
+							"url": "{{ORIGIN}}/@Seed",
+							"alternateName": "Seed"
+						},
+						"upvoteCount": 1950
+					}
+				]
+			}
+		}
+	}
+}
