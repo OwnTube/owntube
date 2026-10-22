@@ -1,0 +1,22 @@
+[
+	{
+		"entityKey": "{{ek:CHANNEL_ID:51}}",
+		"type": "ENTITY_MUTATION_TYPE_REPLACE",
+		"payload": {
+			"subscriptionStateEntity": {
+				"key": "{{ek:CHANNEL_ID:51}}",
+				"subscribed": "{{SUBSCRIBED}}"
+			}
+		}
+	},
+	{
+		"entityKey": "{{ek:CHANNEL_ID:140}}",
+		"type": "ENTITY_MUTATION_TYPE_REPLACE",
+		"payload": {
+			"subscriptionNotificationStateEntity": {
+				"key": "{{ek:CHANNEL_ID:140}}",
+				"state": "{{BELL_STATE}}"
+			}
+		}
+	}
+]

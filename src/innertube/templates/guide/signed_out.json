@@ -1,0 +1,169 @@
+{
+	"items": [
+		{
+			"guideSectionRenderer": {
+				"items": [
+					{
+						"guideEntryRenderer": {
+							"navigationEndpoint": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"url": "/",
+										"webPageType": "WEB_PAGE_TYPE_BROWSE",
+										"rootVe": 3854,
+										"apiUrl": "/youtubei/v1/browse"
+									}
+								},
+								"browseEndpoint": {
+									"browseId": "FEwhat_to_watch"
+								}
+							},
+							"icon": {
+								"iconType": "TAB_HOME_CAIRO"
+							},
+							"formattedTitle": {
+								"simpleText": "Home"
+							},
+							"accessibility": {
+								"accessibilityData": {
+									"label": "Home"
+								}
+							},
+							"isPrimary": true
+						}
+					},
+					{
+						"guideEntryRenderer": {
+							"navigationEndpoint": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"url": "/feed/subscriptions",
+										"webPageType": "WEB_PAGE_TYPE_BROWSE",
+										"rootVe": 96368,
+										"apiUrl": "/youtubei/v1/browse"
+									}
+								},
+								"browseEndpoint": {
+									"browseId": "FEsubscriptions"
+								}
+							},
+							"icon": {
+								"iconType": "TAB_SUBSCRIPTIONS_CAIRO"
+							},
+							"formattedTitle": {
+								"simpleText": "Subscriptions"
+							},
+							"accessibility": {
+								"accessibilityData": {
+									"label": "Subscriptions"
+								}
+							},
+							"entryData": {
+								"guideEntryData": {
+									"guideEntryId": "subscriptions-channels-header"
+								}
+							},
+							"presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE",
+							"targetId": "subscriptions-guide-item",
+							"isPrimary": true
+						}
+					},
+					{
+						"guideEntryRenderer": {
+							"navigationEndpoint": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"url": "/feed/you",
+										"webPageType": "WEB_PAGE_TYPE_BROWSE",
+										"rootVe": 6827,
+										"apiUrl": "/youtubei/v1/browse"
+									}
+								},
+								"browseEndpoint": {
+									"browseId": "FElibrary",
+									"params": "KgN5b3U%3D"
+								}
+							},
+							"icon": {
+								"iconType": "ACCOUNT_CIRCLE_CAIRO"
+							},
+							"formattedTitle": {
+								"simpleText": "You"
+							},
+							"accessibility": {
+								"accessibilityData": {
+									"label": "You"
+								}
+							},
+							"targetId": "library-guide-item",
+							"isPrimary": true
+						}
+					},
+					{
+						"guideEntryRenderer": {
+							"navigationEndpoint": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"url": "/feed/history",
+										"webPageType": "WEB_PAGE_TYPE_BROWSE",
+										"rootVe": 6827,
+										"apiUrl": "/youtubei/v1/browse"
+									}
+								},
+								"browseEndpoint": {
+									"browseId": "FEhistory"
+								}
+							},
+							"icon": {
+								"iconType": "WATCH_HISTORY_CAIRO"
+							},
+							"formattedTitle": {
+								"simpleText": "History"
+							},
+							"accessibility": {
+								"accessibilityData": {
+									"label": "History"
+								}
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"guideSigninPromoRenderer": {
+				"descriptiveText": {
+					"simpleText": "Sign in to like videos, comment, and subscribe."
+				},
+				"actionText": {
+					"simpleText": "Sign in"
+				},
+				"signInButton": {
+					"buttonRenderer": {
+						"style": "STYLE_SUGGESTIVE",
+						"size": "SIZE_DEFAULT",
+						"isDisabled": false,
+						"text": {
+							"simpleText": "Sign in"
+						},
+						"icon": {
+							"iconType": "AVATAR_LOGGED_OUT"
+						},
+						"navigationEndpoint": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"url": "{{SIGNIN_URL}}",
+									"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+									"rootVe": 83769
+								}
+							},
+							"signInEndpoint": {
+								"hack": true
+							}
+						}
+					}
+				}
+			}
+		}
+	]
+}

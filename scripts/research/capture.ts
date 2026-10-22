@@ -1,24 +1,79 @@
 // Research capture of youtube.com: HAR with bodies, individual youtubei/HTML
 // responses, screenshots. Output goes to captures/<name>/ (gitignored, raw).
-//   bun scripts/research/capture.ts <name> <url> [--steps steps.json] [--narrow]
+//   bun scripts/research/capture.ts <name> <url> [--narrow] [--cookies file.txt]
+//   STEPS=/abs/path/steps.ts runs extra interactions after load.
+//
+// --cookies loads a Netscape cookie file (an authorized test session). In that
+// mode the account must not change: every InnerTube POST that is not a known
+// read is aborted, as are watch-history/telemetry pings, cookie rotation and
+// uploads. ALLOW_WRITES=method,method lets a step perform a specific write.
 import { chromium } from "playwright-core";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { gunzipSync } from "node:zlib";
 
 const [name, url] = process.argv.slice(2);
 const narrow = process.argv.includes("--narrow");
+const cookieFile = process.argv.includes("--cookies") ? process.argv[process.argv.indexOf("--cookies") + 1] : undefined;
 const out = join("captures", name);
 mkdirSync(join(out, "bodies"), { recursive: true });
 const proxy = process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY } : undefined;
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", proxy, args: ["--autoplay-policy=no-user-gesture-required"] });
 const ctx = await browser.newContext({
-	recordHar: { path: join(out, "capture.har"), content: "embed" },
+	// a HAR would carry the session's cookies; not recorded for signed-in captures
+	...(cookieFile ? {} : { recordHar: { path: join(out, "capture.har"), content: "embed" as const } }),
 	viewport: narrow ? { width: 412, height: 860 } : { width: 1400, height: 900 },
 	locale: "en-US",
 	userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
 	recordVideo: { dir: join(out, "video"), size: narrow ? { width: 412, height: 860 } : { width: 1400, height: 900 } },
 });
+if (cookieFile) {
+	const cookies = readFileSync(cookieFile, "utf8")
+		.split("\n")
+		.map((l) => l.split("\t"))
+		.filter((p) => p.length >= 7 && !p[0].startsWith("# "))
+		.map(([domain, , path, secure, expires, name, value]) => ({
+			name,
+			value,
+			domain: domain.replace(/^#HttpOnly_/, ""),
+			path,
+			secure: secure === "TRUE",
+			httpOnly: domain.startsWith("#HttpOnly_"),
+			expires: Number(expires) || -1,
+			sameSite: (name.startsWith("__Secure-") || name.startsWith("__Host-") ? "None" : "Lax") as "None" | "Lax",
+		}));
+	await ctx.addCookies(cookies);
+}
+// InnerTube methods that only read
+const READS = /^(browse|next|player|search|guide|get_watch|get_panel|account\/account_menu|account\/accounts_list|notification\/get_unseen_count|notification\/get_notification_menu|share\/get_share_panel|att\/get|reel\/reel_item_watch|reel\/reel_watch_sequence|navigation\/resolve_url|playlist\/get_add_to_playlist|comment\/get_comment.*|creator\/(get|list|search|fetch)_.*|ars\/(get|list)_.*|updated_metadata|music\/get_.*)$/;
+const allowWrites = new Set((process.env.ALLOW_WRITES ?? "").split(",").filter(Boolean));
+const blocked: string[] = [];
+if (cookieFile)
+	await ctx.route("**/*", (route: any) => {
+		const req = route.request();
+		const u = new URL(req.url());
+		const m = /\/youtubei\/v1\/(.+)$/.exec(u.pathname);
+		const deny =
+			/(^|\.)accounts\.(google|youtube)\.com$|^upload\.youtube\.com$/.test(u.hostname) ||
+			(/(^|\.)youtube\.com$/.test(u.hostname) && /^\/(api\/stats\/|ptracking|generate_204)/.test(u.pathname)) ||
+			(m && req.method() === "POST" && !READS.test(m[1]) && !allowWrites.has(m[1]));
+		if (deny) {
+			blocked.push(`${req.method()} ${u.hostname}${u.pathname}`);
+			return route.abort();
+		}
+		return route.continue();
+	});
 const page = await ctx.newPage();
+// InnerTube request bodies are gzipped
+const postBody = (req: any) => {
+	const b: Buffer | null = req.postDataBuffer();
+	if (!b) return null;
+	try {
+		return JSON.parse((b[0] === 0x1f && b[1] === 0x8b ? gunzipSync(b) : b).toString());
+	} catch {
+		return b.toString("latin1").slice(0, 2000);
+	}
+};
 const log: string[] = [];
 let n = 0;
 page.on("console", (m) => log.push(`console.${m.type()}: ${m.text()}`));
@@ -32,7 +87,7 @@ page.on("response", async (r) => {
 			const body = await r.text();
 			const file = `${String(++n).padStart(3, "0")}-${new URL(u).pathname.replace(/[^\w]+/g, "_").slice(0, 60)}`;
 			writeFileSync(join(out, "bodies", file + ".resp"), body);
-			writeFileSync(join(out, "bodies", file + ".req.json"), JSON.stringify({ url: u, method: req.method(), headers: req.headers(), post: req.postData() }, null, 1));
+			writeFileSync(join(out, "bodies", file + ".req.json"), JSON.stringify({ url: u, method: req.method(), headers: Object.fromEntries(Object.entries(req.headers()).filter(([k]) => !/^(cookie|authorization|x-goog-authuser|x-goog-visitor-id)$/i.test(k))), post: postBody(req) }, null, 1));
 		} catch {}
 	}
 });
@@ -41,7 +96,8 @@ await page.waitForTimeout(8000);
 await page.screenshot({ path: join(out, "01-loaded.png") });
 const steps = process.env.STEPS ? (await import(process.env.STEPS)).default : null;
 if (steps) await steps(page, out);
-writeFileSync(join(out, "log.txt"), log.join("\n"));
+writeFileSync(join(out, "log.txt"), log.join("\n") + `\nblocked:\n${blocked.join("\n")}\n`);
+if (cookieFile) console.log(`blocked ${blocked.length} requests: ${[...new Set(blocked.map((b) => b.replace(/\/youtubei\/v1\//, " ")))].slice(0, 12).join(", ")}`);
 await ctx.close();
 await browser.close();
 console.log(`captured ${name}: ${log.length} log lines, ${n} bodies`);

@@ -74,6 +74,29 @@ export function ago(d: Date | null | undefined, now = Date.now()): string {
 	return "just now";
 }
 
+// lockup metadata: "3d ago" / "5 min ago", read out as "3 days ago"
+export function shortAgo(d: Date | null | undefined, now = Date.now()): string {
+	if (!d) return "";
+	const s = Math.max(1, Math.floor((now - new Date(d).getTime()) / 1000));
+	const steps: [number, string][] = [[31536000, "y"], [2592000, "mo"], [604800, "w"], [86400, "d"], [3600, "h"], [60, " min"], [1, " sec"]];
+	for (const [v, u] of steps) if (s >= v) return `${Math.floor(s / v)}${u} ago`;
+	return "";
+}
+
+// "61K" read out as "61 thousand views"; "1.2M" as "1.2 million views"
+export function countLabel(n: number, one: string, many = `${one}s`): string {
+	if (n === 0) return `No ${many}`;
+	if (n < 1000) return `${n} ${n === 1 ? one : many}`;
+	const units: [number, string][] = [[1e9, "billion"], [1e6, "million"], [1e3, "thousand"]];
+	for (const [v, u] of units)
+		if (n >= v) {
+			const x = n / v;
+			return `${x < 10 ? Math.floor(x * 10) / 10 : Math.floor(x)} ${u} ${many}`;
+		}
+	return `${n} ${many}`;
+}
+export const compactViews = (n: number) => (n === 0 ? "No views" : n === 1 ? "1 view" : `${compact(n)} views`);
+
 export function duration(ms: number | null | undefined): string {
 	const t = Math.round((ms ?? 0) / 1000);
 	const h = Math.floor(t / 3600);

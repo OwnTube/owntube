@@ -1,0 +1,18 @@
+{
+	"contents": [
+		{
+			"itemSectionRenderer": {
+				"contents": [
+					{
+						"gridRenderer": {
+							"items": "{{ITEMS}}",
+							"targetId": "browse-feed{{CHANNEL_ID}}playlists104"
+						}
+					}
+				]
+			}
+		}
+	],
+	"targetId": "{{TARGET_ID}}",
+	"disablePullToRefresh": true
+}

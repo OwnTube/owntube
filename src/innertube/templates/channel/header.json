@@ -1,0 +1,399 @@
+{
+	"pageTitle": "{{CHANNEL_NAME}}",
+	"content": {
+		"pageHeaderViewModel": {
+			"title": {
+				"dynamicTextViewModel": {
+					"text": {
+						"content": "{{CHANNEL_NAME}}"
+					},
+					"maxLines": 2,
+					"rendererContext": {
+						"loggingContext": {},
+						"accessibilityContext": {
+							"label": "{{CHANNEL_NAME}}"
+						}
+					}
+				}
+			},
+			"image": {
+				"decoratedAvatarViewModel": {
+					"avatar": {
+						"avatarViewModel": {
+							"image": {
+								"sources": "{{AVATAR}}",
+								"processor": {
+									"borderImageProcessor": {
+										"circular": true
+									}
+								}
+							},
+							"avatarImageSize": "AVATAR_SIZE_XL"
+						}
+					}
+				}
+			},
+			"metadata": {
+				"contentMetadataViewModel": {
+					"metadataRows": [
+						{
+							"metadataParts": [
+								{
+									"text": {
+										"content": "{{AT_HANDLE}}",
+										"styleRuns": [
+											{
+												"weightLabel": "FONT_WEIGHT_MEDIUM",
+												"styleRunExtensions": {
+													"styleRunColorMapExtension": {
+														"colorMap": [
+															{
+																"key": "USER_INTERFACE_THEME_DARK",
+																"value": 4294967295
+															},
+															{
+																"key": "USER_INTERFACE_THEME_LIGHT",
+																"value": 4279440147
+															}
+														]
+													}
+												}
+											}
+										]
+									},
+									"enableTruncation": true
+								}
+							]
+						},
+						{
+							"metadataParts": [
+								{
+									"text": {
+										"content": "{{SUBSCRIBERS}}"
+									},
+									"accessibilityLabel": "{{SUBSCRIBERS_LABEL}}"
+								},
+								{
+									"text": {
+										"content": "{{VIDEO_COUNT}}",
+										"styleRuns": [
+											{
+												"startIndex": 0,
+												"length": "{{VIDEO_COUNT_LENGTH}}"
+											}
+										]
+									}
+								}
+							]
+						}
+					],
+					"delimiter": "•",
+					"rendererContext": {
+						"loggingContext": {}
+					}
+				}
+			},
+			"actions": {
+				"flexibleActionsViewModel": {
+					"actionsRows": [
+						{
+							"actions": [
+								{
+									"buttonViewModel": {
+										"title": "Subscribe",
+										"onTap": {
+											"innertubeCommand": {
+												"commandMetadata": {
+													"webCommandMetadata": {
+														"ignoreNavigation": true
+													}
+												},
+												"modalEndpoint": {
+													"modal": {
+														"modalWithTitleAndButtonRenderer": {
+															"title": {
+																"simpleText": "Want to subscribe to this channel?"
+															},
+															"content": {
+																"simpleText": "Sign in to subscribe to this channel."
+															},
+															"button": {
+																"buttonRenderer": {
+																	"style": "STYLE_MONO_FILLED",
+																	"size": "SIZE_DEFAULT",
+																	"isDisabled": false,
+																	"text": {
+																		"simpleText": "Sign in"
+																	},
+																	"navigationEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"url": "{{SIGNIN_URL}}",
+																				"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																				"rootVe": 83769
+																			}
+																		},
+																		"signInEndpoint": {
+																			"nextEndpoint": {
+																				"commandMetadata": {
+																					"webCommandMetadata": {
+																						"url": "/{{AT_HANDLE}}/videos",
+																						"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+																						"rootVe": 3611,
+																						"apiUrl": "/youtubei/v1/browse"
+																					}
+																				},
+																				"browseEndpoint": {
+																					"browseId": "{{CHANNEL_ID}}",
+																					"params": "EgZ2aWRlb3M%3D",
+																					"canonicalBaseUrl": "/{{AT_HANDLE}}"
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										},
+										"accessibilityText": "Subscribe",
+										"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+										"isFullWidth": false,
+										"type": "BUTTON_VIEW_MODEL_TYPE_FILLED",
+										"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+										"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE"
+									}
+								}
+							]
+						}
+					],
+					"justifyContent": "FLEXIBLE_ACTIONS_JUSTIFY_CONTENT_START",
+					"minimumRowHeight": 44,
+					"rendererContext": {
+						"loggingContext": {}
+					}
+				}
+			},
+			"description": {
+				"descriptionPreviewViewModel": {
+					"description": {
+						"content": "{{DESCRIPTION}} "
+					},
+					"maxLines": 2,
+					"truncationText": {
+						"content": "...more",
+						"styleRuns": [
+							{
+								"startIndex": 0,
+								"length": 7,
+								"weight": 500
+							}
+						]
+					},
+					"alwaysShowTruncationText": true,
+					"rendererContext": {
+						"loggingContext": {},
+						"accessibilityContext": {
+							"label": "{{DESCRIPTION_LABEL}}"
+						},
+						"commandContext": {
+							"onTap": {
+								"innertubeCommand": {
+									"showEngagementPanelEndpoint": {
+										"engagementPanel": {
+											"engagementPanelSectionListRenderer": {
+												"header": {
+													"engagementPanelTitleHeaderRenderer": {
+														"title": {
+															"simpleText": "{{CHANNEL_NAME}}"
+														},
+														"visibilityButton": {
+															"buttonRenderer": {
+																"style": "STYLE_DEFAULT",
+																"size": "SIZE_DEFAULT",
+																"isDisabled": false,
+																"icon": {
+																	"iconType": "CLOSE"
+																},
+																"accessibility": {
+																	"label": "Close"
+																},
+																"accessibilityData": {
+																	"accessibilityData": {
+																		"label": "Close"
+																	}
+																},
+																"command": {
+																	"changeEngagementPanelVisibilityAction": {
+																		"targetId": "6b08d60d-0000-2b06-a88c-b8db38f48582",
+																		"visibility": "ENGAGEMENT_PANEL_VISIBILITY_HIDDEN"
+																	}
+																}
+															}
+														}
+													}
+												},
+												"content": {
+													"sectionListRenderer": {
+														"contents": [
+															{
+																"itemSectionRenderer": {
+																	"contents": [
+																		{
+																			"continuationItemRenderer": {
+																				"trigger": "CONTINUATION_TRIGGER_ON_ITEM_SHOWN",
+																				"continuationEndpoint": {
+																					"commandMetadata": {
+																						"webCommandMetadata": {
+																							"sendPost": true,
+																							"apiUrl": "/youtubei/v1/browse"
+																						}
+																					},
+																					"continuationCommand": {
+																						"token": "{{ABOUT_CONTINUATION}}",
+																						"request": "CONTINUATION_REQUEST_TYPE_BROWSE"
+																					}
+																				}
+																			}
+																		}
+																	],
+																	"sectionIdentifier": "6b08d60e-0000-2b06-a88c-b8db38f48582",
+																	"targetId": "6b08d60e-0000-2b06-a88c-b8db38f48582"
+																}
+															}
+														],
+														"scrollPaneStyle": {
+															"scrollable": true
+														}
+													}
+												},
+												"targetId": "6b08d60d-0000-2b06-a88c-b8db38f48582",
+												"identifier": {
+													"surface": "ENGAGEMENT_PANEL_SURFACE_BROWSE",
+													"tag": "6b08d60d-0000-2b06-a88c-b8db38f48582"
+												}
+											}
+										},
+										"identifier": {
+											"surface": "ENGAGEMENT_PANEL_SURFACE_BROWSE",
+											"tag": "6b08d60d-0000-2b06-a88c-b8db38f48582"
+										},
+										"engagementPanelPresentationConfigs": {
+											"engagementPanelPopupPresentationConfig": {
+												"popupType": "PANEL_POPUP_TYPE_DIALOG"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"attribution": {
+				"attributionViewModel": {
+					"text": {
+						"content": " {{LINK_TEXT}}",
+						"commandRuns": [
+							{
+								"startIndex": 0,
+								"length": "{{LINK_TEXT_LENGTH}}",
+								"onTap": {
+									"innertubeCommand": {
+										"commandMetadata": {
+											"webCommandMetadata": {
+												"url": "{{LINK_URL}}",
+												"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+												"rootVe": 83769
+											}
+										},
+										"urlEndpoint": {
+											"url": "{{LINK_URL}}",
+											"target": "TARGET_NEW_WINDOW"
+										}
+									}
+								}
+							}
+						],
+						"styleRuns": [
+							{
+								"weightLabel": "FONT_WEIGHT_NORMAL",
+								"styleRunExtensions": {
+									"styleRunColorMapExtension": {
+										"colorMap": [
+											{
+												"key": "USER_INTERFACE_THEME_DARK",
+												"value": 4282296063
+											},
+											{
+												"key": "USER_INTERFACE_THEME_LIGHT",
+												"value": 4278607828
+											}
+										]
+									}
+								}
+							}
+						],
+						"attachmentRuns": [
+							{
+								"startIndex": 0,
+								"length": 0,
+								"element": {
+									"type": {
+										"imageType": {
+											"image": {
+												"sources": [
+													{
+														"customImageSource": {
+															"youtubeIconSource": {
+																"clientResource": {
+																	"icon": "YTICON_OUTLINE_LINK_S24"
+																}
+															}
+														}
+													}
+												]
+											}
+										}
+									},
+									"properties": {
+										"layoutProperties": {
+											"height": {
+												"value": 14,
+												"unit": "DIMENSION_UNIT_POINT"
+											},
+											"width": {
+												"value": 14,
+												"unit": "DIMENSION_UNIT_POINT"
+											}
+										}
+									}
+								},
+								"alignment": "ALIGNMENT_VERTICAL_CENTER"
+							}
+						]
+					},
+					"rendererContext": {
+						"loggingContext": {}
+					}
+				}
+			},
+			"banner": {
+				"imageBannerViewModel": {
+					"image": {
+						"sources": "{{BANNER}}"
+					},
+					"style": "IMAGE_BANNER_STYLE_INSET",
+					"rendererContext": {
+						"loggingContext": {}
+					}
+				}
+			},
+			"rendererContext": {
+				"loggingContext": {}
+			}
+		}
+	}
+}

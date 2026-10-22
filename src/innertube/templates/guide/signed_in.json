@@ -1,0 +1,272 @@
+{
+	"items": [
+		{
+			"guideSectionRenderer": {
+				"items": [
+					{
+						"guideEntryRenderer": {
+							"navigationEndpoint": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"url": "/",
+										"webPageType": "WEB_PAGE_TYPE_BROWSE",
+										"rootVe": 3854,
+										"apiUrl": "/youtubei/v1/browse"
+									}
+								},
+								"browseEndpoint": {
+									"browseId": "FEwhat_to_watch"
+								}
+							},
+							"icon": {
+								"iconType": "TAB_HOME_CAIRO"
+							},
+							"formattedTitle": {
+								"simpleText": "Home"
+							},
+							"accessibility": {
+								"accessibilityData": {
+									"label": "Home"
+								}
+							},
+							"isPrimary": true
+						}
+					}
+				]
+			}
+		},
+		{
+			"guideSubscriptionsSectionRenderer": {
+				"sort": "CHANNEL_RELEVANCE",
+				"items": "{{SUBSCRIPTIONS}}",
+				"handlerDatas": [
+					"GUIDE_ACTION_ADD_TO_SUBSCRIPTIONS",
+					"GUIDE_ACTION_REMOVE_FROM_SUBSCRIPTIONS"
+				]
+			}
+		},
+		{
+			"guideSectionRenderer": {
+				"items": [
+					{
+						"guideCollapsibleSectionEntryRenderer": {
+							"headerEntry": {
+								"guideEntryRenderer": {
+									"navigationEndpoint": {
+										"commandMetadata": {
+											"webCommandMetadata": {
+												"url": "/feed/you",
+												"webPageType": "WEB_PAGE_TYPE_BROWSE",
+												"rootVe": 6827,
+												"apiUrl": "/youtubei/v1/browse"
+											}
+										},
+										"browseEndpoint": {
+											"browseId": "FElibrary",
+											"params": "KgN5b3U%3D"
+										}
+									},
+									"icon": {
+										"iconType": "ACCOUNT_CIRCLE_CAIRO"
+									},
+									"formattedTitle": {
+										"simpleText": "You"
+									},
+									"accessibility": {
+										"accessibilityData": {
+											"label": "You"
+										}
+									},
+									"targetId": "library-guide-item",
+									"isPrimary": true
+								}
+							},
+							"expanderIcon": {
+								"iconType": "EXPAND"
+							},
+							"collapserIcon": {
+								"iconType": "COLLAPSE"
+							},
+							"sectionItems": [
+								{
+									"guideEntryRenderer": {
+										"navigationEndpoint": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"url": "{{VIEWER_CHANNEL_URL}}",
+													"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+													"rootVe": 3611,
+													"apiUrl": "/youtubei/v1/browse"
+												}
+											},
+											"browseEndpoint": {
+												"browseId": "{{VIEWER_CHANNEL_ID}}",
+												"canonicalBaseUrl": "{{VIEWER_CHANNEL_URL}}"
+											}
+										},
+										"icon": {
+											"iconType": "ACCOUNT_BOX_CAIRO"
+										},
+										"formattedTitle": {
+											"simpleText": "Your channel"
+										},
+										"accessibility": {
+											"accessibilityData": {
+												"label": "Your channel"
+											}
+										}
+									}
+								},
+								{
+									"guideEntryRenderer": {
+										"navigationEndpoint": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"url": "/feed/history",
+													"webPageType": "WEB_PAGE_TYPE_BROWSE",
+													"rootVe": 6827,
+													"apiUrl": "/youtubei/v1/browse"
+												}
+											},
+											"browseEndpoint": {
+												"browseId": "FEhistory"
+											}
+										},
+										"icon": {
+											"iconType": "WATCH_HISTORY_CAIRO"
+										},
+										"formattedTitle": {
+											"simpleText": "History"
+										},
+										"accessibility": {
+											"accessibilityData": {
+												"label": "History"
+											}
+										}
+									}
+								},
+								{
+									"guideEntryRenderer": {
+										"navigationEndpoint": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"url": "/feed/playlists",
+													"webPageType": "WEB_PAGE_TYPE_BROWSE",
+													"rootVe": 6827,
+													"apiUrl": "/youtubei/v1/browse"
+												}
+											},
+											"browseEndpoint": {
+												"browseId": "FEplaylist_aggregation"
+											}
+										},
+										"icon": {
+											"iconType": "PLAYLISTS_CAIRO"
+										},
+										"formattedTitle": {
+											"simpleText": "Playlists"
+										},
+										"accessibility": {
+											"accessibilityData": {
+												"label": "Playlists"
+											}
+										}
+									}
+								},
+								{
+									"guideEntryRenderer": {
+										"navigationEndpoint": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"url": "/playlist?list=WL",
+													"webPageType": "WEB_PAGE_TYPE_PLAYLIST",
+													"rootVe": 5754,
+													"apiUrl": "/youtubei/v1/browse"
+												}
+											},
+											"browseEndpoint": {
+												"browseId": "VLWL"
+											}
+										},
+										"icon": {
+											"iconType": "WATCH_LATER_CAIRO"
+										},
+										"formattedTitle": {
+											"simpleText": "Watch later"
+										},
+										"accessibility": {
+											"accessibilityData": {
+												"label": "Watch later"
+											}
+										}
+									}
+								},
+								{
+									"guideEntryRenderer": {
+										"navigationEndpoint": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"url": "/playlist?list=LL",
+													"webPageType": "WEB_PAGE_TYPE_PLAYLIST",
+													"rootVe": 5754,
+													"apiUrl": "/youtubei/v1/browse"
+												}
+											},
+											"browseEndpoint": {
+												"browseId": "VLLL"
+											}
+										},
+										"icon": {
+											"iconType": "LIKES_PLAYLIST_CAIRO"
+										},
+										"formattedTitle": {
+											"simpleText": "Liked videos"
+										},
+										"accessibility": {
+											"accessibilityData": {
+												"label": "Liked videos"
+											}
+										},
+										"entryData": {
+											"guideEntryData": {
+												"guideEntryId": "LL"
+											}
+										}
+									}
+								},
+								{
+									"guideEntryRenderer": {
+										"navigationEndpoint": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"url": "{{STUDIO_ORIGIN}}/channel/{{VIEWER_CHANNEL_ID}}/content",
+													"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+													"rootVe": 83769
+												}
+											},
+											"urlEndpoint": {
+												"url": "{{STUDIO_ORIGIN}}/channel/{{VIEWER_CHANNEL_ID}}/content",
+												"target": "TARGET_NEW_WINDOW"
+											}
+										},
+										"icon": {
+											"iconType": "MY_VIDEOS_CAIRO"
+										},
+										"formattedTitle": {
+											"simpleText": "Your videos"
+										},
+										"accessibility": {
+											"accessibilityData": {
+												"label": "Your videos"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+}

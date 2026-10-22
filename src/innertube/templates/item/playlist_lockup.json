@@ -1,0 +1,237 @@
+{
+	"lockupViewModel": {
+		"contentImage": {
+			"collectionThumbnailViewModel": {
+				"primaryThumbnail": {
+					"thumbnailViewModel": {
+						"image": {
+							"sources": "{{THUMBS}}"
+						},
+						"overlays": [
+							{
+								"thumbnailOverlayBadgeViewModel": {
+									"thumbnailBadges": [
+										{
+											"thumbnailBadgeViewModel": {
+												"icon": {
+													"sources": [
+														{
+															"clientResource": {
+																"imageName": "PLAYLISTS"
+															}
+														}
+													]
+												},
+												"text": "{{VIDEO_COUNT}}",
+												"badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT",
+												"backgroundColor": {
+													"lightTheme": 3355443,
+													"darkTheme": 3355443
+												}
+											}
+										}
+									],
+									"position": "THUMBNAIL_OVERLAY_BADGE_POSITION_BOTTOM_END"
+								}
+							},
+							{
+								"thumbnailHoverOverlayViewModel": {
+									"icon": {
+										"sources": [
+											{
+												"clientResource": {
+													"imageName": "PLAY_ALL"
+												}
+											}
+										]
+									},
+									"text": {
+										"content": "Play all",
+										"styleRuns": [
+											{
+												"startIndex": 0,
+												"length": 8
+											}
+										]
+									},
+									"style": "THUMBNAIL_HOVER_OVERLAY_STYLE_COVER"
+								}
+							}
+						],
+						"backgroundColor": {
+							"lightTheme": 4144959,
+							"darkTheme": 4144959
+						}
+					}
+				},
+				"stackColor": {
+					"lightTheme": 10066329,
+					"darkTheme": 9211020
+				}
+			}
+		},
+		"metadata": {
+			"lockupMetadataViewModel": {
+				"title": {
+					"content": "{{TITLE}}"
+				},
+				"metadata": {
+					"contentMetadataViewModel": {
+						"metadataRows": [
+							{
+								"metadataParts": [
+									{
+										"text": {
+											"content": "Playlist",
+											"commandRuns": [
+												{
+													"startIndex": 0,
+													"length": 8,
+													"onTap": {
+														"innertubeCommand": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "/{{AT_HANDLE}}",
+																	"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+																	"rootVe": 3611,
+																	"apiUrl": "/youtubei/v1/browse"
+																}
+															},
+															"browseEndpoint": {
+																"browseId": "{{CHANNEL_ID}}",
+																"canonicalBaseUrl": "/{{AT_HANDLE}}"
+															}
+														}
+													}
+												}
+											],
+											"styleRuns": [
+												{
+													"startIndex": 0,
+													"length": 8,
+													"weightLabel": "FONT_WEIGHT_NORMAL"
+												}
+											]
+										}
+									}
+								]
+							},
+							{
+								"metadataParts": [
+									{
+										"text": {
+											"content": "View full playlist",
+											"commandRuns": [
+												{
+													"startIndex": 0,
+													"length": 18,
+													"onTap": {
+														"innertubeCommand": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "/playlist?list={{PLAYLIST_ID}}",
+																	"webPageType": "WEB_PAGE_TYPE_PLAYLIST",
+																	"rootVe": 5754,
+																	"apiUrl": "/youtubei/v1/browse"
+																}
+															},
+															"browseEndpoint": {
+																"browseId": "VL{{PLAYLIST_ID}}"
+															}
+														}
+													}
+												}
+											],
+											"styleRuns": [
+												{
+													"startIndex": 0,
+													"length": 18,
+													"weightLabel": "FONT_WEIGHT_MEDIUM"
+												}
+											]
+										}
+									}
+								]
+							}
+						],
+						"delimiter": " "
+					}
+				}
+			}
+		},
+		"contentId": "{{PLAYLIST_ID}}",
+		"contentType": "LOCKUP_CONTENT_TYPE_PLAYLIST",
+		"itemPlayback": {
+			"inlinePlayerData": {
+				"onSelect": {
+					"innertubeCommand": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/watch?v={{FIRST_VIDEO_ID}}&list={{PLAYLIST_ID}}",
+								"webPageType": "WEB_PAGE_TYPE_WATCH",
+								"rootVe": 3832
+							}
+						},
+						"watchEndpoint": {
+							"videoId": "{{FIRST_VIDEO_ID}}",
+							"playlistId": "{{PLAYLIST_ID}}",
+							"params": "OAI%3D",
+							"loggingContext": {
+								"vssLoggingContext": {
+									"serializedContextData": "{{b64:PLAYLIST_ID:GiJ+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+}}"
+								}
+							}
+						}
+					}
+				},
+				"onVisible": {
+					"innertubeCommand": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/watch?v={{FIRST_VIDEO_ID}}&list={{PLAYLIST_ID}}&pp=YAHIAQHwBAD4BACiBhUBqHapM7U4GvpUJlPtaw3gWOQcdkE%3D",
+								"webPageType": "WEB_PAGE_TYPE_WATCH",
+								"rootVe": 3832
+							}
+						},
+						"watchEndpoint": {
+							"videoId": "{{FIRST_VIDEO_ID}}",
+							"playlistId": "{{PLAYLIST_ID}}",
+							"playerParams": "YAHIAQHwBAD4BACiBhUBqHapM7U4GvpUJlPtaw3gWOQcdkE%3D",
+							"loggingContext": {
+								"vssLoggingContext": {
+									"serializedContextData": "{{b64:PLAYLIST_ID:GiJ+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+}}"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"rendererContext": {
+			"loggingContext": {},
+			"commandContext": {
+				"onTap": {
+					"innertubeCommand": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/watch?v={{FIRST_VIDEO_ID}}&list={{PLAYLIST_ID}}",
+								"webPageType": "WEB_PAGE_TYPE_WATCH",
+								"rootVe": 3832
+							}
+						},
+						"watchEndpoint": {
+							"videoId": "{{FIRST_VIDEO_ID}}",
+							"playlistId": "{{PLAYLIST_ID}}",
+							"params": "OAI%3D",
+							"loggingContext": {
+								"vssLoggingContext": {
+									"serializedContextData": "{{b64:PLAYLIST_ID:GiJ+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+}}"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -2,6 +2,8 @@
 // account) and Liked videos (LL, derived from likes). Pages, the watch-page
 // playlist panel, the "Save to playlist" sheet and the edit endpoints.
 
+import { make } from "./tpl";
+import { baseVars } from "./vars";
 import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
 import { type Channel, type Video, ago, avatarUrl, browseEndpoint, channelEndpoint, content, duration, durationLabel, label, playlistEndpoint, plural, responseContext, runs, serviceEndpoint, shortViews, signInModal, text, viewsText, watchEndpoint } from "./r";
@@ -119,6 +121,23 @@ export async function watchLaterAndLiked(viewer: Viewer) {
 		out.push({ title: p.title, endpoint: playlistEndpoint(id), items: vids.map((v) => videoLockup(v, viewer)) });
 	}
 	return out;
+}
+
+// a channel's Playlists tab (template item/playlist_lockup); empty lists are not shown
+export async function channelPlaylistLockups(c: Channel, viewer: Viewer) {
+	const lists = (await userPlaylists(viewer, c.user_id, viewer?.channelId === c.id)).filter((p) => p.first_video);
+	return lists.map((p) =>
+		make("item/playlist_lockup", {
+			...baseVars(viewer, `/@${c.handle}/playlists`),
+			PLAYLIST_ID: p.id,
+			TITLE: p.title,
+			VIDEO_COUNT: plural(p.video_count, "video"),
+			FIRST_VIDEO_ID: p.first_video,
+			THUMBS: [{ url: thumb(p.first_video), width: 480, height: 270 }],
+			CHANNEL_ID: c.id,
+			AT_HANDLE: `@${c.handle}`,
+		}),
+	);
 }
 
 export async function channelPlaylistsGrid(c: Channel, viewer: Viewer) {

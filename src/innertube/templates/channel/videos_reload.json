@@ -1,0 +1,106 @@
+{
+	"onResponseReceivedActions": [
+		{
+			"reloadContinuationItemsCommand": {
+				"targetId": "{{TARGET_ID}}",
+				"continuationItems": [
+					{
+						"chipBarViewModel": {
+							"chips": [
+								{
+									"chipViewModel": {
+										"text": "Latest",
+										"selected": "{{SELECTED_LATEST}}",
+										"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+										"tapCommand": {
+											"innertubeCommand": {
+												"commandMetadata": {
+													"webCommandMetadata": {
+														"sendPost": true,
+														"apiUrl": "/youtubei/v1/browse"
+													}
+												},
+												"continuationCommand": {
+													"token": "{{SORT_LATEST}}",
+													"request": "CONTINUATION_REQUEST_TYPE_BROWSE",
+													"command": {
+														"showReloadUiCommand": {
+															"targetId": "6b1d7fec-0000-2618-95f3-582429a79bd4"
+														}
+													}
+												}
+											}
+										},
+										"accessibilityLabel": "Latest"
+									}
+								},
+								{
+									"chipViewModel": {
+										"text": "Popular",
+										"selected": "{{SELECTED_POPULAR}}",
+										"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+										"tapCommand": {
+											"innertubeCommand": {
+												"commandMetadata": {
+													"webCommandMetadata": {
+														"sendPost": true,
+														"apiUrl": "/youtubei/v1/browse"
+													}
+												},
+												"continuationCommand": {
+													"token": "{{SORT_POPULAR}}",
+													"request": "CONTINUATION_REQUEST_TYPE_BROWSE",
+													"command": {
+														"showReloadUiCommand": {
+															"targetId": "6b1d7fec-0000-2618-95f3-582429a79bd4"
+														}
+													}
+												}
+											}
+										},
+										"accessibilityLabel": "Popular"
+									}
+								},
+								{
+									"chipViewModel": {
+										"text": "Oldest",
+										"selected": "{{SELECTED_OLDEST}}",
+										"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+										"tapCommand": {
+											"innertubeCommand": {
+												"commandMetadata": {
+													"webCommandMetadata": {
+														"sendPost": true,
+														"apiUrl": "/youtubei/v1/browse"
+													}
+												},
+												"continuationCommand": {
+													"token": "{{SORT_OLDEST}}",
+													"request": "CONTINUATION_REQUEST_TYPE_BROWSE",
+													"command": {
+														"showReloadUiCommand": {
+															"targetId": "6b1d7fec-0000-2618-95f3-582429a79bd4"
+														}
+													}
+												}
+											}
+										},
+										"accessibilityLabel": "Oldest"
+									}
+								}
+							]
+						}
+					}
+				],
+				"slot": "RELOAD_CONTINUATION_SLOT_HEADER"
+			}
+		},
+		{
+			"reloadContinuationItemsCommand": {
+				"targetId": "{{TARGET_ID}}",
+				"continuationItems": "{{ITEMS}}",
+				"slot": "RELOAD_CONTINUATION_SLOT_BODY"
+			}
+		}
+	]
+}

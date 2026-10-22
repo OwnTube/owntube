@@ -1,0 +1,55 @@
+[
+	{
+		"buttonViewModel": {
+			"title": "Customize channel",
+			"onTap": {
+				"innertubeCommand": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "{{STUDIO_ORIGIN}}/channel/{{CHANNEL_ID}}/editing",
+							"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+							"rootVe": 83769
+						}
+					},
+					"urlEndpoint": {
+						"url": "{{STUDIO_ORIGIN}}/channel/{{CHANNEL_ID}}/editing",
+						"target": "TARGET_NEW_WINDOW"
+					}
+				}
+			},
+			"accessibilityText": "Customize channel",
+			"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+			"isFullWidth": false,
+			"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+			"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+			"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE",
+			"targetId": "channel-customize-button"
+		}
+	},
+	{
+		"buttonViewModel": {
+			"title": "Manage videos",
+			"onTap": {
+				"innertubeCommand": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "{{STUDIO_ORIGIN}}/channel/{{CHANNEL_ID}}/content",
+							"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+							"rootVe": 83769
+						}
+					},
+					"urlEndpoint": {
+						"url": "{{STUDIO_ORIGIN}}/channel/{{CHANNEL_ID}}/content",
+						"target": "TARGET_NEW_WINDOW"
+					}
+				}
+			},
+			"accessibilityText": "Manage videos",
+			"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+			"isFullWidth": false,
+			"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+			"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+			"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE"
+		}
+	}
+]

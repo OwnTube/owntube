@@ -1,0 +1,35 @@
+{
+	"guideEntryRenderer": {
+		"navigationEndpoint": {
+			"commandMetadata": {
+				"webCommandMetadata": {
+					"url": "{{CHANNEL_URL}}",
+					"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+					"rootVe": 3611,
+					"apiUrl": "/youtubei/v1/browse"
+				}
+			},
+			"browseEndpoint": {
+				"browseId": "{{CHANNEL_ID}}",
+				"canonicalBaseUrl": "{{CHANNEL_URL}}"
+			}
+		},
+		"thumbnail": {
+			"thumbnails": "{{AVATAR}}"
+		},
+		"formattedTitle": {
+			"simpleText": "{{CHANNEL_NAME}}"
+		},
+		"accessibility": {
+			"accessibilityData": {
+				"label": "{{CHANNEL_NAME}}. New content available."
+			}
+		},
+		"entryData": {
+			"guideEntryData": {
+				"guideEntryId": "{{CHANNEL_ID}}"
+			}
+		},
+		"presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+	}
+}

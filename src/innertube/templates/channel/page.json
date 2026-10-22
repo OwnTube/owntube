@@ -1,0 +1,208 @@
+{
+	"tabs": {
+		"featured": {
+			"tabRenderer": {
+				"endpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "/{{AT_HANDLE}}/featured",
+							"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+							"rootVe": 3611,
+							"apiUrl": "/youtubei/v1/browse"
+						}
+					},
+					"browseEndpoint": {
+						"browseId": "{{CHANNEL_ID}}",
+						"params": "EghmZWF0dXJlZPIGBAoCMgA%3D",
+						"canonicalBaseUrl": "/{{AT_HANDLE}}"
+					}
+				},
+				"title": "Home"
+			}
+		},
+		"videos": {
+			"tabRenderer": {
+				"endpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "/{{AT_HANDLE}}/videos",
+							"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+							"rootVe": 3611,
+							"apiUrl": "/youtubei/v1/browse"
+						}
+					},
+					"browseEndpoint": {
+						"browseId": "{{CHANNEL_ID}}",
+						"params": "EgZ2aWRlb3PyBgQKAjoA",
+						"canonicalBaseUrl": "/{{AT_HANDLE}}"
+					}
+				},
+				"title": "Videos"
+			}
+		},
+		"shorts": {
+			"tabRenderer": {
+				"endpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "/{{AT_HANDLE}}/shorts",
+							"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+							"rootVe": 3611,
+							"apiUrl": "/youtubei/v1/browse"
+						}
+					},
+					"browseEndpoint": {
+						"browseId": "{{CHANNEL_ID}}",
+						"params": "EgZzaG9ydHPyBgUKA5oBAA%3D%3D",
+						"canonicalBaseUrl": "/{{AT_HANDLE}}"
+					}
+				},
+				"title": "Shorts"
+			}
+		},
+		"streams": {
+			"tabRenderer": {
+				"endpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "/{{AT_HANDLE}}/streams",
+							"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+							"rootVe": 3611,
+							"apiUrl": "/youtubei/v1/browse"
+						}
+					},
+					"browseEndpoint": {
+						"browseId": "{{CHANNEL_ID}}",
+						"params": "EgdzdHJlYW1z8gYECgJ6AA%3D%3D",
+						"canonicalBaseUrl": "/{{AT_HANDLE}}"
+					}
+				},
+				"title": "Live"
+			}
+		},
+		"playlists": {
+			"tabRenderer": {
+				"endpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "/{{AT_HANDLE}}/playlists",
+							"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+							"rootVe": 3611,
+							"apiUrl": "/youtubei/v1/browse"
+						}
+					},
+					"browseEndpoint": {
+						"browseId": "{{CHANNEL_ID}}",
+						"params": "EglwbGF5bGlzdHPyBgoKCEIGCgIQaCIA",
+						"canonicalBaseUrl": "/{{AT_HANDLE}}"
+					}
+				},
+				"title": "Playlists"
+			}
+		},
+		"posts": {
+			"tabRenderer": {
+				"endpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "/{{AT_HANDLE}}/posts",
+							"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+							"rootVe": 3611,
+							"apiUrl": "/youtubei/v1/browse"
+						}
+					},
+					"browseEndpoint": {
+						"browseId": "{{CHANNEL_ID}}",
+						"params": "EgVwb3N0c_IGBAoCSgA%3D",
+						"canonicalBaseUrl": "/{{AT_HANDLE}}"
+					}
+				},
+				"title": "Posts"
+			}
+		},
+		"search": {
+			"expandableTabRenderer": {
+				"endpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "/{{AT_HANDLE}}/search",
+							"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+							"rootVe": 3611,
+							"apiUrl": "/youtubei/v1/browse"
+						}
+					},
+					"browseEndpoint": {
+						"browseId": "{{CHANNEL_ID}}",
+						"params": "EgZzZWFyY2jyBgQKAloA",
+						"canonicalBaseUrl": "/{{AT_HANDLE}}"
+					}
+				},
+				"title": "Search"
+			}
+		}
+	},
+	"metadata": {
+		"channelMetadataRenderer": {
+			"title": "{{CHANNEL_NAME}}",
+			"description": "{{DESCRIPTION}}",
+			"rssUrl": "{{ORIGIN}}/feeds/videos.xml?channel_id={{CHANNEL_ID}}",
+			"externalId": "{{CHANNEL_ID}}",
+			"keywords": "{{KEYWORDS}}",
+			"ownerUrls": [
+				"{{ORIGIN}}/@{{HANDLE}}"
+			],
+			"avatar": {
+				"thumbnails": "{{AVATAR_900}}"
+			},
+			"channelUrl": "{{ORIGIN}}/channel/{{CHANNEL_ID}}",
+			"isFamilySafe": true,
+			"availableCountryCodes": [],
+			"vanityChannelUrl": "{{ORIGIN}}/{{AT_HANDLE}}"
+		}
+	},
+	"microformat": {
+		"microformatDataRenderer": {
+			"urlCanonical": "{{ORIGIN}}/channel/{{CHANNEL_ID}}",
+			"title": "{{CHANNEL_NAME}}",
+			"description": "{{DESCRIPTION_SHORT}}",
+			"thumbnail": {
+				"thumbnails": "{{AVATAR_200}}"
+			},
+			"siteName": "YouTube",
+			"schemaDotOrgType": "http://schema.org/http://schema.org/YoutubeChannelV2",
+			"noindex": false,
+			"familySafe": true,
+			"tags": [],
+			"availableCountries": [],
+			"channelProfileMicroformatDetails": {
+				"profilePage": {
+					"context": "https://schema.org",
+					"type": "ProfilePage",
+					"url": "{{ORIGIN}}/channel/{{CHANNEL_ID}}",
+					"name": "{{CHANNEL_NAME}} - YouTube",
+					"description": "{{DESCRIPTION}}",
+					"mainEntity": {
+						"type": "Person",
+						"name": "{{CHANNEL_NAME}}",
+						"url": "{{ORIGIN}}/channel/{{CHANNEL_ID}}",
+						"alternateName": "{{AT_HANDLE}}",
+						"image": "{{AVATAR_URL}}",
+						"description": "{{DESCRIPTION}}",
+						"sameAs": [
+							"https://studio.blender.org"
+						],
+						"interactionStatistic": [
+							{
+								"type": "InteractionCounter",
+								"interactionType": {
+									"type": "FollowAction"
+								},
+								"userInteractionCount": "577000"
+							}
+						]
+					}
+				}
+			}
+		}
+	}
+}

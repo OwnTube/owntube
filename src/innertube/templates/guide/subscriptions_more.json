@@ -1,0 +1,35 @@
+{
+	"guideCollapsibleEntryRenderer": {
+		"expanderItem": {
+			"guideEntryRenderer": {
+				"icon": {
+					"iconType": "EXPAND_CAIRO"
+				},
+				"formattedTitle": {
+					"simpleText": "Show more"
+				},
+				"accessibility": {
+					"accessibilityData": {
+						"label": "Show more"
+					}
+				}
+			}
+		},
+		"expandableItems": "{{MORE}}",
+		"collapserItem": {
+			"guideEntryRenderer": {
+				"icon": {
+					"iconType": "COLLAPSE_CAIRO"
+				},
+				"formattedTitle": {
+					"simpleText": "Show less"
+				},
+				"accessibility": {
+					"accessibilityData": {
+						"label": "Show less"
+					}
+				}
+			}
+		}
+	}
+}

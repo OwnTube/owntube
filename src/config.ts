@@ -3,6 +3,9 @@
 export const PORT = Number(process.env.PORT ?? 8080);
 export const PUBLIC_ORIGIN = (process.env.PUBLIC_ORIGIN ?? `http://localhost:${PORT}`).replace(/\/$/, "");
 export const PUBLIC_HOST = new URL(PUBLIC_ORIGIN).host;
+// YouTube Studio (creator pages) is a separate client on its own origin; until
+// it is served, links to it (Customize channel, Manage videos) lead nowhere
+export const STUDIO_ORIGIN = (process.env.STUDIO_ORIGIN ?? PUBLIC_ORIGIN).replace(/\/$/, "");
 export const DATABASE_URL = process.env.DATABASE_URL ?? "postgres://owntube:owntube@localhost:5432/owntube";
 export const MEDIA_DIR = process.env.MEDIA_DIR ?? "data/media";
 export const INSTANCE_NAME = process.env.INSTANCE_NAME ?? "OwnTube";

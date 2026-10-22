@@ -1,0 +1,92 @@
+{
+	"contents": "{{ITEMS}}",
+	"header": {
+		"chipBarViewModel": {
+			"chips": [
+				{
+					"chipViewModel": {
+						"text": "Latest",
+						"selected": "{{SELECTED_LATEST}}",
+						"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+						"tapCommand": {
+							"innertubeCommand": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"sendPost": true,
+										"apiUrl": "/youtubei/v1/browse"
+									}
+								},
+								"continuationCommand": {
+									"token": "{{SORT_LATEST}}",
+									"request": "CONTINUATION_REQUEST_TYPE_BROWSE",
+									"command": {
+										"showReloadUiCommand": {
+											"targetId": "6b08d643-0000-2b06-a88c-b8db38f48582"
+										}
+									}
+								}
+							}
+						},
+						"accessibilityLabel": "Latest"
+					}
+				},
+				{
+					"chipViewModel": {
+						"text": "Popular",
+						"selected": "{{SELECTED_POPULAR}}",
+						"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+						"tapCommand": {
+							"innertubeCommand": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"sendPost": true,
+										"apiUrl": "/youtubei/v1/browse"
+									}
+								},
+								"continuationCommand": {
+									"token": "{{SORT_POPULAR}}",
+									"request": "CONTINUATION_REQUEST_TYPE_BROWSE",
+									"command": {
+										"showReloadUiCommand": {
+											"targetId": "6b08d643-0000-2b06-a88c-b8db38f48582"
+										}
+									}
+								}
+							}
+						},
+						"accessibilityLabel": "Popular"
+					}
+				},
+				{
+					"chipViewModel": {
+						"text": "Oldest",
+						"selected": "{{SELECTED_OLDEST}}",
+						"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+						"tapCommand": {
+							"innertubeCommand": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"sendPost": true,
+										"apiUrl": "/youtubei/v1/browse"
+									}
+								},
+								"continuationCommand": {
+									"token": "{{SORT_OLDEST}}",
+									"request": "CONTINUATION_REQUEST_TYPE_BROWSE",
+									"command": {
+										"showReloadUiCommand": {
+											"targetId": "6b08d643-0000-2b06-a88c-b8db38f48582"
+										}
+									}
+								}
+							}
+						},
+						"accessibilityLabel": "Oldest"
+					}
+				}
+			]
+		}
+	},
+	"targetId": "{{TARGET_ID}}",
+	"style": "RICH_GRID_STYLE_SLIM"
+}

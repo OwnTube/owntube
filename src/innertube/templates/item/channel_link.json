@@ -1,0 +1,32 @@
+{
+	"channelExternalLinkViewModel": {
+		"title": {
+			"content": "{{LINK_TITLE}}"
+		},
+		"link": {
+			"content": "{{LINK_TEXT}}",
+			"commandRuns": [
+				{
+					"startIndex": 0,
+					"length": "{{LINK_TEXT_LENGTH}}",
+					"onTap": {
+						"innertubeCommand": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"url": "{{LINK_URL}}",
+									"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+									"rootVe": 83769
+								}
+							},
+							"urlEndpoint": {
+								"url": "{{LINK_URL}}",
+								"target": "TARGET_NEW_WINDOW",
+								"nofollow": true
+							}
+						}
+					}
+				}
+			]
+		}
+	}
+}

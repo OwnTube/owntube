@@ -18187,6 +18187,12 @@
 			"kind": "image"
 		},
 		{
+			"url": "https://www.gstatic.com/youtube/img/lottie/audio_indicator/audio_indicator_v2.json",
+			"sha256": "f600289ee46beefc74a236890cfb2e458e868f0371f7eb4604726c493515ce17",
+			"size": 8806,
+			"kind": "image"
+		},
+		{
 			"url": "https://www.gstatic.com/youtube/img/lottie/smartimations/smartimation_border_dark_v2.json",
 			"sha256": "c9151f95cb12c6ace54dfe23df603d552fc6d1870139fdab1c4bd916d78b216e",
 			"size": 910,

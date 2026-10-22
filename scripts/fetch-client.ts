@@ -359,6 +359,9 @@ for (const text of [mainJs.toString(), ...Object.keys(pin.app.modules).map((n) =
 	for (const m of text.matchAll(/"(https:\/\/www\.gstatic\.com\/youtube\/img\/[^"]+_)"\+[^;"]{0,120}\?"dark":"light"\)\+"(_v\d+\.json)"/g))
 		for (const theme of ["dark", "light"]) imgUrls.add(`${m[1]}${theme}${m[2]}`);
 }
+// files that server responses name (lists written by scripts/make-templates.ts)
+const tplAssets = "src/innertube/templates/_assets.txt";
+if (existsSync(tplAssets)) for (const u of readFileSync(tplAssets, "utf8").split("\n")) if (u.startsWith("https://www.gstatic.com/")) imgUrls.add(u.trim());
 console.log(`images and animations named by the client: ${imgUrls.size}`);
 await pool([...imgUrls], 8, async (u) => void (await archive(u, "image", pinned.get(u))));
 

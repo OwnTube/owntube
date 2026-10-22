@@ -33,22 +33,16 @@ import {
 } from "./r";
 import { ApiError, route } from "./router";
 import { recordMiss } from "../diagnostics";
+import { aboutPanel, type ChannelSort, type ChannelTab, channelPage, channelTab, tabParams, videoGridItems, videoGridReload } from "./channel";
+
+// the browse command for a channel tab, as the tab strip's endpoints have it
+function channelCommand(c: Channel, tab: ChannelTab) {
+	return { commandMetadata: { webCommandMetadata: { url: `/@${c.handle}${tab === "featured" ? "" : `/${tab}`}`, webPageType: "WEB_PAGE_TYPE_CHANNEL", rootVe: 3611, apiUrl: "/youtubei/v1/browse" } }, browseEndpoint: { browseId: c.id, ...(tab === "featured" ? {} : { params: tabParams(tab) }), canonicalBaseUrl: `/@${c.handle}` } };
+}
 
 export const PAGE = 24;
 
 export type BrowseResult = { response: Record<string, unknown>; kind: PageKind; title: string; url: string; command: unknown };
-
-const TABS = [
-	{ path: "featured", title: "Home" },
-	{ path: "videos", title: "Videos" },
-	{ path: "playlists", title: "Playlists" },
-] as const;
-type Tab = (typeof TABS)[number]["path"];
-export const tabParams = (tab: Tab) => Buffer.from(`tab:${tab}`).toString("base64url");
-const tabFromParams = (params?: string): Tab => {
-	const t = params ? Buffer.from(params, "base64url").toString().replace(/^tab:/, "") : "featured";
-	return (TABS.find((x) => x.path === t)?.path ?? "featured") as Tab;
-};
 
 function richGrid(items: unknown[], targetId: string, extra: Record<string, unknown> = {}) {
 	return { richGridRenderer: { contents: items, targetId, reflowOptions: { minimumRowsOfVideosAtStart: 2, minimumRowsOfVideosBetweenSections: 1 }, layoutSizing: "RICH_GRID_LAYOUT_SIZING_STANDARD", ...extra } };
@@ -295,180 +289,6 @@ async function channelsFeed(viewer: Viewer): Promise<BrowseResult> {
 	};
 }
 
-// ---- channels ----
-
-function subscribeViewModel(c: { id: string; title: string }, subscribed: boolean, viewer: Viewer) {
-	const key = Buffer.from(`sub:${c.id}`).toString("base64url");
-	const confirm = {
-		commandMetadata: { webCommandMetadata: { sendPost: true } },
-		signalServiceEndpoint: {
-			signal: "CLIENT_SIGNAL",
-			actions: [
-				{
-					openPopupAction: {
-						popup: {
-							confirmDialogRenderer: {
-								dialogMessages: [runs("Unsubscribe from ", c.title, "?")],
-								confirmButton: { buttonRenderer: { style: "STYLE_BLUE_TEXT", size: "SIZE_DEFAULT", isDisabled: false, text: runs("Unsubscribe"), serviceEndpoint: serviceEndpoint("/youtubei/v1/subscription/unsubscribe", { unsubscribeEndpoint: { channelIds: [c.id], params: "CgIIAhgA" } }) } },
-								cancelButton: { buttonRenderer: { style: "STYLE_TEXT", size: "SIZE_DEFAULT", isDisabled: false, text: runs("Cancel") } },
-								primaryIsCancel: false,
-							},
-						},
-						popupType: "DIALOG",
-					},
-				},
-			],
-		},
-	};
-	return {
-		model: {
-			subscribeButtonViewModel: {
-				subscribeButtonContent: {
-					buttonText: "Subscribe",
-					accessibilityText: `Subscribe to ${c.title}.`,
-					subscribeState: { subscribed: false },
-					onTapCommand: { innertubeCommand: viewer ? serviceEndpoint("/youtubei/v1/subscription/subscribe", { subscribeEndpoint: { channelIds: [c.id], params: "EgIIAhgA" } }) : signInModal("Want to subscribe to this channel?", "Sign in to subscribe to this channel.") },
-				},
-				unsubscribeButtonContent: {
-					buttonText: "Subscribed",
-					accessibilityText: `Unsubscribe from ${c.title}.`,
-					subscribeState: { subscribed: true },
-					onTapCommand: { innertubeCommand: confirm },
-				},
-				stateEntityStoreKey: key,
-				channelId: c.id,
-				disableNotificationBell: true,
-				buttonStyle: { unsubscribedStateStyle: "SUBSCRIBE_BUTTON_VIEW_MODEL_UNSUBSCRIBED_STATE_STYLE_DEFAULT", subscribedStateStyle: "SUBSCRIBE_BUTTON_VIEW_MODEL_SUBSCRIBED_STATE_STYLE_OUTLINE", buttonSize: "SUBSCRIBE_BUTTON_VIEW_MODEL_SIZE_DEFAULT" },
-				backgroundStyle: "SUBSCRIBE_BUTTON_VIEW_MODEL_BACKGROUND_STYLE_UNKNOWN",
-				disableSubscribeButton: false,
-			},
-		},
-		mutation: { entityKey: key, type: "ENTITY_MUTATION_TYPE_REPLACE", payload: { subscriptionStateEntity: { key, subscribed } } },
-	};
-}
-
-function linkButton(title: string, url: string, icon?: string) {
-	return { buttonViewModel: { title, onTap: { innertubeCommand: urlEndpoint(url) }, ...(icon ? { iconName: icon } : {}), style: "BUTTON_VIEW_MODEL_STYLE_MONO", type: "BUTTON_VIEW_MODEL_TYPE_TONAL", buttonSize: "BUTTON_VIEW_MODEL_SIZE_DEFAULT", state: "BUTTON_VIEW_MODEL_STATE_ACTIVE" } };
-}
-
-function channelHeader(c: Channel, viewer: Viewer, subscribed: boolean) {
-	const own = viewer?.channelId === c.id;
-	const sub = subscribeViewModel(c, subscribed, viewer);
-	const actions = own ? [linkButton("Upload video", "/upload", "UPLOAD"), linkButton("Manage videos", "/upload#videos")] : [sub.model];
-	return {
-		header: {
-			pageHeaderRenderer: {
-				pageTitle: c.title,
-				content: {
-					pageHeaderViewModel: {
-						title: { dynamicTextViewModel: { text: content(c.title), maxLines: 2 } },
-						image: { decoratedAvatarViewModel: { avatar: { avatarViewModel: { image: { sources: [72, 120, 160].map((s) => ({ url: avatarUrl(c.id, s), width: s, height: s })) }, avatarImageSize: "AVATAR_SIZE_XL" } } } },
-						metadata: {
-							contentMetadataViewModel: {
-								metadataRows: [
-									{ metadataParts: [{ text: content(`@${c.handle}`), enableTruncation: true }] },
-									{ metadataParts: [{ text: content(subscribersText(c.subscriber_count)), accessibilityLabel: subscribersText(c.subscriber_count) }, { text: content(plural(c.video_count, "video")) }] },
-								],
-								delimiter: "•",
-							},
-						},
-						actions: { flexibleActionsViewModel: { actionsRows: [{ actions }], justifyContent: "FLEXIBLE_ACTIONS_JUSTIFY_CONTENT_START", minimumRowHeight: 44 } },
-						...(c.description ? { description: { descriptionPreviewViewModel: { description: content(c.description), maxLines: 2, truncationText: content("...more"), alwaysShowTruncationText: false } } } : {}),
-						...(c.banner_path ? { banner: { imageBannerViewModel: { image: { sources: [{ url: bannerUrl(c.id), width: 2560, height: 424 }] }, style: "IMAGE_BANNER_STYLE_DEFAULT" } } } : {}),
-					},
-				},
-			},
-		},
-		mutation: sub.mutation,
-	};
-}
-
-function channelTabs(c: Channel, selected: Tab, contentRenderer: unknown) {
-	return TABS.map((t) => ({
-		tabRenderer: {
-			endpoint: channelEndpoint(c, { path: t.path, params: tabParams(t.path) }),
-			title: t.title,
-			...(t.path === selected ? { selected: true, content: contentRenderer } : {}),
-		},
-	}));
-}
-
-type Sort = "newest" | "popular" | "oldest";
-
-async function channelVideoItems(c: Channel, viewer: Viewer, offset: number, sort: Sort) {
-	const videos = await channelVideos(c.id, viewer, PAGE, offset, sort);
-	const items: unknown[] = videos.map((v) => richItem(v, viewer, false));
-	if (videos.length === PAGE) items.push(continuationItem(encodeToken({ k: "chvideos", c: c.id, o: offset + PAGE, s: sort }), "/youtubei/v1/browse"));
-	return items;
-}
-
-function sortChips(c: Channel, sort: Sort) {
-	const chip = (label: string, s: Sort) => ({
-		chipViewModel: {
-			text: label,
-			selected: s === sort,
-			displayType: "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
-			tapCommand: {
-				innertubeCommand: {
-					commandMetadata: { webCommandMetadata: { sendPost: true, apiUrl: "/youtubei/v1/browse" } },
-					continuationCommand: { token: encodeToken({ k: "chvideos", c: c.id, o: 0, s, reload: true }), request: "CONTINUATION_REQUEST_TYPE_BROWSE", command: { showReloadUiCommand: { targetId: `channel-videos-${c.id}` } } },
-				},
-			},
-			accessibilityLabel: label,
-		},
-	});
-	return { chipBarViewModel: { chips: [chip("Latest", "newest"), chip("Popular", "popular"), chip("Oldest", "oldest")] } };
-}
-
-async function channelPage(c: Channel, tab: Tab, viewer: Viewer): Promise<BrowseResult> {
-	const subscribed = await isSubscribed(viewer, c.id);
-	let tabContent: unknown;
-	if (tab === "videos") {
-		const items = await channelVideoItems(c, viewer, 0, "newest");
-		tabContent = items.length ? richGrid(items, `channel-videos-${c.id}`, { header: sortChips(c, "newest"), style: "RICH_GRID_RENDERER_STYLE_TAB" }) : messageSection("This channel doesn't have any videos.");
-	} else if (tab === "playlists") {
-		tabContent = await channelPlaylistsGrid(c, viewer);
-	} else {
-		const videos = await channelVideos(c.id, viewer, 12, 0, "newest");
-		const popular = await channelVideos(c.id, viewer, 12, 0, "popular");
-		tabContent = videos.length
-			? {
-					sectionListRenderer: {
-						contents: [
-							shelf("Videos", channelEndpoint(c, { path: "videos", params: tabParams("videos") }), videos.map((v) => videoLockup(v, viewer, { showChannel: false }))),
-							...(popular.length > 3 ? [shelf("Popular videos", channelEndpoint(c, { path: "videos", params: tabParams("videos") }), popular.map((v) => videoLockup(v, viewer, { showChannel: false })))] : []),
-						],
-						targetId: "browse-feed-channel-home",
-					},
-				}
-			: messageSection("This channel doesn't have any content.");
-	}
-	const { header, mutation } = channelHeader(c, viewer, subscribed);
-	const path = channelUrl(c.handle) + (tab === "featured" ? "" : `/${tab}`);
-	return {
-		kind: "channel",
-		title: c.title,
-		url: path,
-		command: channelEndpoint(c, tab === "featured" ? undefined : { path: tab, params: tabParams(tab) }),
-		response: {
-			contents: { twoColumnBrowseResultsRenderer: { tabs: channelTabs(c, tab, tabContent) } },
-			...header,
-			metadata: {
-				channelMetadataRenderer: {
-					title: c.title,
-					description: c.description,
-					externalId: c.id,
-					avatar: { thumbnails: [{ url: avatarUrl(c.id, 900), width: 900, height: 900 }] },
-					channelUrl: `${channelUrl(c.handle)}`,
-					vanityChannelUrl: channelUrl(c.handle),
-					isFamilySafe: true,
-				},
-			},
-			frameworkUpdates: { entityBatchUpdate: { mutations: [mutation], timestamp: { seconds: String(Math.floor(Date.now() / 1000)), nanos: 0 } } },
-		},
-	};
-}
-
 // ---- dispatch ----
 
 export async function buildBrowse(browseId: string, params: string | undefined, viewer: Viewer): Promise<BrowseResult | undefined> {
@@ -485,25 +305,29 @@ export async function buildBrowse(browseId: string, params: string | undefined, 
 		return { kind: "home", title: "Settings", url: "/", command: browseEndpoint(browseId, "/"), response: { contents: singleTab(messageSection("This setting isn't available on this instance."), browseId) } };
 	if (isChannelId(browseId)) {
 		const c = await getChannel({ id: browseId });
-		return c ? channelPage(c, tabFromParams(params), viewer) : undefined;
+		if (!c) return undefined;
+		const tab = channelTab(params);
+		const r = await channelPage(c, tab, viewer);
+		return { kind: "channel", title: c.title, url: r.path, command: channelCommand(c, tab), response: r.response };
 	}
 	return undefined;
 }
 
 async function continuation(token: string, viewer: Viewer) {
-	const t = decodeToken<{ k: string; o: number; c?: string; s?: Sort; reload?: boolean; p?: string }>(token);
+	const t = decodeToken<{ k: string; o: number; c?: string; s?: ChannelSort; reload?: boolean; p?: string }>(token);
 	if (!t) throw new ApiError(400, "Invalid continuation");
 	let items: unknown[] = [];
 	let target = "";
 	if (t.k === "home") [items, target] = [await homeItems(viewer, t.o), "browse-feedFEwhat_to_watch"];
 	else if (t.k === "subs") [items, target] = [await subscriptionsItems(viewer, t.o), "browse-feedFEsubscriptions"];
 	else if (t.k === "history" && viewer) [items, target] = [await historyItems(viewer, t.o), "browse-feedFEhistory"];
-	else if (t.k === "chvideos" && t.c) {
+	else if ((t.k === "chvideos" || t.k === "about") && t.c) {
 		const c = await getChannel({ id: t.c });
 		if (!c) throw new ApiError(404, "Not found");
-		items = await channelVideoItems(c, viewer, t.o, t.s ?? "newest");
-		target = `channel-videos-${c.id}`;
-		if (t.reload) return { responseContext: responseContext(viewer), onResponseReceivedActions: [{ reloadContinuationItemsCommand: { targetId: target, continuationItems: items, slot: "RELOAD_CONTINUATION_SLOT_BODY" } }] };
+		if (t.k === "about") return { responseContext: responseContext(viewer), ...(await aboutPanel(c, viewer)) };
+		if (t.reload) return { responseContext: responseContext(viewer), ...(await videoGridReload(c, viewer, t.s ?? "newest")) };
+		items = await videoGridItems(c, viewer, t.o, t.s ?? "newest");
+		target = `browse-feed${c.id}videos`;
 	} else if (t.k === "playlist" && t.p) {
 		const { playlistItemsContinuation } = await import("./playlists");
 		return playlistItemsContinuation(t.p, t.o, viewer);
@@ -536,7 +360,7 @@ export async function resolvePath(url: URL): Promise<{ browseId: string; params?
 	if (m) {
 		const c = await getChannel(m[1] ? { handle: m[1] } : { id: m[2] });
 		if (!c) return undefined;
-		return { browseId: c.id, params: m[3] && m[3] !== "featured" ? tabParams(m[3] as Tab) : undefined };
+		return { browseId: c.id, params: m[3] ? tabParams(m[3] as ChannelTab) : undefined };
 	}
 	return undefined;
 }
@@ -573,4 +397,4 @@ route("navigation/resolve_url", async ({ body }) => {
 	throw new ApiError(404, "Not found", "notFound");
 });
 
-export { channelPage };
+

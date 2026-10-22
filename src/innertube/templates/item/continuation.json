@@ -1,0 +1,17 @@
+{
+	"continuationItemRenderer": {
+		"trigger": "CONTINUATION_TRIGGER_ON_ITEM_SHOWN",
+		"continuationEndpoint": {
+			"commandMetadata": {
+				"webCommandMetadata": {
+					"sendPost": true,
+					"apiUrl": "/youtubei/v1/browse"
+				}
+			},
+			"continuationCommand": {
+				"token": "{{CONTINUATION}}",
+				"request": "CONTINUATION_REQUEST_TYPE_BROWSE"
+			}
+		}
+	}
+}

@@ -1,0 +1,384 @@
+{
+	"subscribeButtonViewModel": {
+		"subscribeButtonContent": {
+			"buttonText": "Subscribe",
+			"accessibilityText": "Subscribe to {{CHANNEL_NAME}}.",
+			"imageName": "ic_video_youtube",
+			"subscribeState": {
+				"key": "{{ek:CHANNEL_ID:51}}",
+				"subscribed": false
+			},
+			"onTapCommand": {
+				"innertubeCommand": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"sendPost": true,
+							"apiUrl": "/youtubei/v1/subscription/subscribe"
+						}
+					},
+					"subscribeEndpoint": {
+						"channelIds": [
+							"{{CHANNEL_ID}}"
+						],
+						"params": "EgIIAhgA"
+					}
+				}
+			}
+		},
+		"unsubscribeButtonContent": {
+			"buttonText": "Subscribed",
+			"accessibilityText": "Unsubscribe from {{CHANNEL_NAME}}.",
+			"imageName": "ic_video_youtube",
+			"subscribeState": {
+				"key": "{{ek:CHANNEL_ID:51}}",
+				"subscribed": true
+			},
+			"onTapCommand": {
+				"innertubeCommand": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"sendPost": true
+						}
+					},
+					"signalServiceEndpoint": {
+						"signal": "CLIENT_SIGNAL",
+						"actions": [
+							{
+								"openPopupAction": {
+									"popup": {
+										"confirmDialogRenderer": {
+											"dialogMessages": [
+												{
+													"runs": [
+														{
+															"text": "Unsubscribe from "
+														},
+														{
+															"text": "{{CHANNEL_NAME}}"
+														},
+														{
+															"text": "?"
+														}
+													]
+												}
+											],
+											"confirmButton": {
+												"buttonRenderer": {
+													"style": "STYLE_BLUE_TEXT",
+													"size": "SIZE_DEFAULT",
+													"isDisabled": false,
+													"text": {
+														"runs": [
+															{
+																"text": "Unsubscribe"
+															}
+														]
+													},
+													"serviceEndpoint": {
+														"commandMetadata": {
+															"webCommandMetadata": {
+																"sendPost": true,
+																"apiUrl": "/youtubei/v1/subscription/unsubscribe"
+															}
+														},
+														"unsubscribeEndpoint": {
+															"channelIds": [
+																"{{CHANNEL_ID}}"
+															],
+															"params": "CgIIAhgA"
+														}
+													},
+													"accessibility": {
+														"label": "Unsubscribe"
+													}
+												}
+											},
+											"cancelButton": {
+												"buttonRenderer": {
+													"style": "STYLE_TEXT",
+													"size": "SIZE_DEFAULT",
+													"isDisabled": false,
+													"text": {
+														"runs": [
+															{
+																"text": "Cancel"
+															}
+														]
+													},
+													"accessibility": {
+														"label": "Cancel"
+													}
+												}
+											},
+											"primaryIsCancel": false
+										}
+									},
+									"popupType": "DIALOG"
+								}
+							}
+						]
+					}
+				}
+			}
+		},
+		"stateEntityStoreKey": "{{ek:CHANNEL_ID:51}}",
+		"disableNotificationBell": false,
+		"buttonStyle": {
+			"unsubscribedStateStyle": "SUBSCRIBE_BUTTON_VIEW_MODEL_UNSUBSCRIBED_STATE_STYLE_PILL",
+			"subscribedStateStyle": "SUBSCRIBE_BUTTON_VIEW_MODEL_SUBSCRIBED_STATE_STYLE_DROPDOWN",
+			"buttonSize": "SUBSCRIBE_BUTTON_VIEW_MODEL_SIZE_MEDIUM",
+			"subscribeButtonAnimationStyle": "SUBSCRIBE_BUTTON_VIEW_MODEL_ANIMATION_STYLE_CAIRO"
+		},
+		"backgroundStyle": "SUBSCRIBE_BUTTON_VIEW_MODEL_BACKGROUND_STYLE_UNKNOWN",
+		"disableSubscribeButton": false,
+		"onShowSubscriptionOptions": {
+			"innertubeCommand": {
+				"showSheetCommand": {
+					"panelLoadingStrategy": {
+						"inlineContent": {
+							"sheetViewModel": {
+								"content": {
+									"listViewModel": {
+										"listItems": [
+											{
+												"listItemViewModel": {
+													"title": {
+														"content": "All"
+													},
+													"leadingImage": {
+														"sources": [
+															{
+																"clientResource": {
+																	"imageName": "NOTIFICATIONS_ACTIVE"
+																}
+															}
+														]
+													},
+													"isDisabled": false,
+													"isSelected": false,
+													"selectionStyle": "LIST_ITEM_SELECTION_STYLE_DEFAULT",
+													"rendererContext": {
+														"loggingContext": {},
+														"commandContext": {
+															"onTap": {
+																"innertubeCommand": {
+																	"commandMetadata": {
+																		"webCommandMetadata": {
+																			"sendPost": true,
+																			"apiUrl": "/youtubei/v1/notification/modify_channel_preference"
+																		}
+																	},
+																	"modifyChannelNotificationPreferenceEndpoint": {
+																		"params": "{{b64:CHANNEL_ID:Chh+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4SAggCGAAgBFIGCgIIAhgA}}"
+																	}
+																}
+															}
+														}
+													}
+												}
+											},
+											{
+												"listItemViewModel": {
+													"title": {
+														"content": "Personalized"
+													},
+													"leadingImage": {
+														"sources": [
+															{
+																"clientResource": {
+																	"imageName": "NOTIFICATIONS_NONE"
+																}
+															}
+														]
+													},
+													"isDisabled": false,
+													"isSelected": true,
+													"selectionStyle": "LIST_ITEM_SELECTION_STYLE_DEFAULT",
+													"rendererContext": {
+														"loggingContext": {},
+														"commandContext": {
+															"onTap": {
+																"innertubeCommand": {
+																	"commandMetadata": {
+																		"webCommandMetadata": {
+																			"sendPost": true,
+																			"apiUrl": "/youtubei/v1/notification/modify_channel_preference"
+																		}
+																	},
+																	"modifyChannelNotificationPreferenceEndpoint": {
+																		"params": "{{b64:CHANNEL_ID:Chh+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4SAggBGAAgBFIGCgIIAhgA}}"
+																	}
+																}
+															}
+														}
+													}
+												}
+											},
+											{
+												"listItemViewModel": {
+													"title": {
+														"content": "None"
+													},
+													"leadingImage": {
+														"sources": [
+															{
+																"clientResource": {
+																	"imageName": "NOTIFICATIONS_OFF"
+																}
+															}
+														]
+													},
+													"isDisabled": false,
+													"isSelected": false,
+													"selectionStyle": "LIST_ITEM_SELECTION_STYLE_DEFAULT",
+													"rendererContext": {
+														"loggingContext": {},
+														"commandContext": {
+															"onTap": {
+																"innertubeCommand": {
+																	"commandMetadata": {
+																		"webCommandMetadata": {
+																			"sendPost": true,
+																			"apiUrl": "/youtubei/v1/notification/modify_channel_preference"
+																		}
+																	},
+																	"modifyChannelNotificationPreferenceEndpoint": {
+																		"params": "{{b64:CHANNEL_ID:Chh+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4SAggDGAAgBFIGCgIIAhgA}}"
+																	}
+																}
+															}
+														}
+													}
+												}
+											},
+											{
+												"listItemViewModel": {
+													"title": {
+														"content": "Unsubscribe"
+													},
+													"leadingImage": {
+														"sources": [
+															{
+																"clientResource": {
+																	"imageName": "PERSON_MINUS"
+																}
+															}
+														]
+													},
+													"isDisabled": false,
+													"rendererContext": {
+														"loggingContext": {},
+														"commandContext": {
+															"onTap": {
+																"innertubeCommand": {
+																	"commandMetadata": {
+																		"webCommandMetadata": {
+																			"sendPost": true
+																		}
+																	},
+																	"signalServiceEndpoint": {
+																		"signal": "CLIENT_SIGNAL",
+																		"actions": [
+																			{
+																				"openPopupAction": {
+																					"popup": {
+																						"confirmDialogRenderer": {
+																							"dialogMessages": [
+																								{
+																									"runs": [
+																										{
+																											"text": "Unsubscribe from "
+																										},
+																										{
+																											"text": "{{CHANNEL_NAME}}"
+																										},
+																										{
+																											"text": "?"
+																										}
+																									]
+																								}
+																							],
+																							"confirmButton": {
+																								"buttonRenderer": {
+																									"style": "STYLE_BLUE_TEXT",
+																									"size": "SIZE_DEFAULT",
+																									"isDisabled": false,
+																									"text": {
+																										"runs": [
+																											{
+																												"text": "Unsubscribe"
+																											}
+																										]
+																									},
+																									"serviceEndpoint": {
+																										"commandMetadata": {
+																											"webCommandMetadata": {
+																												"sendPost": true,
+																												"apiUrl": "/youtubei/v1/subscription/unsubscribe"
+																											}
+																										},
+																										"unsubscribeEndpoint": {
+																											"channelIds": [
+																												"{{CHANNEL_ID}}"
+																											],
+																											"params": "CgIIAhgA"
+																										}
+																									},
+																									"accessibility": {
+																										"label": "Unsubscribe"
+																									}
+																								}
+																							},
+																							"cancelButton": {
+																								"buttonRenderer": {
+																									"style": "STYLE_TEXT",
+																									"size": "SIZE_DEFAULT",
+																									"isDisabled": false,
+																									"text": {
+																										"runs": [
+																											{
+																												"text": "Cancel"
+																											}
+																										]
+																									},
+																									"accessibility": {
+																										"label": "Cancel"
+																									}
+																								}
+																							},
+																							"primaryIsCancel": false
+																						}
+																					},
+																					"popupType": "DIALOG"
+																				}
+																			}
+																		]
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										]
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"channelId": "{{CHANNEL_ID}}",
+		"enableSubscribeButtonPostClickAnimation": true,
+		"notificationStateEntityStoreKeys": {
+			"subsNotificationStateKey": "{{ek:CHANNEL_ID:140}}"
+		},
+		"bellAccessibilityData": {
+			"offLabel": "Current setting is receive no notifications. Tap to change your notification setting for {{CHANNEL_NAME}}",
+			"allLabel": "Current setting is all notifications. Tap to change your notification setting for {{CHANNEL_NAME}}",
+			"occasionalLabel": "Current setting is personalized notifications. Tap to change your notification setting for {{CHANNEL_NAME}}",
+			"disabledLabel": "YouTube notifications are off. Tap to change your notification setting"
+		}
+	}
+}

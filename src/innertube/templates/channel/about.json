@@ -1,0 +1,205 @@
+{
+	"onResponseReceivedEndpoints": [
+		{
+			"appendContinuationItemsAction": {
+				"continuationItems": [
+					{
+						"aboutChannelRenderer": {
+							"metadata": {
+								"aboutChannelViewModel": {
+									"description": "{{DESCRIPTION}}",
+									"descriptionLabel": {
+										"content": "Description",
+										"styleRuns": [
+											{
+												"startIndex": 0,
+												"length": 11
+											}
+										]
+									},
+									"customLinksLabel": {
+										"content": "Links",
+										"styleRuns": [
+											{
+												"startIndex": 0,
+												"length": 5
+											}
+										]
+									},
+									"subscriberCountText": "{{SUBSCRIBERS}}",
+									"viewCountText": "{{VIEW_COUNT}}",
+									"joinedDateText": {
+										"content": "{{JOINED}}",
+										"styleRuns": [
+											{
+												"startIndex": 0,
+												"length": "{{JOINED_LENGTH}}"
+											}
+										]
+									},
+									"canonicalChannelUrl": "{{ORIGIN}}/{{AT_HANDLE}}",
+									"channelId": "{{CHANNEL_ID}}",
+									"additionalInfoLabel": {
+										"content": "More info",
+										"styleRuns": [
+											{
+												"startIndex": 0,
+												"length": 9
+											}
+										]
+									},
+									"customUrlOnTap": {
+										"innertubeCommand": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"ignoreNavigation": true
+												}
+											},
+											"shareEntityEndpoint": {
+												"serializedShareEntity": "{{b64:CHANNEL_ID:Ghh+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4%3D}}",
+												"sharePanelType": "SHARE_PANEL_TYPE_UNIFIED_SHARE_PANEL"
+											}
+										}
+									},
+									"videoCountText": "{{VIDEO_COUNT}}",
+									"links": "{{LINKS}}",
+									"displayCanonicalChannelUrl": "www.youtube.com/{{AT_HANDLE}}",
+									"rendererContext": {
+										"loggingContext": {}
+									},
+									"country": "{{COUNTRY}}"
+								}
+							},
+							"shareChannel": {
+								"buttonRenderer": {
+									"style": "STYLE_DEFAULT",
+									"size": "SIZE_DEFAULT",
+									"text": {
+										"runs": [
+											{
+												"text": "Share channel"
+											}
+										]
+									},
+									"icon": {
+										"iconType": "SHARE"
+									},
+									"accessibilityData": {
+										"accessibilityData": {
+											"label": "Share channel"
+										}
+									},
+									"command": {
+										"commandMetadata": {
+											"webCommandMetadata": {
+												"sendPost": true
+											}
+										},
+										"signalServiceEndpoint": {
+											"signal": "CLIENT_SIGNAL",
+											"actions": [
+												{
+													"openPopupAction": {
+														"popup": {
+															"menuPopupRenderer": {
+																"items": [
+																	{
+																		"menuServiceItemRenderer": {
+																			"text": {
+																				"runs": [
+																					{
+																						"text": "Share channel"
+																					}
+																				]
+																			},
+																			"command": {
+																				"commandMetadata": {
+																					"webCommandMetadata": {
+																						"sendPost": true,
+																						"apiUrl": "/youtubei/v1/share/get_share_panel"
+																					}
+																				},
+																				"shareEntityServiceEndpoint": {
+																					"serializedShareEntity": "{{b64:CHANNEL_ID:Ghh+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4%3D}}",
+																					"commands": [
+																						{
+																							"openPopupAction": {
+																								"popup": {
+																									"unifiedSharePanelRenderer": {
+																										"showLoadingSpinner": true
+																									}
+																								},
+																								"popupType": "DIALOG",
+																								"beReused": true
+																							}
+																						}
+																					]
+																				}
+																			}
+																		}
+																	},
+																	{
+																		"menuServiceItemRenderer": {
+																			"text": {
+																				"runs": [
+																					{
+																						"text": "Copy channel ID"
+																					}
+																				]
+																			},
+																			"command": {
+																				"copyTextEndpoint": {
+																					"text": "{{CHANNEL_ID}}",
+																					"successActions": [
+																						{
+																							"commandMetadata": {
+																								"webCommandMetadata": {
+																									"sendPost": true
+																								}
+																							},
+																							"signalServiceEndpoint": {
+																								"signal": "CLIENT_SIGNAL",
+																								"actions": [
+																									{
+																										"openPopupAction": {
+																											"popup": {
+																												"notificationActionRenderer": {
+																													"responseText": {
+																														"runs": [
+																															{
+																																"text": "Channel ID copied to clipboard"
+																															}
+																														]
+																													}
+																												}
+																											},
+																											"popupType": "TOAST"
+																										}
+																									}
+																								]
+																							}
+																						}
+																					]
+																				}
+																			}
+																		}
+																	}
+																]
+															}
+														},
+														"popupType": "RESPONSIVE_DROPDOWN"
+													}
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					}
+				],
+				"targetId": "6b14db59-0000-2ca6-be6c-582429bfa788"
+			}
+		}
+	]
+}
