@@ -75,7 +75,7 @@ The main client is pinned in [`pin/client.json`](pin/client.json), and Studio in
 
 You need:
 
-- [Bun](https://bun.sh/) with its built-in PostgreSQL `SQL` API.
+- A recent [Bun](https://bun.sh/) release with its built-in PostgreSQL `SQL` API and support for the bundled lockfile.
 - A running [PostgreSQL](https://www.postgresql.org/) server and an empty database.
 - [FFmpeg and FFprobe](https://ffmpeg.org/) on your `PATH`, with H.264/AAC and VP9/Opus encoding support (`libx264`, `aac`, `libvpx-vp9`, and `libopus`).
 - Enough disk space for the client archives, source uploads, thumbnails, and multiple encoded versions of each video.
@@ -119,6 +119,8 @@ Open `http://localhost:8080/` for the home feed. The seed command also prints vi
 Migrations run when the application or seed command starts. The demo accounts are `alice` and `bob`; they use the `SEED_PASSWORD` supplied to the seed command when first created.
 
 The seed command creates database records and processes generated test videos. Committed media files alone do not populate a new database. The first account registered in an empty database becomes an operator; if seeding creates the first accounts, that is `alice`. `/admin` requires an operator account.
+
+The committed Studio snapshot omits some promotional artwork. Its archive checker currently reports those missing files; the main client archive and patch checks can still pass. Keep Studio verification output when diagnosing missing images or incomplete creator pages.
 
 If archive verification reports missing files, repair from the existing pins and rerun the checks:
 
