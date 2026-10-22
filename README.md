@@ -21,6 +21,7 @@
 <p align="center">
   <a href="#current-status">Status</a> &nbsp;·&nbsp;
   <a href="#self-hosting">Self-hosting</a> &nbsp;·&nbsp;
+  <a href="#youtube-studio">Studio</a> &nbsp;·&nbsp;
   <a href="#development">Development</a> &nbsp;·&nbsp;
   <a href="https://github.com/OwnTube/owntube/issues">Issues</a>
 </p>
@@ -29,9 +30,9 @@
 
 OwnTube serves a pinned build of the official YouTube web client and answers its requests with its own backend. Accounts, channels, video metadata, and playback data come from the instance's PostgreSQL database; video streams and thumbnails come from its media storage.
 
-The existing YouTube interface and player provide the browsing and watching experience. Compatibility work happens primarily on the server, with small client patches where required for routing, bootstrap configuration, and local operation.
+The existing YouTube interface and player provide the browsing and watching experience. The official YouTube Studio client is also pinned and served on a separate origin for creator pages and uploads. Compatibility work happens primarily on the server, with small client patches where required for routing, bootstrap configuration, and local operation.
 
-**OwnTube is in very early alpha.** The current milestone focuses on the watch page and local video playback. It is a development project, and the wider browsing experience is still being built.
+**OwnTube is in early alpha.** Browsing, local accounts, playback, comments, playlists, and creator support are being implemented against the real clients. Studio's editing/publishing workflow and the custom operator dashboard are unfinished; this is not feature parity with YouTube.
 
 <p align="center">
   <img src="evidence/playback/01-playing.png" width="960" alt="Committed playback evidence: the official YouTube watch interface displaying an OwnTube test video" />
@@ -40,39 +41,45 @@ The existing YouTube interface and player provide the browsing and watching expe
 
 ## Current status
 
-The committed implementation includes:
-
-- A client acquisition tool and version manifest, with asset checksums and lazy-module discovery.
-- Watch-page API handlers for `player`, `next`, and `get_watch`.
-- Player responses describing locally stored video streams and thumbnails.
-- Local account registration, sign-in, sessions, and channel records.
-- PostgreSQL migrations and reproducible FFmpeg-generated demo videos.
-- Compatibility diagnostics, browser probes, and a playback test covering pause, resume, seeking, reload, and quality selection.
-
-The playback screenshots are in [`evidence/playback/`](evidence/playback/). They record the initial milestone; they do not establish feature parity across the rest of the site.
+The table below describes the committed source, not a guarantee that every control in the official clients is supported. Responses for many pages and dialogs are built from captured YouTube response templates populated with local records.
 
 | Area | Current scope |
 | --- | --- |
-| Watch page | Main implemented compatibility milestone |
-| Accounts | Local registration and sign-in implementation |
-| Client serving and media processing | Referenced by the application; source directories still need publishing |
-| Home, search, and channel browsing | Pending; browse and search handlers are placeholders |
-| Comments and playlists | Placeholder handlers |
-| Likes and subscriptions | Database schema exists; API mutations are not implemented |
-| Upload and admin interfaces | Placeholder handlers |
+| Watch and playback | Local stream/player responses, related videos, playlist panels, signed media URLs, byte ranges, and UMP delivery |
+| Accounts | Local registration, sign-in, sessions, and channel records; these are OwnTube accounts, not Google accounts |
+| Client and media | `src/client/` and `src/media/` are published, along with the pinned client archives and sample media |
+| Home and channels | Home feed, channel home/videos/playlists tabs, and channel About panels |
+| Search | Video, channel, and playlist results, supported sort/filter controls, continuations, and suggestions |
+| Library and history | You page, watch history/resume positions, Watch later, Liked videos, and playlist feeds |
+| Comments | Threads, replies, sorting, posting, comment likes, and deleting your own comments |
+| Playlists | Creation, editing, deletion, save-to-playlist sheets, and saving other users' accessible playlists to the library |
+| Reactions and subscriptions | Persisted video likes/dislikes and subscriptions, subscription feeds, and channel lists |
+| Sharing | Share panels with instance-local video, playlist, and channel links; embedding is omitted |
+| YouTube Studio | Official client on a separate origin, owner-scoped channel/video listing APIs, resumable transfers, and upload creation; creator workflows remain incomplete |
+| Operator admin | Authenticated diagnostics, patch checks, video counts, processing jobs, and account tables; the designed dashboard is not integrated yet |
 
-The pin in [`pin/client.json`](pin/client.json) records desktop build `youtube.desktop.web_20261020_05_RC00`, 310 assets, and 150 lazy app modules. Build updates are explicit.
+The playback screenshots in [`evidence/playback/`](evidence/playback/) record the initial playback milestone. They do not verify every newer page or Studio workflow. The repository also includes a browser playback script for pause, resume, seeking, reload, and quality selection.
+
+The main client is pinned in [`pin/client.json`](pin/client.json), and Studio in [`pin/studio.json`](pin/studio.json). The manifests record build versions, asset checksums, and lazy modules. Build updates are explicit.
+
+### Known limitations
+
+- Studio has video read/list and upload-creation APIs, but metadata editing, publishing existing drafts, and video deletion are not implemented. Edit-page routing also needs completion. Uploads default to private drafts.
+- Custom thumbnail and additional audio-track upload URLs are configured in Studio, but their upload handlers are not implemented.
+- Shorts URLs open the ordinary watch page; there is no dedicated Shorts browsing experience. Live streaming and monetization are not implemented.
+- Notifications currently have an empty inbox/count. The bell-preference handler acknowledges requests without persisting a preference or delivering notifications.
+- The custom admin dashboard remains a design reference. The live `/admin` page is a smaller diagnostics interface.
+- Unsupported InnerTube methods are recorded in diagnostics and may return an empty response envelope. A successful HTTP response alone does not establish a working feature.
 
 ## Self-hosting
 
 You need:
 
-- [Bun](https://bun.sh/) with its built-in PostgreSQL `SQL` API.
+- A recent [Bun](https://bun.sh/) release with its built-in PostgreSQL `SQL` API and support for the bundled lockfile.
 - A running [PostgreSQL](https://www.postgresql.org/) server and an empty database.
-- [FFmpeg and FFprobe](https://ffmpeg.org/) on your `PATH`, with the encoders required by the media pipeline.
-- Internet access to acquire missing client assets.
-
-> **Checkout status:** `src/client/` and `src/media/` are still absent from the published source. The server, client fetcher, and seed script import these modules. The ignore rules have been corrected; the setup below requires those source files to be committed first.
+- [FFmpeg and FFprobe](https://ffmpeg.org/) on your `PATH`, with H.264/AAC and VP9/Opus encoding support (`libx264`, `aac`, `libvpx-vp9`, and `libopus`).
+- Enough disk space for the client archives, source uploads, thumbnails, and multiple encoded versions of each video.
+- Internet access when acquiring or repairing client assets. Normal client serving uses the local archives.
 
 ### Local setup
 
@@ -97,17 +104,43 @@ export DATABASE_URL='postgres://YOUR_POSTGRES_USER:YOUR_POSTGRES_PASSWORD@localh
 export PUBLIC_ORIGIN='http://localhost:8080'
 ```
 
-Acquire the pinned client, generate demo content, and start the server:
+Verify the committed client archives and patch matches, generate demo records and videos, and start the server:
 
 ```sh
-bun run fetch-client
+bun scripts/fetch-client.ts --check
+bun scripts/fetch-studio.ts --check
+bun run check-patches
 SEED_PASSWORD='choose-a-local-test-password' bun run seed
 bun run start
 ```
 
-The seed command prints the generated video IDs. Open `http://localhost:8080/watch?v=VIDEO_ID` using one of those IDs. Local sign-in and registration are available at `/signin` and `/register`. The home feed is still pending.
+Open `http://localhost:8080/` for the home feed. The seed command also prints video IDs for direct `/watch?v=VIDEO_ID` links. Local sign-in and registration are at `/signin` and `/register`. Opening `/upload` while signed in leads to Studio's upload dialog; Studio defaults to `http://localhost:8081/`.
 
 Migrations run when the application or seed command starts. The demo accounts are `alice` and `bob`; they use the `SEED_PASSWORD` supplied to the seed command when first created.
+
+The seed command creates database records and processes generated test videos. Committed media files alone do not populate a new database. The first account registered in an empty database becomes an operator; if seeding creates the first accounts, that is `alice`. `/admin` requires an operator account.
+
+The committed Studio snapshot omits some promotional artwork. Its archive checker currently reports those missing files; the main client archive and patch checks can still pass. Keep Studio verification output when diagnosing missing images or incomplete creator pages.
+
+If archive verification reports missing files, repair from the existing pins and rerun the checks:
+
+```sh
+bun run fetch-client
+bun scripts/fetch-studio.ts
+```
+
+These repair commands do not deliberately select a newer client build. If upstream no longer serves the pinned files, an explicit re-pin and compatibility check may be needed.
+
+### YouTube Studio
+
+Studio uses the actual pinned creator client, separate from the custom operator admin page. The server listens on `STUDIO_PORT` and selects Studio requests by the host in `STUDIO_ORIGIN`.
+
+- On localhost, the default origins are `http://localhost:8080` and `http://localhost:8081`. Use the same hostname for both; browser cookies are shared across ports.
+- For a hosted instance, configure `PUBLIC_ORIGIN` and `STUDIO_ORIGIN` explicitly, for example `https://video.example.com` and `https://studio.example.com`. Set `COOKIE_DOMAIN=example.com` so both hosts receive the session cookies.
+- Route both hostnames to OwnTube through your reverse proxy, preserving the external Host header. The application can distinguish the hosts on either listening port.
+- Studio requires a signed-in local account and restricts creator data to that account's channel. Its partial upload implementation should not be treated as a completed publishing workflow.
+
+To pin a new Studio build, use `bun scripts/fetch-studio.ts --page /absolute/path/to/captured-studio-page.html`. The fetcher sanitizes the supplied signed-in page before archiving it. Raw captures remain outside the committed source.
 
 ### Configuration
 
@@ -118,18 +151,23 @@ Bun loads a project-root `.env` file automatically. Environment variables can al
 | `DATABASE_URL` | `postgres://owntube:owntube@localhost:5432/owntube` | PostgreSQL connection |
 | `PORT` | `8080` | HTTP listen port |
 | `PUBLIC_ORIGIN` | `http://localhost:$PORT` | Public origin used in generated URLs and authentication |
+| `STUDIO_PORT` | `PORT + 1` | Second HTTP listen port for Studio |
+| `STUDIO_ORIGIN` | Localhost: same scheme/hostname with `STUDIO_PORT`; otherwise `studio.<public-host>` | External origin for the pinned Studio client |
+| `COOKIE_DOMAIN` | Unset | Parent cookie domain when the main client and Studio use different hostnames |
 | `INSTANCE_NAME` | `OwnTube` | Instance name |
 | `MEDIA_DIR` | `data/media` | Local media directory |
-| `MAX_UPLOAD_BYTES` | `2147483648` | Configured request/upload size limit; the upload UI is pending |
+| `MAX_UPLOAD_BYTES` | `2147483648` | Maximum request body and resumable upload size in bytes |
 | `UPSTREAM_ASSET_FETCH` | Off | Set to `1` to enable the development fallback for missing client assets |
 | `NO_WORKER` | Unset | Set to `1` to skip starting the processing worker |
 | `LOG_REQUESTS` | Unset | Set to `1` to log requests |
 
-Normal asset serving uses the local archive. The development upstream fallback is off by default. The downloaded client archive and media directories are allowed by this repository's current ignore rules; credentials and raw HAR captures remain ignored.
+Normal asset serving uses the local archives. The development upstream fallback is off by default. The original client archives and media files are tracked; derived `client/patched/` output and in-progress `data/media/.work-*` directories remain ignored, along with credentials and raw HAR captures.
 
 ## Admin panel design
 
-OwnTube's admin dashboard design is in [docs/admin-panel/](docs/admin-panel/README.md), including the editable [browser preview](docs/admin-panel/index.html), local fonts, light/dark screenshots, a working appearance selector, and the implementation handoff. Use this design as the starting point when building real admin functionality.
+The live `/admin` page provides operator-only compatibility diagnostics, patch status, processing jobs, account lists, and video counts. It has not yet adopted the selected dashboard design.
+
+That design is in [docs/admin-panel/](docs/admin-panel/README.md), including the editable [browser preview](docs/admin-panel/index.html), local Roboto fonts, light/dark screenshots, a working appearance selector, and the implementation handoff. Use it when building the full dashboard. Its sample figures and demo buttons are not live admin features; the appearance selector still needs integration with the application's shared user preference.
 
 ## Development
 
@@ -138,7 +176,10 @@ Use the official client to verify compatibility. An endpoint returning successfu
 | Command | Purpose |
 | --- | --- |
 | `bun scripts/fetch-client.ts --check` | Check the local archive against the pin without downloading |
+| `bun scripts/fetch-studio.ts --check` | Check the Studio archive against its pin without downloading |
+| `bun run check-patches` | Check expected client/player/Studio patch match counts |
 | `bun scripts/fetch-client.ts --update` | Explicitly acquire and pin a newer client build |
+| `bun run typecheck` | Run the TypeScript checker |
 | `bun scripts/seed.ts --reprocess` | Reprocess the seeded videos |
 | `bun scripts/probe.ts '/watch?v=VIDEO_ID' --play --shot watch.png` | Inspect the watch page and save a screenshot |
 | `bun scripts/e2e/playback.ts VIDEO_ID --shots evidence/playback` | Exercise the official player and capture screenshots |
@@ -150,6 +191,10 @@ Useful starting points:
 - [`src/server.ts`](src/server.ts): request routing and application startup.
 - [`src/innertube/`](src/innertube/): API handlers and YouTube-compatible response structures.
 - [`src/instance.ts`](src/instance.ts): local authentication and instance routes.
+- [`src/studio/`](src/studio/): the pinned Studio shell, creator APIs, and resumable upload handling.
+- [`src/client/`](src/client/): archived asset serving, bootstrap configuration, and compatibility patches.
+- [`src/media/`](src/media/): FFmpeg processing, stream formats, byte ranges, and UMP delivery.
+- [`src/admin.ts`](src/admin.ts): the current operator diagnostics page.
 - [`migrations/`](migrations/): database schema.
 - [`scripts/research/`](scripts/research/): browser capture and investigation tools.
 - [`scripts/e2e/playback.ts`](scripts/e2e/playback.ts): playback verification.
