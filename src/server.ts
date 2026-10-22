@@ -1,3 +1,4 @@
+import { APPEARANCE_HEADERS, isDark } from "./appearance";
 import { getViewer } from "./auth";
 import { serveClientAsset } from "./client/assets";
 import { renderPage } from "./client/page";
@@ -75,8 +76,8 @@ async function handle(req: Request): Promise<Response> {
 		return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
 	}
 	const n = nonce();
-	return new Response(renderPage(page, viewer, n), {
-		headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "content-security-policy": CSP, ...SECURITY_HEADERS },
+	return new Response(renderPage(page, viewer, n, isDark(req)), {
+		headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "content-security-policy": CSP, ...SECURITY_HEADERS, ...APPEARANCE_HEADERS },
 	});
 }
 

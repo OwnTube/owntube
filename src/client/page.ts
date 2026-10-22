@@ -13,6 +13,7 @@
 // the same experiment set and the same player.
 
 import { existsSync, readFileSync } from "node:fs";
+import { prefCookieDomain } from "../appearance";
 import { INSTANCE_NAME, PUBLIC_ORIGIN } from "../config";
 import { recordMiss } from "../diagnostics";
 import { jsonEnd } from "./json";
@@ -111,7 +112,7 @@ export function visitorData(): string {
 	return "Cgt" + Buffer.from(INSTANCE_NAME).toString("base64url");
 }
 
-export function buildYtcfg(kind: PageKind, viewer: Viewer, pageUrl: string, nonce: string): Record<string, any> {
+export function buildYtcfg(kind: PageKind, viewer: Viewer, pageUrl: string, nonce: string, dark = false): Record<string, any> {
 	const pin = loadPin()!;
 	const cfg = structuredClone(baseConfig().cfg);
 	for (const k of ["IS_WATCH_PAGE_COLD", "IS_HOMEPAGE_COLD", "IS_RESULTS_PAGE_COLD", "IS_SHORTS_PAGE_COLD"]) delete cfg[k];
@@ -140,12 +141,16 @@ export function buildYtcfg(kind: PageKind, viewer: Viewer, pageUrl: string, nonc
 	delete client.deviceExperimentId;
 	delete client.rolloutToken;
 	client.visitorData = visitor;
+	client.userInterfaceTheme = dark ? "USER_INTERFACE_THEME_DARK" : "USER_INTERFACE_THEME_LIGHT";
 	client.originalUrl = PUBLIC_ORIGIN + pageUrl;
 	cfg.INNERTUBE_CONTEXT.clickTracking = { clickTrackingParams: "" };
 	cfg.SBOX_SETTINGS.VISITOR_DATA = visitor;
 	cfg.SBOX_SETTINGS.SEARCHBOX_HOST_OVERRIDE = new URL(PUBLIC_ORIGIN).host;
 	cfg.EMERGENCY_BASE_URL = "/error_204?t=jserror&level=ERROR";
 	cfg.VALID_SESSION_TEMPDATA_DOMAINS = [new URL(PUBLIC_ORIGIN).hostname];
+	// the client keeps preferences such as Appearance in PREF, for this domain
+	// (it defaults to youtube.com, which the browser would refuse here)
+	cfg.ALT_PREF_COOKIE_DOMAIN = prefCookieDomain();
 	// IS_DBSC only gates the signed-in RotateCookiesPage iframe on accounts.youtube.com
 	cfg.IS_DBSC = true;
 	// no Chromecast/DIAL discovery (would load cast_sender.js from gstatic)
@@ -218,10 +223,11 @@ function template(kind: PageKind): string {
 	return t;
 }
 
-export function renderPage(data: PageData, viewer: Viewer, nonce: string): string {
+// dark: the resolved Appearance (appearance.ts), applied before first paint
+export function renderPage(data: PageData, viewer: Viewer, nonce: string, dark = false): string {
 	const pin = loadPin()!;
 	let html = template(data.kind);
-	const cfg = buildYtcfg(data.kind, viewer, data.url, nonce);
+	const cfg = buildYtcfg(data.kind, viewer, data.url, nonce, dark);
 	html = replaceJsonAfter(html, "ytcfg.set({", json(cfg), "ytcfg");
 	if (html.includes("var ytInitialPlayerResponse = ")) {
 		html = data.playerResponse
@@ -233,6 +239,8 @@ export function renderPage(data: PageData, viewer: Viewer, nonce: string): strin
 	let socialDone = false;
 	const rules: Rule[] = [
 		{ name: "nonce", find: /nonce="[^"]*"/g, replace: () => `nonce="${nonce}"` },
+		// the dark theme is the dark attribute on <html>, as YouTube's server renders it
+		{ name: "theme", find: /<html (?=[^>]*\bdarker-dark-theme\b)/g, replace: () => (dark ? "<html dark " : "<html ") },
 		{ name: "attestation", find: /\(function\(\) \{if \(window\.ytAtN\) \{window\.ytAtN\(\{[\s\S]*?\}\);\}\}\)\(\);/g, replace: () => "", optional: true },
 		{
 			name: "server-contract",
