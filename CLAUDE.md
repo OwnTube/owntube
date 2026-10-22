@@ -2,16 +2,16 @@
 
 OwnTube serves the actual YouTube web client against an independent database, backend, APIs, and media storage. Keep the official public client as the main browsing and playback interface, with only necessary compatibility patches.
 
-## Admin panel: use the selected design
+## Admin panel
 
-Before implementing or changing the admin panel, read [docs/admin-panel/README.md](docs/admin-panel/README.md), open [docs/admin-panel/index.html](docs/admin-panel/index.html), and inspect [docs/admin-panel/preview.png](docs/admin-panel/preview.png).
+The owner dropped the earlier mockup in [docs/admin-panel/](docs/admin-panel/README.md); it is kept for history only. The live panel is in [src/admin/](src/admin/) (`ui.ts` for the layout and components, `index.ts` for routes and actions). Extend it consistently:
 
-Use the restored Studio-style structure: a top bar, left navigation, and three columns of dashboard cards. Keep OwnTube's logo, locally bundled Roboto in 400/500/700 weights, consistent Lucide icons, neutral light/dark surfaces, red selection accents, and blue action links. Use the aligned card grid and 24 px spacing from the current source; avoid synthetic font weights and arbitrary size changes. The owner wants this familiar layout with modest OwnTube branding, not a wholesale layout change. Use plain admin labels and factual copy; do not add slogans, oversized promotional headings, or decorative scribbles beyond the logo. Preserve this reference and extend it with real functioning features. Reuse the source and add screens consistently.
-
-The reference contains sample data and demo feedback only. Replace those with real authenticated admin routes, database queries, persisted mutations, media/job integration, and working navigation. Implement server-side operator authorization for every admin API operation. Verify the behavior in the browser and preserve the public client's functionality.
-
-Use the handoff's implementation and validation checklist. Do not treat the mockup as a finished admin panel or start a wholesale redesign without a new request from the owner.
+- Every `/admin` route checks the operator server-side. Signed-out GET requests redirect to sign-in; anyone else who is not an operator gets a 404, so the panel's existence is not revealed.
+- Every mutation is a same-origin POST carrying the viewer's form token, ends in a redirect back to the page with a `done` code, and is written to `admin_actions` (the Audit log).
+- Use real queries and persisted state only: no sample figures, demo buttons, or placeholder features.
+- Keep the shared layout: masthead with OwnTube's logo, left navigation (a chip bar on narrow screens), cards in a 3-column grid with 24 px gaps, tables that scroll horizontally rather than hide columns. Use YouTube's light/dark palettes, the bundled Roboto 400/500/700, and the inline Lucide-style icons in `ui.ts`. Use plain labels and factual copy.
+- Verify changes in the browser in both palettes and at phone width, and keep the public client and Studio working.
 
 ## Appearance must follow the user
 
-Implement both light and dark versions of the admin panel. Support Light theme, Dark theme, and Use device theme. When the main application's appearance selector is available, honor that same saved per-user choice instead of creating a conflicting admin-only setting. Until then, preserve the reference's working device-default behavior and explicit persisted choices. Resolve appearance before first paint, react to device changes only in device mode, and verify both palettes. See the handoff for integration details and both screenshots.
+The admin panel has light and dark versions and supports Light theme, Dark theme, and Use device theme. It shares the main client's saved choice, the Appearance flags in the PREF cookie (see [src/appearance.ts](src/appearance.ts)); do not add an admin-only setting. Resolve the appearance on the server before first paint, follow device changes only in device mode (CSS `prefers-color-scheme`), and verify both palettes.

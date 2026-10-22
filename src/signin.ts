@@ -14,6 +14,7 @@ import { createSession, login, LOGIN_RE, register } from "./auth";
 import type { Viewer } from "./client/page";
 import { INSTANCE_NAME } from "./config";
 import { sql } from "./db";
+import { settings } from "./settings";
 import { rateLimit } from "./ratelimit";
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -101,6 +102,8 @@ type Step = {
 	showPassword?: boolean;
 	note?: string;
 	left?: { text: string; href: string };
+	// false: a page with nothing to submit
+	submit?: boolean;
 	status?: number;
 };
 
@@ -114,7 +117,7 @@ ${s.chip ? `<a class="chip" href="${esc(s.chip.href)}" aria-label="${esc(s.chip.
 ${s.fields.map(field).join("\n")}
 ${s.showPassword ? `<label class="show"><input type="checkbox">Show password</label>` : ""}
 ${s.note ? `<p class="note">${esc(s.note)}</p>` : ""}
-<div class="actions">${s.left ? `<a class="text-btn" href="${esc(s.left.href)}">${esc(s.left.text)}</a>` : ""}<button class="next" type="submit">Next</button></div>
+<div class="actions">${s.left ? `<a class="text-btn" href="${esc(s.left.href)}">${esc(s.left.text)}</a>` : ""}${s.submit === false ? "" : `<button class="next" type="submit">Next</button>`}</div>
 </form></main>
 <footer><span>English (United States)</span></footer></div>${s.showPassword ? SHOW_SCRIPT : ""}`;
 	return new Response(
@@ -132,7 +135,7 @@ const q = (path: string, next: string) => `${path}?next=${encodeURIComponent(nex
 
 // ---- sign in ----
 
-function usernameStep(next: string, values: { login?: string } = {}, error?: string) {
+function usernameStep(next: string, signups: boolean, values: { login?: string } = {}, error?: string) {
 	return page({
 		title: "Sign in",
 		heading: "Sign in",
@@ -141,7 +144,7 @@ function usernameStep(next: string, values: { login?: string } = {}, error?: str
 		step: "username",
 		fields: [{ name: "login", label: "Username", value: values.login, autocomplete: "username", error, autofocus: true }],
 		note: NOT_GOOGLE,
-		left: { text: "Create account", href: q("/register", next) },
+		left: signups ? { text: "Create account", href: q("/register", next) } : undefined,
 		status: error ? 400 : 200,
 	});
 }
@@ -161,6 +164,21 @@ function passwordStep(next: string, loginName: string, error?: string) {
 }
 
 // ---- create account ----
+
+// the admin panel's Settings can close sign-ups
+function signupsClosed(next: string) {
+	return page({
+		title: "Create account",
+		heading: "Sign-ups are closed",
+		sub: `${INSTANCE_NAME} isn't accepting new accounts right now. Ask the people who run it if you need one.`,
+		action: q("/signin", next),
+		step: "closed",
+		fields: [],
+		left: { text: "Sign in instead", href: q("/signin", next) },
+		submit: false,
+		status: 403,
+	});
+}
 
 function nameStep(next: string, values: { name?: string } = {}, error?: string) {
 	return page({
@@ -217,9 +235,10 @@ async function signedIn(req: Request, userId: string, next: string) {
 export async function accountRoutes(req: Request, url: URL, viewer: Viewer, next: string): Promise<Response | undefined> {
 	const path = url.pathname;
 	if (path !== "/signin" && path !== "/register") return undefined;
+	const signups = (await settings()).registration === "open";
 	if (req.method === "GET") {
 		if (viewer) return Response.redirect(next, 302);
-		return path === "/signin" ? usernameStep(next) : nameStep(next);
+		return path === "/signin" ? usernameStep(next, signups) : signups ? nameStep(next) : signupsClosed(next);
 	}
 	if (req.method !== "POST") return new Response("method not allowed", { status: 405 });
 	const form = await req.formData().catch(() => undefined);
@@ -232,7 +251,7 @@ export async function accountRoutes(req: Request, url: URL, viewer: Viewer, next
 	if (path === "/signin") {
 		const loginName = get("login").trim().toLowerCase();
 		if (step !== "password") {
-			if (!loginName) return usernameStep(next, {}, "Enter a username");
+			if (!loginName) return usernameStep(next, signups, {}, "Enter a username");
 			return passwordStep(next, loginName);
 		}
 		if (limited) return passwordStep(next, loginName, tooMany);
@@ -244,6 +263,7 @@ export async function accountRoutes(req: Request, url: URL, viewer: Viewer, next
 	}
 
 	// /register
+	if (!signups) return signupsClosed(next);
 	const name = get("name").trim().slice(0, 100);
 	const loginName = get("login").trim().toLowerCase();
 	if (step === "name" || !name) return name ? chooseUsernameStep(next, { name }) : nameStep(next, {}, "Enter your name");

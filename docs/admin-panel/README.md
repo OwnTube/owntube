@@ -1,5 +1,7 @@
 # OwnTube admin panel: design and implementation handoff
 
+> **Superseded.** The owner dropped this design. The live panel is in [src/admin/](../../src/admin/); see the Admin panel section of the [README](../../README.md#admin-panel). This handoff is kept for history only.
+
 This is OwnTube's current admin design reference, revised at the project owner's request to give it a distinct identity. Use it when implementing the panel and extend it with real, functioning features.
 
 | Dark theme | Light theme |

@@ -42,3 +42,20 @@ export const APPEARANCE_HEADERS = {
 // the domain the client sets PREF for: the shared cookie domain when there
 // is one (so Studio's origin sees it too), else this host
 export const prefCookieDomain = () => COOKIE_DOMAIN || new URL(PUBLIC_ORIGIN).hostname;
+
+// PREF with the Appearance flags set to `appearance`, its other fields kept
+// (the admin panel's Appearance menu saves the same setting as the client's)
+export function prefWithAppearance(pref: string, appearance: Appearance): string {
+	// raw k=v pairs, as the client writes them (values such as tz=Europe/London unencoded)
+	const fields = pref.split("&").filter((f) => f && !f.startsWith("f6="));
+	let flags = Number.parseInt(/(?:^|&)f6=([0-9a-fA-F]{1,8})/.exec(pref)?.[1] ?? "0", 16);
+	flags &= ~(DARK | LIGHT);
+	if (appearance === "dark") flags |= DARK;
+	if (appearance === "light") flags |= LIGHT;
+	if (flags) fields.push(`f6=${flags.toString(16)}`);
+	return fields.join("&");
+}
+
+export function prefCookie(value: string, secure: boolean) {
+	return `PREF=${value}; Domain=${prefCookieDomain()}; Path=/; Max-Age=${2 * 365 * 86400}; SameSite=Lax${secure ? "; Secure" : ""}`;
+}
