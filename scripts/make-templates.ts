@@ -1059,6 +1059,9 @@ function search() {
 	searchPage("results", false);
 	searchPage("in-results", true);
 	subscribeRenderer();
+	// a search nothing matches (a filtered one: plain gibberish still gets fuzzy matches)
+	const none = pageVar(body("results-none", /results\.resp$/));
+	save("item/no_results", { backgroundPromoRenderer: clean(find(none, "backgroundPromoRenderer")) });
 }
 
 // ======================================================================

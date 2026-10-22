@@ -11,7 +11,7 @@ import { topbar } from "./chrome";
 import { playlistSearchItem, searchPlaylists } from "./playlists";
 import { decode, encode, fromBase64 } from "./proto";
 import { PUBLIC_ORIGIN } from "../config";
-import { type Channel, type Video, ago, compactViews, countLabel, responseContext, runs } from "./r";
+import { type Channel, type Video, ago, compactViews, countLabel, responseContext } from "./r";
 import { ApiError, route } from "./router";
 import { channelRowButton, subscribeEntities } from "./subscribe";
 import { make, type Vars } from "./tpl";
@@ -180,15 +180,6 @@ async function results(query: string, s: Search, offset: number, viewer: Viewer)
 
 const continuationItem = (query: string, s: Search, offset: number) => make("item/continuation_search", { CONTINUATION: encodeToken({ k: "search", q: query, sp: encodeParams(s), o: offset + PAGE }) });
 
-// YouTube's empty-results message
-const noResults = () => ({
-	backgroundPromoRenderer: {
-		icon: { iconType: "EMPTY_SEARCH" },
-		title: runs("No results found"),
-		bodyText: runs("Try different keywords or remove search filters"),
-	},
-});
-
 const withMutations = (mutations: unknown[]) => (mutations.length ? { frameworkUpdates: { entityBatchUpdate: { mutations, timestamp: { seconds: String(Math.floor(Date.now() / 1000)), nanos: 0 } } } } : {});
 
 async function searchResponse(query: string, s: Search, viewer: Viewer) {
@@ -196,7 +187,7 @@ async function searchResponse(query: string, s: Search, viewer: Viewer) {
 	const page = make(`search/page_${viewer ? "in" : "out"}`, {
 		...headerVars(query, s),
 		ESTIMATED: String(r.items.length),
-		ITEMS: r.items.length ? r.items : [noResults()],
+		ITEMS: r.items.length ? r.items : [make("item/no_results", {})],
 		CONTINUATION_ITEM: r.more ? continuationItem(query, s, 0) : null,
 	});
 	const sl = page.contents.twoColumnSearchResultsRenderer.primaryContents.sectionListRenderer;
