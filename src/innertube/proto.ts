@@ -80,9 +80,11 @@ export function fromBase64(s: string): Uint8Array {
 
 export const str = (v: number | Uint8Array | undefined) => (v instanceof Uint8Array ? new TextDecoder().decode(v) : undefined);
 
-// entity keys: base64 of {2: id, 4: entity type, 5: 1}, '=' written as %3D
+// entity keys: base64 of {2: id, 4: entity type, 5: 1} as YouTube writes
+// them, in the web-safe alphabet with '=' written as %3D (the client keys its
+// entity store by the exact string)
 export function entityKey(id: string, type: number): string {
-	return Buffer.from(encode({ 2: id, 4: type, 5: 1 })).toString("base64").replace(/=/g, "%3D");
+	return Buffer.from(encode({ 2: id, 4: type, 5: 1 })).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "%3D");
 }
 
 // the tab name in a channel browse params blob ({2: "videos", ...})

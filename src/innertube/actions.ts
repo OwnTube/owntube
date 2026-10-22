@@ -9,7 +9,7 @@ import { sql } from "../db";
 import { isChannelId, isVideoId } from "../ids";
 import { avatarThumbnails, channelEndpoint, label, responseContext, runs, text } from "./r";
 import { ApiError, route } from "./router";
-import { likeKey, subscriptionKey } from "./watch";
+import { likeStatusMutation, subscriptionKey } from "./watch";
 import { getPlaylist, setSaved } from "./playlists";
 import { decode, fromBase64, str } from "./proto";
 import { make } from "./tpl";
@@ -42,11 +42,10 @@ for (const [method, kind] of [["like/like", "like"], ["like/dislike", "dislike"]
 			if (!isVideoId(id)) throw new ApiError(400, "Invalid video id");
 			if (!(await getVideo(id, viewer))) throw new ApiError(404, "Video not found");
 			await react(id, viewer!.userId, kind);
-			const status = kind === "like" ? "LIKE" : kind === "dislike" ? "DISLIKE" : "INDIFFERENT";
 			return {
 				responseContext: responseContext(viewer),
 				actions: kind === "like" ? [toast("Added to Liked videos")] : kind === null ? [] : [toast("You dislike this video")],
-				frameworkUpdates: { entityBatchUpdate: { mutations: [{ entityKey: likeKey(id), type: "ENTITY_MUTATION_TYPE_REPLACE", payload: { likeStatusEntity: { key: likeKey(id), likeStatus: status } } }], timestamp: now() } },
+				frameworkUpdates: { entityBatchUpdate: { mutations: [likeStatusMutation(id, kind)], timestamp: now() } },
 			};
 		},
 		{ mutation: true },

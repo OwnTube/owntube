@@ -19,6 +19,10 @@ const END_SCREEN = 12;
 // entity keys the watch page's buttons read their state from
 export const likeKey = (videoId: string) => protoKey(videoId, 62);
 export const subscriptionKey = (channelId: string) => protoKey(channelId, 51);
+export const likeStatusMutation = (videoId: string, reaction: string | null | undefined) => {
+	const likeStatus = reaction === "like" ? "LIKE" : reaction === "dislike" ? "DISLIKE" : "INDIFFERENT";
+	return { entityKey: likeKey(videoId), type: "ENTITY_MUTATION_TYPE_REPLACE", payload: { likeStatusEntity: { key: likeKey(videoId), likeStatus } } };
+};
 
 const relatedLockup = (v: Video, viewer: Viewer) => make(viewer ? "item/video_lockup_compact" : "item/video_lockup_compact_out", { ...baseVars(viewer, `/watch?v=${v.id}`), ...videoVars(v) });
 
@@ -93,7 +97,9 @@ export async function watchNext(videoId: string, viewer: Viewer, opts: { playlis
 		responseContext: responseContext(viewer),
 		...rest,
 		topbar: topbar(viewer, `/watch?v=${v.id}`),
-		frameworkUpdates: { entityBatchUpdate: { mutations: mutations ?? [], timestamp: { seconds: String(Math.floor(Date.now() / 1000)), nanos: 0 } } },
+		// the like button shows the like status from the client's entity store
+		// (not the likeStatusEntity it carries), so the status goes in as a mutation
+		frameworkUpdates: { entityBatchUpdate: { mutations: [...(mutations ?? []), likeStatusMutation(v.id, reaction)], timestamp: { seconds: String(Math.floor(Date.now() / 1000)), nanos: 0 } } },
 	};
 	return { video: v, response };
 }

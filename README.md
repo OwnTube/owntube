@@ -190,8 +190,17 @@ Use the official client to verify compatibility. An endpoint returning successfu
 | `bun scripts/seed.ts --reprocess` | Reprocess the seeded videos |
 | `bun scripts/probe.ts '/watch?v=VIDEO_ID' --play --shot watch.png` | Inspect the watch page and save a screenshot |
 | `bun scripts/e2e/playback.ts VIDEO_ID --shots evidence/playback` | Exercise the official player and capture screenshots |
+| `bun scripts/e2e/core.ts --shots evidence/core` | Run the core flows (search, watch, like, subscribe, comment, Watch later, history, appearance, Studio, admin access) as the seeded `bob`, undoing every change |
 
 The browser tools use `playwright-core` and require a compatible Chromium installation. Set `CHROME_PATH` to its executable path; see [`scripts/probe.ts`](scripts/probe.ts) for the launch configuration.
+
+Documentation:
+
+- [Architecture and reverse-engineering notes](docs/architecture.md)
+- [Endpoint map](docs/compat/endpoints.md)
+- [Patch inventory](docs/client-patches.md)
+- [Parity checklist](docs/compat/parity.md)
+- [Remaining work](docs/remaining-work.md)
 
 Useful starting points:
 
