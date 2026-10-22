@@ -1,0 +1,9 @@
+{
+	"name": "AUDIO_BADGE",
+	"height": 14,
+	"width": 14,
+	"accessibilityLabel": "Official Artist Channel",
+	"marginEndToken": {
+		"spacing": 2
+	}
+}

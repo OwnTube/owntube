@@ -1,0 +1,12 @@
+{
+	"metadataBadgeRenderer": {
+		"icon": {
+			"iconType": "CHECK_CIRCLE_THICK"
+		},
+		"style": "BADGE_STYLE_TYPE_VERIFIED",
+		"tooltip": "Verified",
+		"accessibilityData": {
+			"label": "Verified"
+		}
+	}
+}

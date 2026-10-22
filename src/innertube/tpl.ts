@@ -35,6 +35,8 @@ export type Vars = Record<string, unknown>;
 
 const TOKEN = /\{\{(ek:)?([A-Z0-9_]+)(?::(\d+))?\}\}/g;
 const WHOLE = /^\{\{([A-Z0-9_]+)\}\}$/;
+// a run's length over a whole token's text (make-templates writes these)
+const LEN = /^\{\{len:([A-Z0-9_]+)\}\}$/;
 
 const B64 = /\{\{b64:([A-Z0-9_+]+):([A-Za-z0-9+/=%_-]+)\}\}/g;
 // one blank character per id, in the order the token names them
@@ -60,6 +62,11 @@ function fillString(s: string, vars: Vars, where: string): unknown {
 			}
 			return refill(blob, names.split("+").map((n) => String(vars[n])));
 		});
+	const len = LEN.exec(s);
+	if (len) {
+		if (!(len[1] in vars)) recordMiss(`template token ${len[1]} in ${where}`, "");
+		return String(vars[len[1]] ?? "").length;
+	}
 	const whole = WHOLE.exec(s);
 	if (whole && whole[1] in vars && typeof vars[whole[1]] !== "string") return vars[whole[1]];
 	return s.replace(TOKEN, (_, ek, name, type) => {

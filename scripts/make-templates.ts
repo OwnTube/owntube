@@ -180,7 +180,19 @@ export function wholeToken(node: any, key: string, token: string, pred: (holderO
 const FORBIDDEN_HOSTS = /googlevideo\.com|ytimg\.com|ggpht\.com|googleusercontent\.com|encrypted-tbn\d?\.gstatic\.com|accounts\.google\.com|doubleclick\.net|\/\/www\.youtube\.com|\/\/youtube\.com|studio\.youtube\.com/;
 const personal: string[] = [];
 const written: string[] = [];
+// a run from the start of a text that is a single token covered the whole
+// sample text; it covers the whole of ours ({{len:NAME}}, filled by tpl.ts)
+function tokenRunLengths(o: any) {
+	if (!o || typeof o !== "object") return;
+	const token = typeof o.content === "string" ? /^\{\{([A-Z0-9_]+)\}\}$/.exec(o.content)?.[1] : undefined;
+	if (token)
+		for (const k of ["commandRuns", "styleRuns"])
+			for (const r of Array.isArray(o[k]) ? o[k] : []) if (!r.startIndex && typeof r.length === "number") r.length = `{{len:${token}}}`;
+	for (const v of Object.values(o)) tokenRunLengths(v);
+}
+
 function save(name: string, data: unknown, samples: string[] = []) {
+	tokenRunLengths(data);
 	const text = JSON.stringify(data);
 	const bad: string[] = [];
 	const host = FORBIDDEN_HOSTS.exec(text);
@@ -1675,6 +1687,32 @@ function comments() {
 // YouTube Studio: the channel object (CreatorChannelData) the page prefetches
 // and creator/get_creator_channels returns, merged from both, every field
 // either answer had
+// Verification badges, which the item templates leave out (they belonged to
+// the captured channels): the owner badge of the older renderers, the image
+// attached after a name in text view models (24 px in channel headers, 14 px
+// elsewhere), and the icon on a lockup's channel-name part. src/innertube/
+// badges.ts adds them for channels an operator has verified.
+function badges() {
+	const strip = (o: any) => clean(o);
+	const watchHtml = pageVar(body("watch", /_watch\.resp$/));
+	const owner = find(watchHtml, "videoOwnerRenderer");
+	const verified = owner.badges.find((b: any) => b.metadataBadgeRenderer?.style === "BADGE_STYLE_TYPE_VERIFIED");
+	save("badge/verified_owner", strip(verified));
+	// a name's text with the badge attached at its end: the run that colours
+	// the badge and the attachment, both starting at the name's length
+	const run = (text: any, image: string) => {
+		const attachment = text.attachmentRuns.find((r: any) => JSON.stringify(r).includes(`"${image}"`));
+		const style = text.styleRuns.find((r: any) => r.startIndex === attachment.startIndex && r.styleRunExtensions);
+		return { styleRun: { ...style, startIndex: "{{len:NAME}}" }, attachmentRun: { ...attachment, startIndex: "{{len:NAME}}" } };
+	};
+	const header = find(pageVar(body("channel", /_videos\.resp$/)), "pageHeaderViewModel");
+	save("badge/verified_run_24", run(header.title.dynamicTextViewModel.text, "CHECK_CIRCLE_FILLED"));
+	const about = pageVar(body("channel-about", /\.resp$/));
+	const part = (name: string) => find(about, "icon", (i) => i?.name === name);
+	save("badge/verified_part", part("CHECK_CIRCLE_FILLED"));
+	save("badge/artist_part", part("AUDIO_BADGE"));
+}
+
 function studio() {
 	const page = body("in-studio-upload", /_content\.resp$/);
 	const prefetch = JSON.parse(/chunkedPrefetchResolvers\['id-0'\]\.resolve\((\{[\s\S]*?\})\);<\/script>/.exec(page)![1]);
@@ -1717,6 +1755,7 @@ const steps: [string, () => void][] = [
 	["share", sharePanel],
 	["playlist-panel", playlistPanelTpl],
 	["studio", studio],
+	["badges", badges],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;

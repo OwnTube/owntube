@@ -168,6 +168,7 @@ Normal asset serving uses the local archives. The development upstream fallback 
 
 - **Overview**: counts, latest uploads, processing, newest accounts, client pins, unhandled requests, and recent operator activity.
 - **Accounts**: search and filter; disable or enable an account (disabling signs it out everywhere), grant or remove the operator role, and sign an account out.
+- **Account page**: an account's details, latest videos and actions, and its **marks**, shown on the site with YouTube's own graphics: a verification badge (the Verified checkmark or the Official Artist Channel note, on the watch page, lockups, search, the channel header and comments) and the YouTube Premium logo in the account's masthead.
 - **Videos**: search and filter by state; process a video again from its source or remove it with its media.
 - **Processing**: jobs by state, with retry for failed jobs.
 - **Compatibility**: pinned client and Studio builds, patch checks, and InnerTube methods the instance does not handle yet (downloadable as JSON).

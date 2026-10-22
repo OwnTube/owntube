@@ -6,6 +6,7 @@ import { loadPin } from "./client/store";
 import { PORT, PUBLIC_ORIGIN, STUDIO_HOST, STUDIO_ORIGIN, STUDIO_PORT } from "./config";
 import { migrate } from "./db";
 import { recordMiss, startDiagnostics } from "./diagnostics";
+import { addBadges } from "./innertube/badges";
 import { innertube } from "./innertube/router";
 import "./innertube/watch-routes";
 import "./innertube/browse";
@@ -75,6 +76,7 @@ async function handle(req: Request): Promise<Response> {
 		recordMiss(`page ${path.replace(/\/[A-Za-z0-9_-]{11,}/g, "/*")}`, path);
 		return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
 	}
+	await addBadges(page.initialData);
 	const n = nonce();
 	return new Response(renderPage(page, viewer, n, isDark(req)), {
 		headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "content-security-policy": CSP, ...SECURITY_HEADERS, ...APPEARANCE_HEADERS },

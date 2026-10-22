@@ -4,8 +4,8 @@ The goal is every page, setting and creator workflow of the official clients wor
 
 ## Admin panel
 
-- Channel verification tiers rendered with YouTube's own badges: verified checkmark and Official Artist Channel, wherever the client shows a channel name (watch owner, lockups, search, channel header, comments).
-- Other YouTube-native account marks an operator can grant, such as comment badges.
+- More YouTube-native marks an operator can grant: channel membership badges in comments, creator awards on the channel page.
+- Verification badges on playlist headers and the Subscriptions channel list.
 - Per-account limits (upload size, daily uploads), strikes and channel suspension with the client's own terminated-channel page.
 - Video moderation: age restriction, hide from search, takedown with the client's unavailable-video message.
 - Comment moderation across the instance; reports queue once reporting exists.

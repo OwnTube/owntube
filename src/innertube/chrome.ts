@@ -17,5 +17,13 @@ export const viewerVars = (viewer: NonNullable<Viewer>) => ({
 
 export function topbar(viewer: Viewer, pageUrl = "/") {
 	const vars = baseVars(viewer, pageUrl);
-	return viewer ? make("topbar/signed_in", { ...vars, ...viewerVars(viewer) }) : make("topbar/signed_out", vars);
+	if (!viewer) return make("topbar/signed_out", vars);
+	const t = make("topbar/signed_in", { ...vars, ...viewerVars(viewer) });
+	// the logo YouTube shows Premium members (the client draws it from this icon type)
+	if (viewer.premium) {
+		const logo = t.desktopTopbarRenderer.logo.topbarLogoRenderer;
+		logo.iconImage.iconType = "YOUTUBE_PREMIUM_LOGO";
+		logo.tooltipText = { runs: [{ text: "YouTube Premium Home" }] };
+	}
+	return t;
 }

@@ -6,6 +6,7 @@
 import { verifyApiSignature } from "../auth";
 import type { Viewer } from "../client/page";
 import { recordMiss } from "../diagnostics";
+import { addBadges } from "./badges";
 import { responseContext } from "./r";
 
 export type Ctx = { req: Request; url: URL; body: any; viewer: Viewer; method: string };
@@ -66,6 +67,7 @@ export async function innertube(req: Request, url: URL, viewer: Viewer): Promise
 	try {
 		const out = await h.fn({ req, url, body, viewer, method });
 		if (out instanceof Response) return out;
+		await addBadges(out);
 		return new Response(JSON.stringify(out), { headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" } });
 	} catch (e) {
 		if (e instanceof ApiError) return errorEnvelope(e.status, e.message, e.reason);

@@ -33,6 +33,7 @@ export type Viewer = {
 	apiSecret: string;
 	sessionId: string;
 	isAdmin: boolean;
+	premium: boolean; // shows the YouTube Premium logo (an operator's mark, see migrations/006_marks.sql)
 } | null;
 
 export type PageData = {

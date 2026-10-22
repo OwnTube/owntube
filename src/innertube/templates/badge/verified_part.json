@@ -1,0 +1,9 @@
+{
+	"name": "CHECK_CIRCLE_FILLED",
+	"height": 14,
+	"width": 14,
+	"accessibilityLabel": "Verified",
+	"marginEndToken": {
+		"spacing": 2
+	}
+}

@@ -18,6 +18,7 @@ import { INSTANCE_NAME, MAX_UPLOAD_BYTES, MEDIA_DIR, PUBLIC_ORIGIN, SECURE_COOKI
 import { sql } from "../db";
 import { flushMisses } from "../diagnostics";
 import { isVideoId } from "../ids";
+import { forgetVerifications, VERIFICATIONS, type Verification } from "../innertube/badges";
 import { avatarUrl } from "../innertube/r";
 import { deleteMedia, enqueue } from "../media/process";
 import { saveSetting, settings } from "../settings";
@@ -35,6 +36,7 @@ const DONE: Record<string, [string, boolean?]> = {
 	granted: ["The account is now an operator"],
 	revoked: ["The account is no longer an operator"],
 	"signed-out": ["Signed out of every session"],
+	marks: ["Marks saved"],
 	removed: ["Video removed"],
 	reprocess: ["Video queued for processing"],
 	retried: ["Job queued again"],
@@ -110,6 +112,7 @@ type View = { title: string; section: Section; body: string; sub?: string; actio
 const GET: Record<string, (ctx: Ctx) => Promise<View>> = {
 	"/admin": overview,
 	"/admin/accounts": accounts,
+	"/admin/account": account,
 	"/admin/videos": videos,
 	"/admin/processing": processing,
 	"/admin/compatibility": compatibility,
@@ -201,7 +204,7 @@ async function accounts({ url, viewer, frame }: Ctx): Promise<View> {
 		q ? sql`(u.login ilike ${like(q)} or c.handle ilike ${like(q)} or c.title ilike ${like(q)})` : sql`true`,
 		filter === "operators" ? sql`u.is_admin` : filter === "disabled" ? sql`u.disabled_at is not null` : sql`true`,
 	];
-	const rows = await sql`select u.id, u.login, u.is_admin, u.created_at, u.disabled_at, c.id as channel_id, c.handle, c.title,
+	const rows = await sql`select u.id, u.login, u.is_admin, u.premium, u.created_at, u.disabled_at, c.id as channel_id, c.handle, c.title, c.verification,
 			(select count(*)::int from videos v where v.channel_id = c.id and v.deleted_at is null) as videos,
 			(select count(*)::int from sessions s where s.user_id = u.id and s.expires_at > now()) as sessions
 		from users u join channels c on c.user_id = u.id
@@ -218,25 +221,14 @@ ${table(
 	["Account", "Username", ["Videos", "num"], ["Sessions", "num"], "Joined", "Status", ["", "num"]],
 	rows.slice(0, PAGE_SIZE).map((u: any) => {
 		const self = String(u.id) === viewer.userId;
-		const status = [u.is_admin ? badge("Operator", "info") : "", u.disabled_at ? badge("Disabled", "bad") : badge("Active", "good")].join(" ");
-		const acts = self
-			? `<span class="muted">You</span>`
-			: [
-					u.disabled_at
-						? action(f, "/admin/accounts/enable", "Enable", { id: String(u.id) }, "btn small")
-						: action(f, "/admin/accounts/disable", "Disable", { id: String(u.id) }, "btn small danger", `Disable @${u.handle}? They are signed out everywhere and can't sign in until enabled again.`),
-					u.is_admin
-						? action(f, "/admin/accounts/revoke", "Remove operator", { id: String(u.id) }, "btn small", `Remove @${u.handle} as an operator?`)
-						: action(f, "/admin/accounts/grant", "Make operator", { id: String(u.id) }, "btn small", `Make @${u.handle} an operator? They will be able to do everything in this panel.`),
-					u.sessions ? action(f, "/admin/accounts/signout", "Sign out", { id: String(u.id) }, "btn small", `Sign @${u.handle} out of all ${u.sessions} sessions?`) : "",
-				].join("");
+		const acts = self ? `<span class="muted">You</span>` : accountActions(f, u);
 		return [
-			`<a class="who-cell" href="/@${esc(u.handle)}">${avatar(u.channel_id)}<div style="min-width:0"><b class="clip">${esc(u.title)}</b><span class="muted">@${esc(u.handle)}</span></div></a>`,
+			`<a class="who-cell" href="/admin/account?id=${esc(String(u.id))}">${avatar(u.channel_id)}<div style="min-width:0"><b class="clip">${esc(u.title)}${markIcons(u)}</b><span class="muted">@${esc(u.handle)}</span></div></a>`,
 			esc(u.login),
 			String(u.videos),
 			String(u.sessions),
 			esc(date(u.created_at)),
-			status,
+			accountStatus(u),
 			`<div class="actions">${acts}</div>`,
 		];
 	}),
@@ -244,6 +236,57 @@ ${table(
 )}
 ${pager("/admin/accounts", url.searchParams, page, more)}`;
 	return { title: "Accounts", section: "accounts", body };
+}
+
+// the marks an account shows on the site, as small icons after its name
+const markIcons = (u: { verification: Verification; premium: boolean }) =>
+	[u.verification !== "none" ? `<span class="mark" title="${esc(VERIFICATIONS[u.verification])}">${icon(u.verification, 16)}</span>` : "", u.premium ? `<span class="mark" title="Premium logo">${icon("premium", 16)}</span>` : ""].join("");
+const accountStatus = (u: { is_admin: boolean; disabled_at: Date | null }) => [u.is_admin ? badge("Operator", "info") : "", u.disabled_at ? badge("Disabled", "bad") : badge("Active", "good")].join(" ");
+
+function accountActions(f: Frame, u: { id: unknown; handle: string; disabled_at: Date | null; is_admin: boolean; sessions: number }) {
+	const id = String(u.id);
+	return [
+		u.disabled_at
+			? action(f, "/admin/accounts/enable", "Enable", { id }, "btn small")
+			: action(f, "/admin/accounts/disable", "Disable", { id }, "btn small danger", `Disable @${u.handle}? They are signed out everywhere and can't sign in until enabled again.`),
+		u.is_admin
+			? action(f, "/admin/accounts/revoke", "Remove operator", { id }, "btn small", `Remove @${u.handle} as an operator?`)
+			: action(f, "/admin/accounts/grant", "Make operator", { id }, "btn small", `Make @${u.handle} an operator? They will be able to do everything in this panel.`),
+		u.sessions ? action(f, "/admin/accounts/signout", "Sign out", { id }, "btn small", `Sign @${u.handle} out of all ${u.sessions} sessions?`) : "",
+	].join("");
+}
+
+async function account({ url, viewer, frame }: Ctx): Promise<View> {
+	const id = url.searchParams.get("id") ?? "";
+	const [u] = /^\d{1,18}$/.test(id)
+		? await sql`select u.id, u.login, u.is_admin, u.premium, u.created_at, u.disabled_at, c.id as channel_id, c.handle, c.title, c.verification,
+				(select count(*)::int from videos v where v.channel_id = c.id and v.deleted_at is null) as videos,
+				(select count(*)::int from subscriptions s where s.channel_id = c.id) as subscribers,
+				(select count(*)::int from sessions s where s.user_id = u.id and s.expires_at > now()) as sessions
+			from users u join channels c on c.user_id = u.id where u.id = ${id}`
+		: [];
+	if (!u) return { title: "Account not found", section: "accounts", body: `<section class="card"><p style="margin:0">That account doesn't exist. <a href="/admin/accounts">All accounts</a></p></section>` };
+	const f = frame("accounts", u.title);
+	const self = String(u.id) === viewer.userId;
+	const latest = await sql`select id, title, status, visibility, created_at from videos where channel_id = ${u.channel_id} and deleted_at is null order by created_at desc limit 5`;
+	const option = (value: Verification, text: string) =>
+		`<label class="option"><input type="radio" name="verification" value="${value}"${u.verification === value ? " checked" : ""}><span><b>${value === "none" ? "" : `<span class="mark">${icon(value, 16)}</span> `}${esc(VERIFICATIONS[value])}</b><span class="muted">${text}</span></span></label>`;
+	const body = `<div class="grid">
+<section class="card"><div class="who-cell" style="margin-bottom:16px">${avatar(u.channel_id, 48)}<div style="min-width:0"><b class="clip">${esc(u.title)}${markIcons(u)}</b><span class="muted">@${esc(u.handle)}</span></div></div>
+<dl class="kv"><dt>Username</dt><dd>${esc(u.login)}</dd><dt>Joined</dt><dd>${esc(date(u.created_at))}</dd><dt>Status</dt><dd>${accountStatus(u)}</dd><dt>Videos</dt><dd>${u.videos}</dd><dt>Subscribers</dt><dd>${u.subscribers}</dd><dt>Sessions</dt><dd>${u.sessions}</dd><dt>Channel ID</dt><dd class="mono">${esc(u.channel_id)}</dd></dl>
+<div class="actions" style="margin-top:16px">${self ? `<span class="muted">This is your account</span>` : accountActions(f, u)}</div></section>
+<section class="card wide"><h2>Marks</h2><p class="section-note">Shown on the site with YouTube's own badges and logo.</p>
+<form method="post" action="/admin/accounts/marks"><input type="hidden" name="token" value="${esc(f.token)}"><input type="hidden" name="back" value="${esc(f.path)}"><input type="hidden" name="id" value="${esc(String(u.id))}">
+<h3 class="field-head">Verification</h3>
+${option("none", "No badge.")}
+${option("verified", "The grey checkmark after the channel name: on the watch page, in search, on lockups, the channel header and comments.")}
+${option("artist", "The music note YouTube gives artists, in the same places.")}
+<h3 class="field-head">Premium logo</h3>
+<label class="option"><input type="checkbox" name="premium" value="1"${u.premium ? " checked" : ""}><span><b><span class="mark">${icon("premium", 16)}</span> YouTube Premium logo</b><span class="muted">The masthead shows the Premium logo for this account.</span></span></label>
+<div style="margin-top:16px"><button class="btn primary">Save</button></div></form></section>
+<section class="card"><h2>Latest videos</h2>${latest.length ? `<div class="rows">${latest.map((v: any) => `<div class="r"><a href="/watch?v=${esc(v.id)}" class="clip">${esc(v.title)}</a><span class="v">${statusBadge(v.status)}</span></div>`).join("")}</div><a class="more" href="/admin/videos?q=${encodeURIComponent(u.handle)}">All videos</a>` : `<p class="muted" style="margin:0">No videos.</p>`}</section>
+</div>`;
+	return { title: u.title, section: "accounts", body, sub: `@${u.handle}`, actions: `<a class="btn" href="/@${esc(u.handle)}" target="_blank" rel="noopener">${icon("external", 18)} View channel</a>` };
 }
 
 function toolbar(base: string, q: string, placeholder: string, key: string, current: string, chips: [string, string][]) {
@@ -401,6 +444,7 @@ const ACTION_TEXT: Record<string, string> = {
 	"account.grant": "made an operator:",
 	"account.revoke": "removed as operator:",
 	"account.signout": "signed out",
+	"account.marks": "changed the marks of",
 	"video.remove": "removed video",
 	"video.reprocess": "queued for processing:",
 	"job.retry": "retried job",
@@ -477,6 +521,21 @@ async function post(ctx: Ctx): Promise<Response> {
 			for (const s of sessions) forgetSession(s.id);
 			await log(`account.${op}`, `@${u.handle}`);
 			return to({ disable: "disabled", enable: "enabled", grant: "granted", revoke: "revoked", signout: "signed-out" }[op]!);
+		}
+		case "/admin/accounts/marks": {
+			const id = get("id");
+			const verification = get("verification") as Verification;
+			if (!/^\d{1,18}$/.test(id) || !(verification in VERIFICATIONS)) return new Response("bad request", { status: 400 });
+			const premium = get("premium") === "1";
+			const [u] = await sql`select u.id, u.premium, c.id as channel_id, c.handle, c.verification from users u join channels c on c.user_id = u.id where u.id = ${id}`;
+			if (!u) return to("missing");
+			await sql`update channels set verification = ${verification} where id = ${u.channel_id}`;
+			await sql`update users set premium = ${premium} where id = ${id}`;
+			forgetVerifications();
+			for (const s of await sql`select id from sessions where user_id = ${id}`) forgetSession(s.id);
+			const changes = [u.verification !== verification ? `verification: ${VERIFICATIONS[verification]}` : "", u.premium !== premium ? `Premium logo: ${premium ? "on" : "off"}` : ""].filter(Boolean).join(", ");
+			if (changes) await log("account.marks", `@${u.handle}`, changes);
+			return to("marks");
 		}
 		case "/admin/videos/remove": {
 			const id = get("id");

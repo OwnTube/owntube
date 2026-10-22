@@ -232,7 +232,7 @@
 													"commandRuns": [
 														{
 															"startIndex": 0,
-															"length": 12,
+															"length": "{{len:CHANNEL_NAME}}",
 															"onTap": {
 																"innertubeCommand": {
 																	"commandMetadata": {
@@ -254,7 +254,7 @@
 													"styleRuns": [
 														{
 															"startIndex": 0,
-															"length": 12,
+															"length": "{{len:CHANNEL_NAME}}",
 															"weightLabel": "FONT_WEIGHT_NORMAL"
 														}
 													]

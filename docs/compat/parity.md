@@ -27,7 +27,7 @@ Status: ✅ works · 🟡 partial · ❌ not implemented
 | Channel | Home, Videos, Playlists tabs; About panel | ✅ | e2e (open), manual |
 | Channel | Shorts, Live, Posts, Store, channel search tab | ❌ | — |
 | Channel | Banner, avatar, handle, subscriber count | ✅ | manual |
-| Channel | Verified / artist badges | ❌ | — |
+| Channel | Verified and Official Artist Channel badges (set by operators) | ✅ | manual |
 | You | You page, History (remove an entry, clear all), Watch later, Liked videos | ✅ | e2e (history), manual |
 | You | Playlists feed, All subscriptions | ✅ | manual |
 | Subscriptions | Feed and channel list | ✅ | manual |
@@ -66,4 +66,4 @@ Status: ✅ works · 🟡 partial · ❌ not implemented
 | Overview, Accounts, Videos, Processing, Compatibility, Settings, Audit log | ✅ | manual (25 functional checks) |
 | Light / Dark / device appearance shared with the client | ✅ | manual |
 | Phone layout | ✅ | manual |
-| Channel verification and badges | ❌ | — |
+| Account marks: verification badge, Premium logo | ✅ | manual |

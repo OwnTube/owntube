@@ -29,6 +29,9 @@ const ICONS: Record<string, string> = {
 	signout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>',
 	left: '<path d="m15 18-6-6 6-6"/>',
 	right: '<path d="m9 18 6-6-6-6"/>',
+	verified: '<circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/>',
+	artist: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+	premium: '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/>',
 };
 
 export const icon = (name: keyof typeof ICONS | string, size = 24) =>
@@ -101,6 +104,9 @@ button,input,select{font:inherit;color:inherit}
 .section-head h2{margin:0;font-size:20px;line-height:28px;font-weight:700}
 .section-head .end{margin-left:auto;display:flex;gap:8px}
 .section-note{margin:0 0 16px;color:var(--text-2)}
+.field-head{margin:16px 0 4px;font-size:14px;font-weight:500;color:var(--text-2)}
+.mark{display:inline-flex;vertical-align:-3px;margin-left:4px;color:var(--text-2)}
+.option b .mark{margin:0 4px 0 0}
 .flash{display:flex;align-items:center;gap:12px;margin:0 0 24px;padding:12px 16px;border-radius:12px;background:var(--green-soft);color:var(--green)}
 .flash.bad{background:var(--red-soft);color:var(--red)}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:start}

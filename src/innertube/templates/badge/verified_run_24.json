@@ -1,0 +1,59 @@
+{
+	"styleRun": {
+		"startIndex": "{{len:NAME}}",
+		"styleRunExtensions": {
+			"styleRunColorMapExtension": {
+				"colorMap": [
+					{
+						"key": "USER_INTERFACE_THEME_DARK",
+						"value": 4294967295
+					},
+					{
+						"key": "USER_INTERFACE_THEME_LIGHT",
+						"value": 4279440147
+					}
+				]
+			}
+		}
+	},
+	"attachmentRun": {
+		"startIndex": "{{len:NAME}}",
+		"length": 0,
+		"element": {
+			"type": {
+				"imageType": {
+					"image": {
+						"sources": [
+							{
+								"clientResource": {
+									"imageName": "CHECK_CIRCLE_FILLED"
+								},
+								"width": 24,
+								"height": 24
+							}
+						]
+					}
+				}
+			},
+			"properties": {
+				"layoutProperties": {
+					"height": {
+						"value": 24,
+						"unit": "DIMENSION_UNIT_POINT"
+					},
+					"width": {
+						"value": 24,
+						"unit": "DIMENSION_UNIT_POINT"
+					},
+					"margin": {
+						"left": {
+							"value": 8,
+							"unit": "DIMENSION_UNIT_POINT"
+						}
+					}
+				}
+			}
+		},
+		"alignment": "ALIGNMENT_VERTICAL_CENTER"
+	}
+}

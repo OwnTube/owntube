@@ -34,14 +34,14 @@ export async function getViewer(req: Request): Promise<Viewer> {
 	if (!sid || sid.length > 100) return null;
 	const hit = viewers.get(sid);
 	if (hit && Date.now() - hit.at < 30_000) return hit.viewer;
-	const [row] = await sql`select s.id, s.user_id, s.api_secret, u.is_admin, c.id as channel_id, c.handle, c.title
+	const [row] = await sql`select s.id, s.user_id, s.api_secret, u.is_admin, u.premium, c.id as channel_id, c.handle, c.title
 		from sessions s join users u on u.id = s.user_id join channels c on c.user_id = u.id
 		where s.id = ${sid} and s.expires_at > now() and u.disabled_at is null`;
 	if (!row) {
 		viewers.delete(sid);
 		return null;
 	}
-	const viewer = { userId: String(row.user_id), channelId: row.channel_id, handle: row.handle, title: row.title, apiSecret: row.api_secret, sessionId: row.id, isAdmin: row.is_admin };
+	const viewer = { userId: String(row.user_id), channelId: row.channel_id, handle: row.handle, title: row.title, apiSecret: row.api_secret, sessionId: row.id, isAdmin: row.is_admin, premium: row.premium };
 	viewers.set(sid, { viewer, at: Date.now() });
 	if (!hit) void sql`update sessions set last_seen_at = now() where id = ${sid}`;
 	return viewer;

@@ -75,6 +75,10 @@ Studio runs as the pinned creator client on its own origin ([`src/studio/`](../s
 - `video/delete` must answer `{success: true}`; bulk delete enqueues and is polled with `creator/check_creator_bulk_delete` until `BULK_ACTION_STATUS_DONE`.
 - While a video uploads or processes, `statusDetails.feedbackServiceContinuationToken` makes Studio poll `upload/feedback`, whose items carry transfer progress, per-resolution processing state and, once done, thumbnails ([`src/studio/feedback.ts`](../src/studio/feedback.ts)). No copyright or guidelines checks run, so Studio shows its own "Checks complete" state.
 
+## Badges and marks
+
+Operators can verify a channel or mark it as an Official Artist Channel, and give an account the YouTube Premium logo (`channels.verification`, `users.premium`). Item templates leave out the captured channels' badges; [`src/innertube/badges.ts`](../src/innertube/badges.ts) puts YouTube's own badge structures (templates from the captures, step `badges` in make-templates) into every response that names a verified channel, after the response is built, so each builder gets them without its own code. The client draws the badges from them: `metadataBadgeRenderer` on older renderers, an icon on a lockup's channel-name part, an image attached after the name in a channel header, and `isVerified` / `isArtist` on comment authors. The Premium logo is the topbar logo's icon type (`YOUTUBE_PREMIUM_LOGO`).
+
 ## Admin panel
 
 `/admin` ([`src/admin/`](../src/admin/)) is server-rendered HTML. Operators only: anyone else gets a 404. Every mutation is a same-origin POST with the session's form token and is recorded in `admin_actions`. See the README for what each page does.
