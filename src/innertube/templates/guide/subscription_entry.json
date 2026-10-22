@@ -17,12 +17,15 @@
 		"thumbnail": {
 			"thumbnails": "{{AVATAR}}"
 		},
+		"badges": {
+			"liveBroadcasting": false
+		},
 		"formattedTitle": {
 			"simpleText": "{{CHANNEL_NAME}}"
 		},
 		"accessibility": {
 			"accessibilityData": {
-				"label": "{{CHANNEL_NAME}}. New content available."
+				"label": "{{CHANNEL_NAME}}"
 			}
 		},
 		"entryData": {

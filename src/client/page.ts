@@ -173,14 +173,6 @@ export function buildYtcfg(kind: PageKind, viewer: Viewer, pageUrl: string, nonc
 	return rehost(cfg) as Record<string, any>;
 }
 
-const FOOTER_LINKS = [
-	["primary", "/about", "About"],
-	["primary", "/upload", "Upload"],
-	["secondary", "/about#terms", "Terms"],
-	["secondary", "/about#privacy", "Privacy"],
-]
-	.map(([slot, href, label]) => `<a slot="guide-links-${slot}" href="${href}" style="display: none;">${label}</a>`)
-	.join("");
 
 type Rule = { name: string; find: RegExp; replace: (m: RegExpExecArray) => string; optional?: boolean };
 
@@ -245,8 +237,9 @@ export function renderPage(data: PageData, viewer: Viewer, nonce: string): strin
 		{ name: "title", find: /<title>[^<]*<\/title>|(?<=<head>)(?![\s\S]*<title>)/g, replace: () => `<title>${escapeHtml(data.title ? `${data.title} - ${INSTANCE_NAME}` : INSTANCE_NAME)}</title>` },
 		{ name: "meta-title", find: /<meta name="title" content="[^"]*">/g, replace: () => `<meta name="title" content="${escapeHtml(data.title)}">`, optional: true },
 		{ name: "meta-description", find: /<meta name="description" content="[^"]*">/g, replace: () => `<meta name="description" content="${escapeHtml(data.description ?? "")}">`, optional: true },
-		// the guide's footer: this instance's pages instead of YouTube's
-		{ name: "guide-footer-links", find: /(?:<a slot="guide-links-(?:primary|secondary)"[^>]*>[^<]*<\/a>)+/g, replace: () => FOOTER_LINKS },
+		// the guide's footer links are YouTube's own pages (About, Press, Terms, ...),
+		// which say nothing about this instance: removed, the instance name stays
+		{ name: "guide-footer-links", find: /(?:<a slot="guide-links-(?:primary|secondary)"[^>]*>[^<]*<\/a>)+/g, replace: () => "" },
 		{ name: "copyright", find: /<div id="copyright" slot="copyright"[^>]*>[\s\S]*?<\/div><\/div>/g, replace: () => `<div id="copyright" slot="copyright" style="display: none;"><div dir="ltr" style="display:inline">${escapeHtml(INSTANCE_NAME)}</div></div>`, optional: true },
 		{ name: "app-links", find: /<link rel="(?:alternate|canonical|search)"[^>]*>|<meta name="apple-itunes-app"[^>]*>|<meta http-equiv="origin-trial"[^>]*\/>/g, replace: () => "", optional: true },
 	];

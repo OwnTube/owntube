@@ -1,0 +1,66 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"endpoint": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"url": "/feed/subscriptions",
+									"webPageType": "WEB_PAGE_TYPE_BROWSE",
+									"rootVe": 96368,
+									"apiUrl": "/youtubei/v1/browse"
+								}
+							},
+							"browseEndpoint": {
+								"browseId": "FEsubscriptions"
+							}
+						},
+						"selected": true,
+						"content": {
+							"richGridRenderer": {
+								"contents": "{{ITEMS}}",
+								"targetId": "browse-feedFEsubscriptions",
+								"reflowOptions": {
+									"minimumRowsOfVideosAtStart": 0,
+									"minimumRowsOfVideosBetweenSections": 0
+								}
+							}
+						},
+						"tabIdentifier": "FEsubscriptions",
+						"accessibility": {
+							"accessibilityData": {
+								"label": "subscriptions"
+							}
+						}
+					}
+				}
+			]
+		}
+	},
+	"header": {
+		"feedTabbedHeaderRenderer": {
+			"title": {
+				"runs": [
+					{
+						"text": "Subscriptions"
+					}
+				]
+			}
+		}
+	},
+	"onResponseReceivedActions": [
+		{
+			"resetSubscriptionsUnreadDotCommand": {
+				"targetId": "subscriptions-guide-item"
+			}
+		}
+	],
+	"observedStateTags": [
+		{
+			"stateTag": 3,
+			"instruction": "STATE_TAG_BROWSE_INSTRUCTION_MARK_AS_DIRTY"
+		}
+	]
+}

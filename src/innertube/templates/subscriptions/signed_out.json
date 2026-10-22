@@ -1,0 +1,132 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"endpoint": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"url": "/feed/subscriptions",
+									"webPageType": "WEB_PAGE_TYPE_BROWSE",
+									"rootVe": 96368,
+									"apiUrl": "/youtubei/v1/browse"
+								}
+							},
+							"browseEndpoint": {
+								"browseId": "FEsubscriptions"
+							}
+						},
+						"selected": true,
+						"content": {
+							"sectionListRenderer": {
+								"contents": [
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"backgroundPromoRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Don’t miss new videos"
+																}
+															]
+														},
+														"bodyText": {
+															"runs": [
+																{
+																	"text": "Sign in to see updates from your favorite YouTube channels"
+																}
+															]
+														},
+														"icon": {
+															"iconType": "SUBSCRIPTIONS"
+														},
+														"ctaButton": {
+															"buttonRenderer": {
+																"style": "STYLE_SUGGESTIVE",
+																"size": "SIZE_SMALL",
+																"text": {
+																	"runs": [
+																		{
+																			"text": "Sign in"
+																		}
+																	]
+																},
+																"icon": {
+																	"iconType": "AVATAR_LOGGED_OUT"
+																},
+																"navigationEndpoint": {
+																	"commandMetadata": {
+																		"webCommandMetadata": {
+																			"url": "{{SIGNIN_URL}}",
+																			"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																			"rootVe": 83769
+																		}
+																	},
+																	"signInEndpoint": {
+																		"nextEndpoint": {
+																			"commandMetadata": {
+																				"webCommandMetadata": {
+																					"url": "/feed/subscriptions",
+																					"webPageType": "WEB_PAGE_TYPE_BROWSE",
+																					"rootVe": 96368,
+																					"apiUrl": "/youtubei/v1/browse"
+																				}
+																			},
+																			"browseEndpoint": {
+																				"browseId": "FEsubscriptions"
+																			}
+																		}
+																	}
+																}
+															}
+														},
+														"style": {
+															"value": "BACKGROUND_PROMO_STYLE_TYPE_FULL_HEIGHT"
+														}
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						},
+						"tabIdentifier": "FEsubscriptions",
+						"accessibility": {
+							"accessibilityData": {
+								"label": "subscriptions"
+							}
+						}
+					}
+				}
+			]
+		}
+	},
+	"header": {
+		"feedTabbedHeaderRenderer": {
+			"title": {
+				"runs": [
+					{
+						"text": "Subscriptions"
+					}
+				]
+			}
+		}
+	},
+	"onResponseReceivedActions": [
+		{
+			"resetSubscriptionsUnreadDotCommand": {
+				"targetId": "subscriptions-guide-item"
+			}
+		}
+	],
+	"observedStateTags": [
+		{
+			"stateTag": 3,
+			"instruction": "STATE_TAG_BROWSE_INSTRUCTION_MARK_AS_DIRTY"
+		}
+	]
+}

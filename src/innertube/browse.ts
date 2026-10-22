@@ -9,6 +9,8 @@ import { channelVideos, getChannel, isSubscribed, latestVideos, subscribedChanne
 import { sql } from "../db";
 import { decodeToken, encodeToken, isChannelId } from "../ids";
 import { topbar } from "./chrome";
+import { homeItems, homePage, subscriptionsItems, subscriptionsPage } from "./feeds";
+import { notificationsInbox } from "./guide";
 import { channelRenderer, continuationItem, richItem, videoLockup, videoRenderer } from "./items";
 import { channelPlaylistsGrid, playlistBrowse, playlistLockupsFor, watchLaterAndLiked } from "./playlists";
 import {
@@ -102,44 +104,12 @@ const appendAction = (items: unknown[], targetId: string) => ({ appendContinuati
 
 // ---- feeds ----
 
-async function homeItems(viewer: Viewer, offset: number) {
-	const videos = await latestVideos(PAGE, offset);
-	const items: unknown[] = videos.map((v) => richItem(v, viewer));
-	if (videos.length === PAGE) items.push(continuationItem(encodeToken({ k: "home", o: offset + PAGE }), "/youtubei/v1/browse"));
-	return items;
-}
-
 async function home(viewer: Viewer): Promise<BrowseResult> {
-	const items = await homeItems(viewer, 0);
-	const contents = items.length ? items : [feedNudge("Nothing here yet", "When people on this instance upload videos, they show up here.")];
-	return {
-		kind: "home",
-		title: "",
-		url: "/",
-		command: browseEndpoint("FEwhat_to_watch", "/"),
-		response: { contents: singleTab(richGrid(contents, "browse-feedFEwhat_to_watch"), "FEwhat_to_watch") },
-	};
-}
-
-async function subscriptionsItems(viewer: Viewer, offset: number) {
-	const videos = await subscriptionFeed(viewer, PAGE, offset);
-	const items: unknown[] = videos.map((v) => richItem(v, viewer));
-	if (videos.length === PAGE) items.push(continuationItem(encodeToken({ k: "subs", o: offset + PAGE }), "/youtubei/v1/browse"));
-	return items;
+	return { kind: "home", title: "", url: "/", command: browseEndpoint("FEwhat_to_watch", "/"), response: await homePage(viewer) };
 }
 
 async function subscriptions(viewer: Viewer): Promise<BrowseResult> {
-	const base = { kind: "home" as const, title: "Subscriptions", url: "/feed/subscriptions", command: browseEndpoint("FEsubscriptions", "/feed/subscriptions", "WEB_PAGE_TYPE_BROWSE", 96368) };
-	if (!viewer) return { ...base, response: { contents: singleTab(signInPromo("SUBSCRIPTIONS", "Don't miss new videos", "Sign in to see updates from your favorite channels", "/feed/subscriptions"), "FEsubscriptions") } };
-	const items = await subscriptionsItems(viewer, 0);
-	const contents = items.length ? items : [feedNudge("No new videos", "Videos from channels you subscribe to show up here.")];
-	return {
-		...base,
-		response: {
-			contents: singleTab(richGrid(contents, "browse-feedFEsubscriptions", { header: { feedFilterChipBarRenderer: undefined } }), "FEsubscriptions"),
-			header: { feedTabbedHeaderRenderer: { title: runs("Subscriptions") } },
-		},
-	};
+	return { kind: "home", title: "Subscriptions", url: "/feed/subscriptions", command: browseEndpoint("FEsubscriptions", "/feed/subscriptions", "WEB_PAGE_TYPE_BROWSE", 96368), response: await subscriptionsPage(viewer) };
 }
 
 async function historyItems(viewer: Viewer, offset: number) {
@@ -338,6 +308,7 @@ async function continuation(token: string, viewer: Viewer) {
 route("browse", async ({ body, viewer }) => {
 	if (body.continuation) return continuation(body.continuation, viewer);
 	const id = String(body.browseId ?? "");
+	if (id === "FEnotifications_inbox") return notificationsInbox(viewer);
 	const r = await buildBrowse(id, body.params, viewer);
 	if (!r) {
 		recordMiss(`youtubei browse:${id.replace(/^(UC|VLPL|PL)[\w-]+$/, "$1*")}`, JSON.stringify({ browseId: id, params: body.params }));

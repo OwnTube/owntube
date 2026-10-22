@@ -1,0 +1,37 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"selected": true,
+						"content": {
+							"richGridRenderer": {
+								"contents": "{{ITEMS}}",
+								"targetId": "browse-feedFEwhat_to_watch",
+								"reflowOptions": {
+									"minimumRowsOfVideosAtStart": 1,
+									"minimumRowsOfVideosBetweenSections": 1
+								},
+								"layoutSizing": "RICH_GRID_LAYOUT_SIZING_STANDARD",
+								"minItemWidth": 360
+							}
+						},
+						"tabIdentifier": "FEwhat_to_watch"
+					}
+				}
+			]
+		}
+	},
+	"header": {
+		"feedTabbedHeaderRenderer": {
+			"title": {
+				"runs": [
+					{
+						"text": "Home"
+					}
+				]
+			}
+		}
+	}
+}

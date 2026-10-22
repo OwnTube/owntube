@@ -1,0 +1,42 @@
+{
+	"richSectionRenderer": {
+		"content": {
+			"shelfRenderer": {
+				"title": {
+					"runs": [
+						{
+							"text": "Latest"
+						}
+					]
+				},
+				"subscribeButton": {
+					"buttonRenderer": {
+						"style": "STYLE_MONO_TONAL",
+						"size": "SIZE_DEFAULT",
+						"isDisabled": false,
+						"text": {
+							"runs": [
+								{
+									"text": "All subscriptions"
+								}
+							]
+						},
+						"navigationEndpoint": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"url": "/feed/channels",
+									"webPageType": "WEB_PAGE_TYPE_BROWSE",
+									"rootVe": 6827,
+									"apiUrl": "/youtubei/v1/browse"
+								}
+							},
+							"browseEndpoint": {
+								"browseId": "FEchannels"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

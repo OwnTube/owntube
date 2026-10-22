@@ -1,0 +1,71 @@
+{
+	"onResponseReceivedEndpoints": [
+		{
+			"openPopupAction": {
+				"popup": {
+					"multiPageMenuRenderer": {
+						"header": {
+							"simpleMenuHeaderRenderer": {
+								"title": {
+									"runs": [
+										{
+											"text": "Notifications"
+										}
+									]
+								},
+								"buttons": [
+									{
+										"buttonRenderer": {
+											"style": "STYLE_DEFAULT",
+											"size": "SIZE_DEFAULT",
+											"isDisabled": false,
+											"icon": {
+												"iconType": "SETTINGS"
+											},
+											"navigationEndpoint": {
+												"commandMetadata": {
+													"webCommandMetadata": {
+														"url": "/account_notifications",
+														"webPageType": "WEB_PAGE_TYPE_SETTINGS",
+														"rootVe": 23462,
+														"apiUrl": "/youtubei/v1/browse"
+													}
+												},
+												"browseEndpoint": {
+													"browseId": "SPaccount_notifications"
+												}
+											},
+											"tooltip": "Settings",
+											"accessibilityData": {
+												"accessibilityData": {
+													"label": "Settings"
+												}
+											}
+										}
+									}
+								]
+							}
+						},
+						"sections": [
+							{
+								"backgroundPromoRenderer": {
+									"title": {
+										"simpleText": "Your notifications live here"
+									},
+									"bodyText": {
+										"simpleText": "Subscribe to your favorite channels to get notified about their latest videos."
+									},
+									"icon": {
+										"iconType": "NOTIFICATIONS"
+									}
+								}
+							}
+						],
+						"style": "MULTI_PAGE_MENU_STYLE_TYPE_NOTIFICATIONS"
+					}
+				},
+				"popupType": "DROPDOWN"
+			}
+		}
+	]
+}

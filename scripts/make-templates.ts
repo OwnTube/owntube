@@ -252,7 +252,16 @@ export function videoLockup(sample: any) {
 	wholeToken(find(item, "decoratedAvatarViewModel") ?? {}, "sources", "AVATAR");
 	const idList: [string, string][] = [[id, "VIDEO_ID"]];
 	if (chanEndpoint) idList.push([chanEndpoint.browseId, "CHANNEL_ID"]);
-	return { item: tokenize(item, pairs, idList), samples };
+	// player params YouTube attached for its recommendation context
+	item = dropKey(item, "playerParams");
+	let out = tokenize(item, pairs, idList);
+	out = strings(out, (x) =>
+		x
+			.replace(/&pp=[^&"]*/, "")
+			// the lockup's label: title and duration (YouTube drops seconds past an hour)
+			.replace(/^\{\{TITLE\}\} \d+ (hours?|minutes?|seconds?)\b.*$/, "{{TITLE}} {{DURATION_LABEL}}"),
+	);
+	return { item: out, samples };
 }
 
 // the first array element under `listKey` that contains `key`
@@ -541,30 +550,139 @@ function guide() {
 	const g = pruneGuide(clean(raw));
 	delete g.userProfile;
 	const subsSection = g.items.find((s: any) => s.guideSubscriptionsSectionRenderer).guideSubscriptionsSectionRenderer;
-	const entries = subsSection.items.filter((it: any) => it.guideEntryRenderer);
-	const sample = entries[0];
+	const more = subsSection.items.find((it: any) => it.guideCollapsibleEntryRenderer);
+	const entries = [...subsSection.items.filter((it: any) => it.guideEntryRenderer), ...(more?.guideCollapsibleEntryRenderer.expandableItems ?? [])];
+	const names = entries.map((e: any) => guideTitle(e.guideEntryRenderer));
+	// a channel without new content (no dot, no "New content available.")
+	const sample = entries.find((e: any) => e.guideEntryRenderer.presentationStyle === "GUIDE_ENTRY_PRESENTATION_STYLE_NONE");
 	const ge = sample.guideEntryRenderer;
 	const sid = ge.entryData.guideEntryData.guideEntryId;
 	const sname = guideTitle(ge);
 	const surl = ge.navigationEndpoint.browseEndpoint.canonicalBaseUrl;
-	ge.presentationStyle = "GUIDE_ENTRY_PRESENTATION_STYLE_NONE";
-	delete ge.badges;
 	ge.thumbnail.thumbnails = "{{AVATAR}}";
 	save("guide/subscription_entry", tokenize(sample, [[sid, "CHANNEL_ID"], [sname, "CHANNEL_NAME"], [surl, "CHANNEL_URL"]], [[sid, "CHANNEL_ID"]]), [sid, sname]);
-	const more = subsSection.items.find((it: any) => it.guideCollapsibleEntryRenderer);
 	if (more) {
 		more.guideCollapsibleEntryRenderer.expandableItems = "{{MORE}}";
-		save("guide/subscriptions_more", tokenize(more, []), entries.map((e: any) => guideTitle(e.guideEntryRenderer)));
+		save("guide/subscriptions_more", tokenize(more, []), names);
 	}
-	subsSection.items = "{{SUBSCRIPTIONS}}";
+	// the "Subscriptions >" header stays; the builder appends the channels
+	subsSection.items = subsSection.items.filter((it: any) => it.guideCollapsibleSectionEntryRenderer);
 	// "Your channel" / "Your videos" belong to the viewer
-	const you = g.items.map((s: any) => find(s, "guideCollapsibleSectionEntryRenderer")).find(Boolean);
+	const you = g.items.map((s: any) => find(s, "guideCollapsibleSectionEntryRenderer")).find((c: any) => c?.sectionItems);
 	const yourChannel = you.sectionItems.find((it: any) => it.guideEntryRenderer?.icon?.iconType === "ACCOUNT_BOX_CAIRO");
 	const vid = yourChannel.guideEntryRenderer.navigationEndpoint.browseEndpoint.browseId;
 	const vurl = yourChannel.guideEntryRenderer.navigationEndpoint.browseEndpoint.canonicalBaseUrl;
 	const pairs: [string, string][] = [[vid, "VIEWER_CHANNEL_ID"]];
 	if (vurl) pairs.push([vurl, "VIEWER_CHANNEL_URL"]);
-	save("guide/signed_in", tokenize(g, pairs, [[vid, "VIEWER_CHANNEL_ID"]]), entries.map((e: any) => guideTitle(e.guideEntryRenderer)));
+	save("guide/signed_in", tokenize(g, pairs, [[vid, "VIEWER_CHANNEL_ID"]]), names);
+}
+
+// ======================================================================
+// app chrome: top bar, account menu (⋮ when signed out), notifications
+// menu entries that lead to Google's products or to pages this instance
+// doesn't serve are left out
+const menuTitle = (e: any) => contentOf(e?.title).trim();
+const UNSUPPORTED_MENU = new Set(["Google Account", "Switch account", "Purchases and memberships", "Your data in YouTube", "Help", "Send feedback", "Settings"]);
+function pruneMenu(m: any) {
+	m.sections = m.sections
+		.map((sec: any) => {
+			const s = sec.multiPageMenuSectionRenderer;
+			if (s) s.items = s.items.filter((it: any) => !UNSUPPORTED_MENU.has(menuTitle(Object.values(it)[0])));
+			return sec;
+		})
+		.filter((sec: any) => !sec.multiPageMenuSectionRenderer || sec.multiPageMenuSectionRenderer.items.length);
+	return m;
+}
+
+function chrome() {
+	const out = clean(pageVar(body("menus-out", /^001-/)).topbar);
+	delete out.desktopTopbarRenderer.voiceSearchButton; // needs Google's speech service
+	save("topbar/signed_out", tokenize(out, []));
+
+	const own = pageVar(body("in-own-channel", /^001-/)).metadata.channelMetadataRenderer;
+	const vid: string = own.externalId;
+	const vurl = `/@${own.vanityChannelUrl.split("/@")[1]}`;
+	const pairs: [string, string][] = [[vid, "VIEWER_CHANNEL_ID"], [vurl, "VIEWER_CHANNEL_URL"]];
+	const ids: [string, string][] = [[vid, "VIEWER_CHANNEL_ID"]];
+	const inn = clean(pageVar(body("in-menus", /^001-/)).topbar);
+	delete inn.desktopTopbarRenderer.voiceSearchButton;
+	wholeToken(inn, "thumbnails", "VIEWER_AVATAR", (o) => o.thumbnails?.[0]?.url?.includes("ggpht"));
+	// Create menu: uploading is supported; live streams and posts are not
+	const create = find(inn, "multiPageMenuRenderer", (m) => m.style === "MULTI_PAGE_MENU_STYLE_TYPE_CREATION");
+	for (const sec of create.sections) {
+		const s = sec.multiPageMenuSectionRenderer;
+		if (s) s.items = s.items.filter((it: any) => menuTitle(Object.values(it)[0]) === "Upload video");
+	}
+	save("topbar/signed_in", tokenize(inn, pairs, ids));
+
+	const sysMenu = clean(JSON.parse(body("menus-out", /account_menu/)));
+	pruneMenu(sysMenu.actions[0].openPopupAction.popup.multiPageMenuRenderer);
+	save("account/menu_signed_out", tokenize(sysMenu, []));
+
+	const accMenu = clean(JSON.parse(body("in-home", /account_menu/)));
+	const m = pruneMenu(accMenu.actions[0].openPopupAction.popup.multiPageMenuRenderer);
+	const h = m.header.activeAccountHeaderRenderer;
+	delete h.settingsEndpoint; // the site picker (/select_site)
+	h.accountName = { simpleText: "{{VIEWER_NAME}}" };
+	h.channelHandle = { simpleText: "{{VIEWER_AT_HANDLE}}" };
+	h.accountPhoto.thumbnails = "{{VIEWER_PHOTO}}";
+	save("account/menu_signed_in", tokenize(accMenu, pairs, ids));
+
+	const inbox = clean(JSON.parse(body("in-menus", /^005-.*browse/)));
+	save("notification/inbox_empty", tokenize(inbox, []));
+}
+
+// ======================================================================
+// feeds: home and subscriptions
+// lockup menus keep what this instance supports (queue, Watch later,
+// playlists, share); recommendation feedback and reporting are left out
+const LOCKUP_MENU = new Set(["Add to queue", "Save to Watch later", "Save to playlist", "Share"]);
+const itemTitle = (x: any) => contentOf(Object.values(x)[0] && (Object.values(x)[0] as any).title);
+function pruneLockupMenu(item: any) {
+	for (const list of findAll(item, "listItems")) for (let i = list.length - 1; i >= 0; i--) if (!LOCKUP_MENU.has(itemTitle(list[i]))) list.splice(i, 1);
+	return item;
+}
+const gridOf = (page: any) => page.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer.content.richGridRenderer;
+// a page response without the parts every page gets from elsewhere
+function pageOnly(page: any) {
+	const p = clean(page);
+	delete p.topbar;
+	delete p.frameworkUpdates;
+	return p;
+}
+
+function feeds() {
+	// lockups: the signed-in sample, and the same with the signed-out menu
+	const home = pageVar(body("in-menus", /^001-/));
+	const g = gridOf(home);
+	const sample = g.contents.find((it: any) => it.richItemRenderer?.content?.lockupViewModel?.contentType === "LOCKUP_CONTENT_TYPE_VIDEO");
+	const { item, samples } = videoLockup(pruneLockupMenu(structuredClone(sample)));
+	save("item/video_lockup_rich", item, samples);
+	const out = structuredClone(item);
+	const outMenu = find(JSON.parse(readFileSync(join(OUT, "item/video_lockup_channel.json"), "utf8")), "listItems");
+	holder(out, "listItems").listItems = outMenu;
+	save("item/video_lockup_rich_out", out, samples);
+	const cont = clean(g.contents.find((it: any) => it.continuationItemRenderer));
+	find(cont, "continuationCommand").token = "{{CONTINUATION}}";
+	save("item/continuation_rich", cont);
+
+	// home: the grid (personal topic chips left out), and YouTube's empty-feed nudge
+	const hp = pageOnly(home);
+	const hg = gridOf(hp);
+	delete hg.header;
+	hg.contents = "{{ITEMS}}";
+	save("home/page", tokenize(hp, []));
+	const empty = pageOnly(pageVar(body("menus-out", /^001-/)));
+	save("home/empty", tokenize(empty, []));
+
+	// subscriptions: "Latest" shelf heading, then the videos
+	const subs = pageOnly(pageVar(body("in-subscriptions", /^001-/)));
+	const sg = gridOf(subs);
+	const latest = sg.contents.find((it: any) => find(it, "shelfRenderer"));
+	save("subscriptions/latest", tokenize(latest, []));
+	sg.contents = "{{ITEMS}}";
+	save("subscriptions/page", tokenize(subs, []));
+	save("subscriptions/signed_out", tokenize(pageOnly(pageVar(body("feed-subscriptions", /^001-/))), []));
 }
 
 // ======================================================================
@@ -574,6 +692,8 @@ const steps: [string, () => void][] = [
 	["channel", channel],
 	["channel-in", channelSignedIn],
 	["guide", guide],
+	["chrome", chrome],
+	["feeds", feeds],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;
@@ -584,6 +704,7 @@ for (const [name, fn] of steps) {
 		process.exitCode = 1;
 	}
 }
-writeFileSync(join(OUT, "_assets.txt"), [...assets].sort().join("\n") + "\n");
+// the asset list covers every template, so only a full run rewrites it
+if (!only.length) writeFileSync(join(OUT, "_assets.txt"), [...assets].sort().join("\n") + "\n");
 console.log(`templates: ${written.join(", ")}`);
 console.log(`gstatic assets referenced: ${assets.size}; personal values guarded: ${personal.filter(Boolean).length}`);

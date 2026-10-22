@@ -38,7 +38,54 @@
 		{
 			"guideSubscriptionsSectionRenderer": {
 				"sort": "CHANNEL_RELEVANCE",
-				"items": "{{SUBSCRIPTIONS}}",
+				"items": [
+					{
+						"guideCollapsibleSectionEntryRenderer": {
+							"headerEntry": {
+								"guideEntryRenderer": {
+									"navigationEndpoint": {
+										"commandMetadata": {
+											"webCommandMetadata": {
+												"url": "/feed/subscriptions",
+												"webPageType": "WEB_PAGE_TYPE_BROWSE",
+												"rootVe": 96368,
+												"apiUrl": "/youtubei/v1/browse"
+											}
+										},
+										"browseEndpoint": {
+											"browseId": "FEsubscriptions"
+										}
+									},
+									"icon": {
+										"iconType": "TAB_SUBSCRIPTIONS_CAIRO"
+									},
+									"formattedTitle": {
+										"simpleText": "Subscriptions"
+									},
+									"accessibility": {
+										"accessibilityData": {
+											"label": "Subscriptions"
+										}
+									},
+									"entryData": {
+										"guideEntryData": {
+											"guideEntryId": "subscriptions-channels-header"
+										}
+									},
+									"presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE",
+									"targetId": "subscriptions-guide-item",
+									"isPrimary": true
+								}
+							},
+							"expanderIcon": {
+								"iconType": "EXPAND"
+							},
+							"collapserIcon": {
+								"iconType": "COLLAPSE"
+							}
+						}
+					}
+				],
 				"handlerDatas": [
 					"GUIDE_ACTION_ADD_TO_SUBSCRIPTIONS",
 					"GUIDE_ACTION_REMOVE_FROM_SUBSCRIPTIONS"
