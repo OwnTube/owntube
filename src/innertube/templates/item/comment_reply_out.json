@@ -1,0 +1,22 @@
+{
+	"commentThreadRenderer": {
+		"renderingPriority": "RENDERING_PRIORITY_UNKNOWN",
+		"isModeratedElqComment": false,
+		"commentViewModel": {
+			"commentViewModel": {
+				"commentKey": "{{COMMENT_KEY}}",
+				"sharedKey": "{{SHARED_KEY}}",
+				"toolbarStateKey": "{{TOOLBAR_STATE_KEY}}",
+				"toolbarSurfaceKey": "{{TOOLBAR_SURFACE_KEY}}",
+				"commentId": "{{COMMENT_ID}}",
+				"commentSurfaceKey": "{{SURFACE_KEY}}",
+				"sharedSurfaceKey": "EhVWSUVXSU5HX0NPTlRFWFRfV0FUQ0gg9AIoAQ%3D%3D",
+				"inlineRepliesKey": "empty_inline_replies",
+				"rendererContext": {
+					"loggingContext": {}
+				},
+				"allowProfileCard": false
+			}
+		}
+	}
+}

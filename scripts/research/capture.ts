@@ -20,6 +20,8 @@ mkdirSync(join(out, "bodies"), { recursive: true });
 const proxy = process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY } : undefined;
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", proxy, args: ["--autoplay-policy=no-user-gesture-required"] });
 const ctx = await browser.newContext({
+	// requests from YouTube's service worker would bypass the route filter below
+	...(cookieFile ? { serviceWorkers: "block" as const } : {}),
 	// a HAR would carry the session's cookies; not recorded for signed-in captures
 	...(cookieFile ? {} : { recordHar: { path: join(out, "capture.har"), content: "embed" as const } }),
 	viewport: narrow ? { width: 412, height: 860 } : { width: 1400, height: 900 },

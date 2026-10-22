@@ -1,0 +1,57 @@
+{
+	"entityKey": "{{SHARED_KEY}}",
+	"type": "ENTITY_MUTATION_TYPE_REPLACE",
+	"payload": {
+		"commentSharedEntityPayload": {
+			"key": "{{SHARED_KEY}}",
+			"strings": {
+				"viewAllRepliesButtonA11y": "View all replies",
+				"expandText": "Read more",
+				"translatingText": "Translating...",
+				"seeOriginalText": "See original (Translated by Google)",
+				"discardDialogTitle": "Discard comment?",
+				"discardDialogAction": "Discard",
+				"discardDialogCancel": "Keep writing",
+				"shortReplyThumbnailA11y": "See Short reply",
+				"collapseText": "Show less",
+				"replyButtonText": "Reply",
+				"smartRepliesAiDisclaimer": "Replies made with AI"
+			},
+			"toolbarShared": {
+				"unlikeButtonA11y": "Unlike",
+				"undislikeButtonA11y": "Remove dislike",
+				"replyButtonA11y": "Reply",
+				"menuButtonA11y": "Action menu",
+				"approveButtonA11y": "Approve",
+				"removeButtonA11y": "Remove",
+				"blockButtonA11y": "Hide user from channel",
+				"spamButtonA11y": "Report spam or abuse",
+				"dislikeCommentButtonA11y": "Dislike this comment",
+				"dislikeReplyButtonA11y": "Dislike this reply",
+				"cancelButtonLabel": "Cancel"
+			},
+			"experiments": {
+				"translateButtonStyle": "TRANSLATE_BUTTON_STYLE_WITH_LANGUAGE",
+				"enablePersistentCommentComposer": false,
+				"useRoundedCornersForSmartReplies": true
+			},
+			"environment": {
+				"platformName": "PLATFORM_NAME_IOS",
+				"formFactor": "SMALL_FORM_FACTOR"
+			},
+			"capabilities": {
+				"supportsIndicatorTouchExpansion": false,
+				"supportsIndicatorPadding": false,
+				"supportsTooltipCommand": false,
+				"supportsSubstitute": false,
+				"supportsUpdate": false,
+				"supportsLogGestureCommand": false,
+				"supportsClickableSpanIncrease": false
+			},
+			"commentEnvironment": {
+				"platformName": "PLATFORM_NAME_IOS"
+			},
+			"clientName": "WEB"
+		}
+	}
+}

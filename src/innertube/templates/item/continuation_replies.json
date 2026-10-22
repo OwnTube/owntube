@@ -1,0 +1,30 @@
+{
+	"continuationItemRenderer": {
+		"button": {
+			"buttonRenderer": {
+				"text": {
+					"runs": [
+						{
+							"text": "Show more replies"
+						}
+					]
+				},
+				"icon": {
+					"iconType": "EXPAND"
+				},
+				"command": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"sendPost": true,
+							"apiUrl": "/youtubei/v1/next"
+						}
+					},
+					"continuationCommand": {
+						"token": "{{CONTINUATION}}",
+						"request": "CONTINUATION_REQUEST_TYPE_WATCH_NEXT"
+					}
+				}
+			}
+		}
+	}
+}

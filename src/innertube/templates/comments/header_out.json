@@ -1,0 +1,165 @@
+{
+	"commentsHeaderRenderer": {
+		"countText": {
+			"runs": [
+				{
+					"text": "{{COUNT}}"
+				},
+				{
+					"text": "{{COMMENTS_WORD}}"
+				}
+			]
+		},
+		"createRenderer": {
+			"commentSimpleboxRenderer": {
+				"authorThumbnail": {
+					"thumbnails": "{{VIEWER_THUMBS}}",
+					"accessibility": {
+						"accessibilityData": {
+							"label": "Default profile photo"
+						}
+					}
+				},
+				"placeholderText": {
+					"runs": [
+						{
+							"text": "Add a comment..."
+						}
+					]
+				},
+				"prepareAccountEndpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"ignoreNavigation": true
+						}
+					},
+					"modalEndpoint": {
+						"modal": {
+							"modalWithTitleAndButtonRenderer": {
+								"title": {
+									"runs": [
+										{
+											"text": "Want to join the conversation?"
+										}
+									]
+								},
+								"content": {
+									"runs": [
+										{
+											"text": "Sign in to continue"
+										}
+									]
+								},
+								"button": {
+									"buttonRenderer": {
+										"style": "STYLE_MONO_FILLED",
+										"size": "SIZE_DEFAULT",
+										"isDisabled": false,
+										"text": {
+											"simpleText": "Sign in"
+										},
+										"navigationEndpoint": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"url": "{{SIGNIN_URL}}",
+													"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+													"rootVe": 83769
+												}
+											},
+											"signInEndpoint": {
+												"hack": true
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"avatarSize": "SIMPLEBOX_AVATAR_SIZE_TYPE_DEFAULT",
+				"disabledText": "Comments are turned off."
+			}
+		},
+		"sortMenu": {
+			"sortFilterSubMenuRenderer": {
+				"subMenuItems": [
+					{
+						"title": "Top",
+						"selected": "{{SORT_TOP_SELECTED}}",
+						"serviceEndpoint": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"sendPost": true,
+									"apiUrl": "/youtubei/v1/next"
+								}
+							},
+							"continuationCommand": {
+								"token": "{{SORT_TOP}}",
+								"request": "CONTINUATION_REQUEST_TYPE_WATCH_NEXT",
+								"command": {
+									"showReloadUiCommand": {
+										"targetId": "comments-section"
+									}
+								}
+							}
+						},
+						"subtitle": "Show featured comments",
+						"rendererContext": {
+							"loggingContext": {}
+						}
+					},
+					{
+						"title": "Newest",
+						"selected": "{{SORT_NEW_SELECTED}}",
+						"serviceEndpoint": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"sendPost": true,
+									"apiUrl": "/youtubei/v1/next"
+								}
+							},
+							"continuationCommand": {
+								"token": "{{SORT_NEW}}",
+								"request": "CONTINUATION_REQUEST_TYPE_WATCH_NEXT",
+								"command": {
+									"showReloadUiCommand": {
+										"targetId": "comments-section"
+									}
+								}
+							}
+						},
+						"subtitle": "Show recent comments, including potential spam",
+						"rendererContext": {
+							"loggingContext": {}
+						}
+					}
+				],
+				"title": "Sort by",
+				"icon": {
+					"iconType": "SORT"
+				},
+				"accessibility": {
+					"accessibilityData": {
+						"label": "Sort comments"
+					}
+				},
+				"tooltip": "Sort comments"
+			}
+		},
+		"titleText": {
+			"runs": [
+				{
+					"text": "Comments"
+				}
+			]
+		},
+		"commentsCount": {
+			"runs": [
+				{
+					"text": "{{COUNT_SHORT}}"
+				}
+			]
+		},
+		"showSeparator": true
+	}
+}

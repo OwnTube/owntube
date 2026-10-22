@@ -1,0 +1,161 @@
+{
+	"commentsHeaderRenderer": {
+		"countText": {
+			"runs": [
+				{
+					"text": "{{COUNT}}"
+				},
+				{
+					"text": "{{COMMENTS_WORD}}"
+				}
+			]
+		},
+		"createRenderer": {
+			"commentSimpleboxRenderer": {
+				"submitButton": {
+					"buttonRenderer": {
+						"style": "STYLE_PRIMARY",
+						"size": "SIZE_DEFAULT",
+						"text": {
+							"runs": [
+								{
+									"text": "Comment"
+								}
+							]
+						},
+						"serviceEndpoint": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"sendPost": true,
+									"apiUrl": "/youtubei/v1/comment/create_comment"
+								}
+							},
+							"createCommentEndpoint": {
+								"createCommentParams": "{{CREATE_PARAMS}}"
+							}
+						},
+						"accessibility": {
+							"label": "Comment"
+						}
+					}
+				},
+				"cancelButton": {
+					"buttonRenderer": {
+						"style": "STYLE_TEXT",
+						"size": "SIZE_DEFAULT",
+						"text": {
+							"runs": [
+								{
+									"text": "Cancel"
+								}
+							]
+						},
+						"accessibilityData": {
+							"accessibilityData": {
+								"label": "Cancel"
+							}
+						}
+					}
+				},
+				"authorThumbnail": {
+					"thumbnails": "{{VIEWER_THUMBS}}",
+					"accessibility": {
+						"accessibilityData": {
+							"label": "{{VIEWER_NAME}}"
+						}
+					}
+				},
+				"placeholderText": {
+					"runs": [
+						{
+							"text": "Add a comment..."
+						}
+					]
+				},
+				"avatarSize": "SIMPLEBOX_AVATAR_SIZE_TYPE_DEFAULT",
+				"disabledText": "Comments are turned off."
+			}
+		},
+		"sortMenu": {
+			"sortFilterSubMenuRenderer": {
+				"subMenuItems": [
+					{
+						"title": "Top",
+						"selected": "{{SORT_TOP_SELECTED}}",
+						"serviceEndpoint": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"sendPost": true,
+									"apiUrl": "/youtubei/v1/next"
+								}
+							},
+							"continuationCommand": {
+								"token": "{{SORT_TOP}}",
+								"request": "CONTINUATION_REQUEST_TYPE_WATCH_NEXT",
+								"command": {
+									"showReloadUiCommand": {
+										"targetId": "comments-section"
+									}
+								}
+							}
+						},
+						"subtitle": "Show featured comments",
+						"rendererContext": {
+							"loggingContext": {}
+						}
+					},
+					{
+						"title": "Newest",
+						"selected": "{{SORT_NEW_SELECTED}}",
+						"serviceEndpoint": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"sendPost": true,
+									"apiUrl": "/youtubei/v1/next"
+								}
+							},
+							"continuationCommand": {
+								"token": "{{SORT_NEW}}",
+								"request": "CONTINUATION_REQUEST_TYPE_WATCH_NEXT",
+								"command": {
+									"showReloadUiCommand": {
+										"targetId": "comments-section"
+									}
+								}
+							}
+						},
+						"subtitle": "Show recent comments, including potential spam",
+						"rendererContext": {
+							"loggingContext": {}
+						}
+					}
+				],
+				"title": "Sort by",
+				"icon": {
+					"iconType": "SORT"
+				},
+				"accessibility": {
+					"accessibilityData": {
+						"label": "Sort comments"
+					}
+				},
+				"tooltip": "Sort comments"
+			}
+		},
+		"titleText": {
+			"runs": [
+				{
+					"text": "Comments"
+				}
+			]
+		},
+		"commentsCount": {
+			"runs": [
+				{
+					"text": "{{COUNT_SHORT}}"
+				}
+			]
+		},
+		"showSeparator": true
+	}
+}

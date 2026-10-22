@@ -1,0 +1,261 @@
+[
+	{
+		"entityKey": "{{COMMENT_KEY}}",
+		"type": "ENTITY_MUTATION_TYPE_REPLACE",
+		"payload": {
+			"commentEntityPayload": {
+				"key": "{{COMMENT_KEY}}",
+				"properties": {
+					"commentId": "{{COMMENT_ID}}",
+					"content": {
+						"content": "{{TEXT}}"
+					},
+					"publishedTime": "{{PUBLISHED}}",
+					"replyLevel": 1,
+					"authorButtonA11y": "{{AUTHOR_AT_HANDLE}}",
+					"toolbarStateKey": "{{TOOLBAR_STATE_KEY}}"
+				},
+				"author": {
+					"channelId": "{{AUTHOR_CHANNEL_ID}}",
+					"displayName": "{{AUTHOR_AT_HANDLE}}",
+					"avatarThumbnailUrl": "{{AUTHOR_AVATAR_URL}}",
+					"isVerified": false,
+					"isCurrentUser": "{{IS_CURRENT_USER}}",
+					"isCreator": "{{IS_CREATOR}}",
+					"channelCommand": {
+						"innertubeCommand": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"url": "{{AUTHOR_URL}}",
+									"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+									"rootVe": 3611,
+									"apiUrl": "/youtubei/v1/browse"
+								}
+							},
+							"browseEndpoint": {
+								"browseId": "{{AUTHOR_CHANNEL_ID}}",
+								"canonicalBaseUrl": "{{AUTHOR_URL}}"
+							}
+						}
+					},
+					"isArtist": false
+				},
+				"toolbar": {
+					"likeCountLiked": "{{LIKES_LIKED}}",
+					"likeCountNotliked": "{{LIKES}}",
+					"replyCount": "{{REPLY_COUNT}}",
+					"likeButtonA11y": "{{LIKE_BUTTON_A11Y}}",
+					"engagementToolbarStyle": {
+						"value": "ENGAGEMENT_TOOLBAR_STYLE_VALUE_DEFAULT"
+					},
+					"likeCountA11y": "{{LIKES_A11Y}}",
+					"replyCountA11y": "{{REPLY_COUNT_A11Y}}",
+					"likeInactiveTooltip": "Like",
+					"likeActiveTooltip": "Unlike",
+					"dislikeInactiveTooltip": "Dislike",
+					"dislikeActiveTooltip": "Remove dislike"
+				}
+			}
+		}
+	},
+	{
+		"entityKey": "{{SURFACE_KEY}}",
+		"type": "ENTITY_MUTATION_TYPE_REPLACE",
+		"payload": {
+			"commentSurfaceEntityPayload": {
+				"key": "{{SURFACE_KEY}}",
+				"inlineReadMoreButton": {
+					"isExpanded": false
+				},
+				"commentClickOpensComposer": true,
+				"composerDraftEntityKey": "N/A",
+				"publishedTimeCommand": {
+					"innertubeCommand": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/watch?v={{VIDEO_ID}}&lc={{COMMENT_ID}}",
+								"webPageType": "WEB_PAGE_TYPE_WATCH",
+								"rootVe": 3832
+							}
+						},
+						"watchEndpoint": {
+							"videoId": "{{VIDEO_ID}}"
+						}
+					}
+				},
+				"logTapCommand": {
+					"logGestureCommand": {
+						"gestureType": "GESTURE_EVENT_TYPE_LOG_GENERIC_CLICK"
+					}
+				},
+				"threadLines": {},
+				"relativeNestingLevel": 0,
+				"avatar": {
+					"avatarViewModel": {
+						"image": {
+							"sources": "{{AUTHOR_AVATAR}}",
+							"processor": {
+								"borderImageProcessor": {
+									"circular": true
+								}
+							}
+						},
+						"accessibilityText": "{{AUTHOR_AT_HANDLE}}",
+						"avatarImageSize": "AVATAR_SIZE_40",
+						"endpoint": {
+							"innertubeCommand": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"url": "{{AUTHOR_URL}}",
+										"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+										"rootVe": 3611,
+										"apiUrl": "/youtubei/v1/browse"
+									}
+								},
+								"browseEndpoint": {
+									"browseId": "{{AUTHOR_CHANNEL_ID}}",
+									"canonicalBaseUrl": "{{AUTHOR_URL}}"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	{
+		"entityKey": "{{TOOLBAR_SURFACE_KEY}}",
+		"type": "ENTITY_MUTATION_TYPE_REPLACE",
+		"payload": {
+			"engagementToolbarSurfaceEntityPayload": {
+				"key": "{{TOOLBAR_SURFACE_KEY}}",
+				"prepareAccountCommand": {
+					"innertubeCommand": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"ignoreNavigation": true
+							}
+						},
+						"modalEndpoint": {
+							"modal": {
+								"modalWithTitleAndButtonRenderer": {
+									"title": {
+										"runs": [
+											{
+												"text": "Want to join the conversation?"
+											}
+										]
+									},
+									"content": {
+										"runs": [
+											{
+												"text": "Sign in to continue"
+											}
+										]
+									},
+									"button": {
+										"buttonRenderer": {
+											"style": "STYLE_MONO_FILLED",
+											"size": "SIZE_DEFAULT",
+											"isDisabled": false,
+											"text": {
+												"simpleText": "Sign in"
+											},
+											"navigationEndpoint": {
+												"commandMetadata": {
+													"webCommandMetadata": {
+														"url": "{{SIGNIN_URL}}",
+														"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+														"rootVe": 83769
+													}
+												},
+												"signInEndpoint": {
+													"hack": true
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"likeCommand": {
+					"innertubeCommand": {}
+				},
+				"unlikeCommand": {
+					"innertubeCommand": {}
+				},
+				"dislikeCommand": {
+					"innertubeCommand": {}
+				},
+				"undislikeCommand": {
+					"innertubeCommand": {}
+				},
+				"replyCommand": {
+					"innertubeCommand": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"ignoreNavigation": true
+							}
+						},
+						"modalEndpoint": {
+							"modal": {
+								"modalWithTitleAndButtonRenderer": {
+									"title": {
+										"runs": [
+											{
+												"text": "Want to join the conversation?"
+											}
+										]
+									},
+									"content": {
+										"runs": [
+											{
+												"text": "Sign in to continue"
+											}
+										]
+									},
+									"button": {
+										"buttonRenderer": {
+											"style": "STYLE_MONO_FILLED",
+											"size": "SIZE_DEFAULT",
+											"isDisabled": false,
+											"text": {
+												"simpleText": "Sign in"
+											},
+											"navigationEndpoint": {
+												"commandMetadata": {
+													"webCommandMetadata": {
+														"url": "{{SIGNIN_URL}}",
+														"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+														"rootVe": 83769
+													}
+												},
+												"signInEndpoint": {
+													"hack": true
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"isEngagementToolbar": true
+			}
+		}
+	},
+	{
+		"entityKey": "{{TOOLBAR_STATE_KEY}}",
+		"type": "ENTITY_MUTATION_TYPE_REPLACE",
+		"payload": {
+			"engagementToolbarStateEntityPayload": {
+				"key": "{{TOOLBAR_STATE_KEY}}",
+				"likeState": "TOOLBAR_LIKE_STATE_INDIFFERENT",
+				"heartState": "TOOLBAR_HEART_STATE_UNHEARTED"
+			}
+		}
+	}
+]

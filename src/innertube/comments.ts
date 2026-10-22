@@ -2,8 +2,9 @@
 // continuation: a header (count, sort menu, composer) and threads, where
 // each comment is a commentViewModel holding entity keys and the content
 // arrives as frameworkUpdates entity payloads (commentEntityPayload,
-// commentSurfaceEntityPayload, engagementToolbar*EntityPayload), as in the
-// pinned build. Composer and reply dialog submit to comment/create_comment
+// commentSurfaceEntityPayload, engagementToolbar*EntityPayload), all built
+// from YouTube's own responses (templates comments/*, item/comment_*,
+// signed in and signed out). Composer and reply dialog submit to comment/create_comment
 // and comment/create_comment_reply; likes go through
 // comment/perform_comment_action with tokens this instance signs.
 
@@ -12,9 +13,12 @@ import { getVideo } from "../data";
 import { sql } from "../db";
 import { decodeToken, encodeToken, newCommentId } from "../ids";
 import { continuationItem } from "./items";
-import { ago, avatarThumbnails, avatarUrl, channelEndpoint, compact, grouped, responseContext, runs, serviceEndpoint, signInModal, watchEndpoint } from "./r";
+import { viewerVars } from "./chrome";
+import { ago, avatarThumbnails, avatarUrl, compact, grouped, responseContext, runs, serviceEndpoint } from "./r";
 import { ApiError, route } from "./router";
 import { rateLimit } from "../ratelimit";
+import { make, type Vars } from "./tpl";
+import { baseVars } from "./vars";
 
 const PAGE = 20;
 const REPLY_PAGE = 10;
@@ -24,158 +28,94 @@ type Row = { id: string; video_id: string; parent_id: string | null; text: strin
 const key = (kind: string, id: string) => Buffer.from(`${kind}:${id}`).toString("base64url");
 const SHARED_KEY = key("shared", "comments");
 const now = () => ({ seconds: String(Math.floor(Date.now() / 1000)), nanos: 0 });
-
-function sharedPayload() {
-	return {
-		entityKey: SHARED_KEY,
-		type: "ENTITY_MUTATION_TYPE_REPLACE",
-		payload: {
-			commentSharedEntityPayload: {
-				key: SHARED_KEY,
-				strings: { viewAllRepliesButtonA11y: "View all replies", expandText: "Read more", collapseText: "Show less", replyButtonText: "Reply", discardDialogTitle: "Discard comment?", discardDialogAction: "Discard", discardDialogCancel: "Keep writing" },
-				toolbarShared: { unlikeButtonA11y: "Unlike", undislikeButtonA11y: "Remove dislike", replyButtonA11y: "Reply", menuButtonA11y: "Action menu", dislikeCommentButtonA11y: "Dislike this comment", dislikeReplyButtonA11y: "Dislike this reply", cancelButtonLabel: "Cancel" },
-				clientName: "WEB",
-			},
-		},
-	};
-}
+// templates come signed in and signed out
+const io = (viewer: Viewer) => (viewer ? "in" : "out");
+const entityUpdate = (mutations: unknown[]) => ({ frameworkUpdates: { entityBatchUpdate: { mutations, timestamp: now() } } });
+const sharedPayload = (viewer: Viewer) => make(`comments/shared_${io(viewer)}`, { SHARED_KEY });
+const viewerThumbs = (viewer: Viewer) => avatarThumbnails(viewer?.channelId ?? "UC0000000000000000000000").thumbnails;
 
 function actionToken(action: "like" | "unlike" | "delete", commentId: string, userId: string) {
 	return encodeToken({ a: action, c: commentId, u: userId });
 }
 
-function replyDialog(c: Row, viewer: NonNullable<Viewer>) {
-	return {
-		commandMetadata: { webCommandMetadata: { ignoreNavigation: true } },
-		createCommentReplyDialogEndpoint: {
-			dialog: {
-				commentReplyDialogRenderer: {
-					replyButton: { buttonRenderer: { style: "STYLE_PRIMARY", size: "SIZE_DEFAULT", isDisabled: true, text: runs("Reply"), serviceEndpoint: serviceEndpoint("/youtubei/v1/comment/create_comment_reply", { createCommentReplyEndpoint: { createReplyParams: encodeToken({ v: c.video_id, p: c.parent_id ?? c.id }) } }) } },
-					cancelButton: { buttonRenderer: { style: "STYLE_TEXT", size: "SIZE_DEFAULT", isDisabled: false, text: runs("Cancel") } },
-					authorThumbnail: avatarThumbnails(viewer.channelId, [48, 88]),
-					placeholderText: runs("Add a reply..."),
-					errorMessage: runs("Something went wrong. Try again."),
-					emojiButton: { buttonRenderer: { size: "SIZE_SMALL", icon: { iconType: "EMOJI" } } },
-				},
-			},
-		},
-	};
-}
+const likes = (n: number) => (n === 1 ? "1 like" : `${grouped(n)} likes`);
 
-// the comment's view model plus the entity payloads that fill it
-function commentParts(c: Row, viewer: Viewer) {
-	const commentKey = key("comment", c.id);
-	const toolbarStateKey = key("toolbarstate", c.id);
-	const toolbarSurfaceKey = key("toolbarsurface", c.id);
-	const surfaceKey = key("surface", c.id);
-	const authorEp = channelEndpoint({ id: c.author_channel_id, handle: c.author_handle });
-	const isCreator = c.author_channel_id === c.video_channel_id;
+function commentVars(c: Row, viewer: Viewer): Vars {
 	const others = c.like_count - (c.liked ? 1 : 0);
-	const signIn = signInModal("Want to join the conversation?", "Sign in to continue", `/watch?v=${c.video_id}`);
-	const viewModel = {
-		commentViewModel: {
-			commentKey,
-			sharedKey: SHARED_KEY,
-			toolbarStateKey,
-			toolbarSurfaceKey,
-			commentId: c.id,
-			commentSurfaceKey: surfaceKey,
-			inlineRepliesKey: "empty_inline_replies",
-		},
+	const avatar = avatarUrl(c.author_channel_id, 88);
+	const vars: Vars = {
+		...baseVars(viewer, `/watch?v=${c.video_id}`),
+		COMMENT_ID: c.id,
+		VIDEO_ID: c.video_id,
+		COMMENT_KEY: key("comment", c.id),
+		TOOLBAR_STATE_KEY: key("toolbarstate", c.id),
+		TOOLBAR_SURFACE_KEY: key("toolbarsurface", c.id),
+		SURFACE_KEY: key("surface", c.id),
+		SHARED_KEY,
+		AUTHOR_CHANNEL_ID: c.author_channel_id,
+		AUTHOR_URL: `/@${c.author_handle}`,
+		AUTHOR_AT_HANDLE: `@${c.author_handle}`,
+		AUTHOR_AVATAR_URL: avatar,
+		AUTHOR_AVATAR: [{ url: avatar, width: 88, height: 88 }],
+		IS_CURRENT_USER: viewer?.channelId === c.author_channel_id,
+		IS_CREATOR: c.author_channel_id === c.video_channel_id,
+		TEXT: c.text,
+		PUBLISHED: ago(c.created_at),
+		LIKES: others ? compact(others) : "",
+		LIKES_LIKED: compact(others + 1),
+		LIKES_A11Y: likes(others),
+		LIKES_LIKED_A11Y: likes(others + 1),
+		LIKE_BUTTON_A11Y: `Like this comment along with ${grouped(others)} other ${others === 1 ? "person" : "people"}`,
+		REPLY_COUNT: !c.parent_id && c.reply_count ? String(c.reply_count) : "",
+		REPLY_COUNT_A11Y: `${c.reply_count} ${c.reply_count === 1 ? "reply" : "replies"}`,
 	};
-	const mutations = [
-		{
-			entityKey: commentKey,
-			type: "ENTITY_MUTATION_TYPE_REPLACE",
-			payload: {
-				commentEntityPayload: {
-					key: commentKey,
-					properties: { commentId: c.id, content: { content: c.text }, publishedTime: ago(c.created_at), replyLevel: c.parent_id ? 1 : 0, authorButtonA11y: `@${c.author_handle}`, toolbarStateKey },
-					author: {
-						channelId: c.author_channel_id,
-						displayName: `@${c.author_handle}`,
-						avatarThumbnailUrl: avatarUrl(c.author_channel_id, 88),
-						isVerified: false,
-						isCurrentUser: viewer?.channelId === c.author_channel_id,
-						isCreator,
-						channelCommand: { innertubeCommand: authorEp },
-						isArtist: false,
-					},
-					toolbar: {
-						likeCountLiked: compact(others + 1),
-						likeCountNotliked: others ? compact(others) : "",
-						replyCount: c.parent_id ? "" : c.reply_count ? String(c.reply_count) : "",
-						likeButtonA11y: `Like this comment along with ${grouped(others)} other people`,
-						engagementToolbarStyle: { value: "ENGAGEMENT_TOOLBAR_STYLE_VALUE_DEFAULT" },
-						likeCountA11y: `${grouped(c.like_count)} likes`,
-						replyCountA11y: `${c.reply_count} replies`,
-						likeInactiveTooltip: "Like",
-						likeActiveTooltip: "Unlike",
-						dislikeInactiveTooltip: "Dislike",
-						dislikeActiveTooltip: "Remove dislike",
-					},
-				},
-			},
-		},
-		{
-			entityKey: surfaceKey,
-			type: "ENTITY_MUTATION_TYPE_REPLACE",
-			payload: {
-				commentSurfaceEntityPayload: {
-					key: surfaceKey,
-					inlineReadMoreButton: { isExpanded: false },
-					publishedTimeCommand: { innertubeCommand: watchEndpoint(c.video_id) },
-					threadLines: {},
-					relativeNestingLevel: c.parent_id ? 1 : 0,
-					avatar: {
-						avatarViewModel: {
-							image: { sources: [{ url: avatarUrl(c.author_channel_id, 88), width: 88, height: 88 }], processor: { borderImageProcessor: { circular: true } } },
-							accessibilityText: `@${c.author_handle}`,
-							avatarImageSize: c.parent_id ? "AVATAR_SIZE_24" : "AVATAR_SIZE_40",
-							endpoint: { innertubeCommand: authorEp },
-						},
-					},
-				},
-			},
-		},
-		{
-			entityKey: toolbarSurfaceKey,
-			type: "ENTITY_MUTATION_TYPE_REPLACE",
-			payload: {
-				engagementToolbarSurfaceEntityPayload: {
-					key: toolbarSurfaceKey,
-					prepareAccountCommand: { innertubeCommand: viewer ? {} : signIn },
-					likeCommand: { innertubeCommand: viewer ? serviceEndpoint("/youtubei/v1/comment/perform_comment_action", { performCommentActionEndpoint: { action: actionToken("like", c.id, viewer.userId) } }) : signIn },
-					unlikeCommand: { innertubeCommand: viewer ? serviceEndpoint("/youtubei/v1/comment/perform_comment_action", { performCommentActionEndpoint: { action: actionToken("unlike", c.id, viewer.userId) } }) : signIn },
-					dislikeCommand: { innertubeCommand: viewer ? serviceEndpoint("/youtubei/v1/comment/perform_comment_action", { performCommentActionEndpoint: { action: actionToken("unlike", c.id, viewer.userId) } }) : signIn },
-					undislikeCommand: { innertubeCommand: viewer ? serviceEndpoint("/youtubei/v1/comment/perform_comment_action", { performCommentActionEndpoint: { action: actionToken("unlike", c.id, viewer.userId) } }) : signIn },
-					replyCommand: { innertubeCommand: viewer ? replyDialog(c, viewer) : signIn },
-					isEngagementToolbar: true,
-				},
-			},
-		},
-		{
-			entityKey: toolbarStateKey,
-			type: "ENTITY_MUTATION_TYPE_REPLACE",
-			payload: { engagementToolbarStateEntityPayload: { key: toolbarStateKey, likeState: c.liked ? "TOOLBAR_LIKE_STATE_LIKED" : "TOOLBAR_LIKE_STATE_INDIFFERENT", heartState: "TOOLBAR_HEART_STATE_UNHEARTED" } },
-		},
-	];
-	return { viewModel, mutations };
+	if (viewer) {
+		Object.assign(vars, {
+			...viewerVars(viewer),
+			VIEWER_THUMBS: viewerThumbs(viewer),
+			LIKE_ACTION: actionToken("like", c.id, viewer.userId),
+			UNLIKE_ACTION: actionToken("unlike", c.id, viewer.userId),
+			// dislikes are not kept; both clear the viewer's like
+			DISLIKE_ACTION: actionToken("unlike", c.id, viewer.userId),
+			UNDISLIKE_ACTION: actionToken("unlike", c.id, viewer.userId),
+			REPLY_PARAMS: encodeToken({ v: c.video_id, p: c.parent_id ?? c.id }),
+			// the action menu: Delete on the viewer's own comments (Report is not offered)
+			MENU_ITEMS:
+				viewer.channelId === c.author_channel_id
+					? [{ menuServiceItemRenderer: { text: runs("Delete"), icon: { iconType: "DELETE" }, serviceEndpoint: serviceEndpoint("/youtubei/v1/comment/perform_comment_action", { performCommentActionEndpoint: { action: actionToken("delete", c.id, viewer.userId) } }) } }]
+					: [],
+		});
+	}
+	return vars;
 }
 
+// a comment's entity payloads (templates comments/entities*), and its like state
+function entities(c: Row, viewer: Viewer, vars: Vars) {
+	const mutations = make<any[]>(`comments/entities${c.parent_id ? "_reply" : ""}_${io(viewer)}`, vars);
+	for (const m of mutations) {
+		const p = m.payload;
+		if (p.engagementToolbarStateEntityPayload) p.engagementToolbarStateEntityPayload.likeState = c.liked ? "TOOLBAR_LIKE_STATE_LIKED" : "TOOLBAR_LIKE_STATE_INDIFFERENT";
+		if (p.engagementToolbarSurfaceEntityPayload && !(vars.MENU_ITEMS as unknown[] | undefined)?.length) delete p.engagementToolbarSurfaceEntityPayload.menuCommand;
+	}
+	return mutations;
+}
+
+// a top-level comment (item/comment_thread_*) with its "N replies" opener
 function thread(c: Row, viewer: Viewer) {
-	const { viewModel, mutations } = commentParts(c, viewer);
-	const replies = c.reply_count
-		? {
-				commentRepliesRenderer: {
-					viewReplies: { buttonRenderer: { text: runs(c.reply_count === 1 ? "1 reply" : `${grouped(c.reply_count)} replies`), icon: { iconType: "EXPAND" }, iconPosition: "BUTTON_ICON_POSITION_TYPE_LEFT_OF_TEXT" } },
-					hideReplies: { buttonRenderer: { text: runs("Hide replies"), icon: { iconType: "COLLAPSE" }, iconPosition: "BUTTON_ICON_POSITION_TYPE_LEFT_OF_TEXT" } },
-					targetId: `comment-replies-item-${c.id}`,
-					subThreads: [continuationItem(encodeToken({ k: "replies", v: c.video_id, c: c.id, o: 0 }), "/youtubei/v1/next")],
-				},
-			}
-		: undefined;
-	return { item: { commentThreadRenderer: { ...(replies ? { replies } : {}), renderingPriority: "RENDERING_PRIORITY_UNKNOWN", isModeratedElqComment: false, commentViewModel: viewModel } }, mutations };
+	const vars = commentVars(c, viewer);
+	const item = make(`item/comment_thread_${io(viewer)}`, {
+		...vars,
+		REPLIES_TEXT: c.reply_count === 1 ? "1 reply" : `${grouped(c.reply_count)} replies`,
+		REPLIES_TOKEN: encodeToken({ k: "replies", v: c.video_id, c: c.id, o: 0 }),
+	});
+	if (!c.reply_count) delete item.commentThreadRenderer.replies;
+	return { item, mutations: entities(c, viewer, vars) };
+}
+
+// a reply (item/comment_reply_*)
+function replyItem(c: Row, viewer: Viewer) {
+	const vars = commentVars(c, viewer);
+	return { item: make(`item/comment_reply_${io(viewer)}`, vars), mutations: entities(c, viewer, vars) };
 }
 
 async function load(videoId: string, viewer: Viewer, opts: { parent?: string; sort?: string; offset: number; limit: number }): Promise<Row[]> {
@@ -187,40 +127,21 @@ async function load(videoId: string, viewer: Viewer, opts: { parent?: string; so
 		order by ${order}, c.id limit ${opts.limit} offset ${opts.offset}`) as Row[];
 }
 
-function composer(videoId: string, viewer: Viewer) {
-	const common = { placeholderText: runs("Add a comment..."), avatarSize: "SIMPLEBOX_AVATAR_SIZE_TYPE_DEFAULT", emojiButton: { buttonRenderer: { size: "SIZE_SMALL", icon: { iconType: "EMOJI" }, accessibilityData: { accessibilityData: { label: "Show emoji picker" } } } } };
-	if (!viewer)
-		return { commentSimpleboxRenderer: { ...common, authorThumbnail: { thumbnails: [{ url: avatarUrl("UC0000000000000000000000", 48), width: 48, height: 48 }] }, prepareAccountEndpoint: signInModal("Want to join the conversation?", "Sign in to continue", `/watch?v=${videoId}`) } };
-	return {
-		commentSimpleboxRenderer: {
-			...common,
-			authorThumbnail: avatarThumbnails(viewer.channelId, [48, 88]),
-			submitButton: { buttonRenderer: { style: "STYLE_PRIMARY", size: "SIZE_DEFAULT", isDisabled: true, text: runs("Comment"), serviceEndpoint: serviceEndpoint("/youtubei/v1/comment/create_comment", { createCommentEndpoint: { createCommentParams: encodeToken({ v: videoId }) } }), accessibility: { label: "Comment" } } },
-			cancelButton: { buttonRenderer: { style: "STYLE_TEXT", size: "SIZE_DEFAULT", isDisabled: false, text: runs("Cancel"), accessibility: { label: "Cancel" } } },
-		},
-	};
-}
-
+// count, sort menu and composer (comments/header_*)
 function header(videoId: string, count: number, sort: string, viewer: Viewer) {
-	const sortItem = (title: string, s: string, subtitle: string) => ({
-		title,
-		selected: s === sort,
-		serviceEndpoint: {
-			commandMetadata: { webCommandMetadata: { sendPost: true, apiUrl: "/youtubei/v1/next" } },
-			continuationCommand: { token: encodeToken({ k: "comments", v: videoId, s }), request: "CONTINUATION_REQUEST_TYPE_WATCH_NEXT", command: { showReloadUiCommand: { targetId: "comments-section" } } },
-		},
-		subtitle,
+	return make(`comments/header_${io(viewer)}`, {
+		...baseVars(viewer, `/watch?v=${videoId}`),
+		...(viewer ? viewerVars(viewer) : {}),
+		COUNT: grouped(count),
+		COMMENTS_WORD: count === 1 ? " Comment" : " Comments",
+		COUNT_SHORT: compact(count),
+		SORT_TOP: encodeToken({ k: "comments", v: videoId, s: "top" }),
+		SORT_NEW: encodeToken({ k: "comments", v: videoId, s: "new" }),
+		SORT_TOP_SELECTED: sort === "top",
+		SORT_NEW_SELECTED: sort === "new",
+		CREATE_PARAMS: encodeToken({ v: videoId }),
+		VIEWER_THUMBS: viewerThumbs(viewer),
 	});
-	return {
-		commentsHeaderRenderer: {
-			countText: runs(grouped(count), count === 1 ? " Comment" : " Comments"),
-			createRenderer: composer(videoId, viewer),
-			sortMenu: { sortFilterSubMenuRenderer: { subMenuItems: [sortItem("Top", "top", "Show featured comments"), sortItem("Newest", "new", "Show recent comments")], title: "Sort by", icon: { iconType: "SORT" }, tooltip: "Sort comments" } },
-			titleText: runs("Comments"),
-			commentsCount: runs(grouped(count)),
-			showSeparator: true,
-		},
-	};
 }
 
 export async function commentsContinuation(tok: { v: string; s?: string; c?: string; o?: number; k?: string }, viewer: Viewer) {
@@ -229,14 +150,13 @@ export async function commentsContinuation(tok: { v: string; s?: string; c?: str
 	const offset = tok.o ?? 0;
 	if (tok.k === "replies" && tok.c) {
 		const rows = await load(tok.v, viewer, { parent: tok.c, offset, limit: REPLY_PAGE });
-		const parts = rows.map((r) => commentParts(r, viewer));
-		const items: unknown[] = parts.map((p) => ({ commentViewModel: p.viewModel }));
-		if (rows.length === REPLY_PAGE)
-			items.push({ continuationItemRenderer: { trigger: "CONTINUATION_TRIGGER_ON_ITEM_SHOWN", button: { buttonRenderer: { style: "STYLE_TEXT", size: "SIZE_DEFAULT", text: runs("Show more replies"), icon: { iconType: "SUBDIRECTORY_ARROW_RIGHT" }, command: { commandMetadata: { webCommandMetadata: { sendPost: true, apiUrl: "/youtubei/v1/next" } }, continuationCommand: { token: encodeToken({ k: "replies", v: tok.v, c: tok.c, o: offset + REPLY_PAGE }), request: "CONTINUATION_REQUEST_TYPE_WATCH_NEXT" } } } } } });
+		const parts = rows.map((r) => replyItem(r, viewer));
+		const items: unknown[] = parts.map((p) => p.item);
+		if (rows.length === REPLY_PAGE) items.push(make("item/continuation_replies", { CONTINUATION: encodeToken({ k: "replies", v: tok.v, c: tok.c, o: offset + REPLY_PAGE }) }));
 		return {
 			responseContext: responseContext(viewer),
 			onResponseReceivedEndpoints: [{ appendContinuationItemsAction: { continuationItems: items, targetId: `comment-replies-item-${tok.c}` } }],
-			frameworkUpdates: { entityBatchUpdate: { mutations: [sharedPayload(), ...parts.flatMap((p) => p.mutations)], timestamp: now() } },
+			...entityUpdate(parts.flatMap((p) => p.mutations)),
 		};
 	}
 	const sort = tok.s === "new" ? "new" : "top";
@@ -244,8 +164,7 @@ export async function commentsContinuation(tok: { v: string; s?: string; c?: str
 	const threads = rows.map((r) => thread(r, viewer));
 	const items: unknown[] = threads.map((t) => t.item);
 	if (rows.length === PAGE) items.push(continuationItem(encodeToken({ k: "comments", v: tok.v, s: sort, o: offset + PAGE }), "/youtubei/v1/next"));
-	const mutations = [sharedPayload(), ...threads.flatMap((t) => t.mutations)];
-	const update = { frameworkUpdates: { entityBatchUpdate: { mutations, timestamp: now() } } };
+	const update = entityUpdate([sharedPayload(viewer), ...threads.flatMap((t) => t.mutations)]);
 	if (offset > 0) return { responseContext: responseContext(viewer), onResponseReceivedEndpoints: [{ appendContinuationItemsAction: { continuationItems: items, targetId: "comments-section" } }], ...update };
 	const [{ n }] = await sql`select count(*)::int as n from comments where video_id = ${tok.v} and deleted_at is null`;
 	return {
@@ -290,11 +209,7 @@ route(
 		if (!params) throw new ApiError(400, "Invalid comment parameters");
 		const row = await insertComment(params.v, viewer!, cleanText(body), null);
 		const t = thread(row, viewer);
-		return {
-			responseContext: responseContext(viewer),
-			actions: [{ createCommentAction: { contents: t.item } }],
-			frameworkUpdates: { entityBatchUpdate: { mutations: [sharedPayload(), ...t.mutations], timestamp: now() } },
-		};
+		return { responseContext: responseContext(viewer), actions: [{ createCommentAction: { contents: t.item } }], ...entityUpdate([sharedPayload(viewer), ...t.mutations]) };
 	},
 	{ mutation: true },
 );
@@ -305,12 +220,8 @@ route(
 		const params = decodeToken<{ v: string; p: string }>(body.createReplyParams);
 		if (!params) throw new ApiError(400, "Invalid reply parameters");
 		const row = await insertComment(params.v, viewer!, cleanText(body), params.p);
-		const parts = commentParts(row, viewer);
-		return {
-			responseContext: responseContext(viewer),
-			actions: [{ createCommentReplyAction: { contents: { commentViewModel: parts.viewModel } } }],
-			frameworkUpdates: { entityBatchUpdate: { mutations: [sharedPayload(), ...parts.mutations], timestamp: now() } },
-		};
+		const r = replyItem(row, viewer);
+		return { responseContext: responseContext(viewer), actions: [{ createCommentReplyAction: { contents: r.item } }], ...entityUpdate([sharedPayload(viewer), ...r.mutations]) };
 	},
 	{ mutation: true },
 );
@@ -344,7 +255,7 @@ route(
 				}
 			}
 		}
-		return { responseContext: responseContext(viewer), actionResults: [{ status: "STATUS_SUCCEEDED" }], frameworkUpdates: { entityBatchUpdate: { mutations, timestamp: now() } } };
+		return { responseContext: responseContext(viewer), actionResults: [{ status: "STATUS_SUCCEEDED" }], ...entityUpdate(mutations) };
 	},
 	{ mutation: true },
 );

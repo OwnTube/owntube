@@ -1,0 +1,76 @@
+{
+	"commentThreadRenderer": {
+		"replies": {
+			"commentRepliesRenderer": {
+				"viewReplies": {
+					"buttonRenderer": {
+						"text": {
+							"runs": [
+								{
+									"text": "{{REPLIES_TEXT}}"
+								}
+							]
+						},
+						"icon": {
+							"iconType": "EXPAND"
+						},
+						"iconPosition": "BUTTON_ICON_POSITION_TYPE_LEFT_OF_TEXT"
+					}
+				},
+				"hideReplies": {
+					"buttonRenderer": {
+						"text": {
+							"runs": [
+								{
+									"text": "Hide replies"
+								}
+							]
+						},
+						"icon": {
+							"iconType": "COLLAPSE"
+						},
+						"iconPosition": "BUTTON_ICON_POSITION_TYPE_LEFT_OF_TEXT"
+					}
+				},
+				"targetId": "comment-replies-item-{{COMMENT_ID}}",
+				"subThreads": [
+					{
+						"continuationItemRenderer": {
+							"trigger": "CONTINUATION_TRIGGER_ON_ITEM_SHOWN",
+							"continuationEndpoint": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"sendPost": true,
+										"apiUrl": "/youtubei/v1/next"
+									}
+								},
+								"continuationCommand": {
+									"token": "{{REPLIES_TOKEN}}",
+									"request": "CONTINUATION_REQUEST_TYPE_WATCH_NEXT"
+								}
+							}
+						}
+					}
+				]
+			}
+		},
+		"renderingPriority": "RENDERING_PRIORITY_UNKNOWN",
+		"isModeratedElqComment": false,
+		"commentViewModel": {
+			"commentViewModel": {
+				"commentKey": "{{COMMENT_KEY}}",
+				"sharedKey": "{{SHARED_KEY}}",
+				"toolbarStateKey": "{{TOOLBAR_STATE_KEY}}",
+				"toolbarSurfaceKey": "{{TOOLBAR_SURFACE_KEY}}",
+				"commentId": "{{COMMENT_ID}}",
+				"commentSurfaceKey": "{{SURFACE_KEY}}",
+				"sharedSurfaceKey": "EhVWSUVXSU5HX0NPTlRFWFRfV0FUQ0gg9AIoAQ%3D%3D",
+				"inlineRepliesKey": "empty_inline_replies",
+				"rendererContext": {
+					"loggingContext": {}
+				},
+				"allowProfileCard": false
+			}
+		}
+	}
+}

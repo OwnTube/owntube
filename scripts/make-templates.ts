@@ -1397,6 +1397,151 @@ function library() {
 }
 
 // ======================================================================
+// comments: the section header (count, sort, composer), threads, replies,
+// and the entity payloads each comment's view model points to.
+// Left out: translation, creator hearts, profile cards (the author links
+// to the channel instead), custom emoji and the emoji picker, and nested
+// reply threads (replies are one level deep here)
+const COMMENT_MUTATIONS = ["commentEntityPayload", "commentSurfaceEntityPayload", "engagementToolbarSurfaceEntityPayload", "engagementToolbarStateEntityPayload"];
+const payloadKind = (m: any) => Object.keys(m.payload ?? {})[0];
+
+// one comment: its renderer and its entity mutations, with the sample's values as tokens
+function commentTpl(item: any, all: any[], signedIn: boolean) {
+	const vm = find(item, "commentViewModel").commentViewModel ?? find(item, "commentViewModel");
+	const keys: Record<string, string> = { [vm.commentKey]: "COMMENT_KEY", [vm.toolbarStateKey]: "TOOLBAR_STATE_KEY", [vm.toolbarSurfaceKey]: "TOOLBAR_SURFACE_KEY", [vm.commentSurfaceKey]: "SURFACE_KEY", [vm.sharedKey]: "SHARED_KEY" };
+	const muts = clean(all.filter((m: any) => m.entityKey in keys && COMMENT_MUTATIONS.includes(payloadKind(m))));
+	muts.sort((a: any, b: any) => COMMENT_MUTATIONS.indexOf(payloadKind(a)) - COMMENT_MUTATIONS.indexOf(payloadKind(b)));
+	const entity = muts[0].payload.commentEntityPayload;
+	const p = entity.properties;
+	const a = entity.author;
+	const t = entity.toolbar;
+	const handle: string = a.displayName;
+	// signed in, channelCommand opens a profile card and channelPageEndpoint the channel
+	const channelCmd = a.channelPageEndpoint ?? a.channelCommand;
+	const channelUrl: string = channelCmd.innertubeCommand.browseEndpoint.canonicalBaseUrl;
+	const videoId: string = find(muts, "watchEndpoint").videoId;
+	const samples = [p.commentId, a.channelId, handle, p.content.content];
+	// no translation, hearts or profile cards
+	delete p.translateButtonEntityKey;
+	delete t.heartActiveTooltip;
+	delete entity.readMoreLogging;
+	a.channelCommand = channelCmd;
+	delete a.profileCardEndpoint;
+	a.avatarThumbnailUrl = "{{AUTHOR_AVATAR_URL}}";
+	a.isCurrentUser = "{{IS_CURRENT_USER}}";
+	a.isCreator = "{{IS_CREATOR}}";
+	a.isVerified = false;
+	a.isArtist = false;
+	p.content = { content: "{{TEXT}}" };
+	const surface = muts[1].payload.commentSurfaceEntityPayload;
+	surface.avatar.avatarViewModel.endpoint = channelCmd;
+	surface.avatar.avatarViewModel.image.sources = "{{AUTHOR_AVATAR}}";
+	const pt = surface.publishedTimeCommand.innertubeCommand;
+	pt.commandMetadata.webCommandMetadata.url = "/watch?v={{VIDEO_ID}}&lc={{COMMENT_ID}}";
+	pt.watchEndpoint = { videoId: "{{VIDEO_ID}}" };
+	const bar = muts[2].payload.engagementToolbarSurfaceEntityPayload;
+	if (signedIn) {
+		for (const [cmd, tok] of [["likeCommand", "LIKE"], ["unlikeCommand", "UNLIKE"], ["dislikeCommand", "DISLIKE"], ["undislikeCommand", "UNDISLIKE"]]) {
+			const ep = bar[cmd].innertubeCommand.performCommentActionEndpoint;
+			ep.action = `{{${tok}_ACTION}}`;
+			const vote = ep.clientActions[0].updateCommentVoteAction.voteCount;
+			const liked = tok === "LIKE";
+			vote.simpleText = liked ? "{{LIKES_LIKED}}" : "{{LIKES}}";
+			vote.accessibility.accessibilityData.label = liked ? "{{LIKES_LIKED_A11Y}}" : "{{LIKES_A11Y}}";
+		}
+		// the action menu (Report on others' comments): MENU_ITEMS, or none
+		if (bar.menuCommand) find(bar.menuCommand, "menuRenderer").items = "{{MENU_ITEMS}}";
+		const dlg = find(bar, "commentReplyDialogRenderer");
+		if (dlg) {
+			delete dlg.emojiButton;
+			delete dlg.emojiPicker;
+			delete dlg.aadcGuidelinesStateEntityKey;
+			// replying to a reply starts with a mention of its author
+			if (dlg.editableText) {
+				const run = dlg.editableText.runs[0];
+				run.text = "\u00a0{{AUTHOR_AT_HANDLE}}\u00a0";
+				run.navigationEndpoint = { commandMetadata: { webCommandMetadata: { url: "{{AUTHOR_URL}}", webPageType: "WEB_PAGE_TYPE_CHANNEL", rootVe: 3611, apiUrl: "/youtubei/v1/browse" } }, browseEndpoint: { browseId: "{{AUTHOR_CHANNEL_ID}}" } };
+			}
+			dlg.authorThumbnail.thumbnails = "{{VIEWER_THUMBS}}";
+			dlg.authorThumbnail.accessibility.accessibilityData.label = "{{VIEWER_NAME}}";
+			find(dlg, "createCommentReplyEndpoint").createReplyParams = "{{REPLY_PARAMS}}";
+		}
+	}
+	t.likeCountLiked = "{{LIKES_LIKED}}";
+	t.likeCountNotliked = "{{LIKES}}";
+	t.likeButtonA11y = "{{LIKE_BUTTON_A11Y}}";
+	t.likeCountA11y = "{{LIKES_A11Y}}";
+	if ("replyCount" in t) t.replyCount = "{{REPLY_COUNT}}";
+	if ("replyCountA11y" in t) t.replyCountA11y = "{{REPLY_COUNT_A11Y}}";
+	p.publishedTime = "{{PUBLISHED}}";
+	// the renderer: our keys; no translation or profile cards
+	const r = clean(item);
+	const rvm = find(r, "commentViewModel").commentViewModel ?? find(r, "commentViewModel");
+	rvm.allowProfileCard = false;
+	let out: any = { item: r, mutations: muts };
+	out = strings(out, (s) => (s in keys ? `{{${keys[s]}}}` : s));
+	out = tokenize(out, [[p.commentId, "COMMENT_ID"], [videoId, "VIDEO_ID"], [channelUrl, "AUTHOR_URL"], [a.channelId, "AUTHOR_CHANNEL_ID"]], [[a.channelId, "AUTHOR_CHANNEL_ID"]], [[handle, "AUTHOR_AT_HANDLE"]]);
+	return { ...out, samples };
+}
+
+function commentsStep(dir: string, reloadRe: RegExp, repliesRe: RegExp, signedIn: boolean) {
+	const io = signedIn ? "in" : "out";
+	const [[, reload]] = bodies(dir, reloadRe).filter(([, res]) => res.onResponseReceivedEndpoints?.[0]?.reloadContinuationItemsCommand?.targetId === "comments-section");
+	const all = reload.frameworkUpdates.entityBatchUpdate.mutations;
+	const [headerCmd, bodyCmd] = reload.onResponseReceivedEndpoints.map((e: any) => e.reloadContinuationItemsCommand);
+	// header
+	const header = clean(headerCmd.continuationItems[0]);
+	const hr = header.commentsHeaderRenderer;
+	delete hr.customEmojis;
+	delete hr.unicodeEmojisUrl;
+	const box = hr.createRenderer.commentSimpleboxRenderer;
+	delete box.emojiButton;
+	delete box.emojiPicker;
+	delete box.aadcGuidelinesStateEntityKey;
+	delete box.disabledTextUrl; // Google's help page
+	box.authorThumbnail.thumbnails = "{{VIEWER_THUMBS}}";
+	box.authorThumbnail.accessibility.accessibilityData.label = signedIn ? "{{VIEWER_NAME}}" : box.authorThumbnail.accessibility.accessibilityData.label;
+	if (signedIn) find(box, "createCommentEndpoint").createCommentParams = "{{CREATE_PARAMS}}";
+	hr.countText.runs = [{ text: "{{COUNT}}" }, { text: "{{COMMENTS_WORD}}" }];
+	hr.commentsCount.runs = [{ text: "{{COUNT_SHORT}}" }];
+	for (const it of hr.sortMenu.sortFilterSubMenuRenderer.subMenuItems) {
+		const k = it.title === "Top" ? "TOP" : "NEW";
+		it.selected = `{{SORT_${k}_SELECTED}}`;
+		it.serviceEndpoint.continuationCommand.token = `{{SORT_${k}}}`;
+	}
+	save(`comments/header_${io}`, tokenize(header, []));
+	// a thread with replies
+	const threadSample = bodyCmd.continuationItems.find((x: any) => x.commentThreadRenderer?.replies);
+	const th = commentTpl(threadSample, all, signedIn);
+	const rr = find(th.item, "commentRepliesRenderer");
+	rr.viewReplies.buttonRenderer.text.runs = [{ text: "{{REPLIES_TEXT}}" }];
+	find(rr, "continuationCommand").token = "{{REPLIES_TOKEN}}";
+	save(`item/comment_thread_${io}`, th.item, th.samples);
+	save(`comments/entities_${io}`, th.mutations, th.samples);
+	// the shared strings every response carries
+	const shared = clean(all.find((m: any) => payloadKind(m) === "commentSharedEntityPayload"));
+	const ts = shared.payload.commentSharedEntityPayload.toolbarShared;
+	for (const k of Object.keys(ts)) if (/heart/i.test(k)) delete ts[k];
+	save(`comments/shared_${io}`, strings(shared, (s) => (s === shared.entityKey ? "{{SHARED_KEY}}" : s)));
+	// a reply (one without replies of its own), its entities and "Show more replies"
+	const [[, replies]] = bodies(dir, repliesRe).filter(([, res]) => res.onResponseReceivedEndpoints?.[0]?.appendContinuationItemsAction?.targetId?.startsWith("comment-replies-item-"));
+	const items = replies.onResponseReceivedEndpoints[0].appendContinuationItemsAction.continuationItems;
+	const reply = commentTpl(items.find((x: any) => x.commentThreadRenderer && !x.commentThreadRenderer.replies), replies.frameworkUpdates.entityBatchUpdate.mutations, signedIn);
+	save(`item/comment_reply_${io}`, reply.item, reply.samples);
+	save(`comments/entities_reply_${io}`, reply.mutations, reply.samples);
+	const more = clean(items.find((x: any) => x.continuationItemRenderer));
+	if (more) {
+		find(more, "continuationCommand").token = "{{CONTINUATION}}";
+		save("item/continuation_replies", more);
+	}
+}
+
+function comments() {
+	commentsStep("comments-out", /next\.resp$/, /next\.resp$/, false);
+	commentsStep("in-comments2", /next\.resp$/, /next\.resp$/, true);
+}
+
+// ======================================================================
 const only = process.argv.slice(2);
 personalValues();
 const steps: [string, () => void][] = [
@@ -1411,6 +1556,7 @@ const steps: [string, () => void][] = [
 	["playlist-own", ownListPage],
 	["history", history],
 	["library", library],
+	["comments", comments],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;
