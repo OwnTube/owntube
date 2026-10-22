@@ -77,4 +77,4 @@ export async function innertube(req: Request, url: URL, viewer: Viewer): Promise
 
 // telemetry the client sends; accepted and dropped
 // att/get would hand out a BotGuard challenge; without one the client skips attestation
-for (const m of ["log_event", "feedback", "att/get", "att/log", "visitor_id", "stats/qoe", "stats/watchtime"]) route(m, () => ({ responseContext: {} }));
+for (const m of ["log_event", "att/get", "att/log", "visitor_id", "stats/qoe", "stats/watchtime"]) route(m, () => ({ responseContext: {} }));

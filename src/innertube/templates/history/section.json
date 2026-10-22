@@ -1,0 +1,12 @@
+{
+	"itemSectionRenderer": {
+		"contents": "{{ITEMS}}",
+		"header": {
+			"itemSectionHeaderRenderer": {
+				"title": {
+					"simpleText": "{{DAY}}"
+				}
+			}
+		}
+	}
+}

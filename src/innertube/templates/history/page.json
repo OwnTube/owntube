@@ -1,0 +1,319 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"secondaryContents": {
+				"browseFeedActionsRenderer": {
+					"contents": [
+						{
+							"searchBoxRenderer": {
+								"endpoint": {
+									"commandMetadata": {
+										"webCommandMetadata": {
+											"url": "/feed/history",
+											"sendPost": true,
+											"webPageType": "WEB_PAGE_TYPE_BROWSE",
+											"rootVe": 6827,
+											"apiUrl": "/youtubei/v1/browse"
+										}
+									},
+									"browseEndpoint": {
+										"browseId": "FEhistory",
+										"query": "{{QUERY}}"
+									}
+								},
+								"searchButton": {
+									"buttonRenderer": {
+										"icon": {
+											"iconType": "SEARCH"
+										},
+										"accessibilityData": {
+											"accessibilityData": {
+												"label": "Search watch history"
+											}
+										}
+									}
+								},
+								"clearButton": {
+									"buttonRenderer": {
+										"icon": {
+											"iconType": "CLOSE"
+										},
+										"navigationEndpoint": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"url": "/feed/history",
+													"webPageType": "WEB_PAGE_TYPE_BROWSE",
+													"rootVe": 6827,
+													"apiUrl": "/youtubei/v1/browse"
+												}
+											},
+											"browseEndpoint": {
+												"browseId": "FEhistory"
+											}
+										},
+										"accessibilityData": {
+											"accessibilityData": {
+												"label": "Clear search query"
+											}
+										}
+									}
+								},
+								"placeholderText": {
+									"runs": [
+										{
+											"text": "Search watch history"
+										}
+									]
+								}
+							}
+						},
+						{
+							"buttonRenderer": {
+								"text": {
+									"runs": [
+										{
+											"text": "Clear all watch history"
+										}
+									]
+								},
+								"icon": {
+									"iconType": "DELETE"
+								},
+								"navigationEndpoint": {
+									"commandMetadata": {
+										"webCommandMetadata": {
+											"ignoreNavigation": true
+										}
+									},
+									"confirmDialogEndpoint": {
+										"content": {
+											"confirmDialogRenderer": {
+												"title": {
+													"runs": [
+														{
+															"text": "Clear watch history?"
+														}
+													]
+												},
+												"confirmEndpoint": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"sendPost": true,
+															"apiUrl": "/youtubei/v1/feedback"
+														}
+													},
+													"feedbackEndpoint": {
+														"feedbackToken": "{{CLEAR_TOKEN}}",
+														"uiActions": {
+															"hideEnclosingContainer": false
+														},
+														"actions": [
+															{
+																"openPopupAction": {
+																	"popup": {
+																		"notificationActionRenderer": {
+																			"responseText": {
+																				"runs": [
+																					{
+																						"text": "Watch history cleared"
+																					}
+																				]
+																			}
+																		}
+																	},
+																	"popupType": "TOAST"
+																}
+															},
+															{
+																"localWatchHistoryCommand": {
+																	"localWatchHistoryCommandType": "LOCAL_WATCH_HISTORY_COMMAND_TYPE_CLEAR"
+																}
+															}
+														]
+													}
+												},
+												"dialogMessages": [
+													{
+														"runs": [
+															{
+																"text": "{{VIEWER_NAME}} ({{VIEWER_AT_HANDLE}})",
+																"bold": true
+															},
+															{
+																"text": "\n\nYour YouTube watch history will be cleared from all YouTube apps on all devices."
+															}
+														]
+													}
+												],
+												"confirmButton": {
+													"buttonRenderer": {
+														"style": "STYLE_BLUE_TEXT",
+														"size": "SIZE_DEFAULT",
+														"isDisabled": false,
+														"text": {
+															"simpleText": "Clear watch history"
+														},
+														"serviceEndpoint": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"sendPost": true,
+																	"apiUrl": "/youtubei/v1/feedback"
+																}
+															},
+															"feedbackEndpoint": {
+																"feedbackToken": "{{CLEAR_TOKEN}}",
+																"uiActions": {
+																	"hideEnclosingContainer": false
+																},
+																"actions": [
+																	{
+																		"openPopupAction": {
+																			"popup": {
+																				"notificationActionRenderer": {
+																					"responseText": {
+																						"runs": [
+																							{
+																								"text": "Watch history cleared"
+																							}
+																						]
+																					}
+																				}
+																			},
+																			"popupType": "TOAST"
+																		}
+																	},
+																	{
+																		"localWatchHistoryCommand": {
+																			"localWatchHistoryCommandType": "LOCAL_WATCH_HISTORY_COMMAND_TYPE_CLEAR"
+																		}
+																	}
+																]
+															}
+														}
+													}
+												},
+												"cancelButton": {
+													"buttonRenderer": {
+														"style": "STYLE_TEXT",
+														"size": "SIZE_DEFAULT",
+														"isDisabled": false,
+														"text": {
+															"runs": [
+																{
+																	"text": "Cancel"
+																}
+															]
+														}
+													}
+												},
+												"primaryIsCancel": false
+											}
+										}
+									}
+								}
+							}
+						}
+					]
+				}
+			},
+			"tabs": [
+				{
+					"tabRenderer": {
+						"selected": true,
+						"content": {
+							"sectionListRenderer": {
+								"contents": "{{CONTENTS}}",
+								"header": {
+									"chipBarViewModel": {
+										"chips": [
+											{
+												"chipViewModel": {
+													"text": "All",
+													"selected": "{{CHIP_ALL_SELECTED}}",
+													"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+													"tapCommand": {
+														"innertubeCommand": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "/feed/history",
+																	"webPageType": "WEB_PAGE_TYPE_BROWSE",
+																	"rootVe": 6827,
+																	"apiUrl": "/youtubei/v1/browse"
+																}
+															},
+															"browseEndpoint": {
+																"browseId": "FEhistory",
+																"params": "oggECgIwAQ%3D%3D",
+																"navigationType": "BROWSE_NAVIGATION_TYPE_LOAD_IN_PLACE"
+															}
+														}
+													},
+													"accessibilityLabel": "All"
+												}
+											},
+											{
+												"chipViewModel": {
+													"text": "Videos",
+													"selected": "{{CHIP_VIDEOS_SELECTED}}",
+													"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+													"tapCommand": {
+														"innertubeCommand": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "/feed/history",
+																	"webPageType": "WEB_PAGE_TYPE_BROWSE",
+																	"rootVe": 6827,
+																	"apiUrl": "/youtubei/v1/browse"
+																}
+															},
+															"browseEndpoint": {
+																"browseId": "FEhistory",
+																"params": "oggECgIgAQ%3D%3D",
+																"navigationType": "BROWSE_NAVIGATION_TYPE_LOAD_IN_PLACE"
+															}
+														}
+													},
+													"accessibilityLabel": "Videos"
+												}
+											}
+										],
+										"chipBarStateEntityKey": "EiFoaXN0b3J5X2NoaXBfYmFyX2ZpbHRlcl9lbnRpdHlfaWQggwQoAQ%3D%3D"
+									}
+								},
+								"targetId": "browse-feedFEhistory"
+							}
+						},
+						"tabIdentifier": "FEhistory",
+						"accessibility": {
+							"accessibilityData": {
+								"label": "history"
+							}
+						}
+					}
+				}
+			]
+		}
+	},
+	"header": {
+		"pageHeaderRenderer": {
+			"pageTitle": "Watch history",
+			"content": {
+				"pageHeaderViewModel": {
+					"title": {
+						"dynamicTextViewModel": {
+							"text": {
+								"content": "Watch history"
+							},
+							"rendererContext": {
+								"loggingContext": {}
+							}
+						}
+					},
+					"rendererContext": {
+						"loggingContext": {}
+					}
+				}
+			}
+		}
+	}
+}

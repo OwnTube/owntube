@@ -756,6 +756,17 @@ function watchPage(dir: string, signedIn: boolean) {
 	plainDescription(p);
 	p.engagementPanels = p.engagementPanels.filter((e: any) => WATCH_PANELS.has(e.engagementPanelSectionListRenderer.targetId));
 	for (const h of findAllHolders(p, "creatorCustomUrlButtons")) delete h.creatorCustomUrlButtons;
+	// YouTube's AI chat ("Ask") in the description panel
+	for (const h of findAllHolders(p, "structuredDescriptionContentRenderer")) {
+		const sd = h.structuredDescriptionContentRenderer;
+		sd.items = sd.items.filter((it: any) => !it.videoDescriptionYouchatSectionViewModel);
+	}
+	// description quick actions: no AI "Ask" panel, no reporting
+	for (const h of findAllHolders(p, "quickActionButtons")) {
+		h.quickActionButtons = h.quickActionButtons.filter((b: any) => b.buttonViewModel?.iconName !== "SPARK");
+		for (const list of findAll(h.quickActionButtons, "listItems")) for (let i = list.length - 1; i >= 0; i--) if (itemTitle(list[i]) === "Report") list.splice(i, 1);
+		for (const list of findAll(h.quickActionButtons, "items")) if (Array.isArray(list)) for (let i = list.length - 1; i >= 0; i--) if (/^Report$/.test(contentOf(find(list[i], "text")))) list.splice(i, 1);
+	}
 	const overlay = p.playerOverlays.playerOverlayRenderer;
 	delete overlay.showPlaybackRateUpsellPanelCommand;
 	const muts = p.frameworkUpdates?.entityBatchUpdate?.mutations;
@@ -1111,6 +1122,18 @@ function playlistPage() {
 	save("playlist/page_out", out, [plId, title, chId, chName, first, shuffleId, description]);
 }
 
+// "Learn more" runs that link to Google's help centre
+function dropGoogleHelp(o: any) {
+	for (const h of findAllHolders(o, "runs")) {
+		if (!Array.isArray(h.runs)) continue;
+		const i = h.runs.findIndex((r: any) => /support\.google\.com/.test(JSON.stringify(r.navigationEndpoint ?? "")));
+		if (i < 0) continue;
+		h.runs.splice(i, 1);
+		const prev = h.runs[i - 1];
+		if (prev?.text) prev.text = prev.text.replace(/\s+$/, "");
+	}
+}
+
 // app-store and app-indexing links of a page's metadata
 function stripAppLinks(p: any) {
 	for (const k of ["androidAppindexingLink", "iosAppindexingLink"]) delete p.metadata.playlistMetadataRenderer[k];
@@ -1201,6 +1224,57 @@ function ownListPage() {
 }
 
 // ======================================================================
+// watch history. Kept: the day sections, Videos/All chips, searching the
+// history, removing an entry, clearing it all. Left out: pausing (not
+// offered), Shorts/Podcasts/Music chips, and the links to Google's My
+// Activity (comments, posts, live chat, "Manage all history")
+const HISTORY_CHIPS: Record<string, string> = { All: "ALL", Videos: "VIDEOS" };
+function history() {
+	const p = pageOnly(pageVar(body("in-history", /^001-/)));
+	const t = p.contents.twoColumnBrowseResultsRenderer;
+	const acts = t.secondaryContents.browseFeedActionsRenderer;
+	acts.contents = acts.contents.filter((c: any) => c.searchBoxRenderer || /^Clear all watch history$/.test(contentOf(c.buttonRenderer?.text)));
+	const box = acts.contents.find((c: any) => c.searchBoxRenderer).searchBoxRenderer;
+	box.endpoint.browseEndpoint.query = "{{QUERY}}";
+	const clear = acts.contents.find((c: any) => c.buttonRenderer).buttonRenderer;
+	const dlg = find(clear, "confirmDialogRenderer");
+	const msg = dlg.dialogMessages[0].runs;
+	// the account line, and the first paragraph (the rest is about Google's other products)
+	dlg.dialogMessages[0].runs = [{ ...msg[0], text: "{{VIEWER_NAME}} ({{VIEWER_AT_HANDLE}})" }, { text: msg[1].text.split(/\n\n(?=Your video recommendations)/)[0] }];
+	for (const fe of findAll(clear, "feedbackEndpoint")) fe.feedbackToken = "{{CLEAR_TOKEN}}";
+	const sl = t.tabs[0].tabRenderer.content.sectionListRenderer;
+	const chips = sl.header.chipBarViewModel;
+	chips.chips = chips.chips.filter((c: any) => HISTORY_CHIPS[c.chipViewModel.text]);
+	for (const c of chips.chips) {
+		const k = HISTORY_CHIPS[c.chipViewModel.text];
+		c.chipViewModel.selected = `{{CHIP_${k}_SELECTED}}`;
+	}
+	// one day: its heading and entries
+	const sec = clean(sl.contents.find((c: any) => c.itemSectionRenderer?.contents?.some((x: any) => x.lockupViewModel)));
+	const sample = sec.itemSectionRenderer.contents.find((x: any) => x.lockupViewModel);
+	sec.itemSectionRenderer.contents = "{{ITEMS}}";
+	sec.itemSectionRenderer.header.itemSectionHeaderRenderer.title.simpleText = "{{DAY}}";
+	save("history/section", sec);
+	const keep = new Set([...LOCKUP_MENU, "Remove from watch history"]);
+	const item = structuredClone(sample);
+	for (const list of findAll(item, "listItems")) for (let i = list.length - 1; i >= 0; i--) if (!keep.has(itemTitle(list[i]))) list.splice(i, 1);
+	delete item.lockupViewModel.themedPalette; // colours taken from the sample's thumbnail
+	const remove = findAll(item, "feedbackEndpoint")[0];
+	remove.feedbackToken = "{{REMOVE_TOKEN}}";
+	const bar = find(item, "thumbnailOverlayProgressBarViewModel");
+	if (bar) bar.startPercent = "{{WATCHED_PERCENT}}";
+	const { item: tokenized, samples } = videoLockup(item);
+	save("item/video_lockup_history", tokenized, samples);
+	sl.contents = "{{CONTENTS}}";
+	save("history/page", tokenize(p, [], [], [["", "QUERY"]]));
+	// signed out: the sign-in prompt (the device-history buttons are left out)
+	const out = pageOnly(pageVar(body("feed-history", /^001-/)));
+	delete out.contents.twoColumnBrowseResultsRenderer.secondaryContents;
+	dropGoogleHelp(out);
+	save("history/signed_out", tokenize(out, []));
+}
+
+// ======================================================================
 const only = process.argv.slice(2);
 personalValues();
 const steps: [string, () => void][] = [
@@ -1213,6 +1287,7 @@ const steps: [string, () => void][] = [
 	["search", search],
 	["playlist", playlistPage],
 	["playlist-own", ownListPage],
+	["history", history],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;

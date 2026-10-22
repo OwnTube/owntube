@@ -11,6 +11,7 @@ import { decodeToken, encodeToken, isChannelId } from "../ids";
 import { topbar } from "./chrome";
 import { homeItems, homePage, subscriptionsItems, subscriptionsPage } from "./feeds";
 import { notificationsInbox } from "./guide";
+import { historyContinuation, historyPage } from "./history";
 import { channelRenderer, continuationItem, richItem, videoLockup, videoRenderer } from "./items";
 import { channelPlaylistsGrid, playlistBrowse, playlistLockupsFor, watchLaterAndLiked } from "./playlists";
 import {
@@ -112,77 +113,8 @@ async function subscriptions(viewer: Viewer): Promise<BrowseResult> {
 	return { kind: "home", title: "Subscriptions", url: "/feed/subscriptions", command: browseEndpoint("FEsubscriptions", "/feed/subscriptions", "WEB_PAGE_TYPE_BROWSE", 96368), response: await subscriptionsPage(viewer) };
 }
 
-async function historyItems(viewer: Viewer, offset: number) {
-	const rows = (await sql`select v.id, v.title, v.description, v.channel_id, c.title as channel_title, c.handle as channel_handle, c.avatar_path as channel_avatar,
-		v.duration_ms, v.view_count::int as view_count, v.like_count, v.comment_count, v.published_at, v.created_at, v.visibility, v.status, v.width, v.height, h.watched_at
-		from watch_history h join videos v on v.id = h.video_id join channels c on c.id = v.channel_id
-		where h.user_id = ${viewer!.userId} and v.deleted_at is null and (v.visibility <> 'private' or v.channel_id = ${viewer!.channelId})
-		order by h.watched_at desc limit ${PAGE} offset ${offset}`) as (Video & { watched_at: Date })[];
-	const items: unknown[] = rows.map((v) => videoRenderer(v));
-	if (rows.length === PAGE) items.push(continuationItem(encodeToken({ k: "history", o: offset + PAGE }), "/youtubei/v1/browse"));
-	return items;
-}
-
-async function history(viewer: Viewer): Promise<BrowseResult> {
-	const base = { kind: "home" as const, title: "History", url: "/feed/history", command: browseEndpoint("FEhistory", "/feed/history", "WEB_PAGE_TYPE_BROWSE", 6827) };
-	if (!viewer) return { ...base, response: { contents: singleTab(signInPromo("WATCH_HISTORY", "Keep track of what you watch", "Watch history isn't viewable when signed out.", "/feed/history"), "FEhistory") } };
-	const items = await historyItems(viewer, 0);
-	return {
-		...base,
-		response: {
-			contents: {
-				twoColumnBrowseResultsRenderer: {
-					tabs: [
-						{
-							tabRenderer: {
-								selected: true,
-								content: items.length
-									? { sectionListRenderer: { contents: [{ itemSectionRenderer: { contents: items, header: { itemSectionHeaderRenderer: { title: runs("Watch history") } } } }], targetId: "browse-feedFEhistory" } }
-									: messageSection("This list has no videos."),
-								tabIdentifier: "FEhistory",
-							},
-						},
-					],
-					secondaryContents: {
-						browseFeedActionsRenderer: {
-							contents: [
-								{
-									buttonRenderer: {
-										style: "STYLE_DEFAULT",
-										size: "SIZE_DEFAULT",
-										isDisabled: false,
-										text: runs("Clear all watch history"),
-										icon: { iconType: "DELETE" },
-										serviceEndpoint: serviceEndpoint("/youtubei/v1/history/clear_watch_history", {
-											signalServiceEndpoint: {
-												signal: "CLIENT_SIGNAL",
-												actions: [
-													{
-														openPopupAction: {
-															popup: {
-																confirmDialogRenderer: {
-																	title: text("Clear watch history?"),
-																	dialogMessages: [runs("Your watch history on this instance will be cleared.")],
-																	confirmButton: { buttonRenderer: { style: "STYLE_BLUE_TEXT", size: "SIZE_DEFAULT", isDisabled: false, text: runs("Clear watch history"), serviceEndpoint: serviceEndpoint("/youtubei/v1/history/clear_watch_history", { clearWatchHistoryEndpoint: {} }) } },
-																	cancelButton: { buttonRenderer: { style: "STYLE_TEXT", size: "SIZE_DEFAULT", isDisabled: false, text: runs("Cancel") } },
-																},
-															},
-															popupType: "DIALOG",
-														},
-													},
-												],
-											},
-										}),
-									},
-								},
-							],
-						},
-					},
-				},
-			},
-			header: { feedTabbedHeaderRenderer: { title: runs("Watch history") } },
-		},
-	};
+async function history(viewer: Viewer, params?: string, query?: string): Promise<BrowseResult> {
+	return { kind: "home", title: "History", url: "/feed/history", command: browseEndpoint("FEhistory", "/feed/history", "WEB_PAGE_TYPE_BROWSE", 6827), response: await historyPage(viewer, params, query) };
 }
 
 function shelf(title: string, endpoint: unknown, items: unknown[]) {
@@ -261,10 +193,10 @@ async function channelsFeed(viewer: Viewer): Promise<BrowseResult> {
 
 // ---- dispatch ----
 
-export async function buildBrowse(browseId: string, params: string | undefined, viewer: Viewer): Promise<BrowseResult | undefined> {
+export async function buildBrowse(browseId: string, params: string | undefined, viewer: Viewer, query?: string): Promise<BrowseResult | undefined> {
 	if (browseId === "FEwhat_to_watch") return home(viewer);
 	if (browseId === "FEsubscriptions") return subscriptions(viewer);
-	if (browseId === "FEhistory") return history(viewer);
+	if (browseId === "FEhistory") return history(viewer, params, query);
 	if (browseId === "FElibrary" || browseId === "FEyou") return library(viewer);
 	if (browseId === "FEplaylist_aggregation") return playlistsFeed(viewer);
 	if (browseId === "FEchannels") return channelsFeed(viewer);
@@ -284,13 +216,13 @@ export async function buildBrowse(browseId: string, params: string | undefined, 
 }
 
 async function continuation(token: string, viewer: Viewer) {
-	const t = decodeToken<{ k: string; o: number; c?: string; s?: ChannelSort; reload?: boolean; p?: string }>(token);
+	const t = decodeToken<{ k: string; o: number; c?: string; s?: ChannelSort; reload?: boolean; p?: string; q?: string }>(token);
 	if (!t) throw new ApiError(400, "Invalid continuation");
 	let items: unknown[] = [];
 	let target = "";
 	if (t.k === "home") [items, target] = [await homeItems(viewer, t.o), "browse-feedFEwhat_to_watch"];
 	else if (t.k === "subs") [items, target] = [await subscriptionsItems(viewer, t.o), "browse-feedFEsubscriptions"];
-	else if (t.k === "history" && viewer) [items, target] = [await historyItems(viewer, t.o), "browse-feedFEhistory"];
+	else if (t.k === "history") return historyContinuation(viewer, t.o, t.q);
 	else if ((t.k === "chvideos" || t.k === "about") && t.c) {
 		const c = await getChannel({ id: t.c });
 		if (!c) throw new ApiError(404, "Not found");
@@ -309,7 +241,7 @@ route("browse", async ({ body, viewer }) => {
 	if (body.continuation) return continuation(body.continuation, viewer);
 	const id = String(body.browseId ?? "");
 	if (id === "FEnotifications_inbox") return notificationsInbox(viewer);
-	const r = await buildBrowse(id, body.params, viewer);
+	const r = await buildBrowse(id, body.params, viewer, typeof body.query === "string" ? body.query : undefined);
 	if (!r) {
 		recordMiss(`youtubei browse:${id.replace(/^(UC|VLPL|PL)[\w-]+$/, "$1*")}`, JSON.stringify({ browseId: id, params: body.params }));
 		throw new ApiError(404, "Requested entity was not found.", "notFound");

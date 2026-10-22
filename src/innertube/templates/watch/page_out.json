@@ -1820,35 +1820,6 @@
 																	}
 																}
 															}
-														},
-														{
-															"menuServiceItemRenderer": {
-																"text": {
-																	"runs": [
-																		{
-																			"text": "Report"
-																		}
-																	]
-																},
-																"icon": {
-																	"iconType": "FLAG"
-																},
-																"serviceEndpoint": {
-																	"showEngagementPanelEndpoint": {
-																		"identifier": {
-																			"tag": "PAabuse_report"
-																		},
-																		"globalConfiguration": {
-																			"params": "{{b64:VIDEO_ID:qgdxCAESC35+fn5+fn5+fn5+GmBFZ3RoY1hvdFMwVXRZbkJMVVVBQldBQjRCWklCTWdvd0VpNW9kSFJ3Y3pvdkwya3VlWFJwYldjdVkyOXRMM1pwTDJGeGVpMUxSUzFpY0V0UkwyUmxabUYxYkhRdWFuQm4%3D}}"
-																		},
-																		"engagementPanelPresentationConfigs": {
-																			"engagementPanelPopupPresentationConfig": {
-																				"popupType": "PANEL_POPUP_TYPE_DIALOG"
-																			}
-																		}
-																	}
-																}
-															}
 														}
 													]
 												}
