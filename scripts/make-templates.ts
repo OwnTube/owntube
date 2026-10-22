@@ -1671,6 +1671,32 @@ function comments() {
 	commentsStep("in-comments2", /next\.resp$/, /next\.resp$/, true);
 }
 
+
+// YouTube Studio: the channel object (CreatorChannelData) the page prefetches
+// and creator/get_creator_channels returns, merged from both, every field
+// either answer had
+function studio() {
+	const page = body("in-studio-upload", /_content\.resp$/);
+	const prefetch = JSON.parse(/chunkedPrefetchResolvers\['id-0'\]\.resolve\((\{[\s\S]*?\})\);<\/script>/.exec(page)![1]);
+	const merge = (a: any, b: any): any => {
+		if (!a || typeof a !== "object" || Array.isArray(a) || !b || typeof b !== "object" || Array.isArray(b)) return b ?? a;
+		const out = { ...a };
+		for (const [k, v] of Object.entries(b)) out[k] = merge(a[k], v);
+		return out;
+	};
+	let ch = prefetch;
+	for (const [, r] of bodies("in-studio-upload", /get_creator_channels/)) ch = merge(ch, r.channels[0]);
+	const id: string = ch.channelId;
+	const title: string = ch.title;
+	ch = clean(ch);
+	ch.channelId = "{{CHANNEL_ID}}";
+	ch.title = "{{TITLE}}";
+	ch.thumbnailDetails = "{{AVATARS}}";
+	ch.metric = "{{METRIC}}";
+	ch.timeCreatedSeconds = "{{TIME_CREATED}}";
+	save("studio/channel", tokenize(ch, []), [id, title]);
+}
+
 // ======================================================================
 const only = process.argv.slice(2);
 personalValues();
@@ -1690,6 +1716,7 @@ const steps: [string, () => void][] = [
 	["save", saveSheet],
 	["share", sharePanel],
 	["playlist-panel", playlistPanelTpl],
+	["studio", studio],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;

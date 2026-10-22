@@ -3,9 +3,20 @@
 export const PORT = Number(process.env.PORT ?? 8080);
 export const PUBLIC_ORIGIN = (process.env.PUBLIC_ORIGIN ?? `http://localhost:${PORT}`).replace(/\/$/, "");
 export const PUBLIC_HOST = new URL(PUBLIC_ORIGIN).host;
-// YouTube Studio (creator pages) is a separate client on its own origin; until
-// it is served, links to it (Customize channel, Manage videos) lead nowhere
-export const STUDIO_ORIGIN = (process.env.STUDIO_ORIGIN ?? PUBLIC_ORIGIN).replace(/\/$/, "");
+// YouTube Studio (upload dialog, creator pages) is a separate client on its
+// own origin, as studio.youtube.com is: its paths (/channel/UC.../videos)
+// overlap the main client's. The server answers it on STUDIO_PORT, and on
+// the main port for requests whose Host is the Studio host (a reverse proxy
+// in front of both). Defaults: the next port on localhost, else studio.<host>.
+const publicUrl = new URL(PUBLIC_ORIGIN);
+const localHost = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(publicUrl.hostname);
+export const STUDIO_PORT = Number(process.env.STUDIO_PORT ?? PORT + 1);
+export const STUDIO_ORIGIN = (process.env.STUDIO_ORIGIN ?? (localHost ? `${publicUrl.protocol}//${publicUrl.hostname}:${STUDIO_PORT}` : `${publicUrl.protocol}//studio.${publicUrl.host}`)).replace(/\/$/, "");
+export const STUDIO_HOST = new URL(STUDIO_ORIGIN).host;
+// Sessions are shared between both origins. Cookies ignore ports, so on
+// localhost nothing is needed; on two hostnames set the parent domain
+// (e.g. COOKIE_DOMAIN=example.com for example.com and studio.example.com).
+export const COOKIE_DOMAIN = process.env.COOKIE_DOMAIN ?? "";
 export const DATABASE_URL = process.env.DATABASE_URL ?? "postgres://owntube:owntube@localhost:5432/owntube";
 export const MEDIA_DIR = process.env.MEDIA_DIR ?? "data/media";
 export const INSTANCE_NAME = process.env.INSTANCE_NAME ?? "OwnTube";

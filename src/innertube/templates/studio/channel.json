@@ -1,0 +1,515 @@
+{
+	"channelId": "{{CHANNEL_ID}}",
+	"title": "{{TITLE}}",
+	"thumbnailDetails": "{{AVATARS}}",
+	"features": {
+		"unlistedVideo": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"customThumbnails": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"channelCreativeCommonsLicense": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"legacyNoOffwebSyndication": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"audioOnlyUsage": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"usagePolicy": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"posts": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"sponsorships": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"sponsorsOnlyVideos": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"sponsorsOnlyLiveChat": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"copycat": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"donations": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"liveStreaming": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED",
+			"requirements": {
+				"mustTrustTiersVerify": true,
+				"mustSignLiveTermsOfService": false,
+				"mustSatisfyAgeRequirements": false
+			}
+		},
+		"reels": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"mentions": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"liveToAnyMatching": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"liveToLiveOnlyMatching": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"externalLinksInVideoAnnotations": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"unlimitedVideoLengthFeature": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"contentIdMatching": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"selfCertification": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"externalLinksInVideoAnnotationsTermsAccepted": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"externalLinksInVideoAnnotationsPrivilegedAccess": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"channelRedirectUrl": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"conditionalRedirects": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"channelHiding": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"limitedAdsReport": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"adSpecifyAgeGates": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"trustedToApplyForMonetization": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"canHideViewCount": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"enableCustomizePremiereFlow": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"liveRedirect": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"liveTrailer": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"sponsorshipsAnalytics": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"enforceTwoStepVerification": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"productsAnalytics": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"sponsorshipsCommentsFilter": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"prechecksNotifications": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"superThanksCommentsFilter": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"externalLinksInVideoDescription": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"mobileLiveStreaming": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"supers": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"shoppingAnalytics": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"remixOptOutTos": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"remixOptOutTorso": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"pangea": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"pflContractFlowEnabled": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"customThumbnailsHighRate": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"yppMobileFlow": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"yppMobileWithAffiliateFlow": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"channelShoppingHub": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"multiTrackAudio": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"autoProducts": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"remixTorsoOwnerOptedIn": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"channelCourseCreation": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"pinnedComments": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"liveSrtIngestion": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"adstubePromotions": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED",
+			"details": {
+				"hasPairedAdstubeAccount": false
+			}
+		},
+		"pflContracted": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"primetimeAnalytics": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED",
+			"tvfilmSelfServeStatus": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"rssPodcasts": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"externalLinks": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"bcx": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"shortsContentLinks": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"simplifiedAdsControls": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"shoppingFirstPartySalesAnalytics": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"podcastShows": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"aloudDubbing": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"adBlockingControls": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"macroMarkers": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"brandPartnerLinking": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"thumbnailExperiments": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"primetimeContentTabs": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"affiliateFeature": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED",
+			"details": {}
+		},
+		"shoppingAffiliateHubFeature": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"autoTagging": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED",
+			"statusDetails": "CREATOR_FEATURE_STATUS_DETAILS_NOT_APPLICABLE"
+		},
+		"tvfilmShelves": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"shows": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"viewerPosts": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"accountTakeoverSelfCleanup": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED",
+			"details": {
+				"ineligibilityReason": "CHANNEL_ACCOUNT_TAKEOVER_SELF_CLEANUP_INELIGIBILITY_REASON_NO_SUSPICIOUS_ACTIVITIES"
+			}
+		},
+		"automatedDubbing": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"shoppingFirstPartySalesAnalyticsPerProduct": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"autoDubSettings": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"thirdPartyTrainability": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"contentInspiration": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"creatorStore": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"exclusiveOffers": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"videoProductTagging": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"viewerPostsCommentsFilter": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"videoCollaborationInvite": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"autoDubEarlyAccess": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"creatorLikeness": {
+			"status": "CREATOR_FEATURE_STATUS_ELIGIBLE"
+		},
+		"autoDubDefaultOn": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"creatorChat": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"localizedThumbnails": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"shortsProductSticker": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"channelGuidelines": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"customEpisodicArtworks": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"videoHostedPostCreation": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"viewerPostsEdu": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"giftAnalytics": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"hypeAnalytics": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"shoppingAmazonAffiliate": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"biggerThumbnails": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED",
+			"details": {
+				"maxThumbnailSize": "BIGGER_THUMBNAIL_SIZE_UNKNOWN"
+			}
+		},
+		"creatorInitiatedLinking": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"videoRegionalAvailability": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"videoVpnProtection": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"videoHighlightSuggestions": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"videoFileAttachment": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"affiliatePartnershipAds": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"videoDrmProtection": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"genaiAudioswap": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"createThumbnailP13nExperiment": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"tvShows": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"videoSmartDraft": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"verificationTab": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"tvfilmSelfServeSku": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"shoppingAmazonDataLimitationBanner": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"fixableViolations": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"prechecksAutopublish": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"playablesBuilder": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"shortsCustomThumbnailsOnWeb": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"audioToVideo": {
+			"status": "CREATOR_FEATURE_STATUS_ELIGIBLE",
+			"eligibilityReason": "AUDIO_TO_VIDEO_ELIGIBILITY_REASON_TRUST_TIER_REQUIRED"
+		},
+		"tvfilmSelfServe": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"analyticsHubEligible": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"mobileVideoEditorSuggestedSectionTagProducts": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"autoTranslatedLocalizedThumbnails": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"liveReactSource": {
+			"status": "CREATOR_FEATURE_STATUS_ENABLED"
+		},
+		"fanCommunity": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		},
+		"shoppingAmazonAffiliateAlertBanner": {
+			"status": "CREATOR_FEATURE_STATUS_DISABLED"
+		}
+	},
+	"settings": {
+		"copyright": {
+			"copyrightAgreementStatus": "CREATOR_COPYRIGHT_AGREEMENT_STATUS_UNKNOWN"
+		},
+		"studio": {
+			"currency": "USD",
+			"prechecks": {}
+		},
+		"uploadDefaults": {
+			"title": "",
+			"description": "",
+			"privacy": "VIDEO_PRIVACY_PUBLIC",
+			"license": "VIDEO_LICENSE_STANDARD",
+			"allowRatings": true,
+			"uncaptionedReason": "VIDEO_UNCAPTIONED_REASON_UNNECESSARY_OR_NOT_SET",
+			"privacyDefaults": {
+				"privacy": "VIDEO_PRIVACY_PUBLIC",
+				"wasSet": false
+			},
+			"paidProductPlacement": "VIDEO_PAID_PRODUCT_PLACEMENT_UNSET",
+			"enablePostLevelCommentSettings": true
+		},
+		"coreSettings": {
+			"disableInterestBasedAds": false,
+			"hideSubscriberCount": false,
+			"enableVideoAdControl": false,
+			"featureCountry": "US",
+			"clipsState": "CLIPS_CHANNEL_STATE_ENABLED"
+		},
+		"shoppingSettings": {
+			"autoTaggingEnabled": {}
+		}
+	},
+	"responseStatus": {
+		"statusCode": "CREATOR_ENTITY_STATUS_OK"
+	},
+	"metric": "{{METRIC}}",
+	"permissions": {
+		"overallPermissions": [
+			"CREATOR_CHANNEL_PERMISSION_CHANNEL_OWNER",
+			"CREATOR_CHANNEL_PERMISSION_READ",
+			"CREATOR_CHANNEL_PERMISSION_BASIC_METADATA_READ",
+			"CREATOR_CHANNEL_PERMISSION_WRITE",
+			"CREATOR_CHANNEL_PERMISSION_VIDEO_READ",
+			"CREATOR_CHANNEL_PERMISSION_VIDEO_BASIC_METADATA_READ",
+			"CREATOR_CHANNEL_PERMISSION_VIDEO_UPLOAD",
+			"CREATOR_CHANNEL_PERMISSION_VIDEO_DELETER",
+			"CREATOR_CHANNEL_PERMISSION_CAPTION_READ",
+			"CREATOR_CHANNEL_PERMISSION_CAPTION_WRITE",
+			"CREATOR_CHANNEL_PERMISSION_COMMENT_MANAGER",
+			"CREATOR_CHANNEL_PERMISSION_COMMENT_SETTINGS_READER",
+			"CREATOR_CHANNEL_PERMISSION_COMMENT_SETTINGS_WRITER",
+			"CREATOR_CHANNEL_PERMISSION_STUDIO_CHANNEL_LEVEL_ACCESS",
+			"CREATOR_CHANNEL_PERMISSION_MONETIZATION_SETTINGS_READ",
+			"CREATOR_CHANNEL_PERMISSION_SETTINGS_MANAGE",
+			"CREATOR_CHANNEL_PERMISSION_USER_MANAGE",
+			"CREATOR_CHANNEL_PERMISSION_CONTRACT_SIGN",
+			"CREATOR_CHANNEL_PERMISSION_ENFORCEMENT_APPELLANT",
+			"CREATOR_CHANNEL_PERMISSION_ENFORCEMENT_READER",
+			"CREATOR_CHANNEL_PERMISSION_ACCOUNT_TAKEOVER_SELF_CLEANUP_TOOL_READER",
+			"CREATOR_CHANNEL_PERMISSION_LIKENESS_PROVIDER",
+			"CREATOR_CHANNEL_PERMISSION_LIKENESS_MANAGER",
+			"CREATOR_CHANNEL_PERMISSION_VIDEO_COLLABORATION_MANAGER",
+			"CREATOR_CHANNEL_PERMISSION_CHANNEL_VERIFICATION_MANAGER",
+			"CREATOR_CHANNEL_PERMISSION_COMMENT_READER",
+			"CREATOR_CHANNEL_PERMISSION_COMMENT_WRITER"
+		]
+	},
+	"timeCreatedSeconds": "{{TIME_CREATED}}",
+	"isOfficialArtistChannel": false,
+	"isNameVerified": false,
+	"channelVisibility": "CREATOR_CHANNEL_VISIBILITY_PUBLIC",
+	"interstitials": {
+		"yppWarmWelcomeState": "CREATOR_WARM_WELCOME_STATE_UNKNOWN"
+	},
+	"monetizationStatusData": {
+		"isMonetizationBasicsReady": false,
+		"isLongformAdsEnabled": false,
+		"isShortsRevshareEnabled": false
+	},
+	"brandDealLinks": {},
+	"accountTakeoverRestrictions": {},
+	"commentsSettings": {
+		"blockedWords": "",
+		"moderationType": "COMMENTS_MODERATION_TYPE_AUTOMOD",
+		"holdLinks": false,
+		"livechatAutomodEnabled": false,
+		"viewerPostSettings": {
+			"enablementType": "VIEWER_POST_ENABLEMENT_TYPE_OFF",
+			"moderationType": "VIEWER_POST_MODERATION_TYPE_BASIC_AUTOMOD",
+			"allowedPosterType": "VIEWER_POST_ALLOWED_POSTER_TYPE_SUBSCRIBERS_ONLY",
+			"minimumSubscriberDuration": {
+				"seconds": "86400"
+			}
+		},
+		"livechatCreatorLeaderboardOptOut": false,
+		"livechatAutomodMode": "LIVE_CHAT_AUTO_MOD_MODE_UNSPECIFIED",
+		"isPersonalizedModerationEnabled": false,
+		"livechatLiveAiSuggestionsOptOut": false
+	}
+}

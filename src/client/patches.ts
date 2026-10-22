@@ -5,14 +5,15 @@
 // `bun run check-patches` exits non-zero. docs/client-patches.md is the
 // inventory; keep it in sync with this list.
 
-import { PUBLIC_ORIGIN } from "../config";
+import { PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
 
-export type PatchContext = { origin: string; localOrigin: boolean };
+export type PatchContext = { origin: string; localOrigin: boolean; studioOrigin: string };
 export type Patch = {
 	id: string;
 	// which archived asset: "app" (main bundle and lazy modules), "player"
-	// (base.js), or a regex on the upstream URL
-	asset: "app" | "player" | RegExp;
+	// (base.js), "studio" (YouTube Studio's bundle and modules), or a regex
+	// on the upstream URL
+	asset: "app" | "player" | "studio" | RegExp;
 	find: string | RegExp;
 	replace: (ctx: PatchContext, ...groups: string[]) => string;
 	expect: number;
@@ -95,9 +96,50 @@ export const PATCHES: Patch[] = [
 		expect: 1,
 		why: "On every load the app fetches https://youtube.com once to warm the youtube.com -> www redirect. Nothing to warm here; the list is emptied.",
 	},
+	// ---- YouTube Studio ----
+	{
+		id: "studio-gstatic-youtube-img-host",
+		asset: "studio",
+		find: "https://www.gstatic.com/youtube/img/",
+		replace: (c) => `${c.studioOrigin}/_up/www.gstatic.com/youtube/img/`,
+		expect: 1004,
+		why: "Studio's illustrations, icons and animations, named in string literals and in its Polymer templates' attribute bindings. Points them at the archived copies under the Studio origin's /_up/.",
+	},
+	{
+		id: "studio-css-gstatic-host",
+		asset: /\/s\/_\/creatorstudio\/_\/ss\//,
+		find: "https://www.gstatic.com/youtube/img/",
+		replace: (c) => `${c.studioOrigin}/_up/www.gstatic.com/youtube/img/`,
+		expect: 10,
+		why: "Background images in Studio's stylesheet (onboarding and partner-program artwork).",
+	},
+	{
+		id: "studio-icons-material-host",
+		asset: "studio",
+		find: '"https://fonts.gstatic.com/s/i/"',
+		replace: (c) => quote(`${c.studioOrigin}/_up/fonts.gstatic.com/s/i/`),
+		expect: 2,
+		why: "The prefix Studio's icon manager builds SVG icon URLs from, as in the main app.",
+	},
+	{
+		id: "studio-icons-allowed-hosts",
+		asset: "studio",
+		find: '["https://fonts.gstatic.com","https://tv.youtube.com","https://www.gstatic.com","https://www.youtube.com"]',
+		replace: (c) => `["https://fonts.gstatic.com","https://tv.youtube.com","https://www.gstatic.com","https://www.youtube.com",${quote(c.studioOrigin)}]`,
+		expect: 1,
+		why: "Studio's icon manager has the same origin allowlist as the main app's; adds the Studio origin so the relocated icons are fetched and inlined.",
+	},
+	{
+		id: "studio-fonts-stylesheet-host",
+		asset: "studio",
+		find: '"https://fonts.googleapis.com/css',
+		replace: (c) => `"${c.studioOrigin}/_up/fonts.googleapis.com/css`,
+		expect: 4,
+		why: "Font stylesheets Studio inserts at run time.",
+	},
 ];
 
-export const patchContext = (): PatchContext => ({ origin: PUBLIC_ORIGIN, localOrigin: /^https?:\/\/local/.test(PUBLIC_ORIGIN) });
+export const patchContext = (): PatchContext => ({ origin: PUBLIC_ORIGIN, localOrigin: /^https?:\/\/local/.test(PUBLIC_ORIGIN), studioOrigin: STUDIO_ORIGIN });
 
 export type PatchResult = { id: string; matches: number; expect: number; applied: boolean };
 
@@ -110,7 +152,7 @@ function count(text: string, find: string | RegExp): number {
 	return [...text.matchAll(new RegExp(find.source, find.flags.includes("g") ? find.flags : `${find.flags}g`))].length;
 }
 
-export function patchesFor(kind: "app" | "player" | "other", url: string): Patch[] {
+export function patchesFor(kind: "app" | "player" | "studio" | "other", url: string): Patch[] {
 	const ctx = patchContext();
 	return PATCHES.filter((p) => (p.when ? p.when(ctx) : true) && (p.asset === kind || (p.asset instanceof RegExp && p.asset.test(url))));
 }
@@ -132,4 +174,4 @@ export function applyPatches(text: string, patches: Patch[]): { text: string; re
 	return { text, results };
 }
 
-export const patchSetHash = () => Bun.hash(JSON.stringify(PATCHES.map((p) => [p.id, String(p.find), p.replace(patchContext()), p.expect])) + PUBLIC_ORIGIN).toString(36);
+export const patchSetHash = () => Bun.hash(JSON.stringify(PATCHES.map((p) => [p.id, String(p.find), p.replace(patchContext()), p.expect])) + PUBLIC_ORIGIN + STUDIO_ORIGIN).toString(36);

@@ -1,0 +1,12 @@
+"use strict";_F_installCss(".ytcpEscalationQueueStateDetailsViewModelHost{display:flex;justify-content:center;align-items:center;padding-block:0 24px;padding-inline:24px;width:100%;box-sizing:border-box}.ytcpEscalationQueueStateDetailsViewModelContainer{display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--tf3fc855af2285f5f);border-radius:8px;padding:32px 48px;width:100%;min-height:200px;box-sizing:border-box}.ytcpEscalationQueueStateDetailsViewModelTitle{font-family:Roboto,Arial,sans-serif;font-size:1.4rem;font-weight:500;line-height:2rem;margin-bottom:24px}.ytcpEscalationQueueStateDetailsViewModelQueueNumberContainer{display:flex;align-items:center;justify-content:center;background-color:var(--tfa3475c508f5dfef);border-radius:50%;width:80px;height:80px;margin-bottom:24px}.ytcpEscalationQueueStateDetailsViewModelQueueNumber{font-family:Roboto,Arial,sans-serif;font-size:2.8rem;font-variation-settings:\"wdth\" 100;font-weight:900;line-height:3.8rem}@container (max-width: _max($medium_breakpoint)){.ytcpEscalationQueueStateDetailsViewModelQueueNumber{font-family:Roboto,Arial,sans-serif;font-size:2.4rem;font-variation-settings:\"wdth\" 100;font-weight:900;line-height:3.2rem}}@media (max-width:599.9px){.ytcpEscalationQueueStateDetailsViewModelQueueNumber{font-family:Roboto,Arial,sans-serif;font-size:2.4rem;font-variation-settings:\"wdth\" 100;font-weight:900;line-height:3.2rem}}sentinel{}");
+this.default_cs=this.default_cs||{};(function(_){var window=this;
+try{
+_.hd("F0Td2d");
+var vum=new _.QAc(_.jh());_.Mkc=_.Ri(function(a){_.tf("offline",function(){vum.increment("en".replace("_","-"))});
+return _.y("ytcp-escalation-queue-state-details-view-model",{class:"ytcpEscalationQueueStateDetailsViewModelHost","data-target-id":function(){var b;return((b=a.data())==null?void 0:b.targetId)||""}},_.y("div",{class:"ytcpEscalationQueueStateDetailsViewModelContainer"},_.y("div",{class:"ytcpEscalationQueueStateDetailsViewModelTitle"},_.y(_.LA,{text:function(){var b;
+return(b=a.data())==null?void 0:b.title}})),_.y("div",{class:"ytcpEscalationQueueStateDetailsViewModelQueueNumberContainer"},_.y("div",{class:"ytcpEscalationQueueStateDetailsViewModelQueueNumber"},_.y(_.LA,{text:function(){var b;
+return(b=a.data())==null?void 0:b.queuePosition}})))))},"vM");
+_.jd();
+}catch(e){_._DumpException(e)}
+}).call(this,this.default_cs);
+// Google Inc.

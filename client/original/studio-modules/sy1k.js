@@ -1,0 +1,20 @@
+"use strict";_F_installCss("ytas-artist-roster-account-switch-confirmation-dialog{color:var(--ytcp-text-primary);display:flex;flex-direction:column}p.ytas-artist-roster-account-switch-confirmation-dialog{font-family:var(--ytcp-font-subheading-font-family);font-weight:var(--ytcp-font-subheading-font-weight);-webkit-font-smoothing:antialiased;font-size:var(--ytcp-font-subheading-font-size);line-height:var(--ytcp-font-subheading-line-height);color:var(--ytcp-text-secondary)}sentinel{}");
+this.default_cs=this.default_cs||{};(function(_){var window=this;
+try{
+var cvg;_.bvg=function(a){return a.ui.artistRosterAccountSwitchConfirmationDialogState};var dvg=function(){var a=_.P.apply(this,arguments)||this;a.enableAccountSwitchWithoutPageReload=_.D("enable_account_switch_without_page_reload");a.messages={dialogBody:"Artist Roster allows you to easily view and manage channels on behalf of the artists you manage.\n  In order to see this content, you will be switched to this artist\u2019s account.",confirmButtonLabel:"Proceed",cancelButtonLabel:"Cancel"};return a};
+_.G(dvg,_.P);_.J.Object.defineProperties(dvg.prototype,{dialogTitle:{configurable:!0,enumerable:!0,get:function(){return"Switch account to "+String(this.artistName)}},
+artistName:{configurable:!0,enumerable:!0,get:function(){var a;return(a=this.accountSwitchConfirmationDialogState.artistName)!=null?a:""}},
+targetRouteLink:{configurable:!0,enumerable:!0,get:function(){return this.accountSwitchConfirmationDialogState.targetRouteLink}}});
+dvg.prototype.closeDialog=function(){this.dispatch({type:"ARTIST_ROSTER_ACCOUNT_SWITCH_CONFIRMATION_DIALOG_CLOSE",payload:{}})};
+dvg.prototype.proceed=function(){this.targetRouteLink&&(_.bA(this.metadataService,{update:{artistRosterSettings:{accountSwitchConfirmationDialogWebState:"DISPLAY_STATE_SHOWN"}}}),this.enableAccountSwitchWithoutPageReload?this.router.navigateToRoute(this.targetRouteLink.route.name,this.targetRouteLink.route.params):_.ii(this.targetRouteLink.url),this.closeDialog())};
+dvg.prototype.open=function(){var a;(a=this.confirmationDialog)==null||a.open()};
+dvg.prototype.close=function(){var a;(a=this.confirmationDialog)==null||a.close()};
+_.U([_.vi("#confirmation-dialog"),_.V("design:type",Object)],dvg.prototype,"confirmationDialog",void 0);_.U([_.Q(_.Xz),_.V("design:type",Function)],dvg.prototype,"dispatch",void 0);_.U([_.Q(),_.V("design:type",_.xj)],dvg.prototype,"metadataService",void 0);_.U([_.Q(),_.V("design:type",_.lq)],dvg.prototype,"router",void 0);_.U([_.T(_.bvg),_.V("design:type",Object)],dvg.prototype,"accountSwitchConfirmationDialogState",void 0);
+_.U([_.L("artistName"),_.V("design:type",String),_.V("design:paramtypes",[])],dvg.prototype,"dialogTitle",null);_.U([_.L("accountSwitchConfirmationDialogState"),_.V("design:type",String),_.V("design:paramtypes",[])],dvg.prototype,"artistName",null);_.U([_.L("accountSwitchConfirmationDialogState"),_.V("design:type",Object),_.V("design:paramtypes",[])],dvg.prototype,"targetRouteLink",null);
+_.evg=_.rj()(dvg,"ytas-artist-roster-account-switch-confirmation-dialog",function(){if(cvg===void 0){var a=document.createElement("template");_.dg(a,'\x3c!--css-build:shady--\x3e\x3c!--css_build_scope:ytas-artist-roster-account-switch-confirmation-dialog--\x3e<ytcp-confirmation-dialog id="confirmation-dialog" cancel-button-label="[[messages.cancelButtonLabel]]" cancel-button-secondary="" confirm-button-label="[[messages.confirmButtonLabel]]" dialog-title="[[dialogTitle]]" on-ytcp-confirmation-dialog-cancelled="closeDialog" on-ytcp-confirmation-dialog-confirmed="proceed" class="style-scope ytas-artist-roster-account-switch-confirmation-dialog">\n  &gt;\n  <div slot="dialog-content" class="style-scope ytas-artist-roster-account-switch-confirmation-dialog"><p class="style-scope ytas-artist-roster-account-switch-confirmation-dialog">[[messages.dialogBody]]</p></div></ytcp-confirmation-dialog>');
+cvg=a}a=cvg;return a},{allowedProps:[],
+mode:1});
+
+}catch(e){_._DumpException(e)}
+}).call(this,this.default_cs);
+// Google Inc.

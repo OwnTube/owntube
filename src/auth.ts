@@ -11,7 +11,7 @@
 
 import { createHash } from "node:crypto";
 import type { Viewer } from "./client/page";
-import { PUBLIC_ORIGIN, SECURE_COOKIES } from "./config";
+import { COOKIE_DOMAIN, PUBLIC_ORIGIN, SECURE_COOKIES, STUDIO_ORIGIN } from "./config";
 import { sql } from "./db";
 import { newChannelId, newToken } from "./ids";
 
@@ -52,7 +52,7 @@ export function forgetSession(sid: string) {
 }
 
 // SAPISIDHASH <ts>_<sha1> [SAPISID1PHASH ...]: any one valid signature,
-// at most a day old, with this instance's origin
+// at most a day old, with one of this instance's origins (main or Studio)
 export function verifyApiSignature(req: Request, viewer: Viewer): boolean {
 	if (!viewer) return false;
 	const auth = req.headers.get("authorization") ?? "";
@@ -60,14 +60,17 @@ export function verifyApiSignature(req: Request, viewer: Viewer): boolean {
 	for (const m of auth.matchAll(/(?:SAPISID|APISID)\w*HASH (\d+)_([0-9a-f]{40})/g)) {
 		const ts = Number(m[1]);
 		if (Math.abs(now - ts) > 86400) continue;
-		const want = createHash("sha1").update(`${ts} ${viewer.apiSecret} ${PUBLIC_ORIGIN}`).digest("hex");
-		if (want === m[2]) return true;
+		for (const origin of [PUBLIC_ORIGIN, STUDIO_ORIGIN]) {
+			const want = createHash("sha1").update(`${ts} ${viewer.apiSecret} ${origin}`).digest("hex");
+			if (want === m[2]) return true;
+		}
 	}
 	return false;
 }
 
 function cookie(name: string, value: string, opts: { httpOnly?: boolean; maxAge?: number }) {
 	const parts = [`${name}=${encodeURIComponent(value)}`, "Path=/", "SameSite=Lax"];
+	if (COOKIE_DOMAIN) parts.push(`Domain=${COOKIE_DOMAIN}`);
 	if (opts.httpOnly) parts.push("HttpOnly");
 	if (SECURE_COOKIES) parts.push("Secure");
 	if (opts.maxAge !== undefined) parts.push(`Max-Age=${opts.maxAge}`);

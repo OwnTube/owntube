@@ -106,3 +106,52 @@ export function closure(g: ModuleGraph, roots: Iterable<string>): Set<string> {
 	}
 	return out;
 }
+
+// ---- YouTube Studio (studio.youtube.com), pinned separately ----
+// client/original/studio/page.html  the Studio page shell, sanitized at pin
+//                                   time (no account values; see fetch-studio)
+// client/original/studio-modules/   per-module pieces of the Studio app bundle
+
+export const STUDIO_PIN_FILE = process.env.STUDIO_PIN_FILE ?? "pin/studio.json";
+
+export type StudioPin = {
+	fetchedAt: string;
+	pageBuildLabel: string;
+	clientVersion: string;
+	// the /s/<version>/ directory of Studio's static scripts
+	staticVersion: string;
+	app: {
+		key: string; // k= of the JS bundle
+		cssKey: string; // ck= / the _/ss/ k=
+		am: string;
+		// the page's _F_combinedSignature, which the module server requires (rs=)
+		signature: string;
+		jsUrl: string;
+		cssUrl: string;
+		graph: string;
+		initial: string[];
+		modules: Record<string, { sha256: string; size: number }>;
+	};
+	page: { sha256: string; size: number };
+	assets: PinnedAsset[];
+};
+
+export function studioModulePath(name: string): string {
+	if (!/^[\w-]+$/.test(name)) throw new Error(`bad module name ${name}`);
+	return join(ORIGINAL_DIR, "studio-modules", `${name}.js`);
+}
+
+export const studioPagePath = () => join(ORIGINAL_DIR, "studio", "page.html");
+
+let studioPinCache: StudioPin | undefined;
+export function loadStudioPin(): StudioPin | undefined {
+	if (studioPinCache) return studioPinCache;
+	if (!existsSync(STUDIO_PIN_FILE)) return undefined;
+	studioPinCache = JSON.parse(readFileSync(STUDIO_PIN_FILE, "utf8"));
+	return studioPinCache;
+}
+export function saveStudioPin(pin: StudioPin) {
+	mkdirSync(dirname(STUDIO_PIN_FILE), { recursive: true });
+	writeFileSync(STUDIO_PIN_FILE, `${JSON.stringify(pin, null, "\t")}\n`);
+	studioPinCache = pin;
+}

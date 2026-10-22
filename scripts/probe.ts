@@ -58,9 +58,11 @@ export function watchPage(page: Page, origin = ORIGIN, allowExt = allowExternal)
 }
 
 export async function signIn(page: Page, login: string, password: string, origin = ORIGIN) {
+	// two steps, as on Google's sign-in: the username, then the password
 	await page.goto(`${origin}/signin?next=/`);
-	await page.fill("#login", login);
-	await page.fill("#password", password);
+	await page.fill("#f-login", login);
+	await Promise.all([page.waitForSelector("#f-password"), page.click("button[type=submit]")]);
+	await page.fill("#f-password", password);
 	await Promise.all([page.waitForURL(`${origin}/`), page.click("button[type=submit]")]);
 }
 

@@ -2,7 +2,7 @@ import { getViewer } from "./auth";
 import { serveClientAsset } from "./client/assets";
 import { renderPage } from "./client/page";
 import { loadPin } from "./client/store";
-import { PORT, PUBLIC_ORIGIN } from "./config";
+import { PORT, PUBLIC_ORIGIN, STUDIO_HOST, STUDIO_ORIGIN, STUDIO_PORT } from "./config";
 import { migrate } from "./db";
 import { recordMiss, startDiagnostics } from "./diagnostics";
 import { innertube } from "./innertube/router";
@@ -17,6 +17,7 @@ import { startProcessing } from "./media/process";
 import { thumbnail, videoplayback } from "./media/serve";
 import { pageFor } from "./pages";
 import { instanceRoutes } from "./instance";
+import { studioRoutes } from "./studio";
 
 // Pages may only talk to this origin; anything else is blocked by the
 // browser and reported to /_csp, which feeds the diagnostics view.
@@ -42,6 +43,7 @@ function nonce() {
 async function handle(req: Request): Promise<Response> {
 	const url = new URL(req.url);
 	const path = url.pathname;
+	if (url.host === STUDIO_HOST) return studioRoutes(req, url, await getViewer(req));
 	if (path.startsWith("/s/") || path.startsWith("/_up/")) return (await serveClientAsset(req, url)) ?? new Response("not found", { status: 404 });
 	if (path === "/videoplayback") return videoplayback(req, url);
 	if (path.startsWith("/vi/") || path.startsWith("/vi_webp/")) return thumbnail(url);
@@ -82,17 +84,16 @@ await migrate();
 startDiagnostics();
 if (process.env.NO_WORKER !== "1") startProcessing();
 
-Bun.serve({
-	port: PORT,
+const serveOptions = {
 	idleTimeout: 120,
 	maxRequestBodySize: Number(process.env.MAX_UPLOAD_BYTES ?? 2 * 1024 ** 3),
-	async fetch(req) {
+	async fetch(req: Request) {
 		const started = performance.now();
 		try {
 			const res = await handle(req);
 			if (process.env.LOG_REQUESTS) {
 				const u = new URL(req.url);
-				console.log(`${res.status} ${req.method} ${u.pathname}${u.pathname === "/videoplayback" ? u.search.replace(/&sig=[^&]*/, "") : ""} ${(performance.now() - started).toFixed(0)}ms`);
+				console.log(`${res.status} ${req.method} ${u.host === STUDIO_HOST ? "studio " : ""}${u.pathname}${u.pathname === "/videoplayback" ? u.search.replace(/&sig=[^&]*/, "") : ""} ${(performance.now() - started).toFixed(0)}ms`);
 			}
 			return res;
 		} catch (e) {
@@ -100,5 +101,10 @@ Bun.serve({
 			return new Response("internal error", { status: 500 });
 		}
 	},
-});
-console.log(`owntube listening on ${PUBLIC_ORIGIN} (port ${PORT})`);
+};
+
+Bun.serve({ port: PORT, ...serveOptions });
+// YouTube Studio's origin; requests are told apart by Host, so a reverse
+// proxy may send both hostnames to either port
+if (STUDIO_PORT !== PORT) Bun.serve({ port: STUDIO_PORT, ...serveOptions });
+console.log(`owntube listening on ${PUBLIC_ORIGIN} (port ${PORT}); Studio on ${STUDIO_ORIGIN} (port ${STUDIO_PORT})`);

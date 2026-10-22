@@ -1,0 +1,19 @@
+"use strict";_F_installCss(".ytfcYouthBasicSectionHeaderViewModelHost{align-items:center;display:flex;padding:12px}.ytfcYouthBasicSectionHeaderViewModelDisableHorizontalPadding{padding:12px 0}.ytfcYouthBasicSectionHeaderViewModelBadge{color:var(--t4a6da19e16bf221a);font-family:Roboto,Arial,sans-serif;font-size:1rem;font-weight:400;line-height:1.6rem}.ytfcYouthBasicSectionHeaderViewModelDescription{color:var(--t4a6da19e16bf221a);font-family:Roboto,Arial,sans-serif;font-size:1.4rem;font-weight:400;line-height:2rem}.ytfcYouthBasicSectionHeaderViewModelClickableDescription{font-family:Roboto,Arial,sans-serif;font-size:1.2rem;font-weight:500;line-height:1.8rem}.ytfcYouthBasicSectionHeaderViewModelDetails{display:flex;flex-direction:column;margin:4px}.ytfcYouthBasicSectionHeaderViewModelImage{height:72px;width:72px}.ytfcYouthBasicSectionHeaderViewModelLeading{flex-shrink:0;margin:8px 12px 8px 0}.ytfcYouthBasicSectionHeaderViewModelMetadata{display:flex;flex-direction:column;gap:4px}.ytfcYouthBasicSectionHeaderViewModelSubtitle{color:var(--t4a6da19e16bf221a);font-family:Roboto,Arial,sans-serif;font-size:1rem;font-weight:400;line-height:1.6rem}.ytfcYouthBasicSectionHeaderViewModelTitle{color:var(--tffc2fd3a644f6275);margin:0;padding:0;font-family:Roboto,Arial,sans-serif;font-size:1.8rem;font-variation-settings:\"wdth\" 100;font-weight:700;line-height:2.6rem;overflow:hidden;display:block;max-height:5.2rem;display:box;display:-webkit-box;-webkit-box-orient:vertical;text-overflow:ellipsis;white-space:normal}@supports (-webkit-line-clamp:1){.ytfcYouthBasicSectionHeaderViewModelTitle{-webkit-line-clamp:2;max-height:none}}sentinel{}");
+this.default_cs=this.default_cs||{};(function(_){var window=this;
+try{
+_.Vic=_.Ri(function(a){var b=_.Si(a,{className:void 0,disableHorizontalPadding:void 0}),c=b.data;a=b.className;var e=b.disableHorizontalPadding,g=function(){var t;return(t=c())==null?void 0:t.description},k=function(){var t;
+return(t=c())==null?void 0:t.subtitle},l=function(){var t;
+return(t=c())==null?void 0:t.title},m=function(){var t,v;
+return(v=e())!=null?v:(t=c())==null?void 0:t.disableHorizontalPadding};
+b=_.io(function(){var t;return m()?void 0:(t=c())==null?void 0:t.horizontalPaddingToken});
+var p=_.io(function(){var t;return(t=c())==null?void 0:t.verticalPaddingToken}),r={};
+return _.y("ytfc-youth-basic-section-header-view-model",{class:_.Un("ytfcYouthBasicSectionHeaderViewModelHost",a,(r.ytfcYouthBasicSectionHeaderViewModelDisableHorizontalPadding=m,r)),style:_.fo({"padding-inline":b,"padding-block":p})},_.y("div",{class:"ytfcYouthBasicSectionHeaderViewModelLeading"},_.y(_.ko,{data:function(){var t;return(t=c())==null?void 0:t.avatar}},{avatarViewModel:_.SD,
+decoratedAvatarViewModel:_.nlc}),_.y(_.B,{cond:function(){var t;return _.p0b((t=c())==null?void 0:t.themedImage)},
+then:function(t){return _.y(_.go,{data:t,alt:"",ariaHidden:!0,className:"ytfcYouthBasicSectionHeaderViewModelImage"})}})),_.y("div",{class:"ytfcYouthBasicSectionHeaderViewModelDetails"},_.y(_.B,{cond:l,
+then:function(){return _.y(_.LA,{text:l,className:"ytfcYouthBasicSectionHeaderViewModelTitle"})}}),_.y("div",{class:"ytfcYouthBasicSectionHeaderViewModelMetadata"},_.y(_.ko,{data:function(){var t;
+return(t=c())==null?void 0:t.bottomBadge}},{badgeViewModel:function(t){return _.y("div",{class:"ytfcYouthBasicSectionHeaderViewModelBadge"},_.y(_.TD,{data:t.data}))}}),_.y(_.B,{cond:k,
+then:function(){return _.y(_.LA,{text:k,className:"ytfcYouthBasicSectionHeaderViewModelSubtitle"})}}),_.y(_.B,{cond:g,
+then:function(){var t={};return _.y(_.LA,{text:g,className:_.Un("ytfcYouthBasicSectionHeaderViewModelDescription",(t.ytfcYouthBasicSectionHeaderViewModelClickableDescription=function(){var v,w;return!!((v=g())==null?0:(w=v.commandRuns)==null?0:w.length)},t))})}}))))},"WN");
+}catch(e){_._DumpException(e)}
+}).call(this,this.default_cs);
+// Google Inc.

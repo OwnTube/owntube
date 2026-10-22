@@ -9,12 +9,11 @@ import { join } from "node:path";
 import { destroySession } from "./auth";
 import type { Viewer } from "./client/page";
 import { loadPin, archivePath } from "./client/store";
-import { INSTANCE_NAME, MEDIA_DIR, PUBLIC_ORIGIN } from "./config";
+import { INSTANCE_NAME, MEDIA_DIR, PUBLIC_ORIGIN, STUDIO_ORIGIN } from "./config";
 import { sql } from "./db";
 import { isVideoId } from "./ids";
 import { rateLimit } from "./ratelimit";
 import { accountRoutes, instanceAsset } from "./signin";
-import { uploadRoutes } from "./upload";
 import { adminRoutes } from "./admin";
 import { suggest } from "./innertube/search";
 import { recordWatch } from "./innertube/history";
@@ -40,7 +39,9 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid var(--li
 	);
 }
 
+// a path on this origin, or a page of the Studio origin
 function safeNext(next: string | null): string {
+	if (next && STUDIO_ORIGIN !== PUBLIC_ORIGIN && next.startsWith(`${STUDIO_ORIGIN}/`)) return next;
 	return next && next.startsWith("/") && !next.startsWith("//") ? next : "/";
 }
 
@@ -112,8 +113,8 @@ export async function instanceRoutes(req: Request, url: URL, viewer: Viewer): Pr
 			headers: { "content-type": "text/javascript", "cache-control": "no-store" },
 		});
 	if (path === "/robots.txt") return new Response("User-agent: *\nDisallow: /youtubei/\nDisallow: /videoplayback\n", { headers: { "content-type": "text/plain" } });
-	const up = await uploadRoutes(req, url, viewer);
-	if (up) return up;
+	// as on youtube.com: uploading happens in Studio's upload dialog
+	if (path === "/upload") return Response.redirect(viewer ? `${STUDIO_ORIGIN}/channel/${viewer.channelId}/videos/upload?d=ud` : `/signin?next=${encodeURIComponent("/upload")}`, 303);
 	return adminRoutes(req, url, viewer);
 }
 

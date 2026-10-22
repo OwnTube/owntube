@@ -12,3 +12,4 @@ evidence/*.png
 /client/patched/
 # in-progress processing work directories
 /data/media/.work-*
+/client/observed.txt
