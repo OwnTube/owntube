@@ -1,1 +1,4 @@
+https://www.gstatic.com/images/branding/productlogos/gemini_2025/v1/web-16dp/logo_gemini_2025_color_2x_web_16dp.png
 https://www.gstatic.com/youtube/img/lottie/audio_indicator/audio_indicator_v2.json
+https://www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_dark_v3.json
+https://www.gstatic.com/youtube/img/lottie/youchat_animations/progress_indicator_comp_mono_light_v3.json

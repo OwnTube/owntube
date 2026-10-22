@@ -1,0 +1,545 @@
+{
+	"lockupViewModel": {
+		"contentImage": {
+			"thumbnailViewModel": {
+				"image": {
+					"sources": "{{THUMBS}}"
+				},
+				"overlays": [
+					{
+						"thumbnailBottomOverlayViewModel": {
+							"badges": [
+								{
+									"thumbnailBadgeViewModel": {
+										"text": "{{DURATION}}",
+										"badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT",
+										"animationActivationTargetId": "{{VIDEO_ID}}",
+										"animationActivationEntityKey": "Eh8veW91dHViZS9hcHAvd2F0Y2gvcGxheWVyX3N0YXRlIMMCKAE%3D",
+										"lottieData": {
+											"url": "{{ORIGIN}}/_up/www.gstatic.com/youtube/img/lottie/audio_indicator/audio_indicator_v2.json",
+											"settings": {
+												"loop": true,
+												"autoplay": true
+											}
+										},
+										"animatedText": "Now playing",
+										"animationActivationEntitySelectorType": "THUMBNAIL_BADGE_ANIMATION_ENTITY_SELECTOR_TYPE_PLAYER_STATE",
+										"rendererContext": {
+											"accessibilityContext": {
+												"label": "{{DURATION_LABEL}}"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"thumbnailHoverOverlayToggleActionsViewModel": {
+							"buttons": [
+								{
+									"toggleButtonViewModel": {
+										"defaultButtonViewModel": {
+											"buttonViewModel": {
+												"iconName": "WATCH_LATER",
+												"onTap": {
+													"innertubeCommand": {
+														"commandMetadata": {
+															"webCommandMetadata": {
+																"sendPost": true,
+																"apiUrl": "/youtubei/v1/browse/edit_playlist"
+															}
+														},
+														"playlistEditEndpoint": {
+															"playlistId": "WL",
+															"actions": [
+																{
+																	"addedVideoId": "{{VIDEO_ID}}",
+																	"action": "ACTION_ADD_VIDEO"
+																}
+															]
+														}
+													}
+												},
+												"accessibilityText": "Watch later",
+												"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY_DARK",
+												"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+												"buttonSize": "BUTTON_VIEW_MODEL_SIZE_COMPACT",
+												"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE"
+											}
+										},
+										"toggledButtonViewModel": {
+											"buttonViewModel": {
+												"iconName": "CHECK",
+												"onTap": {
+													"innertubeCommand": {
+														"commandMetadata": {
+															"webCommandMetadata": {
+																"sendPost": true,
+																"apiUrl": "/youtubei/v1/browse/edit_playlist"
+															}
+														},
+														"playlistEditEndpoint": {
+															"playlistId": "WL",
+															"actions": [
+																{
+																	"action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+																	"removedVideoId": "{{VIDEO_ID}}"
+																}
+															]
+														}
+													}
+												},
+												"accessibilityText": "Added",
+												"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY_DARK",
+												"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+												"buttonSize": "BUTTON_VIEW_MODEL_SIZE_COMPACT",
+												"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE"
+											}
+										},
+										"isToggled": false
+									}
+								},
+								{
+									"toggleButtonViewModel": {
+										"defaultButtonViewModel": {
+											"buttonViewModel": {
+												"iconName": "ADD_TO_QUEUE_TAIL",
+												"onTap": {
+													"innertubeCommand": {
+														"commandMetadata": {
+															"webCommandMetadata": {
+																"sendPost": true
+															}
+														},
+														"signalServiceEndpoint": {
+															"signal": "CLIENT_SIGNAL",
+															"actions": [
+																{
+																	"addToPlaylistCommand": {
+																		"openMiniplayer": true,
+																		"videoId": "{{VIDEO_ID}}",
+																		"listType": "PLAYLIST_EDIT_LIST_TYPE_QUEUE",
+																		"onCreateListCommand": {
+																			"commandMetadata": {
+																				"webCommandMetadata": {
+																					"sendPost": true,
+																					"apiUrl": "/youtubei/v1/playlist/create"
+																				}
+																			},
+																			"createPlaylistServiceEndpoint": {
+																				"videoIds": [
+																					"{{VIDEO_ID}}"
+																				],
+																				"params": "CAQ%3D"
+																			}
+																		},
+																		"videoIds": [
+																			"{{VIDEO_ID}}"
+																		],
+																		"videoCommand": {
+																			"commandMetadata": {
+																				"webCommandMetadata": {
+																					"url": "/watch?v={{VIDEO_ID}}",
+																					"webPageType": "WEB_PAGE_TYPE_WATCH",
+																					"rootVe": 3832
+																				}
+																			},
+																			"watchEndpoint": {
+																				"videoId": "{{VIDEO_ID}}"
+																			}
+																		}
+																	}
+																}
+															]
+														}
+													}
+												},
+												"accessibilityText": "Add to queue",
+												"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY_DARK",
+												"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+												"buttonSize": "BUTTON_VIEW_MODEL_SIZE_COMPACT",
+												"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE"
+											}
+										},
+										"toggledButtonViewModel": {
+											"buttonViewModel": {
+												"iconName": "CHECK",
+												"accessibilityText": "Added",
+												"style": "BUTTON_VIEW_MODEL_STYLE_OVERLAY_DARK",
+												"type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+												"buttonSize": "BUTTON_VIEW_MODEL_SIZE_COMPACT",
+												"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE"
+											}
+										},
+										"isToggled": false
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		"metadata": {
+			"lockupMetadataViewModel": {
+				"title": {
+					"content": "{{TITLE}}"
+				},
+				"image": {
+					"decoratedAvatarViewModel": {
+						"avatar": {
+							"avatarViewModel": {
+								"image": {
+									"sources": "{{AVATAR}}"
+								},
+								"avatarImageSize": "AVATAR_SIZE_M"
+							}
+						},
+						"a11yLabel": "Go to channel {{CHANNEL_NAME}}",
+						"rendererContext": {
+							"commandContext": {
+								"onTap": {
+									"innertubeCommand": {
+										"commandMetadata": {
+											"webCommandMetadata": {
+												"url": "{{CHANNEL_URL}}",
+												"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+												"rootVe": 3611,
+												"apiUrl": "/youtubei/v1/browse"
+											}
+										},
+										"browseEndpoint": {
+											"browseId": "{{CHANNEL_ID}}",
+											"canonicalBaseUrl": "{{CHANNEL_URL}}"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"metadata": {
+					"contentMetadataViewModel": {
+						"metadataRows": [
+							{
+								"metadataParts": [
+									{
+										"text": {
+											"content": "{{CHANNEL_NAME}}",
+											"commandRuns": [
+												{
+													"startIndex": 0,
+													"length": 14,
+													"onTap": {
+														"innertubeCommand": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "{{CHANNEL_URL}}",
+																	"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+																	"rootVe": 3611,
+																	"apiUrl": "/youtubei/v1/browse"
+																}
+															},
+															"browseEndpoint": {
+																"browseId": "{{CHANNEL_ID}}",
+																"canonicalBaseUrl": "{{CHANNEL_URL}}"
+															}
+														}
+													}
+												}
+											],
+											"styleRuns": [
+												{
+													"startIndex": 0,
+													"length": 14,
+													"weightLabel": "FONT_WEIGHT_NORMAL"
+												}
+											]
+										}
+									}
+								]
+							},
+							{
+								"metadataParts": [
+									{
+										"text": {
+											"content": "{{VIEWS}}"
+										},
+										"accessibilityLabel": "{{VIEWS_LABEL}}",
+										"leadingIcon": {
+											"name": "PLAY_ARROW_OUTLINED",
+											"height": 12,
+											"width": 12
+										}
+									},
+									{
+										"text": {
+											"content": "{{PUBLISHED}}"
+										},
+										"accessibilityLabel": "{{PUBLISHED_LABEL}}"
+									}
+								]
+							}
+						],
+						"delimiter": " "
+					}
+				},
+				"menuButton": {
+					"buttonViewModel": {
+						"iconName": "MORE_VERT",
+						"onTap": {
+							"innertubeCommand": {
+								"showSheetCommand": {
+									"panelLoadingStrategy": {
+										"inlineContent": {
+											"sheetViewModel": {
+												"content": {
+													"listViewModel": {
+														"listItems": [
+															{
+																"listItemViewModel": {
+																	"title": {
+																		"content": "Add to queue"
+																	},
+																	"leadingImage": {
+																		"sources": [
+																			{
+																				"clientResource": {
+																					"imageName": "ADD_TO_QUEUE_TAIL"
+																				}
+																			}
+																		]
+																	},
+																	"rendererContext": {
+																		"loggingContext": {},
+																		"commandContext": {
+																			"onTap": {
+																				"innertubeCommand": {
+																					"commandMetadata": {
+																						"webCommandMetadata": {
+																							"sendPost": true
+																						}
+																					},
+																					"signalServiceEndpoint": {
+																						"signal": "CLIENT_SIGNAL",
+																						"actions": [
+																							{
+																								"addToPlaylistCommand": {
+																									"openMiniplayer": true,
+																									"videoId": "{{VIDEO_ID}}",
+																									"listType": "PLAYLIST_EDIT_LIST_TYPE_QUEUE",
+																									"onCreateListCommand": {
+																										"commandMetadata": {
+																											"webCommandMetadata": {
+																												"sendPost": true,
+																												"apiUrl": "/youtubei/v1/playlist/create"
+																											}
+																										},
+																										"createPlaylistServiceEndpoint": {
+																											"videoIds": [
+																												"{{VIDEO_ID}}"
+																											],
+																											"params": "CAQ%3D"
+																										}
+																									},
+																									"videoIds": [
+																										"{{VIDEO_ID}}"
+																									],
+																									"videoCommand": {
+																										"commandMetadata": {
+																											"webCommandMetadata": {
+																												"url": "/watch?v={{VIDEO_ID}}",
+																												"webPageType": "WEB_PAGE_TYPE_WATCH",
+																												"rootVe": 3832
+																											}
+																										},
+																										"watchEndpoint": {
+																											"videoId": "{{VIDEO_ID}}"
+																										}
+																									}
+																								}
+																							}
+																						]
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															},
+															{
+																"listItemViewModel": {
+																	"title": {
+																		"content": "Save to Watch later"
+																	},
+																	"leadingImage": {
+																		"sources": [
+																			{
+																				"clientResource": {
+																					"imageName": "WATCH_LATER"
+																				}
+																			}
+																		]
+																	},
+																	"rendererContext": {
+																		"commandContext": {
+																			"onTap": {
+																				"innertubeCommand": {
+																					"commandMetadata": {
+																						"webCommandMetadata": {
+																							"sendPost": true,
+																							"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																						}
+																					},
+																					"playlistEditEndpoint": {
+																						"playlistId": "WL",
+																						"actions": [
+																							{
+																								"addedVideoId": "{{VIDEO_ID}}",
+																								"action": "ACTION_ADD_VIDEO"
+																							}
+																						]
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															},
+															{
+																"listItemViewModel": {
+																	"title": {
+																		"content": "Save to playlist"
+																	},
+																	"leadingImage": {
+																		"sources": [
+																			{
+																				"clientResource": {
+																					"imageName": "BOOKMARK_BORDER"
+																				}
+																			}
+																		]
+																	},
+																	"rendererContext": {
+																		"loggingContext": {},
+																		"commandContext": {
+																			"onTap": {
+																				"innertubeCommand": {
+																					"commandMetadata": {
+																						"interactionLoggingCommandMetadata": {
+																							"screenVisualElement": {
+																								"uiType": 264491
+																							}
+																						}
+																					},
+																					"showSheetCommand": {
+																						"panelLoadingStrategy": {
+																							"requestTemplate": {
+																								"panelId": "PAadd_to_playlist",
+																								"params": "{{b64:VIDEO_ID:-gYNCgt-fn5-fn5-fn5-fg%3D%3D}}"
+																							},
+																							"screenVe": 264491
+																						},
+																						"contextualSheetPresentationConfig": {
+																							"expandToFullWidth": true
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															},
+															{
+																"listItemViewModel": {
+																	"title": {
+																		"content": "Share"
+																	},
+																	"leadingImage": {
+																		"sources": [
+																			{
+																				"clientResource": {
+																					"imageName": "SHARE"
+																				}
+																			}
+																		]
+																	},
+																	"rendererContext": {
+																		"commandContext": {
+																			"onTap": {
+																				"innertubeCommand": {
+																					"commandMetadata": {
+																						"webCommandMetadata": {
+																							"sendPost": true,
+																							"apiUrl": "/youtubei/v1/share/get_share_panel"
+																						}
+																					},
+																					"shareEntityServiceEndpoint": {
+																						"serializedShareEntity": "{{b64:VIDEO_ID:Cgt+fn5+fn5+fn5+fg%3D%3D}}",
+																						"commands": [
+																							{
+																								"openPopupAction": {
+																									"popup": {
+																										"unifiedSharePanelRenderer": {
+																											"showLoadingSpinner": true
+																										}
+																									},
+																									"popupType": "DIALOG",
+																									"beReused": true
+																								}
+																							}
+																						]
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														]
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"accessibilityText": "More actions",
+						"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+						"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+						"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+						"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE"
+					}
+				}
+			}
+		},
+		"contentId": "{{VIDEO_ID}}",
+		"contentType": "LOCKUP_CONTENT_TYPE_VIDEO",
+		"rendererContext": {
+			"accessibilityContext": {
+				"label": "{{TITLE}} {{DURATION_LABEL}}"
+			},
+			"commandContext": {
+				"onTap": {
+					"innertubeCommand": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/watch?v={{VIDEO_ID}}&list={{PLAYLIST_ID}}&index=3",
+								"webPageType": "WEB_PAGE_TYPE_WATCH",
+								"rootVe": 3832
+							}
+						},
+						"watchEndpoint": {
+							"videoId": "{{VIDEO_ID}}",
+							"playlistId": "{{PLAYLIST_ID}}",
+							"index": 2,
+							"params": "OAI%3D"
+						}
+					}
+				}
+			}
+		}
+	}
+}

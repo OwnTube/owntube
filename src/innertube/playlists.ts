@@ -2,11 +2,12 @@
 // account) and Liked videos (LL, derived from likes). Pages, the watch-page
 // playlist panel, the "Save to playlist" sheet and the edit endpoints.
 
-import { fill, make, tpl } from "./tpl";
-import { baseVars } from "./vars";
+import { fill, find, make, tpl, type Vars } from "./tpl";
+import { baseVars, videoVars } from "./vars";
+import { viewerVars } from "./chrome";
 import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
-import { type Channel, type Video, ago, avatarUrl, browseEndpoint, channelEndpoint, content, duration, durationLabel, label, playlistEndpoint, plural, responseContext, runs, serviceEndpoint, shortViews, signInModal, text, viewsText, watchEndpoint } from "./r";
+import { type Channel, type Video, ago, avatarUrl, compact, grouped, shortAgo, videoThumbnails, browseEndpoint, channelEndpoint, content, duration, durationLabel, label, playlistEndpoint, plural, responseContext, runs, serviceEndpoint, shortViews, signInModal, text, viewsText, watchEndpoint } from "./r";
 import { sql } from "../db";
 import { encodeToken, isVideoId, newPlaylistId, randomId } from "../ids";
 import { continuationItem } from "./items";
@@ -15,7 +16,7 @@ import type { BrowseResult } from "./browse";
 
 const PAGE = 100;
 
-type Playlist = { id: string; user_id: string; title: string; description: string; visibility: "public" | "unlisted" | "private"; kind: "user" | "watch_later" | "liked"; updated_at: Date; video_count: number; first_video: string | null; owner_channel: string; owner_title: string; owner_handle: string };
+type Playlist = { id: string; user_id: string; title: string; description: string; visibility: "public" | "unlisted" | "private"; video_order: number; kind: "user" | "watch_later" | "liked"; updated_at: Date; video_count: number; first_video: string | null; owner_channel: string; owner_title: string; owner_handle: string };
 
 const VIDEO_COLUMNS = sql`v.id, v.title, v.description, v.channel_id, c.title as channel_title, c.handle as channel_handle, c.avatar_path as channel_avatar,
 	v.duration_ms, v.view_count::int as view_count, v.like_count, v.comment_count, v.published_at, v.created_at, v.visibility, v.status, v.width, v.height`;
@@ -36,7 +37,7 @@ async function getPlaylist(id: string, viewer: Viewer): Promise<Playlist | undef
 	if (id === "LL") {
 		if (!viewer) return undefined;
 		const [r] = await sql`select count(*)::int as n, (select video_id from video_reactions where user_id = ${viewer.userId} and kind = 'like' order by created_at desc limit 1) as first from video_reactions where user_id = ${viewer.userId} and kind = 'like'`;
-		return { id: "LL", user_id: viewer.userId, title: "Liked videos", description: "", visibility: "private", kind: "liked", updated_at: new Date(), video_count: r.n, first_video: r.first, owner_channel: viewer.channelId, owner_title: viewer.title, owner_handle: viewer.handle };
+		return { id: "LL", user_id: viewer.userId, title: "Liked videos", description: "", visibility: "private", video_order: 0, kind: "liked", updated_at: new Date(), video_count: r.n, first_video: r.first, owner_channel: viewer.channelId, owner_title: viewer.title, owner_handle: viewer.handle };
 	}
 	const real = id === "WL" ? (viewer ? await watchLaterId(viewer) : undefined) : id;
 	if (!real) return undefined;
@@ -46,8 +47,14 @@ async function getPlaylist(id: string, viewer: Viewer): Promise<Playlist | undef
 		from playlists p join channels c on c.user_id = p.user_id where p.id = ${real}`;
 	if (!p) return undefined;
 	if (p.visibility === "private" && p.user_id !== viewer?.userId) return undefined;
-	return { ...p, id: p.kind === "watch_later" ? "WL" : p.id, user_id: String(p.user_id) } as Playlist;
+	const out = { ...p, id: p.kind === "watch_later" ? "WL" : p.id, user_id: String(p.user_id) } as Playlist;
+	// "Play all" starts where the chosen order does
+	if (out.video_order) out.first_video = (await playlistVideos(out, viewer, 1, 0))[0]?.id ?? null;
+	return out;
 }
+
+// the sort menu's orders (playlists.video_order)
+const ORDERS = [sql`i.position`, sql`i.added_at desc`, sql`i.added_at asc`, sql`v.view_count desc`, sql`v.published_at desc nulls last`, sql`v.published_at asc nulls last`];
 
 async function playlistVideos(p: Playlist, viewer: Viewer, limit: number, offset: number): Promise<(Video & { set_id: string })[]> {
 	if (p.kind === "liked")
@@ -55,7 +62,7 @@ async function playlistVideos(p: Playlist, viewer: Viewer, limit: number, offset
 			where r.user_id = ${viewer!.userId} and r.kind = 'like' and ${PLAYABLE(viewer)} order by r.created_at desc limit ${limit} offset ${offset}`) as (Video & { set_id: string })[];
 	const real = p.kind === "watch_later" ? await watchLaterId(viewer!) : p.id;
 	return (await sql`select ${VIDEO_COLUMNS}, i.id as set_id from playlist_items i join videos v on v.id = i.video_id join channels c on c.id = v.channel_id
-		where i.playlist_id = ${real} and ${PLAYABLE(viewer)} order by i.position limit ${limit} offset ${offset}`) as (Video & { set_id: string })[];
+		where i.playlist_id = ${real} and ${PLAYABLE(viewer)} order by ${ORDERS[p.video_order] ?? ORDERS[0]}, i.position limit ${limit} offset ${offset}`) as (Video & { set_id: string })[];
 }
 
 const thumb = (videoId: string | null) => (videoId ? `${PUBLIC_ORIGIN}/vi/${videoId}/hqdefault.jpg` : `${PUBLIC_ORIGIN}/_up/www.gstatic.com/youtube/img/icons/web/youtube_fill/offline_no_content/v1/192px.svg`);
@@ -186,141 +193,160 @@ export async function channelPlaylistsGrid(c: Channel, viewer: Viewer) {
 	return { richGridRenderer: { contents: lists.map((p) => ({ richItemRenderer: { content: playlistLockup(p) } })), targetId: `channel-playlists-${c.id}`, style: "RICH_GRID_RENDERER_STYLE_TAB" } };
 }
 
-// one row of the playlist page: a lockup in list layout
-function playlistRow(p: Playlist, v: Video & { set_id: string }, index: number, viewer: Viewer) {
-	const own = viewer && p.user_id === viewer.userId;
-	const remove = own && p.kind !== "liked"
-		? [{
-				listItemViewModel: {
-					title: content(`Remove from ${p.title}`),
-					leadingImage: { sources: [{ clientResource: { imageName: "DELETE" } }] },
-					rendererContext: { commandContext: { onTap: { innertubeCommand: serviceEndpoint("/youtubei/v1/browse/edit_playlist", { playlistEditEndpoint: { playlistId: p.id, actions: [{ setVideoId: v.set_id, action: "ACTION_REMOVE_VIDEO" }] } }) } } },
-				},
-			}]
-		: [];
-	return {
-		lockupViewModel: {
-			contentImage: {
-				thumbnailViewModel: {
-					image: { sources: [{ url: `${PUBLIC_ORIGIN}/vi/${v.id}/mqdefault.jpg`, width: 320, height: 180 }] },
-					overlays: [{ thumbnailBottomOverlayViewModel: { badges: [{ thumbnailBadgeViewModel: { text: duration(v.duration_ms), badgeStyle: "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT", rendererContext: { accessibilityContext: { label: durationLabel(v.duration_ms) } } } }] } }],
-				},
-			},
-			metadata: {
-				lockupMetadataViewModel: {
-					title: content(v.title),
-					metadata: {
-						contentMetadataViewModel: {
-							metadataRows: [
-								{ metadataParts: [{ text: { content: v.channel_title, commandRuns: [{ startIndex: 0, length: v.channel_title.length, onTap: { innertubeCommand: channelEndpoint({ id: v.channel_id, handle: v.channel_handle }) } }] } }] },
-								{ metadataParts: [{ text: content(shortViews(v.view_count)), accessibilityLabel: viewsText(v.view_count) }, { text: content(ago(v.published_at ?? v.created_at)) }] },
-							],
-						},
-					},
-					menuButton: remove.length
-						? { buttonViewModel: { iconName: "MORE_VERT", onTap: { innertubeCommand: { showSheetCommand: { panelLoadingStrategy: { inlineContent: { sheetViewModel: { content: { listViewModel: { listItems: remove } } } } } } } }, accessibilityText: "More actions", style: "BUTTON_VIEW_MODEL_STYLE_MONO", type: "BUTTON_VIEW_MODEL_TYPE_TEXT", buttonSize: "BUTTON_VIEW_MODEL_SIZE_DEFAULT" } }
-						: undefined,
-				},
-			},
-			contentId: v.id,
-			contentType: "LOCKUP_CONTENT_TYPE_VIDEO",
-			rendererContext: { accessibilityContext: { label: `${v.title} ${durationLabel(v.duration_ms)}` }, commandContext: { onTap: { innertubeCommand: watchEndpoint(v.id, { playlistId: p.id, index }) } } },
-		},
-	};
+// ---- the playlist page (templates playlist/*, item/playlist_row_*) ----
+// Someone else's playlist (or any, signed out) has YouTube's current page
+// header and lockup rows; the viewer's own lists (Watch later, Liked videos,
+// their playlists) the editable header with reorderable rows.
+
+const isOwn = (p: Playlist, viewer: Viewer) => !!viewer && p.user_id === viewer.userId;
+const ownLayout = (p: Playlist, viewer: Viewer) => isOwn(p, viewer);
+
+const heroSources = (videoId: string | null) => [[168, 94], [196, 110], [246, 138], [336, 188]].map(([width, height]) => ({ url: thumb(videoId), width, height }));
+
+function lengthWords(ms: number | null | undefined) {
+	const s = Math.round((ms ?? 0) / 1000);
+	if (s >= 3600) return plural(Math.floor(s / 3600), "hour");
+	if (s >= 60) return plural(Math.floor(s / 60), "minute");
+	return plural(s, "second");
+}
+
+function ownRow(p: Playlist, v: Video & { set_id: string }, index: number) {
+	const row = make("item/playlist_row_own", {
+		...videoVars(v),
+		VIDEO_TITLE: v.title,
+		TITLE: p.title,
+		PLAYLIST_ID: p.id,
+		SET_VIDEO_ID: v.set_id,
+		INDEX: index,
+		POSITION: String(index + 1),
+		LENGTH_SECONDS: String(Math.round((v.duration_ms ?? 0) / 1000)),
+		LENGTH_WORDS: lengthWords(v.duration_ms),
+		ROW_THUMBS: videoThumbnails(v.id).thumbnails,
+		VIEWS: v.view_count ? compact(v.view_count) : "No views",
+		PUBLISHED: shortAgo(v.published_at ?? v.created_at),
+	});
+	const r = row.playlistVideoRenderer;
+	// Liked videos: entries leave by unliking, in YouTube's order (newest first)
+	if (p.kind === "liked") r.menu.menuRenderer.items = r.menu.menuRenderer.items.filter((it: any) => !it.menuServiceItemRenderer?.serviceEndpoint?.playlistEditEndpoint);
+	return row;
+}
+
+function otherRow(p: Playlist, v: Video, viewer: Viewer) {
+	return make(`item/playlist_row_${viewer ? "in" : "out"}`, { ...baseVars(viewer, `/playlist?list=${p.id}`), ...videoVars(v), PLAYLIST_ID: p.id });
 }
 
 async function rows(p: Playlist, viewer: Viewer, offset: number) {
 	const vids = await playlistVideos(p, viewer, PAGE, offset);
-	const items: unknown[] = vids.map((v, i) => playlistRow(p, v, offset + i, viewer));
-	if (vids.length === PAGE) items.push(continuationItem(encodeToken({ k: "playlist", p: p.id, o: offset + PAGE }), "/youtubei/v1/browse"));
-	return items;
+	const own = ownLayout(p, viewer);
+	const items: unknown[] = vids.map((v, i) => (own ? ownRow(p, v, offset + i) : otherRow(p, v, viewer)));
+	const more = vids.length === PAGE ? encodeToken({ k: "playlist", p: p.id, o: offset + PAGE }) : undefined;
+	return { items, more };
 }
 
 export async function playlistItemsContinuation(id: string, offset: number, viewer: Viewer) {
 	const p = await getPlaylist(id, viewer);
 	if (!p) throw new ApiError(404, "Not found");
-	return { responseContext: responseContext(viewer), onResponseReceivedActions: [{ appendContinuationItemsAction: { continuationItems: await rows(p, viewer, offset), targetId: `playlist-${p.id}` } }] };
+	const { items, more } = await rows(p, viewer, offset);
+	if (more) items.push(ownLayout(p, viewer) ? continuationItem(more, "/youtubei/v1/browse") : make("item/continuation_playlist", { CONTINUATION: more }));
+	return { responseContext: responseContext(viewer), onResponseReceivedActions: [{ appendContinuationItemsAction: { continuationItems: items, targetId: ownLayout(p, viewer) ? "playlist-video-list" : `VL${p.id}` } }] };
 }
 
-function headerActions(p: Playlist, viewer: Viewer) {
-	const actions: unknown[] = [];
-	if (p.first_video)
-		actions.push({ buttonViewModel: { iconName: "PLAY_ARROW", title: "Play all", onTap: { innertubeCommand: watchEndpoint(p.first_video, { playlistId: p.id }) }, accessibilityText: "Play all", style: "BUTTON_VIEW_MODEL_STYLE_OVERLAY", type: "BUTTON_VIEW_MODEL_TYPE_FILLED", buttonSize: "BUTTON_VIEW_MODEL_SIZE_DEFAULT" } });
-	if (viewer && p.user_id === viewer.userId && p.kind === "user")
-		actions.push({
-			buttonViewModel: {
-				iconName: "DELETE",
-				onTap: {
-					innertubeCommand: {
-						commandMetadata: { webCommandMetadata: { sendPost: true } },
-						signalServiceEndpoint: {
-							signal: "CLIENT_SIGNAL",
-							actions: [{ openPopupAction: { popup: { confirmDialogRenderer: { title: text("Delete playlist"), dialogMessages: [runs(`Are you sure you want to delete ${p.title}?`)], confirmButton: { buttonRenderer: { style: "STYLE_BLUE_TEXT", size: "SIZE_DEFAULT", isDisabled: false, text: runs("Delete"), serviceEndpoint: serviceEndpoint("/youtubei/v1/playlist/delete", { deletePlaylistEndpoint: { sourcePlaylistId: p.id } }) } }, cancelButton: { buttonRenderer: { style: "STYLE_TEXT", size: "SIZE_DEFAULT", isDisabled: false, text: runs("Cancel") } } } }, popupType: "DIALOG" } }],
-						},
-					},
-				},
-				accessibilityText: "Delete playlist",
-				style: "BUTTON_VIEW_MODEL_STYLE_OVERLAY",
-				type: "BUTTON_VIEW_MODEL_TYPE_TONAL",
-				buttonSize: "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
-				tooltip: "Delete playlist",
-			},
-		});
-	return actions;
+const shuffleVideo = async (p: Playlist, viewer: Viewer) => {
+	const vids = await playlistVideos(p, viewer, 200, 0);
+	return vids.length ? vids[Math.floor(Math.random() * vids.length)].id : p.first_video;
+};
+
+// "No videos in this playlist yet": YouTube's empty-playlist message
+const emptyList = () => ({ messageRenderer: { text: runs("No videos in this playlist yet") } });
+
+const ORDER_LABELS = ["Manual", "Date added (newest)", "Date added (oldest)", "Most popular", "Date published (newest)", "Date published (oldest)"];
+
+async function ownPage(p: Playlist, viewer: Viewer) {
+	const { items, more } = await rows(p, viewer, 0);
+	if (more) items.push(continuationItem(more, "/youtubei/v1/browse"));
+	const updated = new Date(p.updated_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+	const vars: Vars = {
+		...baseVars(viewer, `/playlist?list=${p.id}`),
+		...viewerVars(viewer!),
+		PLAYLIST_ID: p.id,
+		TITLE: p.title,
+		VIDEO_COUNT_NUM: grouped(p.video_count),
+		VIDEOS_WORD: p.video_count === 1 ? " video" : " videos",
+		UPDATED: updated,
+		FIRST_VIDEO_ID: p.first_video ?? "",
+		SHUFFLE_VIDEO_ID: (await shuffleVideo(p, viewer)) ?? "",
+		HERO: heroSources(p.first_video),
+		MICROFORMAT_THUMBS: [{ url: thumb(p.first_video), width: 480, height: 270 }],
+		ITEMS: items,
+	};
+	for (let i = 0; i <= 5; i++) vars[`ORDER_${i}_SELECTED`] = p.video_order === i;
+	vars.ORDER_LABEL = ORDER_LABELS[p.video_order] ?? ORDER_LABELS[0];
+	const page = make("playlist/page_own", vars);
+	const h = page.header.playlistHeaderRenderer;
+	if (p.kind === "user") {
+		h.privacy = p.visibility.toUpperCase();
+		h.editableDetails.canDelete = true;
+		if (p.description) page.metadata.playlistMetadataRenderer.description = p.description;
+	}
+	const pvl = find(page, "playlistVideoListRenderer");
+	pvl.targetId = "playlist-video-list";
+	if (p.kind === "liked") {
+		// a derived list: not reorderable, nothing to remove in bulk
+		pvl.canReorder = false;
+		delete pvl.onReorderEndpoint;
+		delete pvl.sortFilterMenu;
+		delete find(page, "itemSectionRenderer").header;
+		delete h.moreActionsMenu;
+	}
+	if (!items.length) {
+		find(page, "itemSectionRenderer").contents = [emptyList()];
+		for (const k of ["playButton", "shufflePlayButton"]) delete h[k];
+	}
+	return page;
+}
+
+async function otherPage(p: Playlist, viewer: Viewer) {
+	const { items, more } = await rows(p, viewer, 0);
+	const desc = p.description;
+	const page = make("playlist/page_out", {
+		...baseVars(viewer, `/playlist?list=${p.id}`),
+		PLAYLIST_ID: p.id,
+		TITLE: p.title,
+		DESCRIPTION: desc,
+		DESCRIPTION_LABEL: `Description. ${desc.length > 60 ? `${desc.slice(0, 60)}...` : desc}tap for more.`,
+		CHANNEL_ID: p.owner_channel,
+		CHANNEL_URL: `/@${p.owner_handle}`,
+		CHANNEL_NAME: p.owner_title,
+		BY_LENGTH: 3 + p.owner_title.length,
+		AVATAR_48: [{ url: avatarUrl(p.owner_channel, 48), width: 48, height: 48 }],
+		VIDEO_COUNT: plural(p.video_count, "video"),
+		FIRST_VIDEO_ID: p.first_video ?? "",
+		SHUFFLE_VIDEO_ID: (await shuffleVideo(p, viewer)) ?? "",
+		HERO: heroSources(p.first_video),
+		MICROFORMAT_THUMBS: [{ url: thumb(p.first_video), width: 480, height: 270 }],
+		ITEMS: items.length ? items : [emptyList()],
+		CONTINUATION_ITEM: more ? make("item/continuation_playlist", { CONTINUATION: more }) : null,
+	});
+	const sl = find(page, "sectionListRenderer");
+	sl.contents = sl.contents.filter(Boolean);
+	const ph = page.header.pageHeaderRenderer.content.pageHeaderViewModel;
+	if (!desc) delete ph.description;
+	const actions = ph.actions.flexibleActionsViewModel.actionsRows[0].actions;
+	// signed in, saving someone's playlist to the library isn't offered here
+	if (viewer) ph.actions.flexibleActionsViewModel.actionsRows[0].actions = actions.filter((a: any) => !a.toggleButtonViewModel);
+	if (!items.length) ph.actions.flexibleActionsViewModel.actionsRows[0].actions = ph.actions.flexibleActionsViewModel.actionsRows[0].actions.filter((a: any) => !find(a, "watchEndpoint"));
+	return page;
 }
 
 export async function playlistBrowse(id: string, viewer: Viewer): Promise<BrowseResult | undefined> {
 	const p = await getPlaylist(id, viewer);
 	if (!p) return undefined;
-	const items = await rows(p, viewer, 0);
-	const visibility = p.visibility === "private" ? "Private" : p.visibility === "unlisted" ? "Unlisted" : "Public";
 	return {
 		kind: "playlist",
 		title: p.title,
 		url: `/playlist?list=${p.id}`,
 		command: playlistEndpoint(p.id),
-		response: {
-			contents: {
-				twoColumnBrowseResultsRenderer: {
-					tabs: [
-						{
-							tabRenderer: {
-								selected: true,
-								content: {
-									sectionListRenderer: {
-										contents: [{ itemSectionRenderer: { contents: items.length ? items : [{ messageRenderer: { text: runs("No videos in this playlist yet") } }], targetId: `playlist-${p.id}` } }],
-										targetId: `playlist-${p.id}`,
-									},
-								},
-							},
-						},
-					],
-				},
-			},
-			header: {
-				pageHeaderRenderer: {
-					pageTitle: p.title,
-					content: {
-						pageHeaderViewModel: {
-							title: { dynamicTextViewModel: { text: content(p.title) } },
-							metadata: {
-								contentMetadataViewModel: {
-									metadataRows: [
-										{ metadataParts: [{ avatarStack: { avatarStackViewModel: { avatars: [{ avatarViewModel: { image: { sources: [{ url: avatarUrl(p.owner_channel, 48), width: 48, height: 48 }] }, avatarImageSize: "AVATAR_SIZE_XS" } }], text: { content: `by ${p.owner_title}`, commandRuns: [{ startIndex: 0, length: 3 + p.owner_title.length, onTap: { innertubeCommand: channelEndpoint({ id: p.owner_channel, handle: p.owner_handle }) } }] } } } }] },
-										{ metadataParts: [{ text: content(p.kind === "user" ? `${visibility} playlist` : "Private") }, { text: content(plural(p.video_count, "video")) }, ...(p.kind === "user" ? [{ text: content(`Updated ${ago(p.updated_at)}`) }] : [])] },
-									],
-									delimiter: "•",
-								},
-							},
-							actions: { flexibleActionsViewModel: { actionsRows: [{ actions: headerActions(p, viewer) }] } },
-							...(p.description ? { description: { descriptionPreviewViewModel: { description: content(p.description), maxLines: 3 } } } : {}),
-							heroImage: { contentPreviewImageViewModel: { image: { sources: [{ url: thumb(p.first_video), width: 480, height: 360 }] }, style: "CONTENT_PREVIEW_IMAGE_STYLE_DEFAULT" } },
-						},
-					},
-				},
-			},
-			metadata: { playlistMetadataRenderer: { title: p.title, description: p.description } },
-		},
+		response: ownLayout(p, viewer) ? await ownPage(p, viewer) : await otherPage(p, viewer),
 	};
 }
 
@@ -447,6 +473,28 @@ route(
 					await sql`update playlist_items set position = ${next?.p != null ? (Number(after?.position ?? 0) + Number(next.p)) / 2 : Number(after?.position ?? 0) + 1} where id = ${moving.id}`;
 					break;
 				}
+				case "ACTION_MOVE_VIDEO_BEFORE": {
+					// before its successor; without one, to the bottom
+					const [moving] = await sql`select id from playlist_items where playlist_id = ${real} and id = ${String(a.setVideoId)}`;
+					if (!moving) break;
+					const [before] = a.movedSetVideoIdSuccessor ? await sql`select position from playlist_items where playlist_id = ${real} and id = ${String(a.movedSetVideoIdSuccessor)}` : [];
+					if (!before) {
+						await sql`update playlist_items set position = coalesce((select max(position) from playlist_items where playlist_id = ${real}), 0) + 1 where id = ${moving.id}`;
+						break;
+					}
+					const [prev] = await sql`select max(position) as p from playlist_items where playlist_id = ${real} and position < ${before.position} and id <> ${moving.id}`;
+					await sql`update playlist_items set position = ${prev?.p != null ? (Number(prev.p) + Number(before.position)) / 2 : Number(before.position) - 1} where id = ${moving.id}`;
+					break;
+				}
+				case "ACTION_SET_PLAYLIST_VIDEO_ORDER": {
+					const order = Number(a.playlistVideoOrder);
+					if (Number.isInteger(order) && order >= 0 && order <= 5) await sql`update playlists set video_order = ${order} where id = ${real}`;
+					break;
+				}
+				case "ACTION_REMOVE_WATCHED_VIDEOS":
+					await sql`delete from playlist_items i using watch_history h where i.playlist_id = ${real} and h.user_id = ${viewer!.userId} and h.video_id = i.video_id`;
+					toasts.push("Removed watched videos");
+					break;
 				default:
 					throw new ApiError(400, `Unsupported playlist action ${String(a.action).slice(0, 40)}`);
 			}

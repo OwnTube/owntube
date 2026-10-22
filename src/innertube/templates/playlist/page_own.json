@@ -1,0 +1,923 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"selected": true,
+						"content": {
+							"sectionListRenderer": {
+								"contents": [
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"playlistVideoListRenderer": {
+														"contents": "{{ITEMS}}",
+														"playlistId": "{{PLAYLIST_ID}}",
+														"isEditable": true,
+														"canReorder": true,
+														"onReorderEndpoint": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"sendPost": true,
+																	"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																}
+															},
+															"playlistEditEndpoint": {
+																"playlistId": "{{PLAYLIST_ID}}",
+																"actions": [
+																	{
+																		"action": "ACTION_MOVE_VIDEO_AFTER"
+																	}
+																],
+																"params": "CAFAAQ%3D%3D"
+															}
+														},
+														"sortFilterMenu": {
+															"sortFilterSubMenuRenderer": {
+																"subMenuItems": [
+																	{
+																		"title": "Manual",
+																		"selected": "{{ORDER_0_SELECTED}}",
+																		"serviceEndpoint": {
+																			"commandMetadata": {
+																				"webCommandMetadata": {
+																					"sendPost": true,
+																					"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																				}
+																			},
+																			"playlistEditEndpoint": {
+																				"playlistId": "{{PLAYLIST_ID}}",
+																				"actions": [
+																					{
+																						"action": "ACTION_SET_PLAYLIST_VIDEO_ORDER",
+																						"playlistVideoOrder": 0
+																					}
+																				],
+																				"params": "CAFAAQ%3D%3D"
+																			}
+																		},
+																		"accessibility": {
+																			"accessibilityData": {
+																				"label": "Manual"
+																			}
+																		}
+																	},
+																	{
+																		"title": "Date added (newest)",
+																		"selected": "{{ORDER_1_SELECTED}}",
+																		"serviceEndpoint": {
+																			"commandMetadata": {
+																				"webCommandMetadata": {
+																					"sendPost": true,
+																					"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																				}
+																			},
+																			"playlistEditEndpoint": {
+																				"playlistId": "{{PLAYLIST_ID}}",
+																				"actions": [
+																					{
+																						"action": "ACTION_SET_PLAYLIST_VIDEO_ORDER",
+																						"playlistVideoOrder": 1
+																					}
+																				],
+																				"params": "CAFAAQ%3D%3D"
+																			}
+																		},
+																		"accessibility": {
+																			"accessibilityData": {
+																				"label": "Date added (newest)"
+																			}
+																		}
+																	},
+																	{
+																		"title": "Date added (oldest)",
+																		"selected": "{{ORDER_2_SELECTED}}",
+																		"serviceEndpoint": {
+																			"commandMetadata": {
+																				"webCommandMetadata": {
+																					"sendPost": true,
+																					"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																				}
+																			},
+																			"playlistEditEndpoint": {
+																				"playlistId": "{{PLAYLIST_ID}}",
+																				"actions": [
+																					{
+																						"action": "ACTION_SET_PLAYLIST_VIDEO_ORDER",
+																						"playlistVideoOrder": 2
+																					}
+																				],
+																				"params": "CAFAAQ%3D%3D"
+																			}
+																		},
+																		"accessibility": {
+																			"accessibilityData": {
+																				"label": "Date added (oldest)"
+																			}
+																		}
+																	},
+																	{
+																		"title": "Most popular",
+																		"selected": "{{ORDER_3_SELECTED}}",
+																		"serviceEndpoint": {
+																			"commandMetadata": {
+																				"webCommandMetadata": {
+																					"sendPost": true,
+																					"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																				}
+																			},
+																			"playlistEditEndpoint": {
+																				"playlistId": "{{PLAYLIST_ID}}",
+																				"actions": [
+																					{
+																						"action": "ACTION_SET_PLAYLIST_VIDEO_ORDER",
+																						"playlistVideoOrder": 3
+																					}
+																				],
+																				"params": "CAFAAQ%3D%3D"
+																			}
+																		},
+																		"accessibility": {
+																			"accessibilityData": {
+																				"label": "Most popular"
+																			}
+																		}
+																	},
+																	{
+																		"title": "Date published (newest)",
+																		"selected": "{{ORDER_4_SELECTED}}",
+																		"serviceEndpoint": {
+																			"commandMetadata": {
+																				"webCommandMetadata": {
+																					"sendPost": true,
+																					"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																				}
+																			},
+																			"playlistEditEndpoint": {
+																				"playlistId": "{{PLAYLIST_ID}}",
+																				"actions": [
+																					{
+																						"action": "ACTION_SET_PLAYLIST_VIDEO_ORDER",
+																						"playlistVideoOrder": 4
+																					}
+																				],
+																				"params": "CAFAAQ%3D%3D"
+																			}
+																		},
+																		"accessibility": {
+																			"accessibilityData": {
+																				"label": "Date published (newest)"
+																			}
+																		}
+																	},
+																	{
+																		"title": "Date published (oldest)",
+																		"selected": "{{ORDER_5_SELECTED}}",
+																		"serviceEndpoint": {
+																			"commandMetadata": {
+																				"webCommandMetadata": {
+																					"sendPost": true,
+																					"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																				}
+																			},
+																			"playlistEditEndpoint": {
+																				"playlistId": "{{PLAYLIST_ID}}",
+																				"actions": [
+																					{
+																						"action": "ACTION_SET_PLAYLIST_VIDEO_ORDER",
+																						"playlistVideoOrder": 5
+																					}
+																				],
+																				"params": "CAFAAQ%3D%3D"
+																			}
+																		},
+																		"accessibility": {
+																			"accessibilityData": {
+																				"label": "Date published (oldest)"
+																			}
+																		}
+																	}
+																],
+																"title": "Sort",
+																"icon": {
+																	"iconType": "SORT"
+																},
+																"accessibility": {
+																	"accessibilityData": {
+																		"label": "Ordering"
+																	}
+																}
+															}
+														},
+														"targetId": "{{PLAYLIST_ID}}"
+													}
+												}
+											],
+											"header": {
+												"chipBarViewModel": {
+													"chips": [
+														{
+															"chipViewModel": {
+																"text": "{{ORDER_LABEL}}",
+																"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_DROP_DOWN",
+																"tapCommand": {
+																	"innertubeCommand": {
+																		"showSheetCommand": {
+																			"panelLoadingStrategy": {
+																				"inlineContent": {
+																					"sheetViewModel": {
+																						"content": {
+																							"listViewModel": {
+																								"listItems": [
+																									{
+																										"listItemViewModel": {
+																											"title": {
+																												"content": "Manual"
+																											},
+																											"isSelected": "{{ORDER_0_SELECTED}}",
+																											"entityKey": "{{PLAYLIST_ID}}:Manual",
+																											"rendererContext": {
+																												"commandContext": {
+																													"onTap": {
+																														"innertubeCommand": {
+																															"commandExecutorCommand": {
+																																"commands": [
+																																	{
+																																		"entityUpdateCommand": {
+																																			"entityBatchUpdate": {
+																																				"mutations": [
+																																					{
+																																						"entityKey": "{{ek:PLAYLIST_ID:498}}",
+																																						"type": "ENTITY_MUTATION_TYPE_REPLACE",
+																																						"payload": {
+																																							"chipEntity": {
+																																								"key": "{{ek:PLAYLIST_ID:498}}",
+																																								"text": "Manual"
+																																							}
+																																						}
+																																					}
+																																				]
+																																			}
+																																		}
+																																	},
+																																	{
+																																		"commandMetadata": {
+																																			"webCommandMetadata": {
+																																				"sendPost": true,
+																																				"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																																			}
+																																		},
+																																		"playlistEditEndpoint": {
+																																			"playlistId": "{{PLAYLIST_ID}}",
+																																			"actions": [
+																																				{
+																																					"action": "ACTION_SET_PLAYLIST_VIDEO_ORDER",
+																																					"playlistVideoOrder": 0
+																																				}
+																																			],
+																																			"params": "QAE%3D"
+																																		}
+																																	}
+																																]
+																															}
+																														}
+																													}
+																												}
+																											}
+																										}
+																									},
+																									{
+																										"listItemViewModel": {
+																											"title": {
+																												"content": "Date added (newest)"
+																											},
+																											"entityKey": "{{PLAYLIST_ID}}:Date added (newest)",
+																											"rendererContext": {
+																												"commandContext": {
+																													"onTap": {
+																														"innertubeCommand": {
+																															"commandExecutorCommand": {
+																																"commands": [
+																																	{
+																																		"entityUpdateCommand": {
+																																			"entityBatchUpdate": {
+																																				"mutations": [
+																																					{
+																																						"entityKey": "{{ek:PLAYLIST_ID:498}}",
+																																						"type": "ENTITY_MUTATION_TYPE_REPLACE",
+																																						"payload": {
+																																							"chipEntity": {
+																																								"key": "{{ek:PLAYLIST_ID:498}}",
+																																								"text": "Date added (newest)"
+																																							}
+																																						}
+																																					}
+																																				]
+																																			}
+																																		}
+																																	},
+																																	{
+																																		"commandMetadata": {
+																																			"webCommandMetadata": {
+																																				"sendPost": true,
+																																				"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																																			}
+																																		},
+																																		"playlistEditEndpoint": {
+																																			"playlistId": "{{PLAYLIST_ID}}",
+																																			"actions": [
+																																				{
+																																					"action": "ACTION_SET_PLAYLIST_VIDEO_ORDER",
+																																					"playlistVideoOrder": 1
+																																				}
+																																			],
+																																			"params": "QAE%3D"
+																																		}
+																																	}
+																																]
+																															}
+																														}
+																													}
+																												}
+																											},
+																											"isSelected": "{{ORDER_1_SELECTED}}"
+																										}
+																									},
+																									{
+																										"listItemViewModel": {
+																											"title": {
+																												"content": "Date added (oldest)"
+																											},
+																											"entityKey": "{{PLAYLIST_ID}}:Date added (oldest)",
+																											"rendererContext": {
+																												"commandContext": {
+																													"onTap": {
+																														"innertubeCommand": {
+																															"commandExecutorCommand": {
+																																"commands": [
+																																	{
+																																		"entityUpdateCommand": {
+																																			"entityBatchUpdate": {
+																																				"mutations": [
+																																					{
+																																						"entityKey": "{{ek:PLAYLIST_ID:498}}",
+																																						"type": "ENTITY_MUTATION_TYPE_REPLACE",
+																																						"payload": {
+																																							"chipEntity": {
+																																								"key": "{{ek:PLAYLIST_ID:498}}",
+																																								"text": "Date added (oldest)"
+																																							}
+																																						}
+																																					}
+																																				]
+																																			}
+																																		}
+																																	},
+																																	{
+																																		"commandMetadata": {
+																																			"webCommandMetadata": {
+																																				"sendPost": true,
+																																				"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																																			}
+																																		},
+																																		"playlistEditEndpoint": {
+																																			"playlistId": "{{PLAYLIST_ID}}",
+																																			"actions": [
+																																				{
+																																					"action": "ACTION_SET_PLAYLIST_VIDEO_ORDER",
+																																					"playlistVideoOrder": 2
+																																				}
+																																			],
+																																			"params": "QAE%3D"
+																																		}
+																																	}
+																																]
+																															}
+																														}
+																													}
+																												}
+																											},
+																											"isSelected": "{{ORDER_2_SELECTED}}"
+																										}
+																									},
+																									{
+																										"listItemViewModel": {
+																											"title": {
+																												"content": "Most popular"
+																											},
+																											"entityKey": "{{PLAYLIST_ID}}:Most popular",
+																											"rendererContext": {
+																												"commandContext": {
+																													"onTap": {
+																														"innertubeCommand": {
+																															"commandExecutorCommand": {
+																																"commands": [
+																																	{
+																																		"entityUpdateCommand": {
+																																			"entityBatchUpdate": {
+																																				"mutations": [
+																																					{
+																																						"entityKey": "{{ek:PLAYLIST_ID:498}}",
+																																						"type": "ENTITY_MUTATION_TYPE_REPLACE",
+																																						"payload": {
+																																							"chipEntity": {
+																																								"key": "{{ek:PLAYLIST_ID:498}}",
+																																								"text": "Most popular"
+																																							}
+																																						}
+																																					}
+																																				]
+																																			}
+																																		}
+																																	},
+																																	{
+																																		"commandMetadata": {
+																																			"webCommandMetadata": {
+																																				"sendPost": true,
+																																				"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																																			}
+																																		},
+																																		"playlistEditEndpoint": {
+																																			"playlistId": "{{PLAYLIST_ID}}",
+																																			"actions": [
+																																				{
+																																					"action": "ACTION_SET_PLAYLIST_VIDEO_ORDER",
+																																					"playlistVideoOrder": 3
+																																				}
+																																			],
+																																			"params": "QAE%3D"
+																																		}
+																																	}
+																																]
+																															}
+																														}
+																													}
+																												}
+																											},
+																											"isSelected": "{{ORDER_3_SELECTED}}"
+																										}
+																									},
+																									{
+																										"listItemViewModel": {
+																											"title": {
+																												"content": "Date published (newest)"
+																											},
+																											"entityKey": "{{PLAYLIST_ID}}:Date published (newest)",
+																											"rendererContext": {
+																												"commandContext": {
+																													"onTap": {
+																														"innertubeCommand": {
+																															"commandExecutorCommand": {
+																																"commands": [
+																																	{
+																																		"entityUpdateCommand": {
+																																			"entityBatchUpdate": {
+																																				"mutations": [
+																																					{
+																																						"entityKey": "{{ek:PLAYLIST_ID:498}}",
+																																						"type": "ENTITY_MUTATION_TYPE_REPLACE",
+																																						"payload": {
+																																							"chipEntity": {
+																																								"key": "{{ek:PLAYLIST_ID:498}}",
+																																								"text": "Date published (newest)"
+																																							}
+																																						}
+																																					}
+																																				]
+																																			}
+																																		}
+																																	},
+																																	{
+																																		"commandMetadata": {
+																																			"webCommandMetadata": {
+																																				"sendPost": true,
+																																				"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																																			}
+																																		},
+																																		"playlistEditEndpoint": {
+																																			"playlistId": "{{PLAYLIST_ID}}",
+																																			"actions": [
+																																				{
+																																					"action": "ACTION_SET_PLAYLIST_VIDEO_ORDER",
+																																					"playlistVideoOrder": 4
+																																				}
+																																			],
+																																			"params": "QAE%3D"
+																																		}
+																																	}
+																																]
+																															}
+																														}
+																													}
+																												}
+																											},
+																											"isSelected": "{{ORDER_4_SELECTED}}"
+																										}
+																									},
+																									{
+																										"listItemViewModel": {
+																											"title": {
+																												"content": "Date published (oldest)"
+																											},
+																											"entityKey": "{{PLAYLIST_ID}}:Date published (oldest)",
+																											"rendererContext": {
+																												"commandContext": {
+																													"onTap": {
+																														"innertubeCommand": {
+																															"commandExecutorCommand": {
+																																"commands": [
+																																	{
+																																		"entityUpdateCommand": {
+																																			"entityBatchUpdate": {
+																																				"mutations": [
+																																					{
+																																						"entityKey": "{{ek:PLAYLIST_ID:498}}",
+																																						"type": "ENTITY_MUTATION_TYPE_REPLACE",
+																																						"payload": {
+																																							"chipEntity": {
+																																								"key": "{{ek:PLAYLIST_ID:498}}",
+																																								"text": "Date published (oldest)"
+																																							}
+																																						}
+																																					}
+																																				]
+																																			}
+																																		}
+																																	},
+																																	{
+																																		"commandMetadata": {
+																																			"webCommandMetadata": {
+																																				"sendPost": true,
+																																				"apiUrl": "/youtubei/v1/browse/edit_playlist"
+																																			}
+																																		},
+																																		"playlistEditEndpoint": {
+																																			"playlistId": "{{PLAYLIST_ID}}",
+																																			"actions": [
+																																				{
+																																					"action": "ACTION_SET_PLAYLIST_VIDEO_ORDER",
+																																					"playlistVideoOrder": 5
+																																				}
+																																			],
+																																			"params": "QAE%3D"
+																																		}
+																																	}
+																																]
+																															}
+																														}
+																													}
+																												}
+																											},
+																											"isSelected": "{{ORDER_5_SELECTED}}"
+																										}
+																									}
+																								]
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																},
+																"accessibilityLabel": "Manual",
+																"chipEntityKey": "{{ek:PLAYLIST_ID:498}}"
+															}
+														}
+													]
+												}
+											}
+										}
+									}
+								]
+							}
+						},
+						"tabIdentifier": "PL"
+					}
+				}
+			]
+		}
+	},
+	"header": {
+		"playlistHeaderRenderer": {
+			"playlistId": "{{PLAYLIST_ID}}",
+			"title": {
+				"simpleText": "{{TITLE}}"
+			},
+			"numVideosText": {
+				"runs": [
+					{
+						"text": "{{VIDEO_COUNT_NUM}}"
+					},
+					{
+						"text": "{{VIDEOS_WORD}}"
+					}
+				]
+			},
+			"ownerText": {
+				"runs": [
+					{
+						"text": "{{VIEWER_NAME}}",
+						"navigationEndpoint": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"url": "{{VIEWER_CHANNEL_URL}}",
+									"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+									"rootVe": 3611,
+									"apiUrl": "/youtubei/v1/browse"
+								}
+							},
+							"browseEndpoint": {
+								"browseId": "{{VIEWER_CHANNEL_ID}}",
+								"canonicalBaseUrl": "{{VIEWER_CHANNEL_URL}}"
+							}
+						}
+					}
+				]
+			},
+			"viewCountText": {
+				"simpleText": "No views"
+			},
+			"shareData": {
+				"canShare": false
+			},
+			"isEditable": true,
+			"privacy": "PRIVATE",
+			"ownerEndpoint": {
+				"commandMetadata": {
+					"webCommandMetadata": {
+						"url": "{{VIEWER_CHANNEL_URL}}",
+						"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+						"rootVe": 3611,
+						"apiUrl": "/youtubei/v1/browse"
+					}
+				},
+				"browseEndpoint": {
+					"browseId": "{{VIEWER_CHANNEL_ID}}",
+					"canonicalBaseUrl": "{{VIEWER_CHANNEL_URL}}"
+				}
+			},
+			"editableDetails": {
+				"canDelete": false
+			},
+			"serviceEndpoints": [
+				{
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"sendPost": true,
+							"apiUrl": "/youtubei/v1/browse/edit_playlist"
+						}
+					},
+					"playlistEditEndpoint": {
+						"playlistId": "{{PLAYLIST_ID}}",
+						"actions": [
+							{
+								"action": "ACTION_ADD_VIDEO"
+							}
+						]
+					}
+				},
+				{
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"sendPost": true,
+							"apiUrl": "/youtubei/v1/browse/edit_playlist"
+						}
+					},
+					"playlistEditEndpoint": {
+						"actions": [
+							{
+								"action": "ACTION_COPY_FROM_PLAYLIST",
+								"sourcePlaylistId": "{{PLAYLIST_ID}}"
+							}
+						]
+					}
+				}
+			],
+			"stats": [
+				{
+					"runs": [
+						{
+							"text": "{{VIDEO_COUNT_NUM}}"
+						},
+						{
+							"text": "{{VIDEOS_WORD}}"
+						}
+					]
+				},
+				{
+					"simpleText": "No views"
+				}
+			],
+			"briefStats": [
+				{
+					"runs": [
+						{
+							"text": "{{VIDEO_COUNT_NUM}}"
+						},
+						{
+							"text": "{{VIDEOS_WORD}}"
+						}
+					]
+				}
+			],
+			"playlistHeaderBanner": {
+				"heroPlaylistThumbnailRenderer": {
+					"thumbnail": {
+						"thumbnails": "{{HERO}}"
+					},
+					"maxRatio": 0.5625,
+					"onTap": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/watch?v={{FIRST_VIDEO_ID}}&list={{PLAYLIST_ID}}",
+								"webPageType": "WEB_PAGE_TYPE_WATCH",
+								"rootVe": 3832
+							}
+						},
+						"watchEndpoint": {
+							"videoId": "{{FIRST_VIDEO_ID}}",
+							"playlistId": "{{PLAYLIST_ID}}"
+						}
+					},
+					"thumbnailOverlays": {
+						"thumbnailOverlayHoverTextRenderer": {
+							"text": {
+								"simpleText": "Play all"
+							},
+							"icon": {
+								"iconType": "PLAY_ALL"
+							}
+						}
+					}
+				}
+			},
+			"moreActionsMenu": {
+				"menuRenderer": {
+					"items": [],
+					"accessibility": {
+						"accessibilityData": {
+							"label": "Action menu"
+						}
+					}
+				}
+			},
+			"playButton": {
+				"buttonRenderer": {
+					"style": "STYLE_MONO_FILLED_OVERLAY",
+					"size": "SIZE_DEFAULT",
+					"isDisabled": false,
+					"text": {
+						"simpleText": "Play all"
+					},
+					"icon": {
+						"iconType": "PLAY_ARROW"
+					},
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/watch?v={{FIRST_VIDEO_ID}}&list={{PLAYLIST_ID}}",
+								"webPageType": "WEB_PAGE_TYPE_WATCH",
+								"rootVe": 3832
+							}
+						},
+						"watchEndpoint": {
+							"videoId": "{{FIRST_VIDEO_ID}}",
+							"playlistId": "{{PLAYLIST_ID}}"
+						}
+					}
+				}
+			},
+			"shufflePlayButton": {
+				"buttonRenderer": {
+					"style": "STYLE_MONO_TONAL_OVERLAY",
+					"size": "SIZE_DEFAULT",
+					"isDisabled": false,
+					"text": {
+						"simpleText": "Shuffle"
+					},
+					"icon": {
+						"iconType": "SHUFFLE"
+					},
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/watch?v={{SHUFFLE_VIDEO_ID}}&list={{PLAYLIST_ID}}",
+								"webPageType": "WEB_PAGE_TYPE_WATCH",
+								"rootVe": 3832
+							}
+						},
+						"watchEndpoint": {
+							"videoId": "{{SHUFFLE_VIDEO_ID}}",
+							"playlistId": "{{PLAYLIST_ID}}",
+							"params": "CN4sIAE%3D"
+						}
+					}
+				}
+			},
+			"cinematicContainer": {
+				"cinematicContainerRenderer": {
+					"backgroundImageConfig": {
+						"thumbnail": {
+							"thumbnails": "{{HERO}}"
+						}
+					},
+					"gradientColorConfig": [
+						{
+							"lightThemeColor": 3430043428,
+							"darkThemeColor": 3430043428,
+							"startLocation": 0
+						},
+						{
+							"lightThemeColor": 1282559780,
+							"darkThemeColor": 1282559780,
+							"startLocation": 0.33000001
+						},
+						{
+							"lightThemeColor": 3430043428,
+							"darkThemeColor": 4279176975,
+							"startLocation": 1
+						}
+					],
+					"config": {
+						"lightThemeBackgroundColor": 4285681444,
+						"darkThemeBackgroundColor": 4285681444,
+						"colorSourceSizeMultiplier": 2,
+						"applyClientImageBlur": true
+					}
+				}
+			},
+			"byline": [
+				{
+					"playlistBylineRenderer": {
+						"text": {
+							"runs": [
+								{
+									"text": "{{VIDEO_COUNT_NUM}}"
+								},
+								{
+									"text": "{{VIDEOS_WORD}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"playlistBylineRenderer": {
+						"text": {
+							"simpleText": "No views"
+						}
+					}
+				},
+				{
+					"playlistBylineRenderer": {
+						"text": {
+							"runs": [
+								{
+									"text": "Last updated on "
+								},
+								{
+									"text": "{{UPDATED}}"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	},
+	"metadata": {
+		"playlistMetadataRenderer": {
+			"title": "{{TITLE}}"
+		}
+	},
+	"microformat": {
+		"microformatDataRenderer": {
+			"urlCanonical": "{{ORIGIN}}/playlist?list={{PLAYLIST_ID}}",
+			"title": "{{TITLE}}",
+			"description": "",
+			"thumbnail": {
+				"thumbnails": "{{MICROFORMAT_THUMBS}}",
+				"sampledThumbnailColor": {
+					"red": 114,
+					"green": 79,
+					"blue": 36
+				},
+				"darkColorPalette": {
+					"section2Color": 2628620,
+					"iconInactiveColor": 9668214,
+					"iconDisabledColor": 6313545
+				},
+				"vibrantColorPalette": {
+					"iconInactiveColor": 12559749
+				}
+			},
+			"siteName": "YouTube",
+			"schemaDotOrgType": "http://schema.org/WebPage",
+			"noindex": true,
+			"unlisted": false
+		}
+	}
+}

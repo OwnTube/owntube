@@ -119,7 +119,7 @@ export function tokenize(o: any, pairs: [string, string][], ids: [string, string
 		const whole = exact.find(([from]) => from && s === from);
 		if (whole) return `{{${whole[1]}}}`;
 		for (const m of s.matchAll(/https:\/\/www\.gstatic\.com\/[^"\s]+/g)) assets.add(m[0]);
-		if (ids.length && /^[A-Za-z0-9+/_-]{16,}(%3D|=){0,2}$/.test(s)) {
+		if (ids.length && /^[A-Za-z0-9+/_-]{12,}(%3D|=){0,2}$/.test(s)) {
 			try {
 				const f = decode(fromBase64(s));
 				const id = str(f.get(2)?.[0]);
@@ -1051,6 +1051,156 @@ function search() {
 }
 
 // ======================================================================
+// playlist page (a public playlist, signed out): header with Play all,
+// Save (sign-in), Share and Shuffle, then the videos as lockups.
+// left out: the playlist's view count (not counted here) and the legacy
+// sidebar the header replaces
+function playlistPage() {
+	const p = pageOnly(pageVar(body("playlist", /^001-/)));
+	const plId: string = p.metadata.playlistMetadataRenderer.title && find(p.header, "watchEndpoint").playlistId;
+	const title: string = p.metadata.playlistMetadataRenderer.title;
+	const description: string = p.metadata.playlistMetadataRenderer.description;
+	const ph = p.header.pageHeaderRenderer.content.pageHeaderViewModel;
+	const by = ph.metadata.contentMetadataViewModel.metadataRows[0].metadataParts[0].avatarStack.avatarStackViewModel;
+	const chId: string = find(by, "browseEndpoint").browseId;
+	const chUrl: string = find(by, "browseEndpoint").canonicalBaseUrl;
+	const chName = by.text.content.replace(/^by /, "");
+	const first: string = find(ph.actions, "watchEndpoint").videoId;
+	const shuffle = find(ph.actions, "listItemViewModel");
+	const shuffleId: string = find(shuffle, "watchEndpoint").videoId;
+	delete p.sidebar;
+	// rows: one sample lockup (single-channel byline), without download
+	const sl = p.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer.content.sectionListRenderer;
+	const rows = sl.contents[0].itemSectionRenderer.contents;
+	const sample = rows.find((it: any) => it.lockupViewModel.metadata.lockupMetadataViewModel.metadata.contentMetadataViewModel.metadataRows[0].metadataParts.length === 1);
+	const row = videoLockup(pruneLockupMenu(dropKey(structuredClone(sample), "loggingContext")));
+	const rowOut = tokenize(row.item, [[plId, "PLAYLIST_ID"]], [[plId, "PLAYLIST_ID"]]);
+	save("item/playlist_row_out", rowOut, [...row.samples, plId]);
+	// signed in: the same row with the signed-in lockup menu
+	const rowIn = structuredClone(rowOut);
+	holder(rowIn, "listItems").listItems = find(JSON.parse(readFileSync(join(OUT, "item/video_lockup_rich.json"), "utf8")), "listItems");
+	save("item/playlist_row_in", rowIn, [...row.samples, plId]);
+	const cont = clean(sl.contents.find((c: any) => c.continuationItemViewModel));
+	find(cont, "continuationCommand").token = "{{CONTINUATION}}";
+	save("item/continuation_playlist", cont);
+	sl.contents = [{ itemSectionRenderer: { contents: "{{ITEMS}}" } }, "{{CONTINUATION_ITEM}}"];
+	// header
+	by.text.content = "by {{CHANNEL_NAME}}";
+	by.text.commandRuns[0].length = by.text.styleRuns[0].length = "{{BY_LENGTH}}";
+	by.rendererContext.accessibilityContext.label = "by {{CHANNEL_NAME}}";
+	wholeToken(by, "sources", "AVATAR_48");
+	const counts = ph.metadata.contentMetadataViewModel.metadataRows[1].metadataParts;
+	const videoCount = contentOf(counts[1].text);
+	ph.metadata.contentMetadataViewModel.metadataRows[1].metadataParts = counts.filter((x: any) => !/ views?$/.test(contentOf(x.text)));
+	const dp = ph.description.descriptionPreviewViewModel;
+	dp.rendererContext.accessibilityContext.label = "{{DESCRIPTION_LABEL}}";
+	wholeToken(ph.heroImage, "sources", "HERO");
+	wholeToken(ph.background, "sources", "HERO");
+	const mf = p.microformat.microformatDataRenderer;
+	wholeToken(mf, "thumbnails", "MICROFORMAT_THUMBS");
+	stripAppLinks(p);
+	let out = dropKey(dropKey(p, "playerParams"), "loggingContext");
+	out = strings(out, (x) => x.replace(/^https?:\/\/www\.youtube\.com\/playlist/, "{{ORIGIN}}/playlist"));
+	out = tokenize(
+		out,
+		[[plId, "PLAYLIST_ID"], [title, "TITLE"], [description, "DESCRIPTION"], [chId, "CHANNEL_ID"], [chUrl, "CHANNEL_URL"]],
+		[[plId, "PLAYLIST_ID"], [chId, "CHANNEL_ID"]],
+		[[first, "FIRST_VIDEO_ID"], [shuffleId, "SHUFFLE_VIDEO_ID"], [videoCount, "VIDEO_COUNT"], [chName, "CHANNEL_NAME"]],
+	);
+	out = strings(out, (x) => x.split(first).join("{{FIRST_VIDEO_ID}}").split(shuffleId).join("{{SHUFFLE_VIDEO_ID}}").replace(/&pp=[^&"]*/, ""));
+	save("playlist/page_out", out, [plId, title, chId, chName, first, shuffleId, description]);
+}
+
+// app-store and app-indexing links of a page's metadata
+function stripAppLinks(p: any) {
+	for (const k of ["androidAppindexingLink", "iosAppindexingLink"]) delete p.metadata.playlistMetadataRenderer[k];
+	const mf = p.microformat.microformatDataRenderer;
+	for (const k of Object.keys(mf)) if (/^(ios|android|twitter|app|og|urlApplinks|urlTwitter)/i.test(k) || k === "linkAlternates") delete mf[k];
+}
+
+// the viewer's own list (Watch later; the classic editable header and
+// reorderable rows). Left out: "Add videos" (YouTube's video picker),
+// "Add all to...", downloads, and the watched/resume overlays
+const OWN_LIST_MENU = new Set(["Remove watched videos"]);
+function ownListPage() {
+	const p = pageOnly(pageVar(body("in-wl", /^001-/)));
+	delete p.sidebar;
+	const h = p.header.playlistHeaderRenderer;
+	const count = h.numVideosText.runs[0].text;
+	const first: string = h.playButton.buttonRenderer.navigationEndpoint.watchEndpoint.videoId;
+	const shuffleId: string = h.shufflePlayButton.buttonRenderer.navigationEndpoint.watchEndpoint.videoId;
+	const updated = h.byline[2].playlistBylineRenderer.text.runs[1].text;
+	h.moreActionsMenu.menuRenderer.items = h.moreActionsMenu.menuRenderer.items.filter((it: any) => OWN_LIST_MENU.has(menuTitle(Object.values(it)[0])));
+	h.title.simpleText = "{{TITLE}}";
+	// "2" + " videos" in four places
+	for (const t of [h.numVideosText, h.briefStats[0], h.stats[0], h.byline[0].playlistBylineRenderer.text]) {
+		t.runs[0].text = "{{VIDEO_COUNT_NUM}}";
+		t.runs[1].text = "{{VIDEOS_WORD}}";
+	}
+	h.byline[2].playlistBylineRenderer.text.runs[1].text = "{{UPDATED}}";
+	h.ownerText.runs[0].text = "{{VIEWER_NAME}}";
+	for (const e of [h.ownerText.runs[0].navigationEndpoint, h.ownerEndpoint]) {
+		e.browseEndpoint.browseId = "{{VIEWER_CHANNEL_ID}}";
+		e.browseEndpoint.canonicalBaseUrl = "{{VIEWER_CHANNEL_URL}}";
+		if (e.commandMetadata) e.commandMetadata.webCommandMetadata.url = "{{VIEWER_CHANNEL_URL}}";
+	}
+	wholeToken(h.playlistHeaderBanner, "thumbnails", "HERO");
+	wholeToken(h.cinematicContainer, "thumbnails", "HERO");
+	wholeToken(p.microformat, "thumbnails", "MICROFORMAT_THUMBS");
+	const sl = p.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer.content.sectionListRenderer;
+	const isr = sl.contents[0].itemSectionRenderer;
+	const pvl = isr.contents[0].playlistVideoListRenderer;
+	// one row
+	const r0 = pvl.contents[0].playlistVideoRenderer;
+	const v = { id: r0.videoId, title: contentOf(r0.title), ch: r0.shortBylineText.runs[0], set: r0.setVideoId };
+	const row = clean(pvl.contents[0]);
+	const pr = row.playlistVideoRenderer;
+	pr.menu.menuRenderer.items = pr.menu.menuRenderer.items.filter((it: any) => !it.menuServiceItemDownloadRenderer);
+	pr.thumbnailOverlays = pr.thumbnailOverlays.filter((o: any) => !o.thumbnailOverlayPlaybackStatusRenderer && !o.thumbnailOverlayResumePlaybackRenderer);
+	const we = pr.navigationEndpoint.watchEndpoint;
+	delete we.startTimeSeconds;
+	delete we.params;
+	we.index = "{{INDEX}}";
+	pr.index.simpleText = "{{POSITION}}";
+	pr.lengthSeconds = "{{LENGTH_SECONDS}}";
+	wholeToken(pr, "thumbnails", "ROW_THUMBS", (x) => /ytimg/.test(JSON.stringify(x.thumbnails)));
+	pr.videoInfo.runs[0].text = "{{VIEWS}}";
+	pr.videoInfo.runs[2].text = "{{PUBLISHED}}";
+	const remove = pr.menu.menuRenderer.items.find((it: any) => it.menuServiceItemRenderer?.icon?.iconType === "DELETE").menuServiceItemRenderer;
+	remove.text.runs[1].text = "{{TITLE}}";
+	let rowOut = dropKey(dropKey(row, "playerParams"), "loggingContext");
+	rowOut = tokenize(
+		rowOut,
+		[[v.id, "VIDEO_ID"], [v.title, "VIDEO_TITLE"], [v.ch.navigationEndpoint.browseEndpoint.browseId, "CHANNEL_ID"], [v.ch.navigationEndpoint.browseEndpoint.canonicalBaseUrl, "CHANNEL_URL"], [r0.lengthText.accessibility.accessibilityData.label, "DURATION_LABEL"], [v.set, "SET_VIDEO_ID"]],
+		[[v.id, "VIDEO_ID"]],
+		[[v.ch.text, "CHANNEL_NAME"], [contentOf(r0.lengthText), "DURATION"], ["WL", "PLAYLIST_ID"]],
+	);
+	rowOut = strings(rowOut, (x) =>
+		x
+			.replace(/([?&]list=)WL\b/, "$1{{PLAYLIST_ID}}")
+			.replace(/&pp=[^&"]*/, "")
+			.replace(/&index=\d+(&t=\d+s)?/, "&index={{POSITION}}")
+			.replace(/^\{\{VIDEO_TITLE\}\} .+$/, "{{VIDEO_TITLE}} {{LENGTH_WORDS}}"),
+	);
+	save("item/playlist_row_own", rowOut, [v.id, v.title, v.ch.text, v.set]);
+	pvl.contents = "{{ITEMS}}";
+	const order = pvl.sortFilterMenu.sortFilterSubMenuRenderer.subMenuItems;
+	order.forEach((it: any, i: number) => (it.selected = `{{ORDER_${i}_SELECTED}}`));
+	// the sort dropdown above the list: the current order's name, the choices
+	const chip = isr.header.chipBarViewModel.chips[0].chipViewModel;
+	chip.text = "{{ORDER_LABEL}}";
+	find(chip, "listItems").forEach((it: any, i: number) => (it.listItemViewModel.isSelected = `{{ORDER_${i}_SELECTED}}`));
+	let out = dropKey(dropKey(p, "playerParams"), "loggingContext");
+	stripAppLinks(out);
+	out = strings(out, (x) =>
+		x.split(first).join("{{FIRST_VIDEO_ID}}").split(shuffleId).join("{{SHUFFLE_VIDEO_ID}}").replace(/([?&]list=)WL\b/, "$1{{PLAYLIST_ID}}").replace(/&pp=[^&"]*/, "").replace("from Watch later.", "from {{TITLE}}."),
+	);
+	out = strings(out, (x) => x.replace(/^WL:/, "{{PLAYLIST_ID}}:"));
+	out = tokenize(out, [], [["WL", "PLAYLIST_ID"]], [["WL", "PLAYLIST_ID"], ["Watch later", "TITLE"], [count, "VIDEO_COUNT_NUM"]]);
+	save("playlist/page_own", out, [first, shuffleId, updated]);
+}
+
+// ======================================================================
 const only = process.argv.slice(2);
 personalValues();
 const steps: [string, () => void][] = [
@@ -1061,6 +1211,8 @@ const steps: [string, () => void][] = [
 	["feeds", feeds],
 	["watch", watch],
 	["search", search],
+	["playlist", playlistPage],
+	["playlist-own", ownListPage],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;

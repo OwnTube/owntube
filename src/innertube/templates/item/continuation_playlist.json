@@ -1,0 +1,20 @@
+{
+	"continuationItemViewModel": {
+		"trigger": "CONTINUATION_TRIGGER_ON_ITEM_SHOWN",
+		"continuationCommand": {
+			"innertubeCommand": {
+				"commandMetadata": {
+					"webCommandMetadata": {
+						"sendPost": true,
+						"apiUrl": "/youtubei/v1/browse"
+					}
+				},
+				"continuationCommand": {
+					"token": "4qmFsgJbEiRWTFBMYXY0N0hBVlpNam5URlZaTC1hSW1DUUlDMHVMWnROQ3oaDGtnRURDTGNMNEFzQpoCJFZMUExhdjQ3SEFWWk1qblRGVlpMLWFJbUNRSUMwdUxadE5Deg%3D%3D",
+					"request": "CONTINUATION_REQUEST_TYPE_BROWSE"
+				}
+			},
+			"token": "{{CONTINUATION}}"
+		}
+	}
+}
