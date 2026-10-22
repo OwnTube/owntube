@@ -82,10 +82,19 @@ export async function reactionOf(viewer: Viewer, videoId: string): Promise<"like
 	return (r?.kind as "like" | "dislike") ?? null;
 }
 
-export async function subscribedChannels(viewer: Viewer): Promise<Channel[]> {
+// "relevant": the channels the viewer watches most; "activity": latest upload first
+export type ChannelSortOrder = "relevant" | "activity" | "az";
+export async function subscribedChannels(viewer: Viewer, order: ChannelSortOrder = "az"): Promise<Channel[]> {
 	if (!viewer) return [];
-	return (await sql`select c.*, 0 as subscriber_count, 0 as video_count from subscriptions s join channels c on c.id = s.channel_id
-		where s.user_id = ${viewer.userId} order by c.title`) as Channel[];
+	const by = {
+		relevant: sql`(select count(*) from watch_history h join videos v on v.id = h.video_id where h.user_id = ${viewer.userId} and v.channel_id = c.id) desc, latest desc nulls last, lower(c.title)`,
+		activity: sql`latest desc nulls last, lower(c.title)`,
+		az: sql`lower(c.title)`,
+	}[order];
+	return (await sql`select * from (select c.*, (select count(*)::int from subscriptions s2 where s2.channel_id = c.id) as subscriber_count,
+		(select count(*)::int from videos v where v.channel_id = c.id and ${LISTED}) as video_count,
+		(select max(v.published_at) from videos v where v.channel_id = c.id and ${LISTED}) as latest
+		from subscriptions s join channels c on c.id = s.channel_id where s.user_id = ${viewer.userId}) c order by ${by}`) as Channel[];
 }
 
 export async function subscriptionFeed(viewer: Viewer, limit: number, offset: number): Promise<Video[]> {

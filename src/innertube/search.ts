@@ -13,7 +13,7 @@ import { decode, encode, fromBase64 } from "./proto";
 import { PUBLIC_ORIGIN } from "../config";
 import { type Channel, type Video, ago, compactViews, countLabel, responseContext, runs } from "./r";
 import { ApiError, route } from "./router";
-import { subscribeEntities } from "./subscribe";
+import { channelRowButton, subscribeEntities } from "./subscribe";
 import { make, type Vars } from "./tpl";
 import { avatarSources, baseVars, channelVars, videoVars } from "./vars";
 
@@ -140,16 +140,7 @@ async function channelItem(c: Channel, viewer: Viewer, query: string, mutations:
 	}
 	const subscribed = await isSubscribed(viewer, c.id);
 	cr.subscriptionButton = { subscribed };
-	// the bell's preference blobs carry a video id as context; any id of the same length does
-	const [latest] = await sql`select id from videos where channel_id = ${c.id} and deleted_at is null order by created_at desc limit 1`;
-	cr.subscribeButton = make("item/subscribe_button_renderer", {
-		...vars,
-		VIDEO_ID: latest?.id ?? c.id.slice(-11),
-		SUBSCRIBED: subscribed,
-		SUBSCRIBE_LABEL: `Subscribe to ${c.title}.`,
-		UNSUBSCRIBE_LABEL: `Unsubscribe from ${c.title}.`,
-		BELL_LABEL_SUFFIX: `notification setting for ${c.title}`,
-	});
+	cr.subscribeButton = await channelRowButton(c, vars, subscribed);
 	mutations.push(...(await subscribeEntities(c, viewer, vars, subscribed)));
 	return item;
 }

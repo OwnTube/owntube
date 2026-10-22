@@ -1,0 +1,119 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"endpoint": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"url": "/feed/library",
+									"webPageType": "WEB_PAGE_TYPE_BROWSE",
+									"rootVe": 6827,
+									"apiUrl": "/youtubei/v1/browse"
+								}
+							},
+							"browseEndpoint": {
+								"browseId": "FElibrary"
+							}
+						},
+						"selected": true,
+						"content": {
+							"sectionListRenderer": {
+								"contents": [
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"backgroundPromoRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Enjoy your favorite videos"
+																}
+															]
+														},
+														"bodyText": {
+															"runs": [
+																{
+																	"text": "Sign in to access videos that you’ve liked or saved"
+																}
+															]
+														},
+														"icon": {
+															"iconType": "VIDEO_LIBRARY_WHITE"
+														},
+														"ctaButton": {
+															"buttonRenderer": {
+																"style": "STYLE_SUGGESTIVE",
+																"size": "SIZE_SMALL",
+																"text": {
+																	"runs": [
+																		{
+																			"text": "Sign in"
+																		}
+																	]
+																},
+																"icon": {
+																	"iconType": "AVATAR_LOGGED_OUT"
+																},
+																"navigationEndpoint": {
+																	"commandMetadata": {
+																		"webCommandMetadata": {
+																			"url": "{{SIGNIN_URL}}",
+																			"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																			"rootVe": 83769
+																		}
+																	},
+																	"signInEndpoint": {
+																		"nextEndpoint": {
+																			"commandMetadata": {
+																				"webCommandMetadata": {
+																					"url": "/feed/library",
+																					"webPageType": "WEB_PAGE_TYPE_BROWSE",
+																					"rootVe": 6827,
+																					"apiUrl": "/youtubei/v1/browse"
+																				}
+																			},
+																			"browseEndpoint": {
+																				"browseId": "FElibrary"
+																			}
+																		}
+																	}
+																}
+															}
+														},
+														"style": {
+															"value": "BACKGROUND_PROMO_STYLE_TYPE_FULL_HEIGHT"
+														}
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						},
+						"tabIdentifier": "FElibrary",
+						"accessibility": {
+							"accessibilityData": {
+								"label": "library"
+							}
+						}
+					}
+				}
+			]
+		}
+	},
+	"header": {
+		"feedTabbedHeaderRenderer": {
+			"title": {
+				"runs": [
+					{
+						"text": "Library"
+					}
+				]
+			}
+		}
+	}
+}

@@ -22,9 +22,9 @@ export async function recordWatch(viewer: Viewer, videoId: string, positionMs = 
 		on conflict (user_id, video_id) do update set watched_at = now(), position_ms = greatest(watch_history.position_ms, excluded.position_ms)`;
 }
 
-type Entry = Video & { watched_at: Date; position_ms: number };
+export type Entry = Video & { watched_at: Date; position_ms: number };
 
-async function entries(viewer: NonNullable<Viewer>, offset: number, query: string): Promise<Entry[]> {
+export async function entries(viewer: NonNullable<Viewer>, offset: number, query: string, limit = PAGE): Promise<Entry[]> {
 	const q = query.trim().slice(0, 100);
 	const like = `%${q.replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
 	const match = q ? sql`and (v.title ilike ${like} or c.title ilike ${like})` : sql``;
@@ -33,7 +33,7 @@ async function entries(viewer: NonNullable<Viewer>, offset: number, query: strin
 		h.watched_at, h.position_ms
 		from watch_history h join videos v on v.id = h.video_id join channels c on c.id = v.channel_id
 		where h.user_id = ${viewer.userId} and v.deleted_at is null and (v.visibility <> 'private' or v.channel_id = ${viewer.channelId}) ${match}
-		order by h.watched_at desc limit ${PAGE} offset ${offset}`) as Entry[];
+		order by h.watched_at desc limit ${limit} offset ${offset}`) as Entry[];
 }
 
 // the day headings YouTube uses: Today, Yesterday, a weekday this week, then dates
@@ -46,19 +46,30 @@ export function dayLabel(d: Date, now = new Date()): string {
 	return d.toLocaleDateString("en-US", d.getFullYear() === now.getFullYear() ? { month: "short", day: "numeric" } : { month: "short", day: "numeric", year: "numeric" });
 }
 
-function entryItem(v: Entry, viewer: Viewer) {
-	const percent = v.duration_ms ? Math.min(100, Math.round((v.position_ms / v.duration_ms) * 100)) : 0;
-	const item = make("item/video_lockup_history", {
-		...baseVars(viewer, "/feed/history"),
-		...videoVars(v),
-		REMOVE_TOKEN: encodeToken({ k: "hremove", v: v.id }),
-		WATCHED_PERCENT: percent,
-	});
+export const watchedPercent = (v: { duration_ms: number | null }, positionMs: number) => (v.duration_ms ? Math.min(100, Math.round((positionMs / v.duration_ms) * 100)) : 0);
+
+// a lockup with YouTube's red progress bar, when some of it was watched
+export function progressItem(name: string, v: Video, percent: number, vars: Record<string, unknown>) {
+	const item = make(name, { ...vars, ...videoVars(v), WATCHED_PERCENT: percent });
 	if (!percent) {
 		const bottom = find(item, "thumbnailBottomOverlayViewModel");
 		if (bottom) delete bottom.progressBar;
 	}
 	return item;
+}
+
+// a history entry; template item/video_lockup_history (History page) or
+// item/video_lockup_you_history (the You page's History shelf)
+export function entryItem(v: Entry, viewer: Viewer, name = "item/video_lockup_history") {
+	return progressItem(name, v, watchedPercent(v, v.position_ms), { ...baseVars(viewer, "/feed/history"), REMOVE_TOKEN: encodeToken({ k: "hremove", v: v.id }) });
+}
+
+// how far the viewer got into each video
+export async function watchedPercents(viewer: NonNullable<Viewer>, videos: Video[]): Promise<Map<string, number>> {
+	if (!videos.length) return new Map();
+	const rows = await sql`select video_id, position_ms from watch_history where user_id = ${viewer.userId} and video_id in ${sql(videos.map((v) => v.id))}`;
+	const pos = new Map(rows.map((r: { video_id: string; position_ms: number }) => [r.video_id, r.position_ms]));
+	return new Map(videos.map((v) => [v.id, watchedPercent(v, Number(pos.get(v.id) ?? 0))]));
 }
 
 // day sections for one page, then the continuation when there is more

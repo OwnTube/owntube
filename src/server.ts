@@ -60,6 +60,8 @@ async function handle(req: Request): Promise<Response> {
 	}
 	const viewer = await getViewer(req);
 	if (path.startsWith("/youtubei/v1/")) return innertube(req, url, viewer);
+	// the signed-in accounts' datasync ids, which the client keys its local storage by (as DATASYNC_ID)
+	if (path === "/getDatasyncIdsEndpoint") return Response.json({ datasyncIds: viewer ? [`${viewer.channelId}||`] : [] }, { headers: { "cache-control": "no-store" } });
 	const own = await instanceRoutes(req, url, viewer);
 	if (own) return own;
 	if (req.method !== "GET" && req.method !== "HEAD") return new Response("method not allowed", { status: 405 });

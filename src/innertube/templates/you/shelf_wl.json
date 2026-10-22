@@ -1,0 +1,104 @@
+{
+	"richSectionRenderer": {
+		"content": {
+			"richShelfRenderer": {
+				"title": {
+					"runs": [
+						{
+							"text": "Watch later"
+						}
+					]
+				},
+				"contents": "{{ITEMS}}",
+				"subtitle": {
+					"runs": [
+						{
+							"text": "{{VIDEO_COUNT_NUM}}"
+						},
+						{
+							"text": "{{VIDEOS_WORD}}"
+						}
+					]
+				},
+				"endpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "/playlist?list=WL",
+							"webPageType": "WEB_PAGE_TYPE_PLAYLIST",
+							"rootVe": 5754,
+							"apiUrl": "/youtubei/v1/browse"
+						}
+					},
+					"browseEndpoint": {
+						"browseId": "VLWL"
+					}
+				},
+				"menu": {
+					"menuRenderer": {
+						"topLevelButtons": [
+							{
+								"buttonRenderer": {
+									"style": "STYLE_MONO_OUTLINE",
+									"size": "SIZE_DEFAULT",
+									"isDisabled": false,
+									"text": {
+										"runs": [
+											{
+												"text": "View all"
+											}
+										]
+									},
+									"navigationEndpoint": {
+										"commandMetadata": {
+											"webCommandMetadata": {
+												"url": "/playlist?list=WL",
+												"webPageType": "WEB_PAGE_TYPE_PLAYLIST",
+												"rootVe": 5754,
+												"apiUrl": "/youtubei/v1/browse"
+											}
+										},
+										"browseEndpoint": {
+											"browseId": "VLWL"
+										}
+									},
+									"accessibilityData": {
+										"accessibilityData": {
+											"label": "View all"
+										}
+									}
+								}
+							}
+						]
+					}
+				},
+				"isExpanded": false,
+				"isTopDividerHidden": false,
+				"isBottomDividerHidden": true,
+				"responsiveContainerConfiguration": {
+					"responsiveSize": "RESPONSIVE_SIZE_COMPACT",
+					"enableContentSpecificAspectRatio": false
+				},
+				"nextButton": {
+					"buttonViewModel": {
+						"iconName": "CHEVRON_RIGHT",
+						"accessibilityText": "Next",
+						"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+						"type": "BUTTON_VIEW_MODEL_TYPE_OUTLINE",
+						"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+						"tooltip": "Next"
+					}
+				},
+				"previousButton": {
+					"buttonViewModel": {
+						"iconName": "CHEVRON_LEFT",
+						"accessibilityText": "Previous",
+						"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+						"type": "BUTTON_VIEW_MODEL_TYPE_OUTLINE",
+						"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+						"tooltip": "Previous"
+					}
+				}
+			}
+		}
+	}
+}

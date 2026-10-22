@@ -1,0 +1,186 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"endpoint": {
+							"commandMetadata": {
+								"webCommandMetadata": {
+									"url": "/feed/library",
+									"webPageType": "WEB_PAGE_TYPE_BROWSE",
+									"rootVe": 6827,
+									"apiUrl": "/youtubei/v1/browse"
+								}
+							},
+							"browseEndpoint": {
+								"browseId": "FElibrary"
+							}
+						},
+						"selected": true,
+						"content": {
+							"richGridRenderer": {
+								"contents": "{{SHELVES}}",
+								"targetId": "browse-feedFElibrary",
+								"reflowOptions": {
+									"minimumRowsOfVideosAtStart": 2,
+									"minimumRowsOfVideosBetweenSections": 1
+								},
+								"layoutSizing": "RICH_GRID_LAYOUT_SIZING_STANDARD"
+							}
+						},
+						"tabIdentifier": "FElibrary",
+						"accessibility": {
+							"accessibilityData": {
+								"label": "library"
+							}
+						}
+					}
+				}
+			]
+		}
+	},
+	"header": {
+		"pageHeaderRenderer": {
+			"pageTitle": "",
+			"content": {
+				"pageHeaderViewModel": {
+					"title": {
+						"dynamicTextViewModel": {
+							"text": {
+								"content": "{{VIEWER_NAME}}"
+							},
+							"rendererContext": {
+								"loggingContext": {},
+								"commandContext": {
+									"onTap": {
+										"innertubeCommand": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"url": "{{VIEWER_CHANNEL_URL}}",
+													"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+													"rootVe": 3611,
+													"apiUrl": "/youtubei/v1/browse"
+												}
+											},
+											"browseEndpoint": {
+												"browseId": "{{VIEWER_CHANNEL_ID}}"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"image": {
+						"decoratedAvatarViewModel": {
+							"avatar": {
+								"avatarViewModel": {
+									"image": {
+										"sources": "{{VIEWER_AVATAR_XL}}",
+										"processor": {
+											"borderImageProcessor": {
+												"circular": true
+											}
+										}
+									},
+									"avatarImageSize": "AVATAR_SIZE_XL"
+								}
+							},
+							"a11yLabel": "View channel",
+							"rendererContext": {
+								"commandContext": {
+									"onTap": {
+										"innertubeCommand": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"url": "{{VIEWER_CHANNEL_URL}}",
+													"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+													"rootVe": 3611,
+													"apiUrl": "/youtubei/v1/browse"
+												}
+											},
+											"browseEndpoint": {
+												"browseId": "{{VIEWER_CHANNEL_ID}}"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"metadata": {
+						"contentMetadataViewModel": {
+							"metadataRows": [
+								{
+									"metadataParts": [
+										{
+											"text": {
+												"content": "{{VIEWER_AT_HANDLE}}"
+											}
+										},
+										{
+											"text": {
+												"content": "View channel",
+												"commandRuns": [
+													{
+														"startIndex": 0,
+														"length": 12,
+														"onTap": {
+															"innertubeCommand": {
+																"commandMetadata": {
+																	"webCommandMetadata": {
+																		"url": "{{VIEWER_CHANNEL_URL}}",
+																		"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+																		"rootVe": 3611,
+																		"apiUrl": "/youtubei/v1/browse"
+																	}
+																},
+																"browseEndpoint": {
+																	"browseId": "{{VIEWER_CHANNEL_ID}}"
+																}
+															}
+														}
+													}
+												]
+											},
+											"icon": {
+												"name": "",
+												"height": 16,
+												"width": 16
+											}
+										}
+									]
+								}
+							],
+							"delimiter": " • ",
+							"rendererContext": {
+								"loggingContext": {},
+								"commandContext": {
+									"onTap": {
+										"innertubeCommand": {
+											"commandMetadata": {
+												"webCommandMetadata": {
+													"url": "{{VIEWER_CHANNEL_URL}}",
+													"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+													"rootVe": 3611,
+													"apiUrl": "/youtubei/v1/browse"
+												}
+											},
+											"browseEndpoint": {
+												"browseId": "{{VIEWER_CHANNEL_ID}}"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"rendererContext": {
+						"loggingContext": {}
+					}
+				}
+			}
+		}
+	}
+}

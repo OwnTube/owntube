@@ -3,10 +3,8 @@
 import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
 import {
-	type Channel,
 	type Video,
 	ago,
-	avatarThumbnails,
 	avatarUrl,
 	channelEndpoint,
 	compact,
@@ -22,7 +20,6 @@ import {
 	signInEndpoint,
 	subscribersText,
 	text,
-	videoThumbnails,
 	viewsText,
 	watchEndpoint,
 } from "./r";
@@ -143,58 +140,6 @@ export function videoLockup(v: Video, viewer: Viewer, opts: { showChannel?: bool
 				accessibilityContext: { label: `${v.title} ${durationLabel(v.duration_ms)}` },
 				commandContext: { onTap: { innertubeCommand: opts.endpoint ?? watchEndpoint(v.id) } },
 			},
-		},
-	};
-}
-
-// videoRenderer: search results
-export function videoRenderer(v: Video) {
-	const ch = channelRef(v);
-	const byline = runs({ text: v.channel_title, navigationEndpoint: channelEndpoint(ch) });
-	return {
-		videoRenderer: {
-			videoId: v.id,
-			thumbnail: videoThumbnails(v.id),
-			title: { runs: [{ text: v.title }], accessibility: label(`${v.title} by ${v.channel_title} ${viewsText(v.view_count)} ${ago(v.published_at)} ${durationLabel(v.duration_ms)}`) },
-			descriptionSnippet: v.description ? runs(v.description.slice(0, 160)) : undefined,
-			longBylineText: byline,
-			publishedTimeText: text(ago(v.published_at ?? v.created_at)),
-			lengthText: { accessibility: label(durationLabel(v.duration_ms)), simpleText: duration(v.duration_ms) },
-			viewCountText: text(viewsText(v.view_count)),
-			navigationEndpoint: watchEndpoint(v.id),
-			ownerText: byline,
-			shortBylineText: byline,
-			showActionMenu: false,
-			shortViewCountText: { accessibility: label(viewsText(v.view_count)), simpleText: shortViews(v.view_count) },
-			channelThumbnailSupportedRenderers: {
-				channelThumbnailWithLinkRenderer: { thumbnail: avatarThumbnails(v.channel_id, [68]), navigationEndpoint: channelEndpoint(ch), accessibility: label(`Go to channel ${v.channel_title}`) },
-			},
-			thumbnailOverlays: [
-				{ thumbnailOverlayTimeStatusRenderer: { text: { accessibility: label(durationLabel(v.duration_ms)), simpleText: duration(v.duration_ms) }, style: "DEFAULT" } },
-				{ thumbnailOverlayNowPlayingRenderer: { text: runs("Now playing") } },
-			],
-		},
-	};
-}
-
-// gridVideoRenderer-less channels use richItemRenderer + lockup
-export function richItem(v: Video, viewer: Viewer, showChannel = true) {
-	return { richItemRenderer: { content: videoLockup(v, viewer, { showChannel }) } };
-}
-
-export function channelRenderer(c: Channel, subscribed: boolean, viewer: Viewer) {
-	return {
-		channelRenderer: {
-			channelId: c.id,
-			title: text(c.title),
-			navigationEndpoint: channelEndpoint(c),
-			thumbnail: avatarThumbnails(c.id, [88, 176]),
-			descriptionSnippet: c.description ? runs(c.description.slice(0, 120)) : undefined,
-			shortBylineText: runs({ text: c.title, navigationEndpoint: channelEndpoint(c) }),
-			videoCountText: runs(`@${c.handle}`),
-			subscriptionButton: { subscribed },
-			subscriberCountText: text(subscribersText(c.subscriber_count)),
-			subscribeButton: subscribeButton(c, subscribed, viewer),
 		},
 	};
 }

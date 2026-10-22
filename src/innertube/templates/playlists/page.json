@@ -1,0 +1,236 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"selected": true,
+						"content": {
+							"richGridRenderer": {
+								"contents": "{{ITEMS}}",
+								"header": {
+									"chipBarViewModel": {
+										"chips": [
+											{
+												"chipViewModel": {
+													"text": "{{SORT_LABEL}}",
+													"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_DROP_DOWN",
+													"tapCommand": {
+														"innertubeCommand": {
+															"showSheetCommand": {
+																"panelLoadingStrategy": {
+																	"inlineContent": {
+																		"sheetViewModel": {
+																			"content": {
+																				"listViewModel": {
+																					"listItems": [
+																						{
+																							"listItemViewModel": {
+																								"title": {
+																									"content": "A-Z"
+																								},
+																								"rendererContext": {
+																									"commandContext": {
+																										"onTap": {
+																											"innertubeCommand": {
+																												"commandExecutorCommand": {
+																													"commands": [
+																														{
+																															"entityUpdateCommand": {
+																																"entityBatchUpdate": {
+																																	"mutations": [
+																																		{
+																																			"entityKey": "EiVwbGF5bGlzdF9hZ2dyZWdhdGlvbl9zb3J0X2NoaXBfZW50aXR5IPIDKAE%3D",
+																																			"type": "ENTITY_MUTATION_TYPE_REPLACE",
+																																			"payload": {
+																																				"chipEntity": {
+																																					"key": "EiVwbGF5bGlzdF9hZ2dyZWdhdGlvbl9zb3J0X2NoaXBfZW50aXR5IPIDKAE%3D",
+																																					"text": "A-Z"
+																																				}
+																																			}
+																																		}
+																																	]
+																																}
+																															}
+																														},
+																														{
+																															"commandMetadata": {
+																																"webCommandMetadata": {
+																																	"sendPost": true,
+																																	"apiUrl": "/youtubei/v1/browse"
+																																}
+																															},
+																															"continuationCommand": {
+																																"token": "{{SORT_0}}",
+																																"request": "CONTINUATION_REQUEST_TYPE_BROWSE",
+																																"command": {
+																																	"showReloadUiCommand": {
+																																		"targetId": "browse-feedFEplaylist_aggregation"
+																																	}
+																																}
+																															}
+																														}
+																													]
+																												}
+																											}
+																										}
+																									}
+																								},
+																								"isSelected": "{{SORT_0_SELECTED}}"
+																							}
+																						},
+																						{
+																							"listItemViewModel": {
+																								"title": {
+																									"content": "Recently added"
+																								},
+																								"rendererContext": {
+																									"commandContext": {
+																										"onTap": {
+																											"innertubeCommand": {
+																												"commandExecutorCommand": {
+																													"commands": [
+																														{
+																															"entityUpdateCommand": {
+																																"entityBatchUpdate": {
+																																	"mutations": [
+																																		{
+																																			"entityKey": "EiVwbGF5bGlzdF9hZ2dyZWdhdGlvbl9zb3J0X2NoaXBfZW50aXR5IPIDKAE%3D",
+																																			"type": "ENTITY_MUTATION_TYPE_REPLACE",
+																																			"payload": {
+																																				"chipEntity": {
+																																					"key": "EiVwbGF5bGlzdF9hZ2dyZWdhdGlvbl9zb3J0X2NoaXBfZW50aXR5IPIDKAE%3D",
+																																					"text": "Recently added"
+																																				}
+																																			}
+																																		}
+																																	]
+																																}
+																															}
+																														},
+																														{
+																															"commandMetadata": {
+																																"webCommandMetadata": {
+																																	"sendPost": true,
+																																	"apiUrl": "/youtubei/v1/browse"
+																																}
+																															},
+																															"continuationCommand": {
+																																"token": "{{SORT_1}}",
+																																"request": "CONTINUATION_REQUEST_TYPE_BROWSE",
+																																"command": {
+																																	"showReloadUiCommand": {
+																																		"targetId": "browse-feedFEplaylist_aggregation"
+																																	}
+																																}
+																															}
+																														}
+																													]
+																												}
+																											}
+																										}
+																									}
+																								},
+																								"isSelected": "{{SORT_1_SELECTED}}"
+																							}
+																						}
+																					]
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													},
+													"accessibilityLabel": "{{SORT_LABEL}}",
+													"chipEntityKey": "EiVwbGF5bGlzdF9hZ2dyZWdhdGlvbl9zb3J0X2NoaXBfZW50aXR5IPIDKAE%3D"
+												}
+											},
+											{
+												"chipViewModel": {
+													"text": "Playlists",
+													"selected": "{{CHIP_PLAYLISTS_SELECTED}}",
+													"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+													"tapCommand": {
+														"innertubeCommand": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "/feed/playlists",
+																	"webPageType": "WEB_PAGE_TYPE_BROWSE",
+																	"rootVe": 6827,
+																	"apiUrl": "/youtubei/v1/browse"
+																}
+															},
+															"browseEndpoint": {
+																"browseId": "FEplaylist_aggregation",
+																"params": "{{CHIP_PLAYLISTS}}",
+																"navigationType": "BROWSE_NAVIGATION_TYPE_LOAD_IN_PLACE"
+															}
+														}
+													},
+													"accessibilityLabel": "Playlists"
+												}
+											},
+											{
+												"chipViewModel": {
+													"text": "Owned",
+													"selected": "{{CHIP_OWNED_SELECTED}}",
+													"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+													"tapCommand": {
+														"innertubeCommand": {
+															"commandMetadata": {
+																"webCommandMetadata": {
+																	"url": "/feed/playlists",
+																	"webPageType": "WEB_PAGE_TYPE_BROWSE",
+																	"rootVe": 6827,
+																	"apiUrl": "/youtubei/v1/browse"
+																}
+															},
+															"browseEndpoint": {
+																"browseId": "FEplaylist_aggregation",
+																"params": "{{CHIP_OWNED}}",
+																"navigationType": "BROWSE_NAVIGATION_TYPE_LOAD_IN_PLACE"
+															}
+														}
+													},
+													"accessibilityLabel": "Owned"
+												}
+											}
+										]
+									}
+								},
+								"targetId": "browse-feedFEplaylist_aggregation",
+								"layoutSizing": "RICH_GRID_LAYOUT_SIZING_COMPACT",
+								"layoutType": "RICH_GRID_LAYOUT_TYPE_COMPACT_LIST"
+							}
+						},
+						"targetId": "6b78304d-0000-2325-8d0f-d4f547f94d84"
+					}
+				}
+			]
+		}
+	},
+	"header": {
+		"pageHeaderRenderer": {
+			"pageTitle": "Playlists",
+			"content": {
+				"pageHeaderViewModel": {
+					"title": {
+						"dynamicTextViewModel": {
+							"text": {
+								"content": "Playlists"
+							},
+							"rendererContext": {
+								"loggingContext": {}
+							}
+						}
+					},
+					"rendererContext": {
+						"loggingContext": {}
+					}
+				}
+			}
+		}
+	}
+}

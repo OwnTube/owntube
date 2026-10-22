@@ -7,7 +7,7 @@ import { baseVars, videoVars } from "./vars";
 import { viewerVars } from "./chrome";
 import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
-import { type Channel, type Video, ago, avatarUrl, compact, grouped, shortAgo, videoThumbnails, browseEndpoint, channelEndpoint, content, duration, durationLabel, label, playlistEndpoint, plural, responseContext, runs, serviceEndpoint, shortViews, signInModal, text, viewsText, watchEndpoint } from "./r";
+import { type Channel, type Video, avatarUrl, compact, grouped, shortAgo, videoThumbnails, browseEndpoint, channelEndpoint, content, duration, durationLabel, label, playlistEndpoint, plural, responseContext, runs, serviceEndpoint, signInModal, text, watchEndpoint } from "./r";
 import { sql } from "../db";
 import { encodeToken, isVideoId, newPlaylistId, randomId } from "../ids";
 import { continuationItem } from "./items";
@@ -56,7 +56,7 @@ async function getPlaylist(id: string, viewer: Viewer): Promise<Playlist | undef
 // the sort menu's orders (playlists.video_order)
 const ORDERS = [sql`i.position`, sql`i.added_at desc`, sql`i.added_at asc`, sql`v.view_count desc`, sql`v.published_at desc nulls last`, sql`v.published_at asc nulls last`];
 
-async function playlistVideos(p: Playlist, viewer: Viewer, limit: number, offset: number): Promise<(Video & { set_id: string })[]> {
+export async function playlistVideos(p: Playlist, viewer: Viewer, limit: number, offset: number): Promise<(Video & { set_id: string })[]> {
 	if (p.kind === "liked")
 		return (await sql`select ${VIDEO_COLUMNS}, r.video_id as set_id from video_reactions r join videos v on v.id = r.video_id join channels c on c.id = v.channel_id
 			where r.user_id = ${viewer!.userId} and r.kind = 'like' and ${PLAYABLE(viewer)} order by r.created_at desc limit ${limit} offset ${offset}`) as (Video & { set_id: string })[];
@@ -66,42 +66,6 @@ async function playlistVideos(p: Playlist, viewer: Viewer, limit: number, offset
 }
 
 const thumb = (videoId: string | null) => (videoId ? `${PUBLIC_ORIGIN}/vi/${videoId}/hqdefault.jpg` : `${PUBLIC_ORIGIN}/_up/www.gstatic.com/youtube/img/icons/web/youtube_fill/offline_no_content/v1/192px.svg`);
-
-// a playlist as a card (lockupViewModel with a collection thumbnail)
-export function playlistLockup(p: Playlist) {
-	const ep = p.first_video ? watchEndpoint(p.first_video, { playlistId: p.id }) : playlistEndpoint(p.id);
-	return {
-		lockupViewModel: {
-			contentImage: {
-				collectionThumbnailViewModel: {
-					primaryThumbnail: {
-						thumbnailViewModel: {
-							image: { sources: [{ url: thumb(p.first_video), width: 480, height: 360 }] },
-							overlays: [{ thumbnailOverlayBadgeViewModel: { thumbnailBadges: [{ thumbnailBadgeViewModel: { icon: { sources: [{ clientResource: { imageName: "PLAYLISTS" } }] }, text: plural(p.video_count, "video"), badgeStyle: "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT" } }], position: "THUMBNAIL_OVERLAY_BADGE_POSITION_BOTTOM_END" } }],
-						},
-					},
-					stackColor: { lightTheme: 2829099, darkTheme: 13158600 },
-				},
-			},
-			metadata: {
-				lockupMetadataViewModel: {
-					title: content(p.title),
-					metadata: {
-						contentMetadataViewModel: {
-							metadataRows: [
-								{ metadataParts: [{ text: content(p.visibility === "private" ? "Private" : p.visibility === "unlisted" ? "Unlisted" : p.owner_title) }, { text: content("Playlist") }] },
-								{ metadataParts: [{ text: { content: "View full playlist", commandRuns: [{ startIndex: 0, length: 18, onTap: { innertubeCommand: playlistEndpoint(p.id) } }] } }] },
-							],
-						},
-					},
-				},
-			},
-			contentId: p.id,
-			contentType: "LOCKUP_CONTENT_TYPE_PLAYLIST",
-			rendererContext: { commandContext: { onTap: { innertubeCommand: ep } } },
-		},
-	};
-}
 
 export async function userPlaylists(viewer: Viewer, ownerUserId?: string, includePrivate = false): Promise<Playlist[]> {
 	const uid = ownerUserId ?? viewer?.userId;
@@ -114,20 +78,50 @@ export async function userPlaylists(viewer: Viewer, ownerUserId?: string, includ
 	return rows.map((p: Playlist) => ({ ...p, user_id: String(p.user_id) }));
 }
 
-export async function playlistLockupsFor(viewer: Viewer) {
-	return (await userPlaylists(viewer, undefined, true)).map(playlistLockup);
+// the viewer's library (Playlists feed and the You page): Liked videos,
+// Watch later and their own playlists, most recently changed first or A-Z.
+// "Owned" leaves out the two automatic lists
+export async function libraryPlaylists(viewer: NonNullable<Viewer>, owned = false, az = false): Promise<Playlist[]> {
+	if (!owned) await watchLaterId(viewer);
+	const rows = await sql`select p.*, c.id as owner_channel, c.title as owner_title, c.handle as owner_handle,
+		(select count(*)::int from playlist_items i join videos v on v.id = i.video_id where i.playlist_id = p.id and ${PLAYABLE(viewer)}) as video_count,
+		(select i.video_id from playlist_items i join videos v on v.id = i.video_id where i.playlist_id = p.id and ${PLAYABLE(viewer)} order by i.position limit 1) as first_video,
+		greatest(p.updated_at, (select max(i.added_at) from playlist_items i where i.playlist_id = p.id)) as activity
+		from playlists p join channels c on c.user_id = p.user_id
+		where p.user_id = ${viewer.userId} and p.kind in ${sql(owned ? ["user"] : ["user", "watch_later"])}`;
+	const lists = rows.map((p: Playlist & { activity: Date }) => ({ ...p, id: p.kind === "watch_later" ? "WL" : p.id, user_id: String(p.user_id) }));
+	if (!owned) {
+		const liked = await getPlaylist("LL", viewer);
+		const [r] = await sql`select max(created_at) as t from video_reactions where user_id = ${viewer.userId} and kind = 'like'`;
+		if (liked) lists.push({ ...liked, activity: r?.t ?? new Date(0) });
+	}
+	return lists.sort((a: Playlist & { activity: Date }, b: Playlist & { activity: Date }) => (az ? a.title.localeCompare(b.title) : new Date(b.activity).getTime() - new Date(a.activity).getTime()));
 }
 
-export async function watchLaterAndLiked(viewer: Viewer) {
-	const out = [];
-	for (const id of ["WL", "LL"]) {
-		const p = await getPlaylist(id, viewer);
-		if (!p) continue;
-		const vids = await playlistVideos(p, viewer, 12, 0);
-		const { videoLockup } = await import("./items");
-		out.push({ title: p.title, endpoint: playlistEndpoint(id), items: vids.map((v) => videoLockup(v, viewer)) });
+const VISIBILITY = { public: "Public", unlisted: "Unlisted", private: "Private" } as const;
+
+// a playlist card as the Playlists feed and the You page show it (template
+// item/playlist_lockup_feed); only the viewer's own playlists can be deleted
+export function playlistCard(p: Playlist, viewer: Viewer, page = "/feed/playlists") {
+	const item = make("item/playlist_lockup_feed", {
+		...baseVars(viewer, page),
+		PLAYLIST_ID: p.id,
+		TITLE: p.title,
+		VISIBILITY: VISIBILITY[p.visibility],
+		VIDEO_COUNT: p.video_count ? plural(p.video_count, "video") : "No videos",
+		FIRST_VIDEO_ID: p.first_video ?? "",
+		THUMBS: [{ url: thumb(p.first_video), width: 480, height: 270 }],
+	});
+	const lv = find(item, "lockupViewModel");
+	if (p.kind !== "user") delete lv.metadata.lockupMetadataViewModel.menuButton;
+	if (!p.first_video) {
+		// nothing to play: the card opens the playlist
+		delete lv.itemPlayback;
+		lv.rendererContext.commandContext.onTap.innertubeCommand = playlistEndpoint(p.id);
+		const overlays = find(lv, "overlays");
+		if (Array.isArray(overlays)) for (let i = overlays.length - 1; i >= 0; i--) if (overlays[i].thumbnailHoverOverlayViewModel) overlays.splice(i, 1);
 	}
-	return out;
+	return item;
 }
 
 // a channel's Playlists tab (template item/playlist_lockup); empty lists are not shown
@@ -185,12 +179,6 @@ export async function playlistSearchItem(p: Playlist, viewer: Viewer) {
 		CHANNEL_URL: `/@${p.owner_handle}`,
 		DESCRIPTION_SHORT: p.description.length > 160 ? `${p.description.slice(0, 157)}...` : p.description,
 	}, "item/playlist_search");
-}
-
-export async function channelPlaylistsGrid(c: Channel, viewer: Viewer) {
-	const lists = await userPlaylists(viewer, c.user_id, viewer?.channelId === c.id);
-	if (!lists.length) return { sectionListRenderer: { contents: [{ itemSectionRenderer: { contents: [{ messageRenderer: { text: runs("This channel doesn't have any playlists.") } }] } }] } };
-	return { richGridRenderer: { contents: lists.map((p) => ({ richItemRenderer: { content: playlistLockup(p) } })), targetId: `channel-playlists-${c.id}`, style: "RICH_GRID_RENDERER_STYLE_TAB" } };
 }
 
 // ---- the playlist page (templates playlist/*, item/playlist_row_*) ----

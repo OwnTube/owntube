@@ -1,0 +1,90 @@
+{
+	"channelRenderer": {
+		"channelId": "{{CHANNEL_ID}}",
+		"title": {
+			"simpleText": "{{CHANNEL_NAME}}"
+		},
+		"navigationEndpoint": {
+			"commandMetadata": {
+				"webCommandMetadata": {
+					"url": "{{CHANNEL_URL}}",
+					"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+					"rootVe": 3611,
+					"apiUrl": "/youtubei/v1/browse"
+				}
+			},
+			"browseEndpoint": {
+				"browseId": "{{CHANNEL_ID}}",
+				"canonicalBaseUrl": "{{CHANNEL_URL}}"
+			}
+		},
+		"thumbnail": {
+			"thumbnails": "{{AVATAR_88_176}}"
+		},
+		"descriptionSnippet": {
+			"runs": [
+				{
+					"text": "{{DESCRIPTION_SHORT}}"
+				}
+			]
+		},
+		"shortBylineText": {
+			"runs": [
+				{
+					"text": "{{CHANNEL_NAME}}",
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "{{CHANNEL_URL}}",
+								"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+								"rootVe": 3611,
+								"apiUrl": "/youtubei/v1/browse"
+							}
+						},
+						"browseEndpoint": {
+							"browseId": "{{CHANNEL_ID}}",
+							"canonicalBaseUrl": "{{CHANNEL_URL}}"
+						}
+					}
+				}
+			]
+		},
+		"videoCountText": {
+			"accessibility": {
+				"accessibilityData": {
+					"label": "{{SUBSCRIBERS_LABEL}}"
+				}
+			},
+			"simpleText": "{{SUBSCRIBERS}}"
+		},
+		"subscriptionButton": {
+			"subscribed": true
+		},
+		"subscriberCountText": {
+			"simpleText": "{{AT_HANDLE}}"
+		},
+		"subscribeButton": "{{SUBSCRIBE_BUTTON}}",
+		"longBylineText": {
+			"runs": [
+				{
+					"text": "{{CHANNEL_NAME}}",
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "{{CHANNEL_URL}}",
+								"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+								"rootVe": 3611,
+								"apiUrl": "/youtubei/v1/browse"
+							}
+						},
+						"browseEndpoint": {
+							"browseId": "{{CHANNEL_ID}}",
+							"canonicalBaseUrl": "{{CHANNEL_URL}}"
+						}
+					}
+				}
+			]
+		},
+		"channelRendererStyle": "CHANNEL_RENDERER_STYLE__NARROW_THUMBNAIL_SPACING"
+	}
+}

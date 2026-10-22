@@ -1275,6 +1275,128 @@ function history() {
 }
 
 // ======================================================================
+// the You page and the library feeds it links to (Playlists, All
+// subscriptions). Left out: "Switch account" and "Google Account" (one
+// local account per sign-in), the Music filter chip, the playlist editor
+// panel (playlists are edited on their own page) and resume positions
+const resumeFree = (o: any) => strings(dropKey(o, "startTimeSeconds"), (x) => x.replace(/&t=\d+s/, "").replace(/&pp=[^&"]*/, ""));
+// "Private" / "Unlisted" / "Public" before "Playlist"
+const visibilityToken = (item: any) => (find(item, "metadataRows")[0].metadataParts[0].text.content = "{{VISIBILITY}}");
+const shelfOf = (c: any) => c.richSectionRenderer.content.richShelfRenderer;
+// a sort dropdown chip: its label and each choice's token and selection
+function sortChip(chip: any, targetId: string) {
+	const cv = chip.chipViewModel;
+	cv.text = cv.accessibilityLabel = "{{SORT_LABEL}}";
+	find(cv, "listItems").forEach((it: any, i: number) => {
+		const li = it.listItemViewModel;
+		li.isSelected = `{{SORT_${i}_SELECTED}}`;
+		delete li.entityKey;
+		const cc = find(li, "continuationCommand");
+		cc.token = `{{SORT_${i}}}`;
+		cc.command.showReloadUiCommand.targetId = targetId;
+	});
+}
+function library() {
+	const own = pageVar(body("in-own-channel", /^001-/)).metadata.channelMetadataRenderer;
+	const vid: string = own.externalId;
+	const viewerPairs: [string, string][] = [[`/channel/${vid}`, "VIEWER_CHANNEL_URL"], [vid, "VIEWER_CHANNEL_ID"]];
+	const viewerExact: [string, string][] = [[own.title, "VIEWER_NAME"], [`@${own.vanityChannelUrl.split("/@")[1]}`, "VIEWER_AT_HANDLE"]];
+
+	// --- You ---
+	const you = pageOnly(pageVar(body("in-feed-you", /^002-/)));
+	const ph = you.header.pageHeaderRenderer.content.pageHeaderViewModel;
+	delete ph.actions; // Switch account, Google Account
+	wholeToken(ph.image, "sources", "VIEWER_AVATAR_XL");
+	const g = gridOf(you);
+	const shelves: Record<string, any> = {};
+	for (const c of g.contents) shelves[contentOf(shelfOf(c).title)] = c;
+	const lockupFrom = (shelf: any, keep: Set<string>) => {
+		const sample = structuredClone(shelfOf(shelf).contents.find((x: any) => x.richItemRenderer?.content?.lockupViewModel));
+		for (const list of findAll(sample, "listItems")) for (let i = list.length - 1; i >= 0; i--) if (!keep.has(itemTitle(list[i]))) list.splice(i, 1);
+		delete find(sample, "lockupViewModel").themedPalette;
+		const bar = find(sample, "thumbnailOverlayProgressBarViewModel");
+		if (bar) bar.startPercent = "{{WATCHED_PERCENT}}";
+		return sample;
+	};
+	// History: lockups that can be removed from the history
+	const hs = lockupFrom(shelves.History, new Set([...LOCKUP_MENU, "Remove from watch history"]));
+	findAll(hs, "feedbackEndpoint")[0].feedbackToken = "{{REMOVE_TOKEN}}";
+	const hl = videoLockup(hs);
+	save("item/video_lockup_you_history", resumeFree(hl.item), hl.samples);
+	// Watch later: removing from the list instead of saving to it
+	const wl = lockupFrom(shelves["Watch later"], new Set([...LOCKUP_MENU, "Remove from Watch later"]));
+	const wll = videoLockup(wl);
+	save("item/video_lockup_you_wl", resumeFree(wll.item), wll.samples);
+	const ll = lockupFrom(shelves["Liked videos"], LOCKUP_MENU);
+	const lll = videoLockup(ll);
+	save("item/video_lockup_you", resumeFree(lll.item), lll.samples);
+	// New playlist: collaborative playlists are not offered
+	const form = find(shelves.Playlists, "createPlaylistDialogFormViewModel");
+	if (form) {
+		delete form.playlistCollaborate;
+		delete form.createPlaylistParamsCollaborationEnabled;
+		form.disablePlaylistCollaborate = true;
+		delete form.createPlaylistDialogFormSchema.fieldSchemas.visibility; // its only rule concerns collaboration
+	}
+	for (const [title, name] of [["History", "history"], ["Playlists", "playlists"], ["Watch later", "wl"], ["Liked videos", "ll"]] as const) {
+		const s = clean(shelves[title]);
+		const sh = shelfOf(s);
+		sh.contents = "{{ITEMS}}";
+		if (sh.subtitle) sh.subtitle.runs = [{ text: "{{VIDEO_COUNT_NUM}}" }, { text: "{{VIDEOS_WORD}}" }];
+		save(`you/shelf_${name}`, tokenize(s, []));
+	}
+	g.contents = "{{SHELVES}}";
+	save("you/page", tokenize(you, viewerPairs, [[vid, "VIEWER_CHANNEL_ID"]], viewerExact));
+	save("you/signed_out", tokenize(pageOnly(pageVar(body("feed-you", /^001-/))), []));
+
+	// --- Playlists ---
+	const pl = pageOnly(pageVar(body("in-playlists", /^001-/)));
+	const pg = gridOf(pl);
+	const target = "browse-feedFEplaylist_aggregation";
+	const [sort, ...filters] = pg.header.chipBarViewModel.chips;
+	sortChip(sort, target);
+	pg.header.chipBarViewModel.chips = [sort, ...filters.filter((c: any) => c.chipViewModel.text !== "Music")];
+	for (const c of pg.header.chipBarViewModel.chips.slice(1)) {
+		const cv = c.chipViewModel;
+		const k = cv.text.toUpperCase();
+		cv.selected = `{{CHIP_${k}_SELECTED}}`;
+		const be = find(cv, "browseEndpoint");
+		be.params = `{{CHIP_${k}}}`;
+		delete be.nofollow;
+	}
+	pg.targetId = target;
+	// the viewer's own playlist (Delete; Edit opens YouTube's editor panel);
+	// the You page's Playlists shelf uses the same card
+	const mine = clean(pg.contents.find((x: any) => find(x, "deletePlaylistEndpoint")));
+	for (const list of findAll(mine, "listItems")) for (let i = list.length - 1; i >= 0; i--) if (itemTitle(list[i]) !== "Delete") list.splice(i, 1);
+	visibilityToken(mine);
+	save("item/playlist_lockup_feed", resumeFree(dropKey(dropKey(playlistLockup(mine), "playerParams"), "loggingContext")));
+	pg.contents = "{{ITEMS}}";
+	save("playlists/page", tokenize(pl, []));
+
+	// --- All subscriptions ---
+	const ch = pageOnly(pageVar(body("in-channels", /^001-/)));
+	const sl = ch.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer.content.sectionListRenderer;
+	sortChip(sl.header.chipBarViewModel.chips[0], "browse-feedFEchannels");
+	const shelf = find(sl, "expandedShelfContentsRenderer");
+	const cr = clean(shelf.items[0]).channelRenderer;
+	wholeToken(cr, "thumbnails", "AVATAR_88_176");
+	cr.descriptionSnippet = { runs: [{ text: "{{DESCRIPTION_SHORT}}" }] };
+	cr.subscribeButton = "{{SUBSCRIBE_BUTTON}}";
+	delete cr.ownerBadges; // verification belongs to YouTube's channels
+	const handle = contentOf(cr.subscriberCountText);
+	const chItem = tokenize(
+		{ channelRenderer: cr },
+		[[cr.channelId, "CHANNEL_ID"], [cr.navigationEndpoint.browseEndpoint.canonicalBaseUrl, "CHANNEL_URL"]],
+		[[cr.channelId, "CHANNEL_ID"]],
+		[[contentOf(cr.title), "CHANNEL_NAME"], [handle, "AT_HANDLE"], [contentOf(cr.videoCountText), "SUBSCRIBERS"], [cr.videoCountText.accessibility.accessibilityData.label, "SUBSCRIBERS_LABEL"]],
+	);
+	save("item/channel_subscribed", chItem, [cr.channelId, contentOf(cr.title)]);
+	shelf.items = "{{ITEMS}}";
+	save("subscriptions/channels", tokenize(ch, []));
+}
+
+// ======================================================================
 const only = process.argv.slice(2);
 personalValues();
 const steps: [string, () => void][] = [
@@ -1288,6 +1410,7 @@ const steps: [string, () => void][] = [
 	["playlist", playlistPage],
 	["playlist-own", ownListPage],
 	["history", history],
+	["library", library],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;

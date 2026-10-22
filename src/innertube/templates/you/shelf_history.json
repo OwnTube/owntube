@@ -1,0 +1,94 @@
+{
+	"richSectionRenderer": {
+		"content": {
+			"richShelfRenderer": {
+				"title": {
+					"runs": [
+						{
+							"text": "History"
+						}
+					]
+				},
+				"contents": "{{ITEMS}}",
+				"endpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "/feed/history",
+							"webPageType": "WEB_PAGE_TYPE_BROWSE",
+							"rootVe": 6827,
+							"apiUrl": "/youtubei/v1/browse"
+						}
+					},
+					"browseEndpoint": {
+						"browseId": "FEhistory"
+					}
+				},
+				"menu": {
+					"menuRenderer": {
+						"topLevelButtons": [
+							{
+								"buttonRenderer": {
+									"style": "STYLE_MONO_OUTLINE",
+									"size": "SIZE_DEFAULT",
+									"isDisabled": false,
+									"text": {
+										"runs": [
+											{
+												"text": "View all"
+											}
+										]
+									},
+									"navigationEndpoint": {
+										"commandMetadata": {
+											"webCommandMetadata": {
+												"url": "/feed/history",
+												"webPageType": "WEB_PAGE_TYPE_BROWSE",
+												"rootVe": 6827,
+												"apiUrl": "/youtubei/v1/browse"
+											}
+										},
+										"browseEndpoint": {
+											"browseId": "FEhistory"
+										}
+									},
+									"accessibilityData": {
+										"accessibilityData": {
+											"label": "View all"
+										}
+									}
+								}
+							}
+						]
+					}
+				},
+				"isExpanded": false,
+				"isTopDividerHidden": false,
+				"isBottomDividerHidden": true,
+				"responsiveContainerConfiguration": {
+					"responsiveSize": "RESPONSIVE_SIZE_COMPACT",
+					"enableContentSpecificAspectRatio": false
+				},
+				"nextButton": {
+					"buttonViewModel": {
+						"iconName": "CHEVRON_RIGHT",
+						"accessibilityText": "Next",
+						"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+						"type": "BUTTON_VIEW_MODEL_TYPE_OUTLINE",
+						"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+						"tooltip": "Next"
+					}
+				},
+				"previousButton": {
+					"buttonViewModel": {
+						"iconName": "CHEVRON_LEFT",
+						"accessibilityText": "Previous",
+						"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+						"type": "BUTTON_VIEW_MODEL_TYPE_OUTLINE",
+						"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+						"tooltip": "Previous"
+					}
+				}
+			}
+		}
+	}
+}

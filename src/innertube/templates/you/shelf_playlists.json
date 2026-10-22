@@ -1,0 +1,324 @@
+{
+	"richSectionRenderer": {
+		"content": {
+			"richShelfRenderer": {
+				"title": {
+					"runs": [
+						{
+							"text": "Playlists"
+						}
+					]
+				},
+				"contents": "{{ITEMS}}",
+				"endpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "/feed/playlists",
+							"webPageType": "WEB_PAGE_TYPE_BROWSE",
+							"rootVe": 6827,
+							"apiUrl": "/youtubei/v1/browse"
+						}
+					},
+					"browseEndpoint": {
+						"browseId": "FEplaylist_aggregation"
+					}
+				},
+				"menu": {
+					"menuRenderer": {
+						"topLevelButtons": [
+							{
+								"flexibleActionsViewModel": {
+									"actionsRows": [
+										{
+											"actions": [
+												{
+													"buttonViewModel": {
+														"iconName": "ADD",
+														"onTap": {
+															"innertubeCommand": {
+																"showDialogCommand": {
+																	"panelLoadingStrategy": {
+																		"inlineContent": {
+																			"dialogViewModel": {
+																				"header": {
+																					"dialogHeaderViewModel": {
+																						"headline": {
+																							"content": "New playlist"
+																						}
+																					}
+																				},
+																				"footer": {
+																					"formFooterViewModel": {
+																						"panelFooter": {
+																							"panelFooterViewModel": {
+																								"primaryButton": {
+																									"buttonViewModel": {
+																										"title": "Create",
+																										"accessibilityText": "Create",
+																										"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																										"isFullWidth": false,
+																										"type": "BUTTON_VIEW_MODEL_TYPE_FILLED",
+																										"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+																										"state": "BUTTON_VIEW_MODEL_STATE_DISABLED"
+																									}
+																								},
+																								"secondaryButton": {
+																									"buttonViewModel": {
+																										"title": "Cancel",
+																										"onTap": {
+																											"innertubeCommand": {
+																												"dismissDialogEndpoint": {}
+																											}
+																										},
+																										"accessibilityText": "Cancel",
+																										"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																										"isFullWidth": false,
+																										"type": "BUTTON_VIEW_MODEL_TYPE_OUTLINE",
+																										"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+																										"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE"
+																									}
+																								},
+																								"shouldHideDivider": true
+																							}
+																						},
+																						"formId": "create_playlist_dialog",
+																						"containerType": "FORM_FOOTER_CONTAINER_TYPE_DIALOG",
+																						"enableLongLivedCommandDispatcher": true
+																					}
+																				},
+																				"customContent": {
+																					"createPlaylistDialogFormViewModel": {
+																						"playlistTitle": {
+																							"textFieldViewModel": {
+																								"displayProperties": {
+																									"isMultiline": true,
+																									"disableNewLines": true
+																								},
+																								"contentProperties": {
+																									"labelText": "Title",
+																									"placeholderText": "Choose a title",
+																									"maxCharacterCount": 150
+																								},
+																								"initialState": {
+																									"isFocused": true
+																								},
+																								"formFieldMetadata": {
+																									"formId": "create_playlist_dialog",
+																									"fieldId": "title"
+																								},
+																								"enableEditableTextV2": false
+																							}
+																						},
+																						"playlistVisibility": {
+																							"dropdownViewModel": {
+																								"label": {
+																									"content": "Visibility"
+																								},
+																								"placeholderText": {
+																									"content": "Set visibility"
+																								},
+																								"disabled": false,
+																								"options": [
+																									{
+																										"title": {
+																											"content": "Public"
+																										},
+																										"subtitle": {
+																											"content": "Anyone can search for and view"
+																										},
+																										"leadingImage": {
+																											"sources": [
+																												{
+																													"clientResource": {
+																														"imageName": "PRIVACY_PUBLIC"
+																													}
+																												}
+																											]
+																										},
+																										"value": {
+																											"privacyStatusValue": "PUBLIC"
+																										},
+																										"onTap": {
+																											"innertubeCommand": {
+																												"notifyDropdownOptionSelectedCommand": {
+																													"dropdownId": "visibility",
+																													"selectedOptionIndex": 0
+																												}
+																											}
+																										}
+																									},
+																									{
+																										"title": {
+																											"content": "Unlisted"
+																										},
+																										"subtitle": {
+																											"content": "Anyone with the link can view"
+																										},
+																										"leadingImage": {
+																											"sources": [
+																												{
+																													"clientResource": {
+																														"imageName": "PRIVACY_UNLISTED"
+																													}
+																												}
+																											]
+																										},
+																										"value": {
+																											"privacyStatusValue": "UNLISTED"
+																										},
+																										"onTap": {
+																											"innertubeCommand": {
+																												"notifyDropdownOptionSelectedCommand": {
+																													"dropdownId": "visibility",
+																													"selectedOptionIndex": 1
+																												}
+																											}
+																										}
+																									},
+																									{
+																										"title": {
+																											"content": "Private"
+																										},
+																										"subtitle": {
+																											"content": "Only you can view"
+																										},
+																										"leadingImage": {
+																											"sources": [
+																												{
+																													"clientResource": {
+																														"imageName": "PRIVACY_PRIVATE"
+																													}
+																												}
+																											]
+																										},
+																										"isSelected": true,
+																										"value": {
+																											"privacyStatusValue": "PRIVATE"
+																										},
+																										"onTap": {
+																											"innertubeCommand": {
+																												"notifyDropdownOptionSelectedCommand": {
+																													"dropdownId": "visibility",
+																													"selectedOptionIndex": 2
+																												}
+																											}
+																										}
+																									}
+																								],
+																								"type": "SELECTION_TYPE_PRIVACY_STATUS",
+																								"id": "visibility"
+																							}
+																						},
+																						"createPlaylistDialogFormSchema": {
+																							"id": "create_playlist_dialog",
+																							"initialValues": {
+																								"visibility": "PRIVATE",
+																								"isCollaborative": false
+																							},
+																							"fieldSchemas": {
+																								"title": {
+																									"validationSchema": {
+																										"syncStep": {
+																											"rules": [
+																												{
+																													"lengthValidationRule": {
+																														"minLength": 1,
+																														"maxLength": 150,
+																														"translations": {
+																															"minLengthErrorMessage": "A title is required",
+																															"maxLengthErrorMessage": "Choose a shorter title"
+																														}
+																													}
+																												}
+																											]
+																										}
+																									}
+																								}
+																							}
+																						},
+																						"disablePlaylistCollaborate": true,
+																						"createPlaylistParamsCollaborationDisabled": "CAcoAA%3D%3D"
+																					}
+																				}
+																			}
+																		}
+																	},
+																	"removeDefaultPadding": true
+																}
+															}
+														},
+														"accessibilityText": "Create new playlist",
+														"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+														"isFullWidth": false,
+														"type": "BUTTON_VIEW_MODEL_TYPE_TEXT",
+														"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+														"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE",
+														"enableIconButton": true
+													}
+												},
+												{
+													"buttonViewModel": {
+														"title": "View all",
+														"onTap": {
+															"innertubeCommand": {
+																"commandMetadata": {
+																	"webCommandMetadata": {
+																		"url": "/feed/playlists",
+																		"webPageType": "WEB_PAGE_TYPE_BROWSE",
+																		"rootVe": 6827,
+																		"apiUrl": "/youtubei/v1/browse"
+																	}
+																},
+																"browseEndpoint": {
+																	"browseId": "FEplaylist_aggregation"
+																}
+															}
+														},
+														"accessibilityText": "View all",
+														"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+														"isFullWidth": false,
+														"type": "BUTTON_VIEW_MODEL_TYPE_OUTLINE",
+														"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+														"state": "BUTTON_VIEW_MODEL_STATE_ACTIVE"
+													}
+												}
+											]
+										}
+									],
+									"justifyContent": "FLEXIBLE_ACTIONS_JUSTIFY_CONTENT_END"
+								}
+							}
+						]
+					}
+				},
+				"isExpanded": false,
+				"isTopDividerHidden": false,
+				"isBottomDividerHidden": true,
+				"responsiveContainerConfiguration": {
+					"responsiveSize": "RESPONSIVE_SIZE_COMPACT",
+					"enableContentSpecificAspectRatio": false
+				},
+				"nextButton": {
+					"buttonViewModel": {
+						"iconName": "CHEVRON_RIGHT",
+						"accessibilityText": "Next",
+						"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+						"type": "BUTTON_VIEW_MODEL_TYPE_OUTLINE",
+						"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+						"tooltip": "Next"
+					}
+				},
+				"previousButton": {
+					"buttonViewModel": {
+						"iconName": "CHEVRON_LEFT",
+						"accessibilityText": "Previous",
+						"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+						"type": "BUTTON_VIEW_MODEL_TYPE_OUTLINE",
+						"buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+						"tooltip": "Previous"
+					}
+				}
+			}
+		}
+	}
+}
