@@ -1,0 +1,36 @@
+{
+	"accountSectionListRenderer": {
+		"contents": [
+			{
+				"accountItemSectionRenderer": {
+					"contents": [
+						"{{ITEM}}"
+					],
+					"header": {
+						"accountItemSectionHeaderRenderer": {
+							"title": {
+								"runs": [
+									{
+										"text": "{{ACCOUNT_NAME}}"
+									}
+								]
+							}
+						}
+					}
+				}
+			}
+		],
+		"header": {
+			"accountsDialogHeaderRenderer": {
+				"text": {
+					"runs": [
+						{
+							"text": "Other accounts",
+							"bold": true
+						}
+					]
+				}
+			}
+		}
+	}
+}

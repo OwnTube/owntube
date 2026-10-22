@@ -84,7 +84,7 @@ page.on("response", async (r) => {
 	const u = r.url();
 	const req = r.request();
 	log.push(`${r.status()} ${req.method()} ${u.slice(0, 300)}`);
-	if (/\/youtubei\/v1\/|[?&]pbj=1/.test(u) || (req.resourceType() === "document")) {
+	if (/\/youtubei\/v1\/|[?&]pbj=1|\/getAccountSwitcherEndpoint/.test(u) || (req.resourceType() === "document")) {
 		try {
 			const body = await r.text();
 			const file = `${String(++n).padStart(3, "0")}-${new URL(u).pathname.replace(/[^\w]+/g, "_").slice(0, 60)}`;

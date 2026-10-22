@@ -1,0 +1,23 @@
+{
+	"accountSectionListRenderer": {
+		"contents": [
+			{
+				"accountItemSectionRenderer": {
+					"contents": [
+						"{{ITEM}}"
+					]
+				}
+			}
+		],
+		"header": {
+			"googleAccountHeaderRenderer": {
+				"name": {
+					"simpleText": "{{ACCOUNT_NAME}}"
+				},
+				"email": {
+					"simpleText": "{{ACCOUNT_LINE}}"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,297 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"selected": true,
+						"content": {
+							"sectionListRenderer": {
+								"contents": [
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"pageIntroductionRenderer": {
+														"headerText": {
+															"runs": [
+																{
+																	"text": "Control your video viewing experience"
+																}
+															]
+														},
+														"pageTitle": {
+															"runs": [
+																{
+																	"text": "Playback and performance"
+																}
+															]
+														},
+														"headerIcon": {
+															"iconType": "ACCOUNT_PLAYBACK"
+														}
+													}
+												}
+											]
+										}
+									},
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"settingsOptionsRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Preferred languages"
+																}
+															]
+														},
+														"options": [
+															{
+																"basicContentViewModel": {
+																	"paragraphs": [
+																		{
+																			"text": {
+																				"content": "Add or edit languages\nLanguages you want to watch your videos in. Learn more",
+																				"commandRuns": [
+																					{
+																						"startIndex": 0,
+																						"length": 21,
+																						"onTap": {
+																							"innertubeCommand": {
+																								"showDialogCommand": {
+																									"panelLoadingStrategy": {
+																										"requestTemplate": {
+																											"panelId": "PApreferred_language_settings"
+																										}
+																									}
+																								}
+																							}
+																						}
+																					},
+																					{
+																						"startIndex": 66,
+																						"length": 10,
+																						"onTap": {
+																							"innertubeCommand": {
+																								"commandMetadata": {
+																									"webCommandMetadata": {
+																										"url": "https://support.google.com/youtube/answer/13339776",
+																										"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																										"rootVe": 83769
+																									}
+																								},
+																								"urlEndpoint": {
+																									"url": "https://support.google.com/youtube/answer/13339776",
+																									"target": "TARGET_NEW_WINDOW"
+																								}
+																							}
+																						}
+																					}
+																				],
+																				"styleRuns": [
+																					{
+																						"startIndex": 0,
+																						"length": 21,
+																						"weightLabel": "FONT_WEIGHT_BOLD"
+																					},
+																					{
+																						"startIndex": 22,
+																						"length": 43,
+																						"fontColor": 4284506208
+																					},
+																					{
+																						"startIndex": 66,
+																						"length": 10
+																					}
+																				]
+																			}
+																		}
+																	]
+																}
+															}
+														]
+													}
+												}
+											],
+											"header": {
+												"itemSectionHeaderRenderer": {
+													"title": {
+														"runs": [
+															{
+																"text": "Language"
+															}
+														]
+													},
+													"subtitle": {
+														"runs": [
+															{
+																"text": "Language settings apply to your account"
+															}
+														]
+													}
+												}
+											}
+										}
+									},
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"settingsOptionsRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Info cards"
+																}
+															]
+														},
+														"options": [
+															{
+																"settingsCheckboxRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Show in-video info cards"
+																			}
+																		]
+																	},
+																	"helpText": {
+																		"runs": [
+																			{
+																				"text": "Allows creator info cards to appear on videos. This doesn't affect ads that may appear on videos."
+																			}
+																		]
+																	},
+																	"enabled": true,
+																	"enableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "294",
+																			"boolValue": true,
+																			"settingItemIdForClient": "PLAYBACK_ANNOTATIONS"
+																		}
+																	},
+																	"disableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "294",
+																			"boolValue": false,
+																			"settingItemIdForClient": "PLAYBACK_ANNOTATIONS"
+																		}
+																	},
+																	"disabled": false
+																}
+															}
+														]
+													}
+												},
+												{
+													"settingsOptionsRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Browsing"
+																}
+															]
+														},
+														"options": [
+															{
+																"settingsSwitchRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Video previews"
+																			}
+																		]
+																	},
+																	"subtitle": {
+																		"runs": [
+																			{
+																				"text": "Video previews will play when you hover over thumbnails"
+																			}
+																		]
+																	},
+																	"enabled": true,
+																	"enableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true
+																			}
+																		},
+																		"signalServiceEndpoint": {
+																			"signal": "CLIENT_SIGNAL",
+																			"actions": [
+																				{
+																					"setCookieCommand": {
+																						"flagNum": 186,
+																						"value": false
+																					}
+																				}
+																			]
+																		}
+																	},
+																	"disableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true
+																			}
+																		},
+																		"signalServiceEndpoint": {
+																			"signal": "CLIENT_SIGNAL",
+																			"actions": [
+																				{
+																					"setCookieCommand": {
+																						"flagNum": 186,
+																						"value": true
+																					}
+																				}
+																			]
+																		}
+																	}
+																}
+															}
+														]
+													}
+												}
+											],
+											"header": {
+												"itemSectionHeaderRenderer": {
+													"title": {
+														"runs": [
+															{
+																"text": "Playback"
+															}
+														]
+													},
+													"subtitle": {
+														"runs": [
+															{
+																"text": "Playback settings apply to this browser only"
+															}
+														]
+													}
+												}
+											}
+										}
+									}
+								]
+							}
+						}
+					}
+				}
+			]
+		}
+	}
+}

@@ -1,0 +1,211 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"selected": true,
+						"content": {
+							"sectionListRenderer": {
+								"contents": [
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"pageIntroductionRenderer": {
+														"headerText": {
+															"runs": [
+																{
+																	"text": "Control your downloads settings"
+																}
+															]
+														},
+														"bodyText": {
+															"runs": [
+																{
+																	"text": "Downloads settings apply to this browser only"
+																}
+															]
+														},
+														"pageTitle": {
+															"runs": [
+																{
+																	"text": "Downloads"
+																}
+															]
+														}
+													}
+												}
+											]
+										}
+									},
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"settingsOptionsRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Download quality"
+																}
+															]
+														},
+														"options": [
+															{
+																"settingsRadioOptionRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Ask each time"
+																			}
+																		]
+																	},
+																	"serviceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true
+																			}
+																		},
+																		"signalServiceEndpoint": {
+																			"signal": "CLIENT_SIGNAL",
+																			"actions": [
+																				{
+																					"setPrefStorageEntryCommand": {
+																						"key": "lmqf",
+																						"value": "UNKNOWN_FORMAT_TYPE"
+																					}
+																				}
+																			]
+																		}
+																	},
+																	"hidden": false,
+																	"id": "SETTINGS_OPTIONS_ID_TYPE_DOWNLOAD_QUALITY_UNKNOWN"
+																}
+															},
+															{
+																"settingsRadioOptionRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Standard (480p)"
+																			}
+																		]
+																	},
+																	"serviceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true
+																			}
+																		},
+																		"signalServiceEndpoint": {
+																			"signal": "CLIENT_SIGNAL",
+																			"actions": [
+																				{
+																					"setPrefStorageEntryCommand": {
+																						"key": "lmqf",
+																						"value": "SD"
+																					}
+																				}
+																			]
+																		}
+																	},
+																	"hidden": false,
+																	"id": "SETTINGS_OPTIONS_ID_TYPE_DOWNLOAD_QUALITY_SD"
+																}
+															},
+															{
+																"settingsRadioOptionRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Low (144p)"
+																			}
+																		]
+																	},
+																	"serviceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true
+																			}
+																		},
+																		"signalServiceEndpoint": {
+																			"signal": "CLIENT_SIGNAL",
+																			"actions": [
+																				{
+																					"setPrefStorageEntryCommand": {
+																						"key": "lmqf",
+																						"value": "LD"
+																					}
+																				}
+																			]
+																		}
+																	},
+																	"hidden": false,
+																	"id": "SETTINGS_OPTIONS_ID_TYPE_DOWNLOAD_QUALITY_LD"
+																}
+															}
+														]
+													}
+												},
+												{
+													"connectedAppRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Delete all downloads"
+																}
+															]
+														},
+														"text": {
+															"runs": [
+																{
+																	"text": "Deleting downloads will free space on this device"
+																}
+															]
+														},
+														"connectButton": {
+															"buttonRenderer": {
+																"style": "STYLE_SUGGESTIVE",
+																"size": "SIZE_DEFAULT",
+																"isDisabled": false,
+																"text": {
+																	"runs": [
+																		{
+																			"text": "Delete all downloads"
+																		}
+																	]
+																},
+																"command": {
+																	"commandMetadata": {
+																		"webCommandMetadata": {
+																			"sendPost": true
+																		}
+																	},
+																	"signalServiceEndpoint": {
+																		"signal": "CLIENT_SIGNAL",
+																		"actions": [
+																			{
+																				"signalAction": {
+																					"signal": "DELETE_ALL_DOWNLOADS_PROMPT"
+																				}
+																			}
+																		]
+																	}
+																}
+															}
+														}
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						}
+					}
+				}
+			]
+		}
+	}
+}

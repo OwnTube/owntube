@@ -14,9 +14,12 @@ import { sql } from "./db";
 import { isVideoId } from "./ids";
 import { rateLimit } from "./ratelimit";
 import { accountRoutes, instanceAsset } from "./signin";
+import { myAccountRoutes } from "./myaccount";
+import { feedbackRoutes } from "./feedback";
 import { adminRoutes } from "./admin";
 import { gifRoutes } from "./gifs";
 import { suggest } from "./innertube/search";
+import { accountSwitcher } from "./innertube/guide";
 import { recordWatch } from "./innertube/history";
 import { playedMs, recordView, recordWatchTime } from "./stats";
 
@@ -93,6 +96,8 @@ export async function instanceRoutes(req: Request, url: URL, viewer: Viewer): Pr
 	const path = url.pathname;
 	const account = await accountRoutes(req, url, viewer, safeNext(url.searchParams.get("next")));
 	if (account) return account;
+	const mine = (await myAccountRoutes(req, url, viewer)) ?? (await feedbackRoutes(req, url, viewer));
+	if (mine) return mine;
 	const gifs = await gifRoutes(req, url, viewer);
 	if (gifs) return gifs;
 	if (path.startsWith("/_ot/")) return instanceAsset(path) ?? new Response("not found", { status: 404 });
@@ -105,6 +110,7 @@ export async function instanceRoutes(req: Request, url: URL, viewer: Viewer): Pr
 		for (const c of await destroySession(req)) headers.append("set-cookie", c);
 		return new Response(null, { status: 303, headers });
 	}
+	if (path === "/getAccountSwitcherEndpoint") return accountSwitcher(req);
 	if (path.startsWith("/ggpht/")) return ggpht(url);
 	if (path.startsWith("/api/stats/")) return stats(url, viewer);
 	if (path === "/complete/search") return suggest(url);

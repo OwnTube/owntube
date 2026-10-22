@@ -1,0 +1,266 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"selected": true,
+						"content": {
+							"sectionListRenderer": {
+								"contents": [
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"pageIntroductionRenderer": {
+														"headerText": {
+															"runs": [
+																{
+																	"text": "Set up YouTube exactly how you want it"
+																}
+															]
+														},
+														"pageTitle": {
+															"runs": [
+																{
+																	"text": "Advanced settings"
+																}
+															]
+														},
+														"headerIcon": {
+															"iconType": "ACCOUNT_ADVANCED"
+														}
+													}
+												}
+											]
+										}
+									},
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"settingsOptionsRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "User ID"
+																}
+															]
+														},
+														"options": [
+															{
+																"copyLinkRenderer": {
+																	"copyButton": {
+																		"buttonRenderer": {
+																			"style": "STYLE_MONO_OUTLINE",
+																			"size": "SIZE_DEFAULT",
+																			"isDisabled": false,
+																			"text": {
+																				"simpleText": "Copy"
+																			},
+																			"command": {
+																				"commandMetadata": {
+																					"webCommandMetadata": {
+																						"sendPost": true
+																					}
+																				},
+																				"signalServiceEndpoint": {
+																					"signal": "CLIENT_SIGNAL",
+																					"actions": [
+																						{
+																							"signalAction": {
+																								"signal": "COPY_SHARE_URL"
+																							}
+																						},
+																						{
+																							"openPopupAction": {
+																								"popup": {
+																									"notificationActionRenderer": {
+																										"responseText": {
+																											"runs": [
+																												{
+																													"text": "ID copied to clipboard"
+																												}
+																											]
+																										}
+																									}
+																								},
+																								"popupType": "TOAST"
+																							}
+																						}
+																					]
+																				}
+																			}
+																		}
+																	},
+																	"shortUrl": "{{VIEWER_USER_ID}}",
+																	"style": "COPY_LINK_RENDERER_STYLE_SETTINGS"
+																}
+															}
+														]
+													}
+												},
+												{
+													"settingsOptionsRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Channel ID"
+																}
+															]
+														},
+														"options": [
+															{
+																"copyLinkRenderer": {
+																	"copyButton": {
+																		"buttonRenderer": {
+																			"style": "STYLE_MONO_OUTLINE",
+																			"size": "SIZE_DEFAULT",
+																			"isDisabled": false,
+																			"text": {
+																				"simpleText": "Copy"
+																			},
+																			"command": {
+																				"commandMetadata": {
+																					"webCommandMetadata": {
+																						"sendPost": true
+																					}
+																				},
+																				"signalServiceEndpoint": {
+																					"signal": "CLIENT_SIGNAL",
+																					"actions": [
+																						{
+																							"signalAction": {
+																								"signal": "COPY_SHARE_URL"
+																							}
+																						},
+																						{
+																							"openPopupAction": {
+																								"popup": {
+																									"notificationActionRenderer": {
+																										"responseText": {
+																											"runs": [
+																												{
+																													"text": "ID copied to clipboard"
+																												}
+																											]
+																										}
+																									}
+																								},
+																								"popupType": "TOAST"
+																							}
+																						}
+																					]
+																				}
+																			}
+																		}
+																	},
+																	"shortUrl": "{{VIEWER_CHANNEL_ID}}",
+																	"style": "COPY_LINK_RENDERER_STYLE_SETTINGS"
+																}
+															}
+														]
+													}
+												},
+												{
+													"settingsOptionsRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Delete channel"
+																}
+															]
+														},
+														"text": {
+															"runs": [
+																{
+																	"text": "Delete channel",
+																	"bold": true,
+																	"navigationEndpoint": {
+																		"showDialogCommand": {
+																			"panelLoadingStrategy": {
+																				"inlineContent": {
+																					"dialogViewModel": {
+																						"header": {
+																							"dialogHeaderViewModel": {
+																								"headline": {
+																									"content": "Are you considering deleting your channel?"
+																								}
+																							}
+																						},
+																						"footer": {
+																							"panelFooterViewModel": {
+																								"primaryButton": {
+																									"buttonViewModel": {
+																										"title": "Review in your account",
+																										"onTap": {
+																											"innertubeCommand": {
+																												"commandMetadata": {
+																													"webCommandMetadata": {
+																														"url": "/myaccount",
+																														"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																														"rootVe": 83769
+																													}
+																												},
+																												"urlEndpoint": {
+																													"url": "/myaccount"
+																												}
+																											}
+																										},
+																										"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																										"isFullWidth": true,
+																										"type": "BUTTON_VIEW_MODEL_TYPE_FILLED"
+																									}
+																								},
+																								"secondaryButton": {
+																									"buttonViewModel": {
+																										"title": "Cancel",
+																										"onTap": {
+																											"innertubeCommand": {
+																												"dismissDialogEndpoint": {}
+																											}
+																										},
+																										"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																										"isFullWidth": true,
+																										"type": "BUTTON_VIEW_MODEL_TYPE_TONAL"
+																									}
+																								},
+																								"shouldHideDivider": true
+																							}
+																						},
+																						"content": {
+																							"basicContentViewModel": {
+																								"paragraphs": [
+																									{
+																										"text": {
+																											"content": "Deleting your channel deletes your {{INSTANCE_NAME}} account, with its videos, comments and playlists."
+																										}
+																									}
+																								]
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																},
+																{
+																	"text": "\nThis instance has one channel per account"
+																}
+															]
+														}
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						}
+					}
+				}
+			]
+		}
+	}
+}

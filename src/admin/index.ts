@@ -42,6 +42,8 @@ const DONE: Record<string, [string, boolean?]> = {
 	retried: ["Job queued again"],
 	cleared: ["Diagnostics cleared"],
 	saved: ["Settings saved"],
+	"feedback-resolved": ["Feedback marked resolved"],
+	"feedback-reopened": ["Feedback reopened"],
 	"no-source": ["The uploaded file for that video is gone, so it can't be processed again", true],
 	self: ["You can't do that to your own account", true],
 	missing: ["That no longer exists", true],
@@ -104,8 +106,9 @@ function flash(url: URL): Frame["flash"] {
 }
 
 async function guideCounts(): Promise<Frame["counts"]> {
-	const [r] = await sql`select (select count(*)::int from processing_jobs where state = 'failed' and finished_at > now() - interval '7 days') as failed`;
-	return { processing: r.failed };
+	const [r] = await sql`select (select count(*)::int from processing_jobs where state = 'failed' and finished_at > now() - interval '7 days') as failed,
+		(select count(*)::int from feedback where resolved_at is null) as feedback`;
+	return { processing: r.failed, feedback: r.feedback };
 }
 
 type View = { title: string; section: Section; body: string; sub?: string; actions?: string; json?: unknown };
@@ -117,6 +120,7 @@ const GET: Record<string, (ctx: Ctx) => Promise<View>> = {
 	"/admin/processing": processing,
 	"/admin/compatibility": compatibility,
 	"/admin/settings": settingsPage,
+	"/admin/feedback": feedback,
 	"/admin/audit": audit,
 	"/admin/diagnostics.json": async () => {
 		await flushMisses();
@@ -439,6 +443,8 @@ async function recentActions(limit: number, offset = 0) {
 }
 
 const ACTION_TEXT: Record<string, string> = {
+	"feedback.resolve": "marked resolved",
+	"feedback.reopen": "reopened",
 	"account.disable": "disabled",
 	"account.enable": "enabled",
 	"account.grant": "made an operator:",
@@ -460,6 +466,37 @@ function actionRows(rows: any[]) {
 				`<div class="r">${a.channel_id ? avatar(a.channel_id, 24) : ""}<div style="min-width:0" class="clip"><b style="font-weight:500">@${esc(a.handle ?? "deleted")}</b> ${esc(ACTION_TEXT[a.action] ?? a.action)} ${esc(a.target)}${a.detail ? ` <span class="muted">${esc(a.detail)}</span>` : ""}</div><span class="v">${esc(dateTime(a.created_at))}</span></div>`,
 		)
 		.join("")}</div>`;
+}
+
+// ---- feedback ----
+
+// what people sent with the account menu's Send feedback (src/feedback.ts)
+async function feedback({ url, frame }: Ctx): Promise<View> {
+	const state = url.searchParams.get("state") === "resolved" ? "resolved" : "open";
+	const page = pageOf(url);
+	const rows = await sql`select f.id, f.user_id, f.page, f.body, f.user_agent, f.created_at, f.resolved_at, c.id as channel_id, c.handle, c.title
+		from feedback f left join channels c on c.user_id = f.user_id
+		where ${state === "open" ? sql`f.resolved_at is null` : sql`f.resolved_at is not null`}
+		order by f.id desc limit ${PAGE_SIZE + 1} offset ${(page - 1) * PAGE_SIZE}`;
+	const f = frame("feedback", "Feedback");
+	const body = `<div class="toolbar"><div class="chips">${[
+		["open", "Open"],
+		["resolved", "Resolved"],
+	]
+		.map(([v, label]) => `<a class="chip${v === state ? " on" : ""}" href="/admin/feedback${v === "open" ? "" : `?state=${v}`}">${label}</a>`)
+		.join("")}</div></div>
+${table(
+	["Received", "From", "Feedback", "Page", ["", "num"]],
+	rows.slice(0, PAGE_SIZE).map((r: any) => [
+		esc(dateTime(r.created_at)),
+		r.channel_id ? `<a class="link" href="/admin/account?id=${esc(String(r.user_id))}">${esc(r.title)}</a><div class="muted">@${esc(r.handle)}</div>` : `<span class="muted">Signed out</span>`,
+		`<div style="white-space:pre-wrap;max-width:480px">${esc(r.body)}</div>`,
+		r.page ? `<a class="link" href="${esc(r.page)}">${esc(r.page)}</a>` : "",
+		`<div class="actions">${action(f, r.resolved_at ? "/admin/feedback/reopen" : "/admin/feedback/resolve", r.resolved_at ? "Reopen" : "Mark resolved", { id: String(r.id) })}</div>`,
+	]),
+	state === "open" ? "No open feedback" : "No resolved feedback",
+)}${pager("/admin/feedback", url.searchParams, page, rows.length > PAGE_SIZE)}`;
+	return { title: "Feedback", section: "feedback", body, sub: "What people sent with Send feedback" };
 }
 
 async function audit({ url }: Ctx): Promise<View> {
@@ -501,6 +538,16 @@ async function post(ctx: Ctx): Promise<Response> {
 			if (!["dark", "light", "device"].includes(a)) return new Response("bad request", { status: 400 });
 			const value = prefWithAppearance(parseCookies(req).PREF ?? "", a);
 			return new Response(null, { status: 303, headers: { location: back, "set-cookie": prefCookie(value, SECURE_COOKIES) } });
+		}
+		case "/admin/feedback/resolve":
+		case "/admin/feedback/reopen": {
+			const id = get("id");
+			if (!/^\d{1,18}$/.test(id)) return to("missing");
+			const resolve = url.pathname.endsWith("/resolve");
+			const [r] = await sql`update feedback set resolved_at = ${resolve ? sql`now()` : null} where id = ${id} returning id`;
+			if (!r) return to("missing");
+			await log(resolve ? "feedback.resolve" : "feedback.reopen", `feedback:${id}`);
+			return to(resolve ? "feedback-resolved" : "feedback-reopened");
 		}
 		case "/admin/accounts/disable":
 		case "/admin/accounts/enable":

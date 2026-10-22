@@ -203,7 +203,9 @@ function save(name: string, data: unknown, samples: string[] = []) {
 	}).join("\n");
 	for (const s of samples) if (s && s.length >= 8 && decoded.includes(s)) bad.push(`value ${JSON.stringify(s)} inside a base64 blob`);
 	// personal values are reported by position only
-	for (const s of personal) if (s && (text.includes(s) || (s.length >= 8 && decoded.includes(s)))) bad.push(`a personal value from the signed-in capture at offset ${text.indexOf(s)}`);
+	// short values (a first name) count as whole words only: "Haryanvi" is a language
+	const hit = (s: string) => (s.length >= 8 ? text.includes(s) || decoded.includes(s) : new RegExp(`(?<![A-Za-z0-9])${s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![A-Za-z0-9])`).test(text));
+	for (const s of personal) if (s && hit(s)) bad.push(`a personal value from the signed-in capture at offset ${text.indexOf(s)}`);
 	const email = /[\w.+-]+@[\w-]+(\.[\w-]+)*\.[a-z]{2,}/i.exec(text);
 	if (email) bad.push(`an email address at offset ${email.index}`);
 	for (const s of samples) if (s && text.includes(s)) bad.push(`value ${JSON.stringify(s)} near ${text.slice(Math.max(0, text.indexOf(s) - 120), text.indexOf(s) + 60)}`);
@@ -547,25 +549,14 @@ function channelSignedIn() {
 // guide (left navigation)
 // entries for products this instance doesn't have are left out
 const guideTitle = (x: any) => contentOf(x?.formattedTitle ?? x?.title);
-const UNSUPPORTED_GUIDE = new Set(["Shorts", "Explore", "More from YouTube", "Report history", "Downloads"]);
-function pruneGuide(g: any) {
-	g.items = g.items.filter((sec: any) => {
-		const s = Object.values(sec)[0] as any;
-		if (UNSUPPORTED_GUIDE.has(guideTitle(s))) return false;
-		if (s.items) s.items = s.items.filter((it: any) => !UNSUPPORTED_GUIDE.has(guideTitle(Object.values(it)[0])) && !it.guideDownloadsEntryRenderer);
-		const col = find(s, "guideCollapsibleSectionEntryRenderer");
-		if (col?.sectionItems) col.sectionItems = col.sectionItems.filter((it: any) => !UNSUPPORTED_GUIDE.has(guideTitle(Object.values(it)[0])) && !it.guideDownloadsEntryRenderer);
-		return !(s.items && s.items.length === 0);
-	});
-	return g;
-}
-
 function guide() {
-	const out = pruneGuide(clean(JSON.parse(body("channel2", /guide/))));
+	// every section and entry as YouTube sends them; the instance serves each
+	// destination (docs/compat/parity.md tracks them)
+	const out = clean(JSON.parse(body("channel2", /guide/)));
 	save("guide/signed_out", tokenize(out, []));
 
 	const raw = JSON.parse(body("in-home", /guide/));
-	const g = pruneGuide(clean(raw));
+	const g = clean(raw);
 	delete g.userProfile;
 	const subsSection = g.items.find((s: any) => s.guideSubscriptionsSectionRenderer).guideSubscriptionsSectionRenderer;
 	const more = subsSection.items.find((it: any) => it.guideCollapsibleEntryRenderer);
@@ -597,18 +588,38 @@ function guide() {
 
 // ======================================================================
 // app chrome: top bar, account menu (⋮ when signed out), notifications
-// menu entries that lead to Google's products or to pages this instance
-// doesn't serve are left out
+// account menu entries that lead to Google's services point at the
+// instance's own counterparts: the local account page for Google Account and
+// "Your data in YouTube", the local feedback form for Send feedback, and
+// YouTube's public Help Center (in a new window) for Help, whose in-page
+// panel is Google's
 const menuTitle = (e: any) => contentOf(e?.title).trim();
-const UNSUPPORTED_MENU = new Set(["Google Account", "Switch account", "Purchases and memberships", "Your data in YouTube", "Help", "Send feedback", "Settings"]);
-function pruneMenu(m: any) {
-	m.sections = m.sections
-		.map((sec: any) => {
-			const s = sec.multiPageMenuSectionRenderer;
-			if (s) s.items = s.items.filter((it: any) => !UNSUPPORTED_MENU.has(menuTitle(Object.values(it)[0])));
-			return sec;
-		})
-		.filter((sec: any) => !sec.multiPageMenuSectionRenderer || sec.multiPageMenuSectionRenderer.items.length);
+const urlCommand = (url: string, newWindow = false) => ({ commandMetadata: { webCommandMetadata: { url, webPageType: "WEB_PAGE_TYPE_UNKNOWN", rootVe: 83769 } }, urlEndpoint: { url, ...(newWindow ? { target: "TARGET_NEW_WINDOW" } : {}) } });
+// "Purchases and memberships" stays out until /paid_memberships is served: the
+// only capture is of an account with purchases, and this instance sells nothing
+function localMenu(m: any) {
+	for (const sec of m.sections) {
+		const s = sec.multiPageMenuSectionRenderer;
+		if (s) s.items = s.items.filter((it: any) => menuTitle(Object.values(it)[0]) !== "Purchases and memberships");
+	}
+	for (const sec of m.sections) {
+		for (const it of sec.multiPageMenuSectionRenderer?.items ?? []) {
+			const c = it.compactLinkRenderer;
+			if (!c) continue;
+			const title = menuTitle(c);
+			const set = (url: string, newWindow = false) => {
+				delete c.serviceEndpoint;
+				c.navigationEndpoint = urlCommand(url, newWindow);
+			};
+			if (title === "Google Account") {
+				c.title = { runs: [{ text: "{{INSTANCE_NAME}} account" }] };
+				c.icon.iconType = "ACCOUNT_BOX";
+				set("/myaccount");
+			} else if (title === "Your data in YouTube") set("/myaccount#your-data");
+			else if (title === "Help") set("https://support.google.com/youtube/", true);
+			else if (title === "Send feedback") set("/feedback");
+		}
+	}
 	return m;
 }
 
@@ -634,11 +645,11 @@ function chrome() {
 	save("topbar/signed_in", tokenize(inn, pairs, ids));
 
 	const sysMenu = clean(JSON.parse(body("menus-out", /account_menu/)));
-	pruneMenu(sysMenu.actions[0].openPopupAction.popup.multiPageMenuRenderer);
+	localMenu(sysMenu.actions[0].openPopupAction.popup.multiPageMenuRenderer);
 	save("account/menu_signed_out", tokenize(sysMenu, []));
 
 	const accMenu = clean(JSON.parse(body("in-home", /account_menu/)));
-	const m = pruneMenu(accMenu.actions[0].openPopupAction.popup.multiPageMenuRenderer);
+	const m = localMenu(accMenu.actions[0].openPopupAction.popup.multiPageMenuRenderer);
 	const h = m.header.activeAccountHeaderRenderer;
 	delete h.settingsEndpoint; // the site picker (/select_site)
 	h.accountName = { simpleText: "{{VIEWER_NAME}}" };
@@ -1754,6 +1765,156 @@ function studioDashboard() {
 }
 
 // ======================================================================
+
+// ======================================================================
+// settings (/account*): the sidebar and each page's sections. Options that
+// belong to Google's services, or to features with no counterpart here, are
+// left out (docs/compat/parity.md lists each with its reason); Google
+// Account rows become the instance's own account page.
+const SETTINGS_PAGES: [string, string, RegExp][] = [
+	["SPaccount_overview", "site-in", /^\d+-_account\.resp$/],
+	["SPaccount_time_management", "account-in", /-_account_time_management\.resp$/],
+	["SPaccount_notifications", "site-in", /-_account_notifications\.resp$/],
+	["SPaccount_playback", "site-in", /-_account_playback\.resp$/],
+	["SPaccount_privacy", "site-in", /-_account_privacy\.resp$/],
+	["SPaccount_sharing", "site-in", /-_account_sharing\.resp$/],
+	["SPaccount_billing", "site-in", /-_account_billing\.resp$/],
+	["SPaccount_advanced", "site-in", /-_account_advanced\.resp$/],
+	["SPaccount_downloads", "site-in", /-_account_downloads\.resp$/],
+];
+const optionTitle = (o: any) => contentOf(o?.settingsOptionsRenderer?.title);
+const sectionsOf = (page: any) => page.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer.content.sectionListRenderer.contents;
+const textRun = (text: string, url?: string) => ({ text, ...(url ? { bold: true, navigationEndpoint: { commandMetadata: { webCommandMetadata: { url, webPageType: "WEB_PAGE_TYPE_UNKNOWN", rootVe: 83769 } }, urlEndpoint: { url } } } : {}) });
+function settingsPages() {
+	const pages = SETTINGS_PAGES.map(([id, dir, re]) => [id, pageVar(body(dir, re))] as const);
+	const overview = pages[0][1];
+	const email = /Signed in as (\S+@\S+)/.exec(contentOf(find(overview, "pageIntroductionRenderer").bodyText))?.[1];
+	if (email) personal.push(email);
+	const own = find(overview, "channelOptionsRenderer");
+	const cid: string = own.avatarEndpoint.urlEndpoint.url.split("/channel/")[1];
+	const pairs: [string, string][] = [[cid, "VIEWER_CHANNEL_ID"], [cid.slice(2), "VIEWER_USER_ID"]];
+	save("settings/sidebar", tokenize(clean(overview.sidebar), pairs, [[cid, "VIEWER_CHANNEL_ID"]]));
+
+	for (const [id, raw] of pages) {
+		const page = clean({ contents: raw.contents });
+		const sections = sectionsOf(page);
+		const keep = (sec: any, pred: (o: any) => boolean) => {
+			const s = sec.itemSectionRenderer;
+			s.contents = s.contents.filter(pred);
+		};
+		const intro = find(page, "pageIntroductionRenderer");
+		if (id === "SPaccount_overview") {
+			intro.bodyText = { runs: [{ text: "Signed in as {{VIEWER_LOGIN}}" }] };
+			const ch = find(page, "channelOptionsRenderer");
+			ch.avatar.thumbnails = "{{VIEWER_AVATAR}}";
+			ch.avatarEndpoint = { commandMetadata: { webCommandMetadata: { url: "{{VIEWER_CHANNEL_URL}}", webPageType: "WEB_PAGE_TYPE_CHANNEL", rootVe: 3611, apiUrl: "/youtubei/v1/browse" } }, browseEndpoint: { browseId: "{{VIEWER_CHANNEL_ID}}", canonicalBaseUrl: "{{VIEWER_CHANNEL_URL}}" } };
+			ch.name = "{{VIEWER_NAME}}";
+			// one channel per local account: no channel creation
+			ch.links = ch.links.filter((l: any) => !find(l, "channelCreationFormEndpoint"));
+			// Studio's channel features page
+			const features = ch.links.find((l: any) => find(l, "signalNavigationEndpoint"));
+			if (features) features.runs[0].navigationEndpoint = textRun("", "{{STUDIO_ORIGIN}}/channel/{{VIEWER_CHANNEL_ID}}/editing/details").navigationEndpoint;
+			// "Your account": the local account page instead of Google Account,
+			// Family Center and Premium membership (Google services)
+			const acct = sections.find((s: any) => sectionTitle(s) === "Your account");
+			keep(acct, (o) => optionTitle(o) === "Google Account");
+			const row = acct.itemSectionRenderer.contents[0].settingsOptionsRenderer;
+			row.title = { runs: [{ text: "{{INSTANCE_NAME}} account" }] };
+			row.text = { runs: [textRun("View or change your account settings", "/myaccount"), { text: "\nYour username, password and sessions on {{INSTANCE_NAME}}" }] };
+			acct.itemSectionRenderer.header.itemSectionHeaderRenderer.subtitle = { runs: [{ text: "You sign in to {{INSTANCE_NAME}} with a local account, not a Google Account" }] };
+		}
+		if (id === "SPaccount_notifications") {
+			intro.bodyText = { runs: [{ text: "Select the notifications you'd like to receive" }] };
+			// browser push goes through Google's push service; the instance sends no email
+			const general = sections.find((s: any) => sectionTitle(s) === "General");
+			keep(general, (o) => optionTitle(o) !== "Desktop notifications");
+			for (let i = sections.length - 1; i >= 0; i--) if (sectionTitle(sections[i]) === "Email notifications") sections.splice(i, 1);
+		}
+		if (id === "SPaccount_privacy") {
+			intro.bodyText = { runs: [intro.bodyText.runs[0]] };
+			if (intro.bodyText.runs[0].text.includes("\n")) intro.bodyText.runs[0].text = intro.bodyText.runs[0].text.split("\n")[0];
+			// mentions, live chat and ads have no counterpart here
+			keep(sections[1], (o) => optionTitle(o) === "Subscriptions");
+		}
+		if (id === "SPaccount_sharing") {
+			// linking partner accounts (games, services) is arranged between Google and each partner
+			intro.bodyText = { runs: [{ text: contentOf(intro.bodyText).split("\n")[0] }] };
+			sections.splice(1);
+		}
+		if (id === "SPaccount_billing") sections.splice(1); // no purchases on this instance
+		if (id === "SPaccount_advanced") {
+			keep(sections[1], (o) => ["User ID", "Channel ID", "Delete channel"].includes(optionTitle(o)));
+			const del = sections[1].itemSectionRenderer.contents.find((o: any) => optionTitle(o) === "Delete channel").settingsOptionsRenderer;
+			const dialog = find(del, "dialogViewModel");
+			const primary = dialog.footer.panelFooterViewModel.primaryButton.buttonViewModel;
+			primary.title = "Review in your account";
+			primary.onTap.innertubeCommand = textRun("", "/myaccount").navigationEndpoint;
+			dialog.content.basicContentViewModel.paragraphs = [{ text: { content: "Deleting your channel deletes your {{INSTANCE_NAME}} account, with its videos, comments and playlists." } }];
+			del.text.runs = [del.text.runs[0], { text: "\nThis instance has one channel per account" }];
+		}
+		const ids: [string, string][] = [[cid, "VIEWER_CHANNEL_ID"]];
+		save(`settings/${id}`, tokenize(page, pairs, ids, [[cid.slice(2), "VIEWER_USER_ID"]]));
+	}
+	// Playback and performance > Preferred languages (get_panel PApreferred_language_settings)
+	const langs = clean(JSON.parse(body("languages-in", /get_panel\.resp$/)));
+	save("settings/preferred_languages", tokenize(langs, []));
+}
+const sectionTitle = (s: any) => contentOf(s?.itemSectionRenderer?.header?.itemSectionHeaderRenderer?.title);
+
+
+// ======================================================================
+// account menu > Switch account (GET /getAccountSwitcherEndpoint): the
+// accounts signed in on this browser. Every account value is rebuilt here
+// from tokens; local accounts have one channel each, so "View all channels"
+// is left out, and the account headers name the local account rather than
+// a Google Account.
+function accountSwitcher() {
+	const raw = JSON.parse(body("switcher-in", /getAccountSwitcherEndpoint\.resp$/).replace(/^\)\]\}'\n/, ""));
+	const r = clean(raw);
+	const m = r.data.actions[0].getMultiPageMenuAction.menu.multiPageMenuRenderer;
+	const lists = m.sections.filter((x: any) => x.accountSectionListRenderer);
+	const active = lists[0].accountSectionListRenderer;
+	const other = lists[1].accountSectionListRenderer;
+	const sample = active.contents[0].accountItemSectionRenderer.contents[0].accountItem;
+	const item = {
+		...sample,
+		accountName: { simpleText: "{{NAME}}" },
+		accountPhoto: { thumbnails: "{{PHOTO}}" },
+		isSelected: "{{SELECTED}}",
+		hasChannel: true,
+		serviceEndpoint: {
+			selectActiveIdentityEndpoint: {
+				supportedTokens: [
+					{ accountStateToken: { hasChannel: true, isMerged: true, obfuscatedGaiaId: "{{ACCOUNT_ID}}" } },
+					{ offlineCacheKeyToken: { clientCacheKey: "{{CACHE_KEY}}" } },
+					{ accountSigninToken: { signinUrl: "{{SWITCH_URL}}" } },
+					{ datasyncIdToken: { datasyncIdToken: "{{DATASYNC_ID}}" } },
+				],
+				nextNavigationEndpoint: { commandMetadata: { webCommandMetadata: { url: "{{NEXT}}", webPageType: "WEB_PAGE_TYPE_UNKNOWN", rootVe: 83769 } }, urlEndpoint: { url: "{{NEXT}}" } },
+			},
+		},
+		accountByline: { simpleText: "{{BYLINE}}" },
+		channelHandle: { simpleText: "{{HANDLE}}" },
+	};
+	save("account/switcher_item", { accountItem: item });
+	active.contents = [{ accountItemSectionRenderer: { contents: ["{{ITEM}}"] } }];
+	active.header.googleAccountHeaderRenderer = { name: { simpleText: "{{ACCOUNT_NAME}}" }, email: { simpleText: "{{ACCOUNT_LINE}}" } };
+	save("account/switcher_active", lists[0]);
+	const otherHeader = other.contents[0].accountItemSectionRenderer.header;
+	otherHeader.accountItemSectionHeaderRenderer.title = { runs: [{ text: "{{ACCOUNT_NAME}}" }] };
+	other.contents = [{ accountItemSectionRenderer: { contents: ["{{ITEM}}"], header: otherHeader } }];
+	save("account/switcher_other", lists[1]);
+	for (const l of findAll(m.footer, "compactLinkRenderer")) {
+		const u = l.navigationEndpoint?.urlEndpoint;
+		if (u) {
+			u.url = "{{ADD_ACCOUNT_URL}}";
+			l.navigationEndpoint.commandMetadata.webCommandMetadata.url = "{{ADD_ACCOUNT_URL}}";
+		}
+	}
+	m.sections = "{{SECTIONS}}";
+	save("account/switcher", r);
+}
+
 const only = process.argv.slice(2);
 personalValues();
 const steps: [string, () => void][] = [
@@ -1775,6 +1936,8 @@ const steps: [string, () => void][] = [
 	["studio", studio],
 	["studio-dashboard", studioDashboard],
 	["badges", badges],
+	["settings", settingsPages],
+	["switcher", accountSwitcher],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;

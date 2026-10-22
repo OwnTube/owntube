@@ -10,7 +10,7 @@
 // password step, with one message for both.
 
 import { join } from "node:path";
-import { createSession, login, LOGIN_RE, register } from "./auth";
+import { createSession, login, LOGIN_RE, register, switchSession } from "./auth";
 import type { Viewer } from "./client/page";
 import { INSTANCE_NAME } from "./config";
 import { sql } from "./db";
@@ -228,7 +228,7 @@ function newPasswordStep(next: string, values: { name: string; login: string }, 
 
 async function signedIn(req: Request, userId: string, next: string) {
 	const headers = new Headers({ location: next });
-	for (const c of await createSession(userId, req.headers.get("user-agent"))) headers.append("set-cookie", c);
+	for (const c of await createSession(req, userId)) headers.append("set-cookie", c);
 	return new Response(null, { status: 303, headers });
 }
 
@@ -237,7 +237,16 @@ export async function accountRoutes(req: Request, url: URL, viewer: Viewer, next
 	if (path !== "/signin" && path !== "/register") return undefined;
 	const signups = (await settings()).registration === "open";
 	if (req.method === "GET") {
-		if (viewer) return Response.redirect(next, 302);
+		// Switch account: the switcher's accountSigninToken.signinUrl
+		// (/signin?action_handle_signin=true&authuser=N&next=...)
+		if (path === "/signin" && url.searchParams.get("action_handle_signin") === "true" && url.searchParams.has("authuser")) {
+			const cookies = await switchSession(req, Number(url.searchParams.get("authuser")));
+			const headers = new Headers({ location: cookies ? next : q("/signin", next) });
+			for (const c of cookies ?? []) headers.append("set-cookie", c);
+			return new Response(null, { status: 303, headers });
+		}
+		// Add account (?add=1) signs in another account alongside this one
+		if (viewer && url.searchParams.get("add") !== "1") return Response.redirect(next, 302);
 		return path === "/signin" ? usernameStep(next, signups) : signups ? nameStep(next) : signupsClosed(next);
 	}
 	if (req.method !== "POST") return new Response("method not allowed", { status: 405 });

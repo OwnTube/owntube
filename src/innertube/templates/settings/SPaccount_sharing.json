@@ -1,0 +1,53 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"selected": true,
+						"content": {
+							"sectionListRenderer": {
+								"contents": [
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"pageIntroductionRenderer": {
+														"headerText": {
+															"runs": [
+																{
+																	"text": "Expand your experience"
+																}
+															]
+														},
+														"bodyText": {
+															"runs": [
+																{
+																	"text": "Connect YouTube with other apps and watch more easily"
+																}
+															]
+														},
+														"pageTitle": {
+															"runs": [
+																{
+																	"text": "Connected apps"
+																}
+															]
+														},
+														"headerIcon": {
+															"iconType": "ACCOUNT_SHARING"
+														}
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						}
+					}
+				}
+			]
+		}
+	}
+}

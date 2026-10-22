@@ -1,0 +1,312 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"selected": true,
+						"content": {
+							"sectionListRenderer": {
+								"contents": [
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"pageIntroductionRenderer": {
+														"headerText": {
+															"runs": [
+																{
+																	"text": "Manage your time on YouTube"
+																}
+															]
+														},
+														"pageTitle": {
+															"runs": [
+																{
+																	"text": "Time management"
+																}
+															]
+														}
+													}
+												}
+											]
+										}
+									},
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"settingsOptionsRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Daily limits"
+																}
+															]
+														},
+														"options": [
+															{
+																"settingsSwitchRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Shorts feed"
+																			}
+																		]
+																	},
+																	"subtitle": {
+																		"runs": [
+																			{
+																				"text": "Set how much time you can scroll on Shorts each day"
+																			}
+																		]
+																	},
+																	"enabled": false,
+																	"enableServiceEndpoint": {
+																		"showDialogCommand": {
+																			"panelLoadingStrategy": {
+																				"inlineContent": {
+																					"dialogViewModel": {
+																						"header": {
+																							"dialogHeaderViewModel": {
+																								"headline": {
+																									"content": "Shorts feed limit"
+																								}
+																							}
+																						},
+																						"footer": {
+																							"panelFooterViewModel": {
+																								"primaryButton": {
+																									"buttonViewModel": {
+																										"title": "Confirm",
+																										"onTap": {
+																											"innertubeCommand": {
+																												"submitFormCommand": {
+																													"formId": "shorts_daily_limit_form"
+																												}
+																											}
+																										},
+																										"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																										"isFullWidth": true,
+																										"type": "BUTTON_VIEW_MODEL_TYPE_FILLED"
+																									}
+																								},
+																								"secondaryButton": {
+																									"buttonViewModel": {
+																										"title": "Cancel",
+																										"onTap": {
+																											"innertubeCommand": {
+																												"dismissDialogEndpoint": {}
+																											}
+																										},
+																										"style": "BUTTON_VIEW_MODEL_STYLE_MONO",
+																										"isFullWidth": true,
+																										"type": "BUTTON_VIEW_MODEL_TYPE_TONAL"
+																									}
+																								},
+																								"shouldHideDivider": true
+																							}
+																						},
+																						"formId": "shorts_daily_limit_form",
+																						"customContent": {
+																							"shortsDailyTimerSettingsPanelViewModel": {
+																								"formSchema": {
+																									"id": "shorts_daily_limit_form"
+																								},
+																								"radioButtonGroup": {
+																									"radioButtonGroupViewModel": {
+																										"radioButtons": [
+																											{
+																												"radioButtonItemViewModel": {
+																													"key": "0",
+																													"text": "0 minutes",
+																													"command": {
+																														"innertubeCommand": {
+																															"commandMetadata": {
+																																"webCommandMetadata": {
+																																	"sendPost": true,
+																																	"apiUrl": "/youtubei/v1/account/set_setting"
+																																}
+																															},
+																															"setSettingEndpoint": {
+																																"settingItemId": "10155",
+																																"intValue": "0",
+																																"settingItemIdForClient": "SHORTS_DAILY_TIMER_FREQUENCY"
+																															}
+																														}
+																													},
+																													"rendererContext": {
+																														"loggingContext": {}
+																													}
+																												}
+																											},
+																											{
+																												"radioButtonItemViewModel": {
+																													"key": "15",
+																													"text": "15 minutes",
+																													"command": {
+																														"innertubeCommand": {
+																															"commandMetadata": {
+																																"webCommandMetadata": {
+																																	"sendPost": true,
+																																	"apiUrl": "/youtubei/v1/account/set_setting"
+																																}
+																															},
+																															"setSettingEndpoint": {
+																																"settingItemId": "10155",
+																																"intValue": "15",
+																																"settingItemIdForClient": "SHORTS_DAILY_TIMER_FREQUENCY"
+																															}
+																														}
+																													},
+																													"rendererContext": {
+																														"loggingContext": {}
+																													}
+																												}
+																											},
+																											{
+																												"radioButtonItemViewModel": {
+																													"key": "30",
+																													"text": "30 minutes",
+																													"command": {
+																														"innertubeCommand": {
+																															"commandMetadata": {
+																																"webCommandMetadata": {
+																																	"sendPost": true,
+																																	"apiUrl": "/youtubei/v1/account/set_setting"
+																																}
+																															},
+																															"setSettingEndpoint": {
+																																"settingItemId": "10155",
+																																"intValue": "30",
+																																"settingItemIdForClient": "SHORTS_DAILY_TIMER_FREQUENCY"
+																															}
+																														}
+																													},
+																													"rendererContext": {
+																														"loggingContext": {}
+																													}
+																												}
+																											},
+																											{
+																												"radioButtonItemViewModel": {
+																													"key": "45",
+																													"text": "45 minutes",
+																													"command": {
+																														"innertubeCommand": {
+																															"commandMetadata": {
+																																"webCommandMetadata": {
+																																	"sendPost": true,
+																																	"apiUrl": "/youtubei/v1/account/set_setting"
+																																}
+																															},
+																															"setSettingEndpoint": {
+																																"settingItemId": "10155",
+																																"intValue": "45",
+																																"settingItemIdForClient": "SHORTS_DAILY_TIMER_FREQUENCY"
+																															}
+																														}
+																													},
+																													"rendererContext": {
+																														"loggingContext": {}
+																													}
+																												}
+																											},
+																											{
+																												"radioButtonItemViewModel": {
+																													"key": "60",
+																													"text": "1 hour",
+																													"command": {
+																														"innertubeCommand": {
+																															"commandMetadata": {
+																																"webCommandMetadata": {
+																																	"sendPost": true,
+																																	"apiUrl": "/youtubei/v1/account/set_setting"
+																																}
+																															},
+																															"setSettingEndpoint": {
+																																"settingItemId": "10155",
+																																"intValue": "60",
+																																"settingItemIdForClient": "SHORTS_DAILY_TIMER_FREQUENCY"
+																															}
+																														}
+																													},
+																													"rendererContext": {
+																														"loggingContext": {}
+																													}
+																												}
+																											},
+																											{
+																												"radioButtonItemViewModel": {
+																													"key": "120",
+																													"text": "2 hours",
+																													"command": {
+																														"innertubeCommand": {
+																															"commandMetadata": {
+																																"webCommandMetadata": {
+																																	"sendPost": true,
+																																	"apiUrl": "/youtubei/v1/account/set_setting"
+																																}
+																															},
+																															"setSettingEndpoint": {
+																																"settingItemId": "10155",
+																																"intValue": "120",
+																																"settingItemIdForClient": "SHORTS_DAILY_TIMER_FREQUENCY"
+																															}
+																														}
+																													},
+																													"rendererContext": {
+																														"loggingContext": {}
+																													}
+																												}
+																											}
+																										],
+																										"formFieldMetadata": {
+																											"formId": "shorts_daily_limit_form",
+																											"fieldId": "selected_time_limit_key"
+																										}
+																									}
+																								}
+																							}
+																						},
+																						"rendererContext": {
+																							"loggingContext": {}
+																						}
+																					}
+																				},
+																				"screenVe": 346051
+																			}
+																		}
+																	},
+																	"disableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "10154",
+																			"boolValue": false,
+																			"settingItemIdForClient": "SHORTS_DAILY_TIMER_ENABLED"
+																		}
+																	},
+																	"id": "SETTINGS_OPTIONS_ID_TYPE_SHORTS_DAILY_TIMER",
+																	"requiresConfirmation": true
+																}
+															}
+														]
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						}
+					}
+				}
+			]
+		}
+	}
+}

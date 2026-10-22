@@ -2,7 +2,7 @@
 // that shows a video, channel or playlist is filled from these, so the same
 // value reads the same everywhere.
 
-import { PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
+import { INSTANCE_NAME, PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
 import type { Viewer } from "../client/page";
 import { type Channel, type Video, avatarUrl, compact, countLabel, duration, durationLabel, grouped, lockupSources, shortAgo, ago, videoThumbnails } from "./r";
 import type { Vars } from "./tpl";
@@ -10,7 +10,7 @@ import type { Vars } from "./tpl";
 export const signInUrl = (next = "/") => `/signin?next=${encodeURIComponent(next)}`;
 
 export function baseVars(viewer: Viewer, next = "/"): Vars {
-	return { ORIGIN: PUBLIC_ORIGIN, STUDIO_ORIGIN, SIGNIN_URL: signInUrl(next), VIEWER_CHANNEL_ID: viewer?.channelId ?? "" };
+	return { ORIGIN: PUBLIC_ORIGIN, STUDIO_ORIGIN, INSTANCE_NAME, SIGNIN_URL: signInUrl(next), VIEWER_CHANNEL_ID: viewer?.channelId ?? "" };
 }
 
 export const avatarSources = (channelId: string, sizes: number[]) => sizes.map((s) => ({ url: avatarUrl(channelId, s), width: s, height: s }));

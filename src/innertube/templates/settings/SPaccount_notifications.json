@@ -1,0 +1,421 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"selected": true,
+						"content": {
+							"sectionListRenderer": {
+								"contents": [
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"pageIntroductionRenderer": {
+														"headerText": {
+															"runs": [
+																{
+																	"text": "Choose when and how to be notified"
+																}
+															]
+														},
+														"bodyText": {
+															"runs": [
+																{
+																	"text": "Select the notifications you'd like to receive"
+																}
+															]
+														},
+														"pageTitle": {
+															"runs": [
+																{
+																	"text": "Notifications"
+																}
+															]
+														},
+														"headerIcon": {
+															"iconType": "ACCOUNT_NOTIFICATIONS"
+														}
+													}
+												}
+											]
+										}
+									},
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"settingsOptionsRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Your preferences"
+																}
+															]
+														},
+														"options": [
+															{
+																"settingsSwitchRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Subscriptions"
+																			}
+																		]
+																	},
+																	"subtitle": {
+																		"runs": [
+																			{
+																				"text": "Notify me about activity from the "
+																			},
+																			{
+																				"text": "channels I'm subscribed to",
+																				"navigationEndpoint": {
+																					"commandMetadata": {
+																						"webCommandMetadata": {
+																							"url": "/feed/channels",
+																							"webPageType": "WEB_PAGE_TYPE_BROWSE",
+																							"rootVe": 6827,
+																							"apiUrl": "/youtubei/v1/browse"
+																						}
+																					},
+																					"browseEndpoint": {
+																						"browseId": "FEchannels"
+																					}
+																				}
+																			}
+																		]
+																	},
+																	"enabled": true,
+																	"enableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "223",
+																			"boolValue": true,
+																			"settingItemIdForClient": "NOTIFICATION_SUBSCRIPTION_NOTIFICATIONS"
+																		}
+																	},
+																	"disableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "223",
+																			"boolValue": false,
+																			"settingItemIdForClient": "NOTIFICATION_SUBSCRIPTION_NOTIFICATIONS"
+																		}
+																	}
+																}
+															},
+															{
+																"settingsSwitchRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Recommended videos"
+																			}
+																		]
+																	},
+																	"subtitle": {
+																		"runs": [
+																			{
+																				"text": "Notify me of videos I might like based on what I watch"
+																			}
+																		]
+																	},
+																	"enabled": true,
+																	"enableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "315",
+																			"boolValue": true,
+																			"settingItemIdForClient": "NOTIFICATION_RECOMMENDATION_WEB_CONTROL"
+																		}
+																	},
+																	"disableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "315",
+																			"boolValue": false,
+																			"settingItemIdForClient": "NOTIFICATION_RECOMMENDATION_WEB_CONTROL"
+																		}
+																	}
+																}
+															},
+															{
+																"settingsSwitchRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Activity on my channel"
+																			}
+																		]
+																	},
+																	"subtitle": {
+																		"runs": [
+																			{
+																				"text": "Notify me about comments and other activity on my channel or videos"
+																			}
+																		]
+																	},
+																	"enabled": true,
+																	"enableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "182",
+																			"boolValue": true,
+																			"settingItemIdForClient": "NOTIFICATION_COMMENT_WEB_CONTROL"
+																		}
+																	},
+																	"disableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "182",
+																			"boolValue": false,
+																			"settingItemIdForClient": "NOTIFICATION_COMMENT_WEB_CONTROL"
+																		}
+																	}
+																}
+															},
+															{
+																"settingsSwitchRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Activity on my comments"
+																			}
+																		]
+																	},
+																	"subtitle": {
+																		"runs": [
+																			{
+																				"text": "Notify me about replies, likes, and other activity on my comments, and activity on my posts on other channels"
+																			}
+																		]
+																	},
+																	"enabled": true,
+																	"enableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "183",
+																			"boolValue": true,
+																			"settingItemIdForClient": "NOTIFICATION_COMMENT_REPLY_OTHER_WEB_CONTROL"
+																		}
+																	},
+																	"disableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "183",
+																			"boolValue": false,
+																			"settingItemIdForClient": "NOTIFICATION_COMMENT_REPLY_OTHER_WEB_CONTROL"
+																		}
+																	}
+																}
+															},
+															{
+																"settingsSwitchRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Mentions"
+																			}
+																		]
+																	},
+																	"subtitle": {
+																		"runs": [
+																			{
+																				"text": "Notify me when others mention my channel"
+																			}
+																		]
+																	},
+																	"enabled": true,
+																	"enableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "308",
+																			"boolValue": true,
+																			"settingItemIdForClient": "NOTIFICATION_USER_MENTION_WEB_CONTROL"
+																		}
+																	},
+																	"disableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "308",
+																			"boolValue": false,
+																			"settingItemIdForClient": "NOTIFICATION_USER_MENTION_WEB_CONTROL"
+																		}
+																	}
+																}
+															},
+															{
+																"settingsSwitchRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Others reusing my content"
+																			}
+																		]
+																	},
+																	"subtitle": {
+																		"runs": [
+																			{
+																				"text": "Notify me when others share, remix, or respond to my content on their channels"
+																			}
+																		]
+																	},
+																	"enabled": true,
+																	"enableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "200",
+																			"boolValue": true,
+																			"settingItemIdForClient": "NOTIFICATION_RETUBING_WEB_CONTROL"
+																		}
+																	},
+																	"disableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "200",
+																			"boolValue": false,
+																			"settingItemIdForClient": "NOTIFICATION_RETUBING_WEB_CONTROL"
+																		}
+																	}
+																}
+															},
+															{
+																"settingsSwitchRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Promotional content and offerings"
+																			}
+																		]
+																	},
+																	"subtitle": {
+																		"runs": [
+																			{
+																				"text": "Notify me of promotional content and offerings, like members-only perks"
+																			}
+																		]
+																	},
+																	"enabled": true,
+																	"enableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "463",
+																			"boolValue": true,
+																			"settingItemIdForClient": "NOTIFICATION_PROMOTIONS_AND_OFFERINGS"
+																		}
+																	},
+																	"disableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "463",
+																			"boolValue": false,
+																			"settingItemIdForClient": "NOTIFICATION_PROMOTIONS_AND_OFFERINGS"
+																		}
+																	}
+																}
+															}
+														]
+													}
+												}
+											],
+											"header": {
+												"itemSectionHeaderRenderer": {
+													"title": {
+														"runs": [
+															{
+																"text": "General"
+															}
+														]
+													},
+													"subtitle": {
+														"runs": [
+															{
+																"text": "Manage your mobile and desktop notifications"
+															}
+														]
+													}
+												}
+											}
+										}
+									}
+								]
+							}
+						}
+					}
+				}
+			]
+		}
+	}
+}

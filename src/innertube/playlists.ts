@@ -11,6 +11,7 @@ import { type Channel, type Video, avatarUrl, compact, grouped, lockupSources, s
 import { sql, textArray } from "../db";
 import { encodeToken, isVideoId, newPlaylistId, randomId } from "../ids";
 import { continuationItem } from "./items";
+import { panel } from "./panels";
 import { ApiError, route } from "./router";
 import type { BrowseResult } from "./browse";
 
@@ -577,9 +578,6 @@ export function saveSheetVideoId(params: string): string {
 	}
 }
 
-route("get_panel", async ({ body, viewer }) => {
-	if (body.panelId === "PAadd_to_playlist") return addToPlaylistSheet(saveSheetVideoId(String(body.params ?? "")), viewer);
-	return { responseContext: responseContext(viewer) };
-});
+panel("PAadd_to_playlist", (body, viewer) => addToPlaylistSheet(saveSheetVideoId(String(body.params ?? "")), viewer));
 
 export { getPlaylist };

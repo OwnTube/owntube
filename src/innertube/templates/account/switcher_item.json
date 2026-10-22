@@ -1,0 +1,63 @@
+{
+	"accountItem": {
+		"accountName": {
+			"simpleText": "{{NAME}}"
+		},
+		"accountPhoto": {
+			"thumbnails": "{{PHOTO}}"
+		},
+		"isSelected": "{{SELECTED}}",
+		"isDisabled": false,
+		"hasChannel": true,
+		"serviceEndpoint": {
+			"selectActiveIdentityEndpoint": {
+				"supportedTokens": [
+					{
+						"accountStateToken": {
+							"hasChannel": true,
+							"isMerged": true,
+							"obfuscatedGaiaId": "{{ACCOUNT_ID}}"
+						}
+					},
+					{
+						"offlineCacheKeyToken": {
+							"clientCacheKey": "{{CACHE_KEY}}"
+						}
+					},
+					{
+						"accountSigninToken": {
+							"signinUrl": "{{SWITCH_URL}}"
+						}
+					},
+					{
+						"datasyncIdToken": {
+							"datasyncIdToken": "{{DATASYNC_ID}}"
+						}
+					}
+				],
+				"nextNavigationEndpoint": {
+					"commandMetadata": {
+						"webCommandMetadata": {
+							"url": "{{NEXT}}",
+							"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+							"rootVe": 83769
+						}
+					},
+					"urlEndpoint": {
+						"url": "{{NEXT}}"
+					}
+				}
+			}
+		},
+		"accountByline": {
+			"simpleText": "{{BYLINE}}"
+		},
+		"channelHandle": {
+			"simpleText": "{{HANDLE}}"
+		},
+		"accountLogDirectiveInts": [
+			3,
+			9
+		]
+	}
+}

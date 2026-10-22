@@ -1,0 +1,154 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"selected": true,
+						"content": {
+							"sectionListRenderer": {
+								"contents": [
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"pageIntroductionRenderer": {
+														"headerText": {
+															"runs": [
+																{
+																	"text": "Manage what you share on YouTube"
+																}
+															]
+														},
+														"bodyText": {
+															"runs": [
+																{
+																	"text": "Choose who can see your subscriptions"
+																}
+															]
+														},
+														"pageTitle": {
+															"runs": [
+																{
+																	"text": "Privacy"
+																}
+															]
+														},
+														"headerIcon": {
+															"iconType": "ACCOUNT_PRIVACY"
+														}
+													}
+												}
+											]
+										}
+									},
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"settingsOptionsRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Subscriptions"
+																}
+															]
+														},
+														"options": [
+															{
+																"settingsSwitchRenderer": {
+																	"title": {
+																		"runs": [
+																			{
+																				"text": "Keep all my subscriptions private"
+																			}
+																		]
+																	},
+																	"subtitle": {
+																		"runs": [
+																			{
+																				"text": "Your subscriptions won't be visible to others, unless you use features that make them public. "
+																			},
+																			{
+																				"text": "Learn more",
+																				"navigationEndpoint": {
+																					"commandMetadata": {
+																						"webCommandMetadata": {
+																							"url": "https://support.google.com/youtube/answer/7280190?hl=en",
+																							"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																							"rootVe": 83769
+																						}
+																					},
+																					"urlEndpoint": {
+																						"url": "https://support.google.com/youtube/answer/7280190?hl=en"
+																					}
+																				}
+																			},
+																			{
+																				"text": " about what could make your subscriptions visible or manage your subscriptions "
+																			},
+																			{
+																				"text": "here",
+																				"navigationEndpoint": {
+																					"commandMetadata": {
+																						"webCommandMetadata": {
+																							"url": "/feed/channels",
+																							"webPageType": "WEB_PAGE_TYPE_BROWSE",
+																							"rootVe": 6827,
+																							"apiUrl": "/youtubei/v1/browse"
+																						}
+																					},
+																					"browseEndpoint": {
+																						"browseId": "FEchannels"
+																					}
+																				}
+																			},
+																			{
+																				"text": "."
+																			}
+																		]
+																	},
+																	"enabled": true,
+																	"enableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "19",
+																			"boolValue": false,
+																			"settingItemIdForClient": "PRIVACY_DISCOVERABLE_SUBSCRIPTIONS"
+																		}
+																	},
+																	"disableServiceEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"sendPost": true,
+																				"apiUrl": "/youtubei/v1/account/set_setting"
+																			}
+																		},
+																		"setSettingEndpoint": {
+																			"settingItemId": "19",
+																			"boolValue": true,
+																			"settingItemIdForClient": "PRIVACY_DISCOVERABLE_SUBSCRIPTIONS"
+																		}
+																	}
+																}
+															}
+														]
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						}
+					}
+				}
+			]
+		}
+	}
+}

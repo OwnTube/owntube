@@ -20,10 +20,10 @@ import { GIFS_ENABLED } from "../gifs";
 import { jsonEnd } from "./json";
 import { loadPin, pagePath } from "./store";
 
-export type PageKind = "watch" | "home" | "results" | "channel" | "playlist" | "shorts";
+export type PageKind = "watch" | "home" | "results" | "channel" | "playlist" | "shorts" | "settings";
 
-export const ROOT_VE: Record<PageKind, number> = { watch: 3832, home: 3854, results: 4724, channel: 3611, playlist: 5754, shorts: 37414 };
-const PAGE_TYPE: Record<PageKind, string> = { watch: "watch", home: "browse", results: "search", channel: "channel", playlist: "playlist", shorts: "shorts" };
+export const ROOT_VE: Record<PageKind, number> = { watch: 3832, home: 3854, results: 4724, channel: 3611, playlist: 5754, shorts: 37414, settings: 23462 };
+const PAGE_TYPE: Record<PageKind, string> = { watch: "watch", home: "browse", results: "search", channel: "channel", playlist: "playlist", shorts: "shorts", settings: "settings" };
 const COLD_FLAG: Partial<Record<PageKind, string>> = { watch: "IS_WATCH_PAGE_COLD", home: "IS_HOMEPAGE_COLD", results: "IS_RESULTS_PAGE_COLD", shorts: "IS_SHORTS_PAGE_COLD" };
 
 export type Viewer = {
@@ -213,11 +213,14 @@ function socialMeta(data: PageData): string {
 	return tags.filter(([, v]) => v).map(([k, v]) => `<meta property="${k}" content="${escapeHtml(v!)}">`).join("");
 }
 
+// settings pages are only served signed in, so no public copy can be pinned;
+// they are the same app shell as home (ytPageType and ytcfg are set per page)
+const SHELL: Partial<Record<PageKind, PageKind>> = { settings: "home" };
 const templates = new Map<PageKind, string>();
 function template(kind: PageKind): string {
 	let t = templates.get(kind);
 	if (!t) {
-		const p = pagePath(kind);
+		const p = pagePath(SHELL[kind] ?? kind);
 		if (!existsSync(p)) throw new Error(`no pinned page for ${kind}; run bun scripts/fetch-client.ts`);
 		t = readFileSync(p, "utf8");
 		templates.set(kind, t);

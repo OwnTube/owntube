@@ -2,8 +2,11 @@
 // Google accounts; the sign-in form never asks for a Google password.
 //
 // A session sets two cookies:
-//   OT_SID            httpOnly, identifies the session
-//   SAPISID / APISID  the session's API secret, readable by page script.
+//   OT_SID            httpOnly, identifies the active session
+//   SAPISID / APISID  the active session's API secret, readable by page script.
+// OT_ACCOUNTS (httpOnly) lists every session signed in on this browser, in
+// sign-in order; the account menu's Switch account lists them and switching
+// makes another one active (its index is the "authuser" in the switch URL).
 // The official client signs every InnerTube request with it
 // (Authorization: SAPISIDHASH <ts>_<sha1(ts secret origin)>, APISIDHASH on
 // plain http), which a page on another origin cannot produce, so the
@@ -12,7 +15,7 @@
 import { createHash } from "node:crypto";
 import type { Viewer } from "./client/page";
 import { COOKIE_DOMAIN, PUBLIC_ORIGIN, SECURE_COOKIES, STUDIO_ORIGIN } from "./config";
-import { sql } from "./db";
+import { sql, textArray } from "./db";
 import { newChannelId, newToken } from "./ids";
 
 const SESSION_DAYS = 30;
@@ -82,22 +85,69 @@ function cookie(name: string, value: string, opts: { httpOnly?: boolean; maxAge?
 	return parts.join("; ");
 }
 
-export async function createSession(userId: string, userAgent: string | null): Promise<string[]> {
-	const id = newToken();
-	const secret = newToken(24);
-	await sql`insert into sessions (id, user_id, api_secret, expires_at, user_agent)
-		values (${id}, ${userId}, ${secret}, now() + ${`${SESSION_DAYS} days`}::interval, ${userAgent?.slice(0, 300) ?? null})`;
-	const age = SESSION_DAYS * 86400;
-	return [cookie("OT_SID", id, { httpOnly: true, maxAge: age }), cookie(SECRET_COOKIE, secret, { maxAge: age })];
+const ACCOUNTS_COOKIE = "OT_ACCOUNTS";
+const MAX_ACCOUNTS = 10;
+const sessionCookies = (id: string, secret: string, age = SESSION_DAYS * 86400) => [cookie("OT_SID", id, { httpOnly: true, maxAge: age }), cookie(SECRET_COOKIE, secret, { maxAge: age })];
+const accountsCookie = (ids: string[]) => cookie(ACCOUNTS_COOKIE, ids.join("."), { httpOnly: true, maxAge: ids.length ? SESSION_DAYS * 86400 : 0 });
+
+function listedSessions(req: Request): string[] {
+	const c = parseCookies(req);
+	const ids = (c[ACCOUNTS_COOKIE] ?? "").split(".").filter((id) => id && id.length <= 100);
+	if (c.OT_SID && c.OT_SID.length <= 100 && !ids.includes(c.OT_SID)) ids.unshift(c.OT_SID);
+	return ids.slice(0, MAX_ACCOUNTS);
 }
 
+export type BrowserAccount = { sessionId: string; secret: string; userId: string; login: string; channelId: string; handle: string; title: string; subscribers: number; active: boolean };
+
+// the accounts signed in on this browser that are still valid, in sign-in order
+export async function browserAccounts(req: Request): Promise<BrowserAccount[]> {
+	const ids = listedSessions(req);
+	if (!ids.length) return [];
+	const rows = await sql`select s.id, s.api_secret, u.id as user_id, u.login, c.id as channel_id, c.handle, c.title,
+			(select count(*)::int from subscriptions x where x.channel_id = c.id) as subscribers
+		from sessions s join users u on u.id = s.user_id join channels c on c.user_id = u.id
+		where s.id = any(${textArray(ids)}::text[]) and s.expires_at > now() and u.disabled_at is null`;
+	const active = parseCookies(req).OT_SID;
+	return ids.flatMap((id) => {
+		const r = rows.find((x: any) => x.id === id);
+		return r ? [{ sessionId: r.id, secret: r.api_secret, userId: String(r.user_id), login: r.login, channelId: r.channel_id, handle: r.handle, title: r.title, subscribers: r.subscribers, active: r.id === active }] : [];
+	});
+}
+
+// a new session made active and added to this browser's list (replacing any
+// other session of the same account there)
+export async function createSession(req: Request, userId: string): Promise<string[]> {
+	const id = newToken();
+	const secret = newToken(24);
+	const userAgent = req.headers.get("user-agent");
+	await sql`insert into sessions (id, user_id, api_secret, expires_at, user_agent)
+		values (${id}, ${userId}, ${secret}, now() + ${`${SESSION_DAYS} days`}::interval, ${userAgent?.slice(0, 300) ?? null})`;
+	const others = await browserAccounts(req);
+	const same = others.filter((a) => a.userId === userId);
+	for (const a of same) await endSession(a.sessionId);
+	const keep = others.filter((a) => a.userId !== userId).map((a) => a.sessionId).slice(-(MAX_ACCOUNTS - 1));
+	return [...sessionCookies(id, secret), accountsCookie([...keep, id])];
+}
+
+// makes the browser's index-th signed-in account the active one
+export async function switchSession(req: Request, index: number): Promise<string[] | undefined> {
+	const accounts = await browserAccounts(req);
+	const a = accounts[index];
+	if (!a) return undefined;
+	return [...sessionCookies(a.sessionId, a.secret), accountsCookie(accounts.map((x) => x.sessionId))];
+}
+
+export async function endSession(sid: string) {
+	await sql`delete from sessions where id = ${sid}`;
+	forgetSession(sid);
+}
+
+export const signedOutCookies = () => [...sessionCookies("", "", 0), accountsCookie([])];
+
+// signs out every account on this browser, as YouTube's Sign out does
 export async function destroySession(req: Request): Promise<string[]> {
-	const sid = parseCookies(req).OT_SID;
-	if (sid) {
-		await sql`delete from sessions where id = ${sid}`;
-		forgetSession(sid);
-	}
-	return [cookie("OT_SID", "", { httpOnly: true, maxAge: 0 }), cookie(SECRET_COOKIE, "", { maxAge: 0 })];
+	for (const sid of listedSessions(req)) await endSession(sid);
+	return signedOutCookies();
 }
 
 export const LOGIN_RE = /^[a-z0-9._-]{3,30}$/;

@@ -19,6 +19,7 @@ const ICONS: Record<string, string> = {
 	processing: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
 	compatibility: '<path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/>',
 	settings: '<path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/>',
+	feedback: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
 	audit: '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
 	external: '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
 	search: '<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
@@ -43,6 +44,7 @@ export const SECTIONS = [
 	["videos", "Videos", "/admin/videos"],
 	["processing", "Processing", "/admin/processing"],
 	["compatibility", "Compatibility", "/admin/compatibility"],
+	["feedback", "Feedback", "/admin/feedback"],
 	["settings", "Settings", "/admin/settings"],
 	["audit", "Audit log", "/admin/audit"],
 ] as const;

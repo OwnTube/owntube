@@ -1,0 +1,218 @@
+{
+	"contents": {
+		"twoColumnBrowseResultsRenderer": {
+			"tabs": [
+				{
+					"tabRenderer": {
+						"selected": true,
+						"content": {
+							"sectionListRenderer": {
+								"contents": [
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"pageIntroductionRenderer": {
+														"headerText": {
+															"runs": [
+																{
+																	"text": "Choose how you appear and what you see on YouTube"
+																}
+															]
+														},
+														"bodyText": {
+															"runs": [
+																{
+																	"text": "Signed in as {{VIEWER_LOGIN}}"
+																}
+															]
+														},
+														"pageTitle": {
+															"runs": [
+																{
+																	"text": "Account"
+																}
+															]
+														},
+														"headerIcon": {
+															"iconType": "ACCOUNT_SETTINGS"
+														}
+													}
+												}
+											]
+										}
+									},
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"settingsOptionsRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "Your channel"
+																}
+															]
+														},
+														"options": [
+															{
+																"channelOptionsRenderer": {
+																	"avatar": {
+																		"thumbnails": "{{VIEWER_AVATAR}}"
+																	},
+																	"avatarEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"url": "{{VIEWER_CHANNEL_URL}}",
+																				"webPageType": "WEB_PAGE_TYPE_CHANNEL",
+																				"rootVe": 3611,
+																				"apiUrl": "/youtubei/v1/browse"
+																			}
+																		},
+																		"browseEndpoint": {
+																			"browseId": "{{VIEWER_CHANNEL_ID}}",
+																			"canonicalBaseUrl": "{{VIEWER_CHANNEL_URL}}"
+																		}
+																	},
+																	"name": "{{VIEWER_NAME}}",
+																	"links": [
+																		{
+																			"runs": [
+																				{
+																					"text": "Channel status and features",
+																					"bold": true,
+																					"navigationEndpoint": {
+																						"commandMetadata": {
+																							"webCommandMetadata": {
+																								"url": "{{STUDIO_ORIGIN}}/channel/{{VIEWER_CHANNEL_ID}}/editing/details",
+																								"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																								"rootVe": 83769
+																							}
+																						},
+																						"urlEndpoint": {
+																							"url": "{{STUDIO_ORIGIN}}/channel/{{VIEWER_CHANNEL_ID}}/editing/details"
+																						}
+																					}
+																				}
+																			]
+																		},
+																		{
+																			"runs": [
+																				{
+																					"text": "View advanced settings",
+																					"bold": true,
+																					"navigationEndpoint": {
+																						"commandMetadata": {
+																							"webCommandMetadata": {
+																								"url": "/account_advanced",
+																								"webPageType": "WEB_PAGE_TYPE_SETTINGS",
+																								"rootVe": 23462,
+																								"apiUrl": "/youtubei/v1/browse"
+																							}
+																						},
+																						"browseEndpoint": {
+																							"browseId": "SPaccount_advanced"
+																						}
+																					}
+																				}
+																			]
+																		}
+																	],
+																	"avatarAccessibility": {
+																		"accessibilityData": {
+																			"label": "Your channel"
+																		}
+																	}
+																}
+															}
+														]
+													}
+												}
+											],
+											"header": {
+												"itemSectionHeaderRenderer": {
+													"title": {
+														"runs": [
+															{
+																"text": "Your YouTube channel"
+															}
+														]
+													},
+													"subtitle": {
+														"runs": [
+															{
+																"text": "This is your public presence on YouTube. You need a channel to upload your own videos, comment on videos, or create playlists."
+															}
+														]
+													}
+												}
+											}
+										}
+									},
+									{
+										"itemSectionRenderer": {
+											"contents": [
+												{
+													"settingsOptionsRenderer": {
+														"title": {
+															"runs": [
+																{
+																	"text": "{{INSTANCE_NAME}} account"
+																}
+															]
+														},
+														"text": {
+															"runs": [
+																{
+																	"text": "View or change your account settings",
+																	"bold": true,
+																	"navigationEndpoint": {
+																		"commandMetadata": {
+																			"webCommandMetadata": {
+																				"url": "/myaccount",
+																				"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+																				"rootVe": 83769
+																			}
+																		},
+																		"urlEndpoint": {
+																			"url": "/myaccount"
+																		}
+																	}
+																},
+																{
+																	"text": "\nYour username, password and sessions on {{INSTANCE_NAME}}"
+																}
+															]
+														}
+													}
+												}
+											],
+											"header": {
+												"itemSectionHeaderRenderer": {
+													"title": {
+														"runs": [
+															{
+																"text": "Your account"
+															}
+														]
+													},
+													"subtitle": {
+														"runs": [
+															{
+																"text": "You sign in to {{INSTANCE_NAME}} with a local account, not a Google Account"
+															}
+														]
+													}
+												}
+											}
+										}
+									}
+								]
+							}
+						}
+					}
+				}
+			]
+		}
+	}
+}

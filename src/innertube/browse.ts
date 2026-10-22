@@ -17,6 +17,7 @@ import { type Channel, browseEndpoint, responseContext, runs } from "./r";
 import { ApiError, route } from "./router";
 import { recordMiss } from "../diagnostics";
 import { aboutPanel, type ChannelSort, type ChannelTab, channelPage, channelTab, tabParams, videoGridItems, videoGridReload } from "./channel";
+import { SETTINGS_PAGES, SETTINGS_PATHS, settingsPage } from "./settings";
 import { signInUrl } from "./vars";
 
 // the browse command for a channel tab, as the tab strip's endpoints have it
@@ -27,14 +28,6 @@ function channelCommand(c: Channel, tab: ChannelTab) {
 export const PAGE = 24;
 
 export type BrowseResult = { response: Record<string, unknown>; kind: PageKind; title: string; url: string; command: unknown };
-
-function singleTab(contentRenderer: unknown, tabIdentifier: string) {
-	return { twoColumnBrowseResultsRenderer: { tabs: [{ tabRenderer: { selected: true, content: contentRenderer, tabIdentifier } }] } };
-}
-
-function messageSection(message: string) {
-	return { sectionListRenderer: { contents: [{ itemSectionRenderer: { contents: [{ messageRenderer: { text: runs(message) } }] } }] } };
-}
 
 const appendAction = (items: unknown[], targetId: string) => ({ appendContinuationItemsAction: { continuationItems: items, targetId } });
 
@@ -78,10 +71,12 @@ export async function buildBrowse(browseId: string, params: string | undefined, 
 	if (browseId === "FEplaylist_aggregation") return playlistsFeed(viewer, params);
 	if (browseId === "FEchannels") return channelsFeed(viewer);
 	if (browseId.startsWith("VL")) return playlistBrowse(browseId.slice(2), viewer);
-	// settings pages (SPaccount_downloads is prefetched by the signed-in client):
-	// none of them exist on this instance
-	if (browseId.startsWith("SP"))
-		return { kind: "home", title: "Settings", url: "/", command: browseEndpoint(browseId, "/"), response: { contents: singleTab(messageSection("This setting isn't available on this instance."), browseId) } };
+	// settings pages (the signed-in client prefetches SPaccount_downloads);
+	// signed out, YouTube answers 401 and direct loads go to sign-in
+	if (browseId in SETTINGS_PAGES) {
+		if (!viewer) throw new ApiError(401, "You must be signed in to perform this operation.", "unauthorized");
+		return { kind: "settings", title: "Settings", ...(await settingsPage(browseId, viewer)) };
+	}
 	if (isChannelId(browseId)) {
 		const c = await getChannel({ id: browseId });
 		if (!c) return undefined;
@@ -136,6 +131,7 @@ export async function resolvePath(url: URL): Promise<{ browseId: string; params?
 	const p = url.pathname.replace(/\/$/, "") || "/";
 	const feeds: Record<string, string> = { "/": "FEwhat_to_watch", "/feed/subscriptions": "FEsubscriptions", "/feed/history": "FEhistory", "/feed/you": "FElibrary", "/feed/library": "FElibrary", "/feed/playlists": "FEplaylist_aggregation", "/feed/channels": "FEchannels" };
 	if (feeds[p]) return { browseId: feeds[p] };
+	if (SETTINGS_PATHS[p]) return { browseId: SETTINGS_PATHS[p] };
 	if (p === "/playlist") {
 		const list = url.searchParams.get("list");
 		return list ? { browseId: `VL${list}` } : undefined;
@@ -152,7 +148,7 @@ export async function resolvePath(url: URL): Promise<{ browseId: string; params?
 export async function browsePage(url: URL, viewer: Viewer): Promise<PageData | Response | undefined> {
 	const target = await resolvePath(url);
 	if (!target) return undefined;
-	if (!viewer && (target.browseId === "FEplaylist_aggregation" || target.browseId === "FEchannels")) return Response.redirect(signInUrl(url.pathname), 302);
+	if (!viewer && (target.browseId === "FEplaylist_aggregation" || target.browseId === "FEchannels" || target.browseId in SETTINGS_PAGES)) return Response.redirect(signInUrl(url.pathname), 302);
 	const r = await buildBrowse(target.browseId, target.params, viewer);
 	if (!r) return undefined;
 	return {

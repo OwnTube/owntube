@@ -45,6 +45,54 @@
 										{
 											"compactLinkRenderer": {
 												"icon": {
+													"iconType": "ACCOUNT_BOX"
+												},
+												"title": {
+													"runs": [
+														{
+															"text": "{{INSTANCE_NAME}} account"
+														}
+													]
+												},
+												"navigationEndpoint": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"url": "/myaccount",
+															"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+															"rootVe": 83769
+														}
+													},
+													"urlEndpoint": {
+														"url": "/myaccount"
+													}
+												}
+											}
+										},
+										{
+											"compactLinkRenderer": {
+												"icon": {
+													"iconType": "SWITCH_ACCOUNTS"
+												},
+												"title": {
+													"runs": [
+														{
+															"text": "Switch account"
+														}
+													]
+												},
+												"secondaryIcon": {
+													"iconType": "CHEVRON_RIGHT"
+												},
+												"serviceEndpoint": {
+													"getAccountSwitcherEndpoint": {
+														"hack": true
+													}
+												}
+											}
+										},
+										{
+											"compactLinkRenderer": {
+												"icon": {
 													"iconType": "EXIT_TO_APP"
 												},
 												"title": {
@@ -106,6 +154,32 @@
 							{
 								"multiPageMenuSectionRenderer": {
 									"items": [
+										{
+											"compactLinkRenderer": {
+												"icon": {
+													"iconType": "SHIELD_WITH_AVATAR"
+												},
+												"title": {
+													"runs": [
+														{
+															"text": "Your data in YouTube"
+														}
+													]
+												},
+												"navigationEndpoint": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"url": "/myaccount#your-data",
+															"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+															"rootVe": 83769
+														}
+													},
+													"urlEndpoint": {
+														"url": "/myaccount#your-data"
+													}
+												}
+											}
+										},
 										{
 											"toggleThemeCompactLinkRenderer": {
 												"primaryIcon": {
@@ -5430,6 +5504,94 @@
 																}
 															}
 														]
+													}
+												}
+											}
+										}
+									]
+								}
+							},
+							{
+								"multiPageMenuSectionRenderer": {
+									"items": [
+										{
+											"compactLinkRenderer": {
+												"icon": {
+													"iconType": "SETTINGS_CAIRO"
+												},
+												"title": {
+													"simpleText": "Settings"
+												},
+												"navigationEndpoint": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"url": "/account",
+															"webPageType": "WEB_PAGE_TYPE_SETTINGS",
+															"rootVe": 23462,
+															"apiUrl": "/youtubei/v1/browse"
+														}
+													},
+													"browseEndpoint": {
+														"browseId": "SPaccount_overview"
+													}
+												}
+											}
+										}
+									]
+								}
+							},
+							{
+								"multiPageMenuSectionRenderer": {
+									"items": [
+										{
+											"compactLinkRenderer": {
+												"icon": {
+													"iconType": "HELP"
+												},
+												"title": {
+													"runs": [
+														{
+															"text": "Help"
+														}
+													]
+												},
+												"navigationEndpoint": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"url": "https://support.google.com/youtube/",
+															"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+															"rootVe": 83769
+														}
+													},
+													"urlEndpoint": {
+														"url": "https://support.google.com/youtube/",
+														"target": "TARGET_NEW_WINDOW"
+													}
+												}
+											}
+										},
+										{
+											"compactLinkRenderer": {
+												"icon": {
+													"iconType": "FEEDBACK"
+												},
+												"title": {
+													"runs": [
+														{
+															"text": "Send feedback"
+														}
+													]
+												},
+												"navigationEndpoint": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"url": "/feedback",
+															"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+															"rootVe": 83769
+														}
+													},
+													"urlEndpoint": {
+														"url": "/feedback"
 													}
 												}
 											}

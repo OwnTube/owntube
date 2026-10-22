@@ -1,0 +1,213 @@
+{
+	"settingsSidebarRenderer": {
+		"title": {
+			"runs": [
+				{
+					"text": "Settings"
+				}
+			]
+		},
+		"items": [
+			{
+				"compactLinkRenderer": {
+					"title": {
+						"runs": [
+							{
+								"text": "Account"
+							}
+						]
+					},
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/account",
+								"webPageType": "WEB_PAGE_TYPE_SETTINGS",
+								"rootVe": 23462,
+								"apiUrl": "/youtubei/v1/browse"
+							}
+						},
+						"browseEndpoint": {
+							"browseId": "SPaccount_overview"
+						}
+					},
+					"style": "COMPACT_LINK_STYLE_TYPE_SETTINGS_SIDEBAR"
+				}
+			},
+			{
+				"compactLinkRenderer": {
+					"title": {
+						"runs": [
+							{
+								"text": "Time management"
+							}
+						]
+					},
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/account_time_management",
+								"webPageType": "WEB_PAGE_TYPE_SETTINGS",
+								"rootVe": 23462,
+								"apiUrl": "/youtubei/v1/browse"
+							}
+						},
+						"browseEndpoint": {
+							"browseId": "SPaccount_time_management"
+						}
+					},
+					"style": "COMPACT_LINK_STYLE_TYPE_SETTINGS_SIDEBAR"
+				}
+			},
+			{
+				"compactLinkRenderer": {
+					"title": {
+						"runs": [
+							{
+								"text": "Notifications"
+							}
+						]
+					},
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/account_notifications",
+								"webPageType": "WEB_PAGE_TYPE_SETTINGS",
+								"rootVe": 23462,
+								"apiUrl": "/youtubei/v1/browse"
+							}
+						},
+						"browseEndpoint": {
+							"browseId": "SPaccount_notifications"
+						}
+					},
+					"style": "COMPACT_LINK_STYLE_TYPE_SETTINGS_SIDEBAR"
+				}
+			},
+			{
+				"compactLinkRenderer": {
+					"title": {
+						"runs": [
+							{
+								"text": "Playback and performance"
+							}
+						]
+					},
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/account_playback",
+								"webPageType": "WEB_PAGE_TYPE_SETTINGS",
+								"rootVe": 23462,
+								"apiUrl": "/youtubei/v1/browse"
+							}
+						},
+						"browseEndpoint": {
+							"browseId": "SPaccount_playback"
+						}
+					},
+					"style": "COMPACT_LINK_STYLE_TYPE_SETTINGS_SIDEBAR"
+				}
+			},
+			{
+				"compactLinkRenderer": {
+					"title": {
+						"runs": [
+							{
+								"text": "Privacy"
+							}
+						]
+					},
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/account_privacy",
+								"webPageType": "WEB_PAGE_TYPE_SETTINGS",
+								"rootVe": 23462,
+								"apiUrl": "/youtubei/v1/browse"
+							}
+						},
+						"browseEndpoint": {
+							"browseId": "SPaccount_privacy"
+						}
+					},
+					"style": "COMPACT_LINK_STYLE_TYPE_SETTINGS_SIDEBAR"
+				}
+			},
+			{
+				"compactLinkRenderer": {
+					"title": {
+						"runs": [
+							{
+								"text": "Connected apps"
+							}
+						]
+					},
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/account_sharing",
+								"webPageType": "WEB_PAGE_TYPE_SETTINGS",
+								"rootVe": 23462,
+								"apiUrl": "/youtubei/v1/browse"
+							}
+						},
+						"browseEndpoint": {
+							"browseId": "SPaccount_sharing"
+						}
+					},
+					"style": "COMPACT_LINK_STYLE_TYPE_SETTINGS_SIDEBAR"
+				}
+			},
+			{
+				"compactLinkRenderer": {
+					"title": {
+						"runs": [
+							{
+								"text": "Billing and payments"
+							}
+						]
+					},
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/account_billing",
+								"webPageType": "WEB_PAGE_TYPE_SETTINGS",
+								"rootVe": 23462,
+								"apiUrl": "/youtubei/v1/browse"
+							}
+						},
+						"browseEndpoint": {
+							"browseId": "SPaccount_billing"
+						}
+					},
+					"style": "COMPACT_LINK_STYLE_TYPE_SETTINGS_SIDEBAR"
+				}
+			},
+			{
+				"compactLinkRenderer": {
+					"title": {
+						"runs": [
+							{
+								"text": "Advanced settings"
+							}
+						]
+					},
+					"navigationEndpoint": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/account_advanced",
+								"webPageType": "WEB_PAGE_TYPE_SETTINGS",
+								"rootVe": 23462,
+								"apiUrl": "/youtubei/v1/browse"
+							}
+						},
+						"browseEndpoint": {
+							"browseId": "SPaccount_advanced"
+						}
+					},
+					"style": "COMPACT_LINK_STYLE_TYPE_SETTINGS_SIDEBAR"
+				}
+			}
+		]
+	}
+}
