@@ -1,5 +1,6 @@
 // Renders the Studio page shell for a signed-in channel owner, from the
-// pinned page (sanitized at pin time: it carries no account). The markup and
+// pinned page (sanitized at pin time: it carries no account), or the dark
+// build's page when the viewer's Appearance is dark (appearance.ts). The markup and
 // bootstrap scripts stay as upstream served them; these parts are filled in
 // or replaced, each by a rule that must match:
 //   - ytcfg.set({...})                         -> buildStudioYtcfg()
@@ -16,19 +17,14 @@ import { PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
 import { recordMiss } from "../diagnostics";
 import { creatorChannel } from "./channel";
 
-// Studio-only flags over the pinned build's values (docs/client-patches.md)
-const STUDIO_FLAG_OVERRIDES: Record<string, unknown> = {
-	// the build shows the dashboard's real-time card but without this doesn't
-	// ask for the card's total views (DASHBOARD_FACT_ANALYTICS_REALTIME_VIEWS)
-	WebFEAllStudioByChannel__enable_realtime_dashboard_card: true,
-};
-
-let base: { html: string; cfg: Record<string, any> } | undefined;
-function basePage() {
-	if (base) return base;
-	const html = readFileSync(studioPagePath(), "utf8");
+const bases = new Map<boolean, { html: string; cfg: Record<string, any> }>();
+function basePage(dark: boolean) {
+	const hit = bases.get(dark);
+	if (hit) return hit;
+	const html = readFileSync(studioPagePath(dark), "utf8");
 	const start = html.indexOf("ytcfg.set({") + "ytcfg.set(".length;
-	base = { html, cfg: JSON.parse(html.slice(start, jsonEnd(html, start))) };
+	const base = { html, cfg: JSON.parse(html.slice(start, jsonEnd(html, start))) };
+	bases.set(dark, base);
 	return base;
 }
 
@@ -58,8 +54,8 @@ function serializedFlags(s: string, overrides: Record<string, unknown>): string 
 	return params.toString();
 }
 
-export function buildStudioYtcfg(viewer: NonNullable<Viewer>, pageUrl: string, nonce: string): Record<string, any> {
-	const cfg = structuredClone(basePage().cfg);
+export function buildStudioYtcfg(viewer: NonNullable<Viewer>, pageUrl: string, nonce: string, dark = false): Record<string, any> {
+	const cfg = structuredClone(basePage(dark).cfg);
 	const visitor = visitorData();
 	cfg.EVENT_ID = Buffer.from(crypto.getRandomValues(new Uint8Array(12))).toString("base64url");
 	cfg.TIME_CREATED_MS = Date.now();
@@ -92,7 +88,7 @@ export function buildStudioYtcfg(viewer: NonNullable<Viewer>, pageUrl: string, n
 	const client = cfg.INNERTUBE_CONTEXT.client;
 	client.visitorData = visitor;
 	client.originalUrl = STUDIO_ORIGIN + pageUrl;
-	Object.assign(cfg.EXPERIMENT_FLAGS, FLAG_OVERRIDES, STUDIO_FLAG_OVERRIDES);
+	Object.assign(cfg.EXPERIMENT_FLAGS, FLAG_OVERRIDES);
 	// previews play in the main client's pinned player
 	const pin = loadPin();
 	if (pin) {
@@ -113,11 +109,12 @@ export function buildStudioYtcfg(viewer: NonNullable<Viewer>, pageUrl: string, n
 	return rehost(cfg) as Record<string, any>;
 }
 
-export async function renderStudioPage(viewer: NonNullable<Viewer>, pageUrl: string, nonce: string): Promise<string> {
+export async function renderStudioPage(viewer: NonNullable<Viewer>, pageUrl: string, nonce: string, wantsDark = false): Promise<string> {
 	const pin = loadStudioPin()!;
-	let html = basePage().html;
+	const dark = wantsDark && !!pin.dark;
+	let html = basePage(dark).html;
 	const start = html.indexOf("ytcfg.set({") + "ytcfg.set(".length;
-	html = html.slice(0, start) + json(buildStudioYtcfg(viewer, pageUrl, nonce)) + html.slice(jsonEnd(html, start));
+	html = html.slice(0, start) + json(buildStudioYtcfg(viewer, pageUrl, nonce, dark)) + html.slice(jsonEnd(html, start));
 	const channel = await creatorChannel(viewer, null);
 	// [name, find, replace, optional]: a rule that isn't optional must match
 	const rules: [string, RegExp, () => string, boolean?][] = [

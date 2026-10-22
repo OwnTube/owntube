@@ -18,10 +18,12 @@ const SENTINEL = "sentinel{}";
 type Piece = { css: string; js: string };
 const pieces = new Map<string, Piece>();
 
-function piece(name: string): Piece {
-	const hit = pieces.get(name);
+// the dark build's piece where it has its own (pin.dark.modules)
+function piece(name: string, dark: boolean): Piece {
+	const key = `${dark ? "dark:" : ""}${name}`;
+	const hit = pieces.get(key);
 	if (hit) return hit;
-	const p = studioModulePath(name);
+	const p = studioModulePath(name, dark);
 	if (!existsSync(p)) {
 		recordMiss(`studio module ${name}`, name);
 		return { css: "", js: "" };
@@ -40,7 +42,7 @@ function piece(name: string): Piece {
 	// some modules are empty: the wrapper with no code
 	const out = { css, js: readable ? t.slice(WRAP_HEAD.length, end) : "" };
 	if (!readable) recordMiss(`studio module ${name} unreadable`, name);
-	pieces.set(name, out);
+	pieces.set(key, out);
 	return out;
 }
 
@@ -50,7 +52,7 @@ export function segments(path: string): Record<string, string> {
 
 // the code for a module request, or undefined when it asks for the initial
 // bundle (served as the archived file)
-export function studioModules(pin: StudioPin, path: string): string | undefined {
+export function studioModules(pin: StudioPin, path: string, dark = false): string | undefined {
 	const seg = segments(path);
 	const wanted = (seg.m ?? "").split(",").filter(Boolean);
 	if (wanted.includes("core")) return undefined;
@@ -60,7 +62,7 @@ export function studioModules(pin: StudioPin, path: string): string | undefined 
 	// another dependency-respecting order; the bytes are the same.
 	const need = closure(graph, wanted);
 	const order = graph.names.filter((n) => need.has(n) && !have.has(n));
-	const ps = order.map(piece);
+	const ps = order.map((n) => piece(n, dark && !!pin.dark?.modules[n]));
 	const css = ps.map((p) => p.css).join("");
 	return `${css ? `${CSS_HEAD}${css}${SENTINEL}${CSS_TAIL}` : '"use strict";'}${WRAP_HEAD}${ps.map((p) => p.js).join("")}${WRAP_TAIL}`;
 }

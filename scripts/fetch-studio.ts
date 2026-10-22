@@ -1,9 +1,12 @@
 // Acquires and pins YouTube Studio (studio.youtube.com), the separate client
 // YouTube's upload dialog and creator pages belong to.
 //
-//   bun scripts/fetch-studio.ts --page <file>   pin the build of a Studio page saved by a
+//   bun scripts/fetch-studio.ts --page <file> [--dark-page <file>]
+//                                               pin the build of a Studio page saved by a
 //                                               signed-in browser capture (e.g.
-//                                               captures/in-studio-upload/bodies/002-*.resp)
+//                                               captures/studio-light/bodies/001-_.resp),
+//                                               and the same build's dark-theme page
+//                                               (captured with Appearance set to dark)
 //   bun scripts/fetch-studio.ts                 download whatever the pin lists and is missing
 //   bun scripts/fetch-studio.ts --check         verify the archive against the pin
 //   bun scripts/fetch-studio.ts --observed <f>  also pin extra asset URLs (one per line)
@@ -38,6 +41,7 @@ const ORIGIN = "https://studio.youtube.com";
 const args = process.argv.slice(2);
 const CHECK = args.includes("--check");
 const pageFile = args.includes("--page") ? args[args.indexOf("--page") + 1] : undefined;
+const darkPageFile = args.includes("--dark-page") ? args[args.indexOf("--dark-page") + 1] : undefined;
 const observedFile = args.includes("--observed") ? args[args.indexOf("--observed") + 1] : undefined;
 
 // ytcfg keys that describe the signed-in account or the request; the server
@@ -154,7 +158,8 @@ function sanitize(html: string): { page: string; cfg: Record<string, any> } {
 	for (const k of ACCOUNT_KEYS) delete sanitizedCfg[k];
 	const client = sanitizedCfg.INNERTUBE_CONTEXT.client;
 	for (const k of ["remoteHost", "visitorData", "configInfo", "deviceExperimentId", "rolloutToken", "originalUrl"]) {
-		add(client[k]);
+		// a page opened at the root has the bare origin, which every Studio URL starts with
+		if (k !== "originalUrl" || new URL(client[k] ?? "https://x/").pathname.length > 1) add(client[k]);
 		delete client[k];
 	}
 	sanitizedCfg.INNERTUBE_CONTEXT.clickTracking = { clickTrackingParams: "" };
@@ -182,34 +187,53 @@ function sanitize(html: string): { page: string; cfg: Record<string, any> } {
 	return { page, cfg };
 }
 
+// the app bundle a page loads
+function bundleOf(page: string) {
+	const jsUrl = /<script id="base-js" src="([^"]+)"/.exec(page)?.[1]?.replace(/&amp;/g, "&");
+	const cssUrl = /<link id="base-css" rel="stylesheet" href="([^"]+)"/.exec(page)?.[1]?.replace(/&amp;/g, "&");
+	const signature = /_F_combinedSignature = '([^']+)'/.exec(page)?.[1];
+	const cssKey = /_F_cssRowKey = '([^']+)'/.exec(page)?.[1];
+	if (!jsUrl || !cssUrl || !signature || !cssKey) throw new Error("page has no Studio app bundle");
+	return { key: /k=([^/]+)/.exec(jsUrl)![1], cssKey, am: /\/am=([^/]+)/.exec(jsUrl)?.[1] ?? "", signature, jsUrl, cssUrl };
+}
+
 let pin = loadStudioPin();
+// images seen loading are kept across builds
+const observedBefore = (pin?.assets ?? []).filter((a) => a.kind === "observed").map((a) => a.url);
 let page: string;
 if (pageFile) {
 	const raw = readFileSync(pageFile, "utf8");
 	const { page: clean, cfg } = sanitize(raw);
 	page = clean;
 	writeArchived(studioPagePath(), Buffer.from(page));
-	const baseJs = /<script id="base-js" src="([^"]+)"/.exec(page)?.[1]?.replace(/&amp;/g, "&");
-	const baseCss = /<link id="base-css" rel="stylesheet" href="([^"]+)"/.exec(page)?.[1]?.replace(/&amp;/g, "&");
-	const signature = /_F_combinedSignature = '([^']+)'/.exec(page)?.[1];
-	const cssKey = /_F_cssRowKey = '([^']+)'/.exec(page)?.[1];
-	if (!baseJs || !baseCss || !signature || !cssKey) throw new Error("page has no Studio app bundle");
 	pin = {
 		fetchedAt: new Date().toISOString(),
 		pageBuildLabel: cfg.PAGE_BUILD_LABEL,
 		clientVersion: cfg.INNERTUBE_CLIENT_VERSION,
 		staticVersion: /\/s\/(\w{8})\/scheduler\.js/.exec(page)?.[1] ?? "",
-		app: { key: /k=([^/]+)/.exec(baseJs)![1], cssKey, am: /\/am=([^/]+)/.exec(baseJs)?.[1] ?? "", signature, jsUrl: baseJs, cssUrl: baseCss, graph: "", initial: [], modules: {} },
+		app: { ...bundleOf(page), graph: "", initial: [], modules: {} },
 		page: { sha256: sha256(page), size: page.length },
 		assets: [],
 	};
 	console.log(`pinning Studio ${pin.pageBuildLabel}`);
+	if (darkPageFile) {
+		const { page: dark } = sanitize(readFileSync(darkPageFile, "utf8"));
+		const b = bundleOf(dark);
+		if (b.key !== pin.app.key || b.cssKey !== pin.app.cssKey) throw new Error("the dark page is from another build than --page");
+		if (!/<html[^>]*\sserver-dark[\s>]/.test(dark)) throw new Error("the dark page is not dark (no <html server-dark>)");
+		writeArchived(studioPagePath(true), Buffer.from(dark));
+		pin.dark = { am: b.am, signature: b.signature, jsUrl: b.jsUrl, cssUrl: b.cssUrl, page: { sha256: sha256(dark), size: dark.length }, modules: {} };
+	}
 } else {
 	if (!pin) throw new Error(`no ${STUDIO_PIN_FILE}; pin a build with --page <captured Studio page>`);
 	if (!existsSync(studioPagePath())) throw new Error(`missing ${studioPagePath()}; re-pin with --page`);
 	page = readFileSync(studioPagePath(), "utf8");
 	if (sha256(page) !== pin.page.sha256) {
 		console.log("Studio page differs from the pin");
+		failures++;
+	}
+	if (pin.dark && (!existsSync(studioPagePath(true)) || sha256(readFileSync(studioPagePath(true))) !== pin.dark.page.sha256)) {
+		console.log("Studio dark page missing or differs from the pin");
 		failures++;
 	}
 }
@@ -225,6 +249,7 @@ for (const m of page.matchAll(/<(?:script|link)\b[^>]*?(?:src|href)="(https:\/\/
 // static files named in ytcfg (trusted resource URLs) and their companions
 for (const m of page.matchAll(/"(https:\/\/studio\.youtube\.com\/s\/\w{8}\/[\w.-]+)"/g)) wanted.set(m[1], "studio");
 for (const a of pin.assets) if (a.kind === "studio" || a.kind === "observed") wanted.set(a.url, a.kind);
+for (const u of observedBefore) wanted.set(u, "observed");
 if (observedFile)
 	for (const line of readFileSync(observedFile, "utf8").split("\n")) {
 		const u = line.trim();
@@ -235,6 +260,10 @@ await pool([...wanted], 8, async ([u, kind]) => void (await archive(u, kind, pin
 const mainJs = await archive(pin.app.jsUrl, "studio-app", pinned.get(pin.app.jsUrl));
 await archive(pin.app.cssUrl, "studio-app", pinned.get(pin.app.cssUrl));
 if (!mainJs) throw new Error("Studio app bundle unavailable");
+if (pin.dark) {
+	await archive(pin.dark.jsUrl, "studio-app", pinned.get(pin.dark.jsUrl));
+	await archive(pin.dark.cssUrl, "studio-app", pinned.get(pin.dark.cssUrl));
+}
 const mm = /_ModuleManager_initialize\('([^']*)',\[([^\]]*)\]\)/.exec(mainJs.toString());
 if (!mm) throw new Error("Studio bundle has no module graph");
 pin.app.graph = mm[1];
@@ -253,16 +282,17 @@ const prefix = pin.app.jsUrl.slice(0, pin.app.jsUrl.indexOf("/am="));
 // only name modules that do not depend on this one (else this one would be
 // counted as loaded and the answer would be empty)
 const dependents = (name: string) => new Set(graph.names.filter((n) => n !== name && closure(graph, [n]).has(name)));
-const moduleUrl = (name: string) => {
+const moduleUrl = (name: string, v: { am: string; signature: string } = pin!.app) => {
 	const skip = dependents(name);
 	const exm = graph.names.filter((n) => n !== name && !skip.has(n)).sort().join(",");
-	return `${prefix}/ck=${pin!.app.cssKey}/am=${pin!.app.am}/d=1/exm=${exm}/excm=${initialTop}/ed=1/rs=${pin!.app.signature}/m=${name}`;
+	return `${prefix}/ck=${pin!.app.cssKey}/am=${v.am}/d=1/exm=${exm}/excm=${initialTop}/ed=1/rs=${v.signature}/m=${name}`;
 };
 let done = 0;
 await pool(lazy, 6, async (name) => {
 	const path = studioModulePath(name);
 	const expect = pin!.app.modules[name];
-	if (existsSync(path)) {
+	// a new build's modules are fetched, not taken from the previous build's files
+	if (existsSync(path) && (expect || !pageFile)) {
 		const data = readFileSync(path);
 		if (!expect || sha256(data) === expect.sha256) {
 			pin!.app.modules[name] = { sha256: sha256(data), size: data.byteLength };
@@ -292,6 +322,41 @@ await pool(lazy, 6, async (name) => {
 	pin!.app.modules[name] = { sha256: sha256(data), size: data.byteLength };
 	if (++done % 100 === 0) console.log(`${done} modules`);
 });
+
+// ---- the dark build's modules, kept only where they differ ----
+if (pin.dark) {
+	const dark = pin.dark;
+	const known = dark.modules;
+	dark.modules = {};
+	let differ = 0;
+	await pool(lazy, 6, async (name) => {
+		const path = studioModulePath(name, true);
+		const expect = known[name];
+		if (expect && existsSync(path) && sha256(readFileSync(path)) === expect.sha256) {
+			dark.modules[name] = expect;
+			return;
+		}
+		if (CHECK) {
+			if (expect) {
+				console.log(`missing dark module: ${name}`);
+				failures++;
+			}
+			return;
+		}
+		const r = await get(moduleUrl(name, dark));
+		if (!r.ok) {
+			console.log(`dark module ${name}: ${r.status}`);
+			failures++;
+			return;
+		}
+		const data = Buffer.from(await r.arrayBuffer());
+		if (sha256(data) === pin!.app.modules[name]?.sha256) return;
+		writeArchived(path, data);
+		dark.modules[name] = { sha256: sha256(data), size: data.byteLength };
+		differ++;
+	});
+	console.log(`dark build: ${Object.keys(dark.modules).length} modules differ from the light build${differ ? ` (${differ} fetched)` : ""}`);
+}
 
 // ---- images and fonts the bundle names literally ----
 // Small images only (icons, illustrations); large promotional artwork and

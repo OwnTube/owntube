@@ -1,22 +1,17 @@
-"use strict";_F_installCss(".ytShoppingDescriptionShelfViewModelHost{display:flex;flex-direction:column}.ytShoppingDescriptionShelfViewModelHostEngagementPanel{background-color:var(--t7f4f2c6d54836ce0)}.ytShoppingDescriptionShelfViewModelItems{display:flex;flex-direction:column}.ytShoppingDescriptionShelfViewModelButtonContainer{padding-left:12px;padding-right:12px}sentinel{}");
+"use strict";_F_installCss(".ytdCollapsibleAnswerViewModelComponentHost{display:flex;flex-direction:column;border-radius:24px;margin-bottom:8px;margin-top:16px;background-color:var(--t08a7c6c176cbc5c2);position:relative}.ytdCollapsibleAnswerViewModelComponentToggleButtonContainer{display:flex;align-items:center;justify-content:center}.ytdCollapsibleAnswerViewModelComponentToggleButtonContainer:after,.ytdCollapsibleAnswerViewModelComponentToggleButtonContainer:before{content:\"\";flex:1;height:1px;background-color:var(--tf3fc855af2285f5f)}.ytdCollapsibleAnswerViewModelComponentDetailedAnswer+.ytdCollapsibleAnswerViewModelComponentToggleButtonContainer,.ytdCollapsibleAnswerViewModelComponentSummary+.ytdCollapsibleAnswerViewModelComponentDetailedAnswer{margin-top:16px}.ytdCollapsibleAnswerViewModelComponentSummary{color:var(--tffc2fd3a644f6275);font-family:Roboto,Arial,sans-serif;font-size:2.4rem;font-variation-settings:\"wdth\" 100;font-weight:700;line-height:3.2rem}@container (max-width: _max($medium_breakpoint)){.ytdCollapsibleAnswerViewModelComponentSummary{font-family:Roboto,Arial,sans-serif;font-size:2rem;font-variation-settings:\"wdth\" 100;font-weight:700;line-height:2.8rem}}@media (max-width:599.9px){.ytdCollapsibleAnswerViewModelComponentSummary{font-family:Roboto,Arial,sans-serif;font-size:2rem;font-variation-settings:\"wdth\" 100;font-weight:700;line-height:2.8rem}}.ytdCollapsibleAnswerViewModelComponentDetailedAnswer{color:var(--tffc2fd3a644f6275);font-family:Roboto,Arial,sans-serif;font-size:1.6rem;font-weight:400;line-height:2.2rem}.ytdCollapsibleAnswerViewModelComponentDetailedAnswer ol,.ytdCollapsibleAnswerViewModelComponentDetailedAnswer ul{padding-left:24px}.ytdCollapsibleAnswerViewModelComponentDetailedAnswerCollapsed{max-height:120px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 calc(100% - 50px),transparent);mask-image:linear-gradient(#000 calc(100% - 50px),transparent)}sentinel{}");
 this.default_cs=this.default_cs||{};(function(_){var window=this;
 try{
-_.Bjc=_.Ri(function(a){var b=a.data;var c=a.className;var e=a.engagementPanel;var g=function(){return b().expandedStateKey},k=_.br(_.$lb,g),l=function(){var t,v,w;
-if(w=!!g()){var x;w=!((x=k())!=null&&x.expanded)}return w&&!!b().bottomButton&&((v=(t=b().items)==null?void 0:t.length)!=null?v:0)>3},m=function(){var t;
-return((t=b().borderRadius)!=null?t:12)+"px"},p=function(){return{"border-top-left-radius":function(){var t;
-return((t=b().roundedCorners)==null?0:t.topStart)?m():void 0},
-"border-top-right-radius":function(){var t;return((t=b().roundedCorners)==null?0:t.topEnd)?m():void 0},
-"border-bottom-left-radius":function(){var t;return((t=b().roundedCorners)==null?0:t.bottomStart)?m():void 0},
-"border-bottom-right-radius":function(){var t;return((t=b().roundedCorners)==null?0:t.bottomEnd)?m():void 0}}},r=function(){return{"margin-inline-start":function(){var t;
-return _.ptm((t=b().buttonMargin)==null?void 0:t.start)},
-"margin-inline-end":function(){var t;return _.ptm((t=b().buttonMargin)==null?void 0:t.end)},
-"margin-top":function(){var t;return _.ptm((t=b().buttonMargin)==null?void 0:t.top)},
-"margin-bottom":function(){var t;return _.ptm((t=b().buttonMargin)==null?void 0:t.bottom)}}};
-a={};return _.y("yt-shopping-description-shelf-view-model",{class:_.Un("ytShoppingDescriptionShelfViewModelHost",c,(a.ytShoppingDescriptionShelfViewModelHostEngagementPanel=e,a)),style:_.fo(function(){if(e!=null&&e())var t=p();else{t=Object;var v=t.assign,w,x=((w=_.ne().resolve(_.ke(_.fr)))==null?0:w())?b().darkThemeBackgroundColor:b().lightThemeBackgroundColor;w=x?_.Xh(x):void 0;t=v.call(t,{},{"background-color":w},p())}return t})},_.y(_.ko,{data:function(){return b().header}},{sectionHeaderViewModel:_.Hof}),
-_.y("div",{class:"ytShoppingDescriptionShelfViewModelItems",
-style:_.fo({gap:function(){return b().itemGap?b().itemGap+"px":void 0}})},_.y(_.ko,{data:function(){var t;
-return l()?(t=b().items)==null?void 0:t.slice(0,3):b().items}},{shoppingDescriptionItemViewModel:_.CYg})),_.y(_.B,{cond:l,
-then:function(){return _.y("div",{class:"ytShoppingDescriptionShelfViewModelButtonContainer",style:_.fo(r)},_.y(_.ko,{data:function(){return b().bottomButton}},{buttonViewModel:_.PD}))}}))},"IO");
+_.J0g=_.Ui(function(a){function b(){k(!g())}
+var c=a.data;var e=_.f(_.zd(!1,void 0,"aNj2Vb",function(){}));
+a=e.next().value;e=e.next().value;var g=a,k=e,l="i"+_.lFf++;a=function(){var m,p;return((p=(m=c().detailedContents)==null?void 0:m.length)!=null?p:0)>0&&!!c().toggleButton};
+return _.y("ytd-collapsible-answer-view-model",{class:"ytdCollapsibleAnswerViewModelComponentHost"},_.y("div",{class:"ytdCollapsibleAnswerViewModelComponentSummary"},_.y(_.vZg,{text:function(){var m,p;return(p=(m=c().summary)==null?void 0:m.content)!=null?p:""},
+disableDefaultStyling:!0,plugins:[_.gCh]})),_.y(_.B,{cond:a,then:function(){var m={};return _.y("div",{id:l,inert:function(){return!g()},
+class:_.Wn("ytdCollapsibleAnswerViewModelComponentDetailedAnswer",(m.ytdCollapsibleAnswerViewModelComponentDetailedAnswerCollapsed=function(){return!g()},m))},_.y(_.mo,{data:function(){return c().detailedContents}},{commonMarkViewModel:function(p){var r=p.data;
+return _.y(_.vZg,{text:function(){var t;return(t=r().text)!=null?t:""},
+isLargeText:!0,plugins:[_.gCh]})}}))}}),_.y(_.B,{cond:a,
+then:function(){return _.y("div",{class:"ytdCollapsibleAnswerViewModelComponentToggleButtonContainer"},_.y(_.mo,{data:function(){return c().toggleButton}},{toggleButtonViewModel:function(m){return _.y(_.Nkc,{data:m.data,
+onToggle:b,buttonShapeOverrides:function(){return{toggled:g(),style:"mono",type:"filled"}},
+"aria-controls":l})}}))}}))},"LO");
 }catch(e){_._DumpException(e)}
 }).call(this,this.default_cs);
 // Google Inc.

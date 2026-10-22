@@ -57,7 +57,6 @@ Set over the pinned build's values in `ytcfg` ([`FLAG_OVERRIDES`, `PLAYER_FLAG_O
 | `mdx_load_cast_api_bootstrap_script` | false | No Chromecast bootstrap from gstatic. |
 | `use_url_origin_for_desktop_web_suggest_requests` | true | Search suggestions from this origin's `/complete/search`. |
 | player `html5_use_ump` | false | Plain byte ranges from `/videoplayback` instead of UMP. |
-| Studio `WebFEAllStudioByChannel__enable_realtime_dashboard_card` | true | The dashboard's real-time card is on in this build but its total-views query is not; with this the dashboard asks for it. |
 | player `html5_generate_content_po_token`, `html5_generate_session_po_token`, `html5_non_onesie_attach_po_token`, `html5_bandaid_attach_content_po_token`, `html5_attach_po_token_to_bandaid` | false | No BotGuard, so no proof-of-origin tokens. |
 
 ## Studio page rules

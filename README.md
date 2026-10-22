@@ -139,7 +139,7 @@ Studio uses the actual pinned creator client, separate from the custom operator 
 - Route both hostnames to OwnTube through your reverse proxy, preserving the external Host header. The application can distinguish the hosts on either listening port.
 - Studio requires a signed-in local account and restricts creator data to that account's channel. Other creator pages beyond content management are not implemented.
 
-To pin a new Studio build, use `bun scripts/fetch-studio.ts --page /absolute/path/to/captured-studio-page.html`. The fetcher sanitizes the supplied signed-in page before archiving it. Raw captures remain outside the committed source.
+To pin a new Studio build, use `bun scripts/fetch-studio.ts --page /absolute/path/to/captured-studio-page.html --dark-page /absolute/path/to/the-same-page-captured-dark.html` (the second capture with the account's Appearance set to dark, which loads the same build's dark variant). The fetcher sanitizes the supplied signed-in page before archiving it. Raw captures remain outside the committed source.
 
 ### Configuration
 

@@ -1,25 +1,25 @@
 "use strict";_F_installCss(".ytAttributionViewModelHost{display:flex;align-items:center;min-width:0}.ytAttributionViewModelAttributionText{background-color:unset;border-style:unset;flex-shrink:1;font-family:Roboto,Arial,sans-serif;font-size:1.2rem;font-weight:400;line-height:1.8rem;overflow:hidden;display:block;white-space:nowrap;text-overflow:ellipsis}.ytAttributionViewModelAttributionA11yLabel{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}.ytAttributionViewModelAttributionTextMultiLine{background-color:unset;border-style:unset;flex-shrink:1;font-family:Roboto,Arial,sans-serif;font-size:1.2rem;font-weight:400;line-height:1.8rem;overflow:hidden;display:block;max-height:3.6rem;display:box;display:-webkit-box;-webkit-box-orient:vertical;text-overflow:ellipsis;white-space:normal}@supports (-webkit-line-clamp:1){.ytAttributionViewModelAttributionTextMultiLine{-webkit-line-clamp:2;max-height:none}}.ytAttributionViewModelSuffix{margin-left:4px;background-color:unset;border-style:unset;flex-shrink:0;font-family:Roboto,Arial,sans-serif;font-size:1.2rem;font-weight:400;line-height:1.8rem;overflow:hidden;display:block;white-space:nowrap;text-overflow:ellipsis}.ytAttributionViewModelAttributionImage{margin-right:8px;flex:none}.ytAttributionViewModelBadge{margin-right:4px;flex:none}.ytAttributionViewModelTappable{background-color:transparent;border-style:none;padding:0;cursor:pointer;color:inherit;display:flex;align-items:center;min-width:0}.ytAttributionViewModelMediumText .ytAttributionViewModelAttributionText,.ytAttributionViewModelMediumText .ytAttributionViewModelBadge{font-family:Roboto,Arial,sans-serif;font-size:1.4rem;font-weight:400;line-height:2rem;overflow:hidden;display:block;white-space:nowrap;text-overflow:ellipsis}.ytAttributionViewModelMediumText .ytAttributionViewModelAttributionTextMultiLine{font-family:Roboto,Arial,sans-serif;font-size:1.4rem;font-weight:400;line-height:2rem;overflow:hidden;display:block;max-height:4rem;display:box;display:-webkit-box;-webkit-box-orient:vertical;text-overflow:ellipsis;white-space:normal}@supports (-webkit-line-clamp:1){.ytAttributionViewModelMediumText .ytAttributionViewModelAttributionTextMultiLine{-webkit-line-clamp:2;max-height:none}}.ytAttributionViewModelMediumText .ytAttributionViewModelSuffix{font-family:Roboto,Arial,sans-serif;font-size:1.4rem;font-weight:400;line-height:2rem;overflow:hidden;display:block;white-space:nowrap;text-overflow:ellipsis}.ytAttributionViewModelHeavyText .ytAttributionViewModelAttributionText,.ytAttributionViewModelHeavyText .ytAttributionViewModelBadge,.ytAttributionViewModelHeavyText .ytAttributionViewModelSuffix{font-family:Roboto,Arial,sans-serif;font-size:1.2rem;font-weight:500;line-height:1.8rem;overflow:hidden;display:block;white-space:nowrap;text-overflow:ellipsis}sentinel{}");
 this.default_cs=this.default_cs||{};(function(_){var window=this;
 try{
-_.hd("ha1Ii");
-_.olc=_.Ri(function(a){var b=a.data;var c=a.className;var e=a.useSmallLayout;var g=a.useMediumText;var k=a.useHeavyText;var l=function(){return!(g==null||!g())||!(k==null||!k())};
-a={};return _.y("yt-attribution-view-model",{el:_.Xn(_.er(function(){var m;return(m=b())==null?void 0:m.rendererContext})),
-class:_.Un(c,(a.ytAttributionViewModelHost=!0,a.ytAttributionViewModelMediumText=g,a.ytAttributionViewModelHeavyText=k,a))},_.y(_.B,{cond:function(){return _.dr(b().rendererContext)},
-then:function(){return _.y("button",{class:"ytAttributionViewModelTappable"},_.y(yvm,{data:b,useSmallLayout:e,badgesShouldInheritTypography:l}))},
-else:function(){return _.y(yvm,{data:b,useSmallLayout:e,badgesShouldInheritTypography:l})}}))},"nN");
-var yvm=_.Ri(function(a){var b=a.data;var c=a.useSmallLayout;var e=a.badgesShouldInheritTypography;var g=function(){return{size:(c==null?0:c())?16:24}},k=_.wXb(function(){return b().rendererContext}),l=function(){var p;
+_.ld("ha1Ii");
+_.Blc=_.Ui(function(a){var b=a.data;var c=a.className;var e=a.useSmallLayout;var g=a.useMediumText;var k=a.useHeavyText;var l=function(){return!(g==null||!g())||!(k==null||!k())};
+a={};return _.y("yt-attribution-view-model",{el:_.Zn(_.hr(function(){var m;return(m=b())==null?void 0:m.rendererContext})),
+class:_.Wn(c,(a.ytAttributionViewModelHost=!0,a.ytAttributionViewModelMediumText=g,a.ytAttributionViewModelHeavyText=k,a))},_.y(_.B,{cond:function(){return _.gr(b().rendererContext)},
+then:function(){return _.y("button",{class:"ytAttributionViewModelTappable"},_.y(Awm,{data:b,useSmallLayout:e,badgesShouldInheritTypography:l}))},
+else:function(){return _.y(Awm,{data:b,useSmallLayout:e,badgesShouldInheritTypography:l})}}))},"rN");
+var Awm=_.Ui(function(a){var b=a.data;var c=a.useSmallLayout;var e=a.badgesShouldInheritTypography;var g=function(){return{size:(c==null?0:c())?16:24}},k=_.EXb(function(){return b().rendererContext}),l=function(){var p;
 return((p=b().maxLines)!=null?p:1)>1},m=function(){return l()?"ytAttributionViewModelAttributionTextMultiLine":"ytAttributionViewModelAttributionText"};
-return _.y(_.Ed,null,_.y(_.ko,{data:function(){return b().contentPreviewImage}},{contentPreviewImageViewModel:function(p){return _.y(_.gwf,{data:p.data,
-className:"ytAttributionViewModelAttributionImage",imageSizeConfig:g})}}),_.y(_.ko,{data:function(){return b().badge}},{badgeViewModel:function(p){return _.y(_.TD,{data:p.data,
+return _.y(_.Id,null,_.y(_.mo,{data:function(){return b().contentPreviewImage}},{contentPreviewImageViewModel:function(p){return _.y(_.Lwf,{data:p.data,
+className:"ytAttributionViewModelAttributionImage",imageSizeConfig:g})}}),_.y(_.mo,{data:function(){return b().badge}},{badgeViewModel:function(p){return _.y(_.TD,{data:p.data,
 class:"ytAttributionViewModelBadge",modern:!0,inheritTypography:e})}}),_.y(_.B,{cond:function(){return b().text},
 then:function(){return _.y("span",{class:m},_.y(_.B,{cond:function(){var p;return!((p=k())==null||!p.label)},
 then:function(){return _.y("span",{class:"ytAttributionViewModelAttributionA11yLabel"},function(){var p;return(p=k())==null?void 0:p.label})}}),_.y("span",{"aria-hidden":function(){var p;
-return((p=k())==null?0:p.label)?"true":void 0}},_.y(_.LA,{text:function(){return b().text},
+return((p=k())==null?0:p.label)?"true":void 0}},_.y(_.MA,{text:function(){return b().text},
 noWrap:function(){return!l()},
 linkInheritColor:!0})))}}),_.y(_.B,{cond:function(){return b().suffix},
-then:function(){return _.y(_.LA,{text:function(){return b().suffix},
-linkInheritColor:!0,className:"ytAttributionViewModelSuffix"})}}))},"oN");
-_.jd();
+then:function(){return _.y(_.MA,{text:function(){return b().suffix},
+linkInheritColor:!0,className:"ytAttributionViewModelSuffix"})}}))},"sN");
+_.md();
 }catch(e){_._DumpException(e)}
 }).call(this,this.default_cs);
 // Google Inc.

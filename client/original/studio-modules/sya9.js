@@ -1,12 +1,12 @@
-"use strict";_F_installCss(".ytaLegacyCardWrapperViewModelHost{color:var(--tffc2fd3a644f6275);display:flex;flex-direction:column}sentinel{}");
+"use strict";_F_installCss(".ytwFeedAdSitelinkViewModelHost,.ytwFeedAdSitelinkViewModelHostIsClickableAdComponent{display:flex;flex-direction:column;justify-content:center;padding:5px 11px;border:1px solid var(--tf3fc855af2285f5f);border-radius:16px;flex-shrink:0}.ytwFeedAdSitelinkViewModelHost:hover,.ytwFeedAdSitelinkViewModelHostIsClickableAdComponent:hover{background-color:var(--t20480717de80f555);border-color:transparent;cursor:pointer}.ytwFeedAdSitelinkViewModelHeadline{max-width:250px;color:var(--tffc2fd3a644f6275);font-family:Roboto,Arial,sans-serif;font-size:1.4rem;font-weight:500;line-height:2rem;overflow:hidden;display:block;max-height:2rem}.ytwFeedAdSitelinksCarouselViewModelHost{display:flex;flex-flow:row wrap;align-items:center;gap:8px 12px;max-height:32px;overflow:hidden}.ytwFeedAdSitelinksCarouselViewModelHostDefault{max-height:32px;overflow:hidden;row-gap:8px}sentinel{}");
 this.default_cs=this.default_cs||{};(function(_){var window=this;
 try{
-var dsm=new _.Nv("legacyAnalyticsScreenConfiguration");var esm=new _.Nv("analyticsCardData");_.Ukc=_.Ri(function(a){var b=_.Hd(function(){var e=_.Qe(a.data(),dsm),g;if(g=e){g=_.Om();var k=e.userInfo;if(!k||!k.type)throw Error("jT");a:{var l=k.type;switch(l){case "USER_TYPE_PROTO_CHANNEL_OWNER":break a;default:throw Error("iT`"+l);}}k={type:"CHANNEL",id:"User id",title:"User Title",currency:k.currencyCode||"USD",hasSubscriberDataPermissions:!1,hasRevenuePermissions:!1,hasAssetReadPermission:!1,hasMembershipsFeatureEnabled:!1,hasPostsFeatureEnabled:!1,hasProductsTaggingFeatureEnabled:!1,hasMultiTrackFeatureEnabled:!1,
-hasPrimetimeAnalyticsEnabled:!1,hasPrimetimeSelfServeAnalyticsEnabled:!1,hasShoppingAnalyticsFeatureEnabled:!1,hasAmazonAffiliateShoppingFeatureEnabled:!1,hasPodcasts:!1,hasCourses:!1,hasTvShows:!1};e=e.entityConfig;if(!e||!e.type)throw Error("kT");g={nowInstant:g,entityConfig:{type:"CHANNEL",id:e.id,title:e.title,creationInstant:_.Lm(Number(e.creationTimestampMillis)),isOwnedByUser:!0},timePeriod:{type:"4_weeks"},userInfo:k,overviewScreenState:{},tabId:"overview"}}return g},void 0,"VKDvFd"),c=_.Hd(function(){var e=
-b();
-var g=_.Qe(a.data(),esm);e=e&&g&&g.stackedBarCardData?(new _.N_f).createNewCards(e,g):void 0;if(e&&_.ol(e)&&e.data.cardData)return e.data.cardData},void 0,"OEzsZd");
-return _.y("yta-legacy-card-wrapper-renderer",{class:_.Un("ytaLegacyCardWrapperViewModelHost",a.className)},_.y(_.B,{cond:c,then:function(e){return _.y(_.j_f,{cardModel:e,tabColor:_.xp.OVERVIEW})},
-else:function(){return _.y("div",null,"Card data not available.")}}))},"XK");
+var etm=_.Ui(function(a){var b=a.data;return _.y("feed-ad-sitelink-view-model",{class:function(){var c;return((c=b().interaction)==null?0:c.onTap)?"ytwFeedAdSitelinkViewModelHostIsClickableAdComponent":"ytwFeedAdSitelinkViewModelHost"},
+el:_.Zn(_.mVg(function(){return b().interaction},a.customCommandResolver,void 0,function(){return!0})),
+"aria-label":function(){var c,e;return(c=b().interaction)==null?void 0:(e=c.accessibility)==null?void 0:e.label},
+role:"link",tabindex:0},_.y(_.MA,{text:function(){return b().headline},
+className:"ytwFeedAdSitelinkViewModelHeadline",linkInheritColor:!0}))},"ZK");_.fWg=_.Ui(function(a){var b=a.data;a=_.wf({visibilityCallback:function(e){var g,k=(g=b().interaction)==null?void 0:g.onFirstVisible;e&&k&&_.bo(k)},
+showOption:_.pL});var c={};return _.y("feed-ad-sitelinks-carousel-view-model",{el:_.Zn(a),class:_.Wn("ytwFeedAdSitelinksCarouselViewModelHost",(c.ytwFeedAdSitelinksCarouselViewModelHostDefault=function(){return b().style==="FEED_AD_SITELINKS_STYLE_NONE"},c))},_.y(_.mo,{data:function(){return b().sitelinks}},{feedAdSitelinkViewModel:etm}))},"$K");
 }catch(e){_._DumpException(e)}
 }).call(this,this.default_cs);
 // Google Inc.

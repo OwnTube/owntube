@@ -177,14 +177,16 @@ export async function serveClientAsset(req: Request, url: URL): Promise<Response
 export async function checkPatches(): Promise<{ id: string; matches: number; expect: number; ok: boolean }[]> {
 	const pin = loadPin();
 	if (!pin) throw new Error("no pin");
-	const totals = new Map<string, { matches: number; expect: number }>();
-	const add = (rs: PatchResult[]) => {
+	type Totals = Map<string, { matches: number; expect: number }>;
+	const sum = (into: Totals, rs: PatchResult[]) => {
 		for (const r of rs) {
-			const t = totals.get(r.id) ?? { matches: 0, expect: r.expect };
+			const t = into.get(r.id) ?? { matches: 0, expect: r.expect };
 			t.matches += r.matches;
-			totals.set(r.id, t);
+			into.set(r.id, t);
 		}
 	};
+	const totals: Totals = new Map();
+	const add = (rs: PatchResult[]) => sum(totals, rs);
 	const main = readFileSync(archivePath(pin.app.jsUrl), "utf8");
 	add(applyPatches(main, patchesFor("app", pin.app.jsUrl)).results);
 	for (const name of Object.keys(pin.app.modules)) add(applyPatches(moduleBody(name), patchesFor("app", name)).results);
@@ -197,5 +199,16 @@ export async function checkPatches(): Promise<{ id: string; matches: number; exp
 		for (const name of Object.keys(studio.app.modules)) add(applyPatches(readFileSync(studioModulePath(name), "utf8"), patchesFor("studio", name)).results);
 		add(applyPatches(readFileSync(archivePath(studio.app.cssUrl), "utf8"), patchesFor("other", studio.app.cssUrl)).results);
 	}
-	return [...totals].map(([id, t]) => ({ id, ...t, ok: t.matches === t.expect }));
+	const results = [...totals].map(([id, t]) => ({ id, ...t, ok: t.matches === t.expect }));
+	// the dark build replaces the bundle, the stylesheet and some modules, so
+	// its patches are counted on their own
+	if (studio?.dark) {
+		const dark: Totals = new Map();
+		sum(dark, applyPatches(readFileSync(archivePath(studio.dark.jsUrl), "utf8"), patchesFor("studio", studio.dark.jsUrl)).results);
+		for (const name of Object.keys(studio.app.modules))
+			sum(dark, applyPatches(readFileSync(studioModulePath(name, !!studio.dark.modules[name]), "utf8"), patchesFor("studio", name)).results);
+		sum(dark, applyPatches(readFileSync(archivePath(studio.dark.cssUrl), "utf8"), patchesFor("other", studio.dark.cssUrl)).results);
+		for (const [id, t] of dark) results.push({ id: `${id} (dark)`, ...t, ok: t.matches === t.expect });
+	}
+	return results;
 }

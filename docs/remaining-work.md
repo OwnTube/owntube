@@ -40,7 +40,6 @@ Every settings page in the client, backed by stored preferences:
 ## YouTube Studio
 
 - Dashboard comments and recent subscribers cards.
-- Dark theme: pin the dark build (stylesheet, toggles, modules), serve it with `server-dark` when the page is dark.
 - Content tabs: Shorts, Live, Posts, Playlists (create/edit in Studio), Podcasts; filters and search; views in the list.
 - Video details: custom thumbnail upload, playlists, audience (made for kids), age restriction, tags, category, language, recording date/location, license, embedding, comments and ratings settings, scheduling.
 - Video editor (trim, blur, audio), end screens, cards, subtitles editor.

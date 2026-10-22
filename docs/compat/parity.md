@@ -60,7 +60,7 @@ Status: ✅ works · 🟡 partial · ❌ not implemented
 | Dashboard | Channel analytics, latest video performance, real-time views and top content, published videos, Creator Insider, What's new | ✅ | studio-walk screenshot |
 | Dashboard | Latest comments, recent subscribers | ❌ | — |
 | Analytics, Community, Subtitles, Copyright, Earn, Customization, Audio library, Settings | | ❌ | pages load without data |
-| Appearance | Dark theme | ❌ | Studio's dark build isn't pinned, so a dark page shows light backgrounds |
+| Appearance | Light, dark and device theme (YouTube's dark build, `server-dark`) | ✅ | screenshots in both palettes |
 | Checks | Copyright and guidelines checks | ❌ | Studio shows "Checks complete" |
 
 ## Admin panel

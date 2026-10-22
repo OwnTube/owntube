@@ -1,8 +1,8 @@
-"use strict";_F_installCss(".ytDisclaimerItemViewModelHost{display:block;color:var(--t4a6da19e16bf221a);font-family:Roboto,Arial,sans-serif;font-size:1rem;font-weight:400;line-height:1.6rem}sentinel{}");
-this.default_cs=this.default_cs||{};(function(_){var window=this;
+"use strict";this.default_cs=this.default_cs||{};(function(_){var window=this;
 try{
-_.PYg=_.Ri(function(a){var b=a.data;return _.y("yt-disclaimer-item-view-model",{class:"ytDisclaimerItemViewModelHost"},_.y(_.B,{cond:function(){return b().linkfiedText},
-then:function(c){return _.y(_.LA,{text:c})}}))},"Ei");
+_.IZg=function(){var a;return _.n(function(b){if(b.nextAddress==1)return b.yield((0,_.ds)("fofpXe"),2);a=_.Ljc;return b.return(a)})};
+_.JZg=_.jo(function(){return _.IZg()},"chatUserTurnViewModel");
+_.re(_.NA,function(a){a.registerLoadFn("chatUserTurnViewModel","fofpXe",_.IZg)});
 }catch(e){_._DumpException(e)}
 }).call(this,this.default_cs);
 // Google Inc.

@@ -1,8 +1,8 @@
 "use strict";_F_installCss("tp-yt-iron-pages{display:block}tp-yt-iron-pages>:not(slot):not(.iron-selected){display:none!important}sentinel{}");
 this.default_cs=this.default_cs||{};(function(_){var window=this;
 try{
-var STf;var TTf;var UTf=function(){};
-_.d=UTf.prototype;_.d.notifyResize=function(){};
+var EUf;var FUf;var GUf=function(){};
+_.d=GUf.prototype;_.d.notifyResize=function(){};
 _.d.assignParentResizable=function(){};
 _.d.stopResizeNotificationsFor=function(){};
 _.d._subscribeIronResize=function(){};
@@ -41,9 +41,9 @@ _.d._activateHandler=function(){};
 _.d._itemActivate=function(){};
 _.d._setSelectedItem=function(){};
 _.d._setItems=function(){};
-_.Fi({_template:function(){if(TTf!==void 0)return TTf;var a=document.createElement("template");_.dg(a,'\x3c!--css-build:shady--\x3e\x3c!--css_build_scope:tp-yt-iron-pages--\x3e\x3c!--css_build_styles:video.youtube.src.web.polymer.shared.ui.styles.yt_base_styles.yt.base.styles.css.js,third_party.javascript.youtube_components.tp_yt_iron_pages.tp.yt.iron.pages.css.js--\x3e<slot class="style-scope tp-yt-iron-pages"></slot>\n');a.content.insertBefore(_.Bz().content.cloneNode(!0),a.content.firstChild);
-var b=a.content,c=b.insertBefore;STf===void 0&&(STf=document.createElement("template"));var e=STf;c.call(b,e.content.cloneNode(!0),a.content.firstChild);return TTf=a},
-is:"tp-yt-iron-pages",behaviors:[_.Az,_.y1a],properties:_.Xr(UTf,{activateEvent:{type:String,value:null}}),observers:["_selectedPageChanged(selected)"],_selectedPageChanged:function(){this.async(this.notifyResize)}});
+_.Ii({_template:function(){if(FUf!==void 0)return FUf;var a=document.createElement("template");_.fg(a,'\x3c!--css-build:shady--\x3e\x3c!--css_build_scope:tp-yt-iron-pages--\x3e\x3c!--css_build_styles:video.youtube.src.web.polymer.shared.ui.styles.yt_base_styles.yt.base.styles.css.js,third_party.javascript.youtube_components.tp_yt_iron_pages.tp.yt.iron.pages.css.js--\x3e<slot class="style-scope tp-yt-iron-pages"></slot>\n');a.content.insertBefore(_.Cz().content.cloneNode(!0),a.content.firstChild);
+var b=a.content,c=b.insertBefore;EUf===void 0&&(EUf=document.createElement("template"));var e=EUf;c.call(b,e.content.cloneNode(!0),a.content.firstChild);return FUf=a},
+is:"tp-yt-iron-pages",behaviors:[_.Bz,_.J1a],properties:_.Xr(GUf,{activateEvent:{type:String,value:null}}),observers:["_selectedPageChanged(selected)"],_selectedPageChanged:function(){this.async(this.notifyResize)}});
 
 }catch(e){_._DumpException(e)}
 }).call(this,this.default_cs);

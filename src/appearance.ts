@@ -7,8 +7,9 @@
 // the server resolves the theme before first paint, as YouTube does: the
 // saved choice, or for the device theme the Sec-CH-Prefers-Color-Scheme
 // client hint, which browsers that support it send once asked
-// (APPEARANCE_HEADERS). Other browsers get the light page and the client
-// reloads it dark when the device prefers dark.
+// (APPEARANCE_HEADERS). Other browsers get the light page; the client then
+// records the device's preference in PREF (flag 185, f6 bit 0x40000000) and
+// reloads, and the server reads that flag.
 
 import { parseCookies } from "./auth";
 import { COOKIE_DOMAIN, PUBLIC_ORIGIN } from "./config";
@@ -17,20 +18,26 @@ export type Appearance = "dark" | "light" | "device";
 
 const DARK = 0x400;
 const LIGHT = 0x80000;
+const DEVICE_DARK = 0x40000000;
+
+function f6(req: Request): number {
+	const pref = parseCookies(req).PREF ?? "";
+	const v = /(?:^|&)f6=([0-9a-fA-F]{1,8})(?:&|$)/.exec(pref)?.[1];
+	return v ? Number.parseInt(v, 16) : 0;
+}
 
 export function savedAppearance(req: Request): Appearance {
-	const pref = parseCookies(req).PREF ?? "";
-	const f6 = /(?:^|&)f6=([0-9a-fA-F]{1,8})(?:&|$)/.exec(pref)?.[1];
-	const flags = f6 ? Number.parseInt(f6, 16) : 0;
+	const flags = f6(req);
 	return flags & DARK ? "dark" : flags & LIGHT ? "light" : "device";
 }
 
-// whether the page is dark: the saved choice, else the device's (when the
-// browser says), else light
+// whether the page is dark: the saved choice, else the device's (the client
+// hint, else what the client last recorded), else light
 export function isDark(req: Request): boolean {
 	const saved = savedAppearance(req);
 	if (saved !== "device") return saved === "dark";
-	return req.headers.get("sec-ch-prefers-color-scheme")?.replace(/"/g, "") === "dark";
+	const hint = req.headers.get("sec-ch-prefers-color-scheme")?.replace(/"/g, "");
+	return hint ? hint === "dark" : !!(f6(req) & DEVICE_DARK);
 }
 
 export const APPEARANCE_HEADERS = {

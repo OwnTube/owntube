@@ -111,6 +111,8 @@ export function closure(g: ModuleGraph, roots: Iterable<string>): Set<string> {
 // client/original/studio/page.html  the Studio page shell, sanitized at pin
 //                                   time (no account values; see fetch-studio)
 // client/original/studio-modules/   per-module pieces of the Studio app bundle
+// client/original/studio/page-dark.html, studio-modules-dark/
+//                                   the same for the dark theme's build
 
 export const STUDIO_PIN_FILE = process.env.STUDIO_PIN_FILE ?? "pin/studio.json";
 
@@ -133,15 +135,27 @@ export type StudioPin = {
 		modules: Record<string, { sha256: string; size: number }>;
 	};
 	page: { sha256: string; size: number };
+	// The build YouTube serves when the account's Appearance is dark: the
+	// same app compiled with another activation mask (dark palette in the
+	// stylesheet and bundle), with its own page shell (<html server-dark>)
+	// and signature. Modules are listed only where they differ.
+	dark?: {
+		am: string;
+		signature: string;
+		jsUrl: string;
+		cssUrl: string;
+		page: { sha256: string; size: number };
+		modules: Record<string, { sha256: string; size: number }>;
+	};
 	assets: PinnedAsset[];
 };
 
-export function studioModulePath(name: string): string {
+export function studioModulePath(name: string, dark = false): string {
 	if (!/^[\w-]+$/.test(name)) throw new Error(`bad module name ${name}`);
-	return join(ORIGINAL_DIR, "studio-modules", `${name}.js`);
+	return join(ORIGINAL_DIR, dark ? "studio-modules-dark" : "studio-modules", `${name}.js`);
 }
 
-export const studioPagePath = () => join(ORIGINAL_DIR, "studio", "page.html");
+export const studioPagePath = (dark = false) => join(ORIGINAL_DIR, "studio", dark ? "page-dark.html" : "page.html");
 
 let studioPinCache: StudioPin | undefined;
 export function loadStudioPin(): StudioPin | undefined {

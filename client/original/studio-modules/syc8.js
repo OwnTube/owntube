@@ -1,10 +1,16 @@
-"use strict";_F_installCss(".ytFormPanelFooterViewModelHost{display:block}sentinel{}");
+"use strict";_F_installCss(".ytDialogHeaderViewModelTitle{margin:0;max-height:unset}.ytDialogHeaderViewModelTitleCentered{text-align:center}.ytDialogHeaderViewModelHost{display:flex;flex-direction:column;flex-shrink:0;padding:24px 24px 8px}.ytDialogHeaderViewModelHostDisablePadding{padding:0}.ytDialogHeaderViewModelHostCentered{align-items:center}.ytDialogHeaderViewModelBanner{display:flex;justify-content:center;margin-bottom:24px}.ytDialogHeaderViewModelBannerFullBleed{margin-left:-24px;margin-right:-24px;margin-top:-24px}.ytDialogHeaderViewModelBannerImage{flex:1}.ytDialogHeaderViewModelCustomAssetContainer{margin:2px 0 12px 6px}.ytDialogHeaderViewModelCustomAssetContainerCentered{margin-left:0}.ytDialogHeaderViewModelHeaderBlock{align-items:flex-start;align-self:stretch;color:var(--tffc2fd3a644f6275);margin-bottom:16px}.ytDialogHeaderViewModelHeaderBlockCentered{align-self:center}.ytDialogHeaderViewModelText{color:var(--tffc2fd3a644f6275);flex:1;font-family:Roboto,Arial,sans-serif;font-size:2rem;font-variation-settings:\"wdth\" 100;font-weight:700;line-height:2.8rem;overflow:hidden;display:block;max-height:5.6rem;display:box;display:-webkit-box;-webkit-box-orient:vertical;text-overflow:ellipsis;white-space:normal}@supports (-webkit-line-clamp:1){.ytDialogHeaderViewModelText{-webkit-line-clamp:2;max-height:none}}.ytDialogHeaderViewModelText{max-height:5.6rem}sentinel{}");
 this.default_cs=this.default_cs||{};(function(_){var window=this;
 try{
-_.mkc=_.Ri(function(a){var b=_.hCh(function(){return a.data().formId}),c=b.submitForm,e=b.isValid;
-return _.y("yt-form-panel-footer-view-model",{class:"ytFormPanelFooterViewModelHost"},_.y(_.ko,{data:function(){return a.data().panelFooter}},{panelFooterViewModel:function(g){return _.y(_.trf,{data:g.data,
-disablePadding:!0,disablePrimaryButton:function(){return!e()},
-onClickPrimaryButton:function(){c()}})}}))},"AN");
+_.Akc=_.Ui(function(a){var b=_.Vi(a,{disablePadding:!1,className:void 0}),c=b.data;a=b.disablePadding;b=b.className;var e=_.f(_.K8b()),g=e.next().value;e=e.next().value;var k=function(){var r=c().imageBanner;a:switch(c().assetContainerPaddingStyle){case "DIALOG_HEADER_ASSET_PADDING_STYLE_INSET":var t="CONTENT_PREVIEW_IMAGE_STYLE_CUSTOM_ASPECT_RATIO";break a;default:t="CONTENT_PREVIEW_IMAGE_STYLE_DEFAULT"}return{themedImage:r,style:t,layoutMode:"CONTENT_PREVIEW_IMAGE_LAYOUT_MODE_FULL_WIDTH"}},l=function(){return c().assetContainerPaddingStyle!==
+"DIALOG_HEADER_ASSET_PADDING_STYLE_INSET"},m=function(){return c().alignment==="DIALOG_HEADER_ALIGNMENT_CENTER"},p={};
+return _.y("yt-dialog-header-view-model",{el:_.Zn(e),"on:image-loaded":function(){return g("yt-refit-popups-action")},
+class:_.Wn(b,(p.ytDialogHeaderViewModelHost=!0,p.ytDialogHeaderViewModelHostDisablePadding=a,p.ytDialogHeaderViewModelHostCentered=m,p))},_.y(_.B,{cond:function(){return c().imageBanner},
+then:function(){var r={};return _.y("div",{class:_.Wn("ytDialogHeaderViewModelBanner",(r.ytDialogHeaderViewModelBannerFullBleed=l,r)),style:_.ho({"max-height":function(){return c().assetContainerMaxHeight!==void 0?c().assetContainerMaxHeight+"px":void 0}})},_.y(_.Lwf,{data:k,
+className:"ytDialogHeaderViewModelBannerImage",notifyOnLoaded:!0}))}}),_.y(_.B,{cond:function(){return c().headerBlock},
+then:function(){var r={};return _.y("div",{class:_.Wn("ytDialogHeaderViewModelHeaderBlock",(r.ytDialogHeaderViewModelHeaderBlockCentered=m,r))},_.y(_.mo,{data:function(){return c().headerBlock}},{contentPreviewImageViewModel:function(t){return _.y(_.Lwf,{data:t.data,
+notifyOnLoaded:!0})}}))}}),_.y(_.B,{cond:function(){return c().customBanner},
+then:function(r){var t={};return _.y("div",{class:_.Wn("ytDialogHeaderViewModelCustomAssetContainer",(t.ytDialogHeaderViewModelCustomAssetContainerCentered=m,t))},_.y(_.mo,{data:r},{avatarStackViewModel:_.Owf}))}}),_.y(_.B,{cond:function(){return c().headline},
+then:function(r){var t={};return _.y("h2",{class:_.Wn("ytDialogHeaderViewModelTitle",(t.ytDialogHeaderViewModelTitleCentered=m,t))},_.y(_.MA,{text:r,className:"ytDialogHeaderViewModelText"}))}}))},"DN");
 }catch(e){_._DumpException(e)}
 }).call(this,this.default_cs);
 // Google Inc.

@@ -1,0 +1,22 @@
+"use strict";_F_installCss(".ytMiniAppFeedActionBarViewModelHost{display:flex;flex-direction:column;justify-content:space-between;align-items:start;height:100%}.ytMiniAppFeedActionBarViewModelPlayerButtons{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:8px;background-color:var(--t7f4f2c6d54836ce0);border-radius:48px}.ytMiniAppFeedContainerViewModelHost{width:100%;height:100%;display:flex}.ytMiniAppFeedContainerViewModelFullscreen .ytMiniAppFeedContainerViewModelGameContent{height:100%;width:100%;position:relative;border-radius:0;aspect-ratio:unset}.ytMiniAppFeedContainerViewModelFullscreen .ytMiniAppFeedContainerViewModelLeftContent,.ytMiniAppFeedContainerViewModelFullscreen .ytMiniAppFeedContainerViewModelRightContent{display:none}.ytMiniAppFeedContainerViewModelGameContent{height:100%;max-width:100%;border-radius:16px;overflow:hidden;position:relative;aspect-ratio:9/16}.ytMiniAppFeedContainerViewModelLeftContent{display:flex;flex-direction:column;align-items:flex-start;gap:4px;z-index:2;--reel-metadata-color:var(--tffc2fd3a644f6275);--yt-spec-text-primary:var(--tffc2fd3a644f6275);align-self:end;padding-left:16px;padding-bottom:16px;flex:1}.ytMiniAppFeedContainerViewModelRightContent{display:flex;flex-direction:column;height:100%;padding:0 12px;flex:1}sentinel{}");
+this.default_cs=this.default_cs||{};(function(_){var window=this;
+try{
+var Jvm=function(a){var b,c,e;return!!(a==null?0:(b=a.defaultButtonViewModel)==null?0:(c=b.buttonViewModel)==null?0:(e=c.iconName)==null?0:e.startsWith("VOLUME"))};var Kvm=_.Ui(function(a){a=_.Vi(a,{className:"",isAudioEnabled:!0});var b=a.data,c=a.isAudioEnabled,e=a.onAudioToggled;return _.y("mini-app-feed-action-bar-view-model",{class:_.Wn("ytMiniAppFeedActionBarViewModelHost",a.className),role:"toolbar"},_.y("div",{class:"ytMiniAppFeedActionBarViewModelPlayerButtons"},_.y(_.mo,{data:function(){var g;return(g=b())==null?void 0:g.playerButtons}},{buttonViewModel:function(g){return _.y(_.PD,{data:g.data,
+useOutlinedIcon:!0})},
+toggleButtonViewModel:function(g){var k=g.data;return _.y(_.HE,{data:k,useOutlinedIcon:!0,buttonShapeOverrides:function(){return Jvm(k())?{toggled:c()}:void 0},
+onToggle:function(l){return Jvm(k())&&(e==null?void 0:e(l))}})}})),_.y(_.mo,{data:function(){var g;
+return(g=b())==null?void 0:g.actionBar}},{reelActionBarViewModel:function(g){return _.y(_.rWg,{data:g.data})}}))},"SM");var Mvm;_.Lvm=function(){var a;return _.n(function(b){if(b.nextAddress==1)return b.yield((0,_.ds)("CBuQbd"),2);a=_.YMg;return b.return(a)})};
+Mvm=_.jo(function(){return _.Lvm()},"reelMetapanelViewModel");
+_.re(_.NA,function(a){a.registerLoadFn("reelMetapanelViewModel","CBuQbd",_.Lvm)});_.NNg=_.Ui(function(a){a=_.Vi(a,{score:void 0,formattedScore:void 0,isEmbeddedInWebview:!1,isAudioEnabled:!0,isFullscreen:!1});var b=a.data,c=a.score,e=a.formattedScore,g=a.isEmbeddedInWebview,k=a.isAudioEnabled,l=a.onScoreChanged,m=a.onAudioToggled;a=a.isFullscreen;var p=_.f(_.Ti(function(){return c()})),r=p.next().value,t=p.next().value,v=_.Ld(function(){var w,x;
+return(x=(w=r())==null?void 0:w.toLocaleString())!=null?x:e()},void 0,"GrIGqc");
+p={};return _.y("mini-app-feed-container-view-model",{class:_.Wn("ytMiniAppFeedContainerViewModelHost",(p.ytMiniAppFeedContainerViewModelFullscreen=a,p))},_.y("div",{class:"ytMiniAppFeedContainerViewModelLeftContent"},_.y(_.mo,{data:function(){var w;return(w=b())==null?void 0:w.metapanel}},{reelMetapanelViewModel:Mvm}),_.y(_.mo,{data:function(){var w;
+return(w=b())==null?void 0:w.highScoreButton}},{miniAppScoreButtonViewModel:function(w){return _.y(_.zsm,{data:w.data,
+score:r,formattedScore:v,onScoreChanged:l,isEmbeddedInWebview:g})}})),_.y("div",{class:"ytMiniAppFeedContainerViewModelGameContent"},_.y(_.mo,{data:function(){var w;
+return(w=b())==null?void 0:w.container}},{miniAppContainerViewModel:function(w){var x=w.data;
+w=_.Ld(function(){var z=x();if(z)return Object.assign({},z,{layout:"MINI_APP_CONTAINER_LAYOUT_PANEL",topBar:void 0})},void 0,"FaZcBe");
+return _.y(_.FTg,{data:w,isFeedAudioEnabled:k,onScoreChanged:function(z){t(z);l==null||l(z)}})}})),_.y("div",{class:"ytMiniAppFeedContainerViewModelRightContent"},_.y(_.mo,{data:function(){var w;
+return(w=b())==null?void 0:w.feedActionBar}},{miniAppFeedActionBarViewModel:function(w){return _.y(Kvm,{data:w.data,
+isAudioEnabled:k,onAudioToggled:m})}})))},"TM");
+}catch(e){_._DumpException(e)}
+}).call(this,this.default_cs);
+// Google Inc.

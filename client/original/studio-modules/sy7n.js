@@ -1,21 +1,16 @@
-"use strict";this.default_cs=this.default_cs||{};(function(_){var window=this;
+"use strict";_F_installCss(".ytcpVideoMetadataRemixSettingsHost{display:block}.ytcpVideoMetadataRemixSettingsRadioButton{display:flex;padding:4px 12px 10px 0;font-family:var(--ytcp-font-subheading-font-family);font-weight:var(--ytcp-font-subheading-font-weight);-webkit-font-smoothing:antialiased;font-size:var(--ytcp-font-subheading-font-size);line-height:var(--ytcp-font-subheading-line-height)}sentinel{}");
+this.default_cs=this.default_cs||{};(function(_){var window=this;
 try{
-var b5i;var pW=function(){var a=_.P.apply(this,arguments)||this;a.audioOnly=!1;a.videoDurationSec=0;a.showSettings=!1;a.lockToolbar=!1;a.isVerticalVideo=!1;a.showVolume=!0;return a};
-_.G(pW,_.P);_.d=pW.prototype;_.d.loadWarholVideo=function(){this.videoSrcUrl&&this.videoDurationSec>0&&this.videoSource.loadVideo(this.videoDurationSec)};
-_.d.pauseVideo=function(){this.videoPlayer.reqPause()};
-_.d.seekTo=function(a){this.videoPlayer.reqSeek(a)};
-_.d.reqPlay=function(){this.videoPlayer.reqPlay()};
-_.d.reqPause=function(){this.videoPlayer.reqPause()};
-_.d.reqSeek=function(a){this.videoPlayer.reqSeek(a)};
-_.d.reqSetVolume=function(a){this.videoPlayer.reqSetVolume(a)};
-_.d.reqSetMuted=function(a){this.videoPlayer.reqSetMuted(a)};
-_.d.reqSkip=function(a){this.videoPlayer.reqSkip(a)};
-pW.prototype.loadWarholVideo=pW.prototype.loadWarholVideo;_.U([_.vi("#video-source"),_.V("design:type",Object)],pW.prototype,"videoSource",void 0);_.U([_.vi("#video-player"),_.V("design:type",Object)],pW.prototype,"videoPlayer",void 0);_.U([_.N(),_.V("design:type",String)],pW.prototype,"videoSrcUrl",void 0);_.U([_.N(),_.V("design:type",Object)],pW.prototype,"audioOnly",void 0);_.U([_.N(),_.V("design:type",Object)],pW.prototype,"videoDurationSec",void 0);
-_.U([_.N(),_.V("design:type",Array)],pW.prototype,"highlightList",void 0);_.U([_.N(),_.V("design:type",Number)],pW.prototype,"highlightedSegmentSec",void 0);_.U([_.N(),_.V("design:type",Object)],pW.prototype,"showSettings",void 0);_.U([_.N(),_.V("design:type",Number)],pW.prototype,"chunkDurationSec",void 0);_.U([_.N(),_.V("design:type",Object)],pW.prototype,"lockToolbar",void 0);_.U([_.N(),_.V("design:type",Object)],pW.prototype,"isVerticalVideo",void 0);
-_.U([_.N(),_.V("design:type",Object)],pW.prototype,"showVolume",void 0);_.U([_.ui("videoDurationSec","videoSrcUrl"),_.V("design:type",Function),_.V("design:paramtypes",[]),_.V("design:returntype",void 0)],pW.prototype,"loadWarholVideo",null);
-_.c5i=_.rj()(pW,"ytcp-warhol-video-player",function(){if(b5i===void 0){var a=document.createElement("template");_.dg(a,'\x3c!--css-build:shady--\x3e\x3c!--css_build_scope:ytcp-warhol-video-player--\x3e<ytcp-video-player id="video-player" audio-only="[[audioOnly]]" highlight-list="[[highlightList]]" highlighted-segment-sec="[[highlightedSegmentSec]]" is-vertical-video="[[isVerticalVideo]]" lock-toolbar="[[lockToolbar]]" show-settings="[[showSettings]]" show-volume="[[showVolume]]" video-duration-sec="[[videoDurationSec]]" video-src-url="[[videoSrcUrl]]" class="style-scope ytcp-warhol-video-player"><div slot="video-source" id="video-source-container" class="style-scope ytcp-warhol-video-player"><ytcp-warhol-video-source id="video-source" chunk-duration-sec="[[chunkDurationSec]]" video-src="[[videoSrcUrl]]" class="style-scope ytcp-warhol-video-player"></ytcp-warhol-video-source></div></ytcp-video-player>');b5i=
-a}a=b5i;return a},{allowedProps:"chunkDurationSec highlightList isVerticalVideo lockToolbar showVolume videoDurationSec videoSrcUrl".split(" "),
-mode:2,callbackProps:["onMetadataLoaded"]});
+_.Ncj=function(){return _.Bn("yt/copyright")};
+_.Ocj=function(){return"Language and captions certification"};
+_.Pcj=function(){return"Allows people to create Shorts using parts of this video."};
+_.Qcj=function(){return"Allow people to sample this content"};
+_.Rcj=function(a){var b=[{label:"None",value:"VIDEO_UNCAPTIONED_REASON_UNNECESSARY_OR_NOT_SET"},{label:_.KSi(),value:"VIDEO_UNCAPTIONED_REASON_NO_US_TV_CONTENT"},{label:_.LSi(),value:"VIDEO_UNCAPTIONED_REASON_CAPTIONLESS_TV_CONTENT"},{label:_.MSi(),value:"VIDEO_UNCAPTIONED_REASON_LEGACY"},{label:_.OSi(),value:"VIDEO_UNCAPTIONED_REASON_NOT_REQUIRED"},{label:_.PSi(),value:"VIDEO_UNCAPTIONED_REASON_EXCEPTION_GRANTED"}],c={label:_.NSi(),value:"VIDEO_UNCAPTIONED_REASON_NO_FULL_LENGTH_VIDEO"};return(a==
+null?void 0:a.uncaptionedReason)==="VIDEO_UNCAPTIONED_REASON_NO_FULL_LENGTH_VIDEO"?[].concat(_.u(b),[c]):b};_.Yn(_.Ui(function(a){var b=_.Vi(a,{disabled:!1,optOutHidden:!1,field:void 0,className:""});a=b.className;var c=b.disabled,e=b.optOutHidden,g=b.field;b=_.f(_.Ti(function(){var m,p;return(p=(m=g())==null?void 0:m.value)!=null?p:""}));
+var k=b.next().value,l=b.next().value;return _.y("ytcp-video-metadata-remix-settings",{class:_.Wn("ytcpVideoMetadataRemixSettingsHost",a)},_.y(_.yS,{selected:k,onIronActivate:function(m){if(m.detail.selected){l(m.detail.selected);var p=g();p&&(p.value=m.detail.selected)}}},_.y(_.LG,{id:"opt-in-radio-button",
+className:"ytcpVideoMetadataRemixSettingsRadioButton",disabled:c,name:"REMIX_SOURCE_OPTION_OPT_IN"},_.y(_.lD,{veType:177779,trackClick:!0},_.aTi())),_.y(_.LG,{id:"visual-opt-out-radio-button",className:"ytcpVideoMetadataRemixSettingsRadioButton",disabled:c,name:"REMIX_SOURCE_OPTION_VISUAL_OPT_OUT_AND_PERFORM_ACTIONS"},_.y(_.lD,{veType:177781,trackClick:!0},_.bTi())),_.y(_.B,{cond:function(){return!e()},
+then:function(){return _.y(_.LG,{id:"opt-out-radio-button",className:"ytcpVideoMetadataRemixSettingsRadioButton",disabled:c,name:"REMIX_SOURCE_OPTION_OPT_OUT_AND_MUTE_DERIVATIVES"},_.y(_.lD,{veType:177780,trackClick:!0},_.cTi()))}})))},"$r"),"ytcp-video-metadata-remix-settings",{props:{disabled:_.GA,
+optOutHidden:_.GA,field:_.GA,className:_.GA}});
 }catch(e){_._DumpException(e)}
 }).call(this,this.default_cs);
 // Google Inc.

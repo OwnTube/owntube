@@ -3,6 +3,7 @@
 // uploads (upload.ts). Studio is for signed-in channel owners only; anyone
 // else is sent to the main origin's sign-in.
 
+import { APPEARANCE_HEADERS, isDark } from "../appearance";
 import type { Viewer } from "../client/page";
 import { loadStudioPin } from "../client/store";
 import { PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
@@ -58,7 +59,7 @@ export async function studioRoutes(req: Request, url: URL, viewer: Viewer): Prom
 	if (v ? !(await ownsVideo(viewer.channelId, v[1])) : !m || m[1] !== viewer.channelId)
 		return Response.redirect(`${STUDIO_ORIGIN}/channel/${viewer.channelId}${m?.[2] ?? ""}${url.search}`, 303);
 	const n = nonce();
-	return new Response(await renderStudioPage(viewer, path + url.search, n), {
-		headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "content-security-policy": CSP, "x-content-type-options": "nosniff", "referrer-policy": "strict-origin-when-cross-origin" },
+	return new Response(await renderStudioPage(viewer, path + url.search, n, isDark(req)), {
+		headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "content-security-policy": CSP, "x-content-type-options": "nosniff", "referrer-policy": "strict-origin-when-cross-origin", ...APPEARANCE_HEADERS },
 	});
 }

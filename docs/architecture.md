@@ -22,7 +22,7 @@ studio host ── same split for Studio's shell, assets, /youtubei/v1 and the r
 ## The pinned client
 
 - [`scripts/fetch-client.ts`](../scripts/fetch-client.ts) downloads the desktop page, the main bundle, lazily loaded modules, the player (`base.js`), stylesheets, fonts and every static image the bundle names. It records each asset's URL and SHA-256 in [`pin/client.json`](../pin/client.json) and stores the bytes unmodified in `client/original/` (patched output is cached in `client/patched/`, ignored by Git). `--check` verifies the archive against the pin; `--update` deliberately moves to a newer build.
-- [`scripts/fetch-studio.ts`](../scripts/fetch-studio.ts) does the same for Studio from a signed-in page capture, which it sanitizes (account ids, names, tokens) before archiving.
+- [`scripts/fetch-studio.ts`](../scripts/fetch-studio.ts) does the same for Studio from a signed-in page capture, which it sanitizes (account ids, names, tokens) before archiving. It also pins the same build's dark variant from a capture made with Appearance set to dark: YouTube compiles Studio's dark theme as another activation mask (`am=`), with its own signed page shell (`<html server-dark>`), bundle, stylesheet and a few modules (pinned only where they differ).
 - Assets on other hosts (`www.gstatic.com`, `fonts.gstatic.com`, `fonts.googleapis.com`) are served under `/_up/<host>/...`. The patches in [client-patches.md](client-patches.md) point the client at those paths.
 - `UPSTREAM_ASSET_FETCH=1` lets a development instance fetch an asset missing from the archive. It is off by default; a normal instance never contacts YouTube.
 
@@ -58,7 +58,7 @@ The official client signs each InnerTube request with `Authorization: SAPISIDHAS
 
 ## Appearance
 
-The client keeps its Appearance choice in the `PREF` cookie: flag 165 (`f6` bit `0x400`) is Dark theme, flag 174 (`0x80000`) Light theme, neither is device theme. The server reads it before rendering ([`src/appearance.ts`](../src/appearance.ts)) and sets `<html dark>` and `INNERTUBE_CONTEXT.client.userInterfaceTheme`, as YouTube does. For device theme it asks for the `Sec-CH-Prefers-Color-Scheme` client hint. `ALT_PREF_COOKIE_DOMAIN` is set to this instance's cookie domain so the client's writes stick. The admin panel's Appearance menu writes the same flags.
+The client keeps its Appearance choice in the `PREF` cookie: flag 165 (`f6` bit `0x400`) is Dark theme, flag 174 (`0x80000`) Light theme, neither is device theme. The server reads it before rendering ([`src/appearance.ts`](../src/appearance.ts)) and sets `<html dark>` and `INNERTUBE_CONTEXT.client.userInterfaceTheme`, as YouTube does. Studio gets the dark build's page when the theme is dark, and its requests with the dark `am=` get the dark bundle, stylesheet and modules. For device theme the server asks for the `Sec-CH-Prefers-Color-Scheme` client hint; without one it uses PREF flag 185, where the client records the device's preference before reloading a page served in the other theme. `ALT_PREF_COOKIE_DOMAIN` is set to this instance's cookie domain so the client's writes stick. The admin panel's Appearance menu writes the same flags.
 
 ## Media
 
