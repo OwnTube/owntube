@@ -194,6 +194,18 @@ class PageRuleError extends Error {
 	}
 }
 
+function socialMeta(data: PageData): string {
+	const tags: [string, string | undefined][] = [
+		["og:site_name", INSTANCE_NAME],
+		["og:title", data.title || INSTANCE_NAME],
+		["og:url", PUBLIC_ORIGIN + data.url],
+		["og:description", data.description],
+		["og:image", data.thumbnail],
+		["twitter:card", data.thumbnail ? "summary_large_image" : "summary"],
+	];
+	return tags.filter(([, v]) => v).map(([k, v]) => `<meta property="${k}" content="${escapeHtml(v!)}">`).join("");
+}
+
 const templates = new Map<PageKind, string>();
 function template(kind: PageKind): string {
 	let t = templates.get(kind);
@@ -218,6 +230,7 @@ export function renderPage(data: PageData, viewer: Viewer, nonce: string): strin
 	}
 	html = replaceJsonAfter(html, "var ytInitialData = {", json(data.initialData), "ytInitialData");
 	const thumb = data.thumbnail ?? "";
+	let socialDone = false;
 	const rules: Rule[] = [
 		{ name: "nonce", find: /nonce="[^"]*"/g, replace: () => `nonce="${nonce}"` },
 		{ name: "attestation", find: /\(function\(\) \{if \(window\.ytAtN\) \{window\.ytAtN\(\{[\s\S]*?\}\);\}\}\)\(\);/g, replace: () => "", optional: true },
@@ -237,6 +250,14 @@ export function renderPage(data: PageData, viewer: Viewer, nonce: string): strin
 		{ name: "title", find: /<title>[^<]*<\/title>|(?<=<head>)(?![\s\S]*<title>)/g, replace: () => `<title>${escapeHtml(data.title ? `${data.title} - ${INSTANCE_NAME}` : INSTANCE_NAME)}</title>` },
 		{ name: "meta-title", find: /<meta name="title" content="[^"]*">/g, replace: () => `<meta name="title" content="${escapeHtml(data.title)}">`, optional: true },
 		{ name: "meta-description", find: /<meta name="description" content="[^"]*">/g, replace: () => `<meta name="description" content="${escapeHtml(data.description ?? "")}">`, optional: true },
+		{ name: "image-src", find: /<link rel="image_src"[^>]*>/g, replace: () => "", optional: true },
+		// link previews: the pinned pages carry the captured page's own (its
+		// title, image and youtube.com URLs, app links); this page's in their place
+		{ name: "social-meta", find: /(?:<meta (?:property|name)="(?:og|al|twitter|fb):[^"]*" content="[^"]*">)+/g, replace: () => (socialDone ? "" : ((socialDone = true), socialMeta(data))), optional: true },
+		{ name: "page-keywords", find: /<meta name="keywords" content="[^"]*">/g, replace: () => "", optional: true },
+		{ name: "structured-data", find: /<script type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/g, replace: () => "", optional: true },
+		// schema.org microdata of the captured channel (name, id, regions)
+		{ name: "microdata", find: /<link itemprop="url"[^>]*>(?:<(?:link|meta) itemprop="[^"]*"[^>]*>|<span itemprop[^>]*>|<span itemscope[^>]*>|<\/span>)+/g, replace: () => "", optional: true },
 		// the guide's footer links are YouTube's own pages (About, Press, Terms, ...),
 		// which say nothing about this instance: removed, the instance name stays
 		{ name: "guide-footer-links", find: /(?:<a slot="guide-links-(?:primary|secondary)"[^>]*>[^<]*<\/a>)+/g, replace: () => "" },

@@ -2,7 +2,7 @@
 // account) and Liked videos (LL, derived from likes). Pages, the watch-page
 // playlist panel, the "Save to playlist" sheet and the edit endpoints.
 
-import { make } from "./tpl";
+import { fill, make, tpl } from "./tpl";
 import { baseVars } from "./vars";
 import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
@@ -138,6 +138,46 @@ export async function channelPlaylistLockups(c: Channel, viewer: Viewer) {
 			AT_HANDLE: `@${c.handle}`,
 		}),
 	);
+}
+
+// public playlists whose title matches a search; empty ones are left out
+export async function searchPlaylists(query: string, limit: number, offset: number, viewer: Viewer): Promise<Playlist[]> {
+	const like = `%${query.trim().replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
+	const rows = await sql`select * from (select p.*, c.id as owner_channel, c.title as owner_title, c.handle as owner_handle,
+		(select count(*)::int from playlist_items i join videos v on v.id = i.video_id where i.playlist_id = p.id and ${PLAYABLE(viewer)}) as video_count,
+		(select i.video_id from playlist_items i join videos v on v.id = i.video_id where i.playlist_id = p.id and ${PLAYABLE(viewer)} order by i.position limit 1) as first_video
+		from playlists p join channels c on c.user_id = p.user_id
+		where p.kind = 'user' and p.visibility = 'public' and p.title ilike ${like}) x
+		where x.first_video is not null order by x.updated_at desc, x.id limit ${limit} offset ${offset}`;
+	return rows.map((p: Playlist) => ({ ...p, user_id: String(p.user_id) }));
+}
+
+// a playlist search result (template item/playlist_search): the first two
+// videos are listed under the title, each from the template's sample row
+export async function playlistSearchItem(p: Playlist, viewer: Viewer) {
+	const t = tpl("item/playlist_search");
+	const rows = t.lockupViewModel.metadata.lockupMetadataViewModel.metadata.contentMetadataViewModel.metadataRows;
+	const at = rows.findIndex((r: any) => JSON.stringify(r).includes("{{ROW_TEXT}}"));
+	const videos = await playlistVideos(p, viewer, 2, 0);
+	const listed = videos.map((v) => {
+		const text = `${v.title} · ${duration(v.duration_ms)}`;
+		return fill(structuredClone(rows[at]), { ROW_TEXT: text, ROW_TEXT_LENGTH: text.length, ROW_VIDEO_ID: v.id }, "item/playlist_search");
+	});
+	rows.splice(at, 1, ...listed);
+	if (!p.description) rows.splice(rows.findIndex((r: any) => r.lockupContentMetadataRowExtension?.contentType === "METADATA_ROW_CONTENT_TYPE_DESCRIPTION"), 1);
+	return fill(t, {
+		...baseVars(viewer),
+		PLAYLIST_ID: p.id,
+		TITLE: p.title,
+		VIDEO_COUNT: plural(p.video_count, "video"),
+		FIRST_VIDEO_ID: p.first_video,
+		THUMBS: [{ url: thumb(p.first_video), width: 480, height: 270 }],
+		CHANNEL_ID: p.owner_channel,
+		CHANNEL_NAME: p.owner_title,
+		CHANNEL_NAME_LENGTH: p.owner_title.length,
+		CHANNEL_URL: `/@${p.owner_handle}`,
+		DESCRIPTION_SHORT: p.description.length > 160 ? `${p.description.slice(0, 157)}...` : p.description,
+	}, "item/playlist_search");
 }
 
 export async function channelPlaylistsGrid(c: Channel, viewer: Viewer) {

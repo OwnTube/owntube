@@ -32,20 +32,25 @@ export async function relatedVideos(video: Video, limit: number, offset = 0): Pr
 		order by (v.channel_id = ${video.channel_id}) desc, v.published_at desc, v.id limit ${limit} offset ${offset}`) as Video[];
 }
 
-export async function searchVideos(query: string, limit: number, offset: number, sort: "relevance" | "date" | "views" = "relevance"): Promise<Video[]> {
+export type VideoSearch = { sort?: "relevance" | "date" | "views"; since?: Date; minMs?: number; maxMs?: number };
+
+export async function searchVideos(query: string, limit: number, offset: number, opts: VideoSearch = {}): Promise<Video[]> {
 	const q = query.trim();
 	const like = `%${q.replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
-	const order = sort === "date" ? sql`v.published_at desc` : sort === "views" ? sql`v.view_count desc` : sql`ts_rank(v.search, plainto_tsquery('simple', ${q})) desc, v.view_count desc`;
+	const order = opts.sort === "date" ? sql`v.published_at desc` : opts.sort === "views" ? sql`v.view_count desc` : sql`ts_rank(v.search, plainto_tsquery('simple', ${q})) desc, v.view_count desc`;
+	const since = opts.since ? sql`and v.published_at >= ${opts.since}` : sql``;
+	const min = opts.minMs !== undefined ? sql`and v.duration_ms >= ${opts.minMs}` : sql``;
+	const max = opts.maxMs !== undefined ? sql`and v.duration_ms < ${opts.maxMs}` : sql``;
 	return (await sql`select ${VIDEO_COLUMNS} from videos v join channels c on c.id = v.channel_id
-		where ${LISTED} and (v.search @@ plainto_tsquery('simple', ${q}) or v.title ilike ${like} or c.title ilike ${like})
+		where ${LISTED} and (v.search @@ plainto_tsquery('simple', ${q}) or v.title ilike ${like} or c.title ilike ${like}) ${since} ${min} ${max}
 		order by ${order}, v.id limit ${limit} offset ${offset}`) as Video[];
 }
 
-export async function searchChannels(query: string, limit: number): Promise<Channel[]> {
+export async function searchChannels(query: string, limit: number, offset = 0): Promise<Channel[]> {
 	const like = `%${query.trim().replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
 	return (await sql`select c.*, (select count(*)::int from subscriptions s where s.channel_id = c.id) as subscriber_count,
 		(select count(*)::int from videos v where v.channel_id = c.id and ${LISTED}) as video_count
-		from channels c where c.title ilike ${like} or c.handle ilike ${like} order by subscriber_count desc limit ${limit}`) as Channel[];
+		from channels c where c.title ilike ${like} or c.handle ilike ${like} order by subscriber_count desc, c.id limit ${limit} offset ${offset}`) as Channel[];
 }
 
 export async function channelVideos(channelId: string, viewer: Viewer, limit: number, offset: number, sort: "newest" | "popular" | "oldest" = "newest"): Promise<Video[]> {

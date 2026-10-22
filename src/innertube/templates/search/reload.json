@@ -1,0 +1,25 @@
+{
+	"estimatedResults": "{{ESTIMATED}}",
+	"onResponseReceivedCommands": [
+		{
+			"reloadContinuationItemsCommand": {
+				"targetId": "search-page",
+				"continuationItems": [
+					"{{BODY}}"
+				],
+				"slot": "RELOAD_CONTINUATION_SLOT_BODY",
+				"replaceWithFirstItem": true
+			}
+		},
+		{
+			"reloadContinuationItemsCommand": {
+				"targetId": "search-page",
+				"continuationItems": [
+					"{{HEADER}}"
+				],
+				"slot": "RELOAD_CONTINUATION_SLOT_HEADER",
+				"replaceWithFirstItem": true
+			}
+		}
+	]
+}

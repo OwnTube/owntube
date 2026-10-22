@@ -478,7 +478,7 @@ function playlistLockup(sample: any, extra: [string, string][] = [], extraIds: [
 		[pid, "PLAYLIST_ID"],
 		[title, "TITLE"],
 		[badge?.text, "VIDEO_COUNT"],
-		[firstVideo, "FIRST_VIDEO_ID"],
+		[firstVideo?.startsWith("{{") ? "" : firstVideo, "FIRST_VIDEO_ID"],
 	];
 	for (const p of findAll(lv.metadata, "metadataParts").flat()) {
 		const t = contentOf(p.text);
@@ -876,6 +876,181 @@ function watch() {
 }
 
 // ======================================================================
+// search
+// chips and filters this instance can apply are kept (All, Videos, Recently
+// uploaded; type, duration, upload date, prioritize); Shorts, Live,
+// Unwatched and the Features group are left out, as are Shorts shelves
+const SEARCH_CHIPS: Record<string, string> = { All: "ALL", Videos: "VIDEOS", "Recently uploaded": "RECENT" };
+const SEARCH_FILTERS: Record<string, string> = {
+	Videos: "TYPE_VIDEO",
+	Channels: "TYPE_CHANNEL",
+	Playlists: "TYPE_PLAYLIST",
+	"Under 3 minutes": "DUR_SHORT",
+	"3 - 20 minutes": "DUR_MEDIUM",
+	"Over 20 minutes": "DUR_LONG",
+	Today: "DATE_TODAY",
+	"This week": "DATE_WEEK",
+	"This month": "DATE_MONTH",
+	"This year": "DATE_YEAR",
+	Relevance: "SORT_RELEVANCE",
+	Popularity: "SORT_POPULARITY",
+};
+
+// a classic videoRenderer (search results)
+function videoRendererTpl(sample: any) {
+	const v = clean(sample).videoRenderer;
+	const id: string = v.videoId;
+	const title = contentOf(v.title);
+	const by = v.longBylineText.runs[0];
+	for (const k of ["badges", "ownerBadges", "richThumbnail", "inlinePlaybackEndpoint", "expandableMetadata", "searchVideoResultEntityKey"]) delete v[k];
+	// the watch params carry the search context; no download here
+	delete v.navigationEndpoint.watchEndpoint.params;
+	v.menu.menuRenderer.items = v.menu.menuRenderer.items.filter((it: any) => !it.menuServiceItemDownloadRenderer);
+	v.detailedMetadataSnippets = [{ snippetText: { runs: [{ text: "{{SNIPPET}}" }] }, snippetHoverText: { runs: [{ text: "From the video description" }] }, maxOneLine: false }];
+	wholeToken(v.thumbnail, "thumbnails", "SEARCH_THUMBS");
+	wholeToken(v, "thumbnails", "AVATAR_68", (h) => /ggpht/.test(JSON.stringify(h.thumbnails)));
+	wholeToken(v, "sources", "AVATAR_68", (h) => /ggpht/.test(JSON.stringify(h.sources)));
+	let item = strings(dropKey({ videoRenderer: v }, "playerParams"), (x) => (x === `Go to channel ${by.text}` ? "Go to channel {{CHANNEL_NAME}}" : x));
+	item = tokenize(
+		item,
+		[[id, "VIDEO_ID"], [title, "TITLE"], [by.navigationEndpoint.browseEndpoint.browseId, "CHANNEL_ID"], [by.navigationEndpoint.browseEndpoint.canonicalBaseUrl, "CHANNEL_URL"], [v.lengthText.accessibility.accessibilityData.label, "DURATION_LABEL"], [contentOf(v.viewCountText), "VIEWS_FULL"]],
+		[[id, "VIDEO_ID"], [by.navigationEndpoint.browseEndpoint.browseId, "CHANNEL_ID"]],
+		[[by.text, "CHANNEL_NAME"], [contentOf(v.publishedTimeText), "PUBLISHED_FULL"], [contentOf(v.lengthText), "DURATION"], [contentOf(v.shortViewCountText), "VIEWS_SHORT"], [v.shortViewCountText?.accessibility?.accessibilityData?.label, "VIEWS_SHORT_LABEL"]],
+	);
+	return { item: strings(item, (x) => x.replace(/&pp=[^&"]*/, "")), samples: [id, title, by.text] };
+}
+
+function searchPage(dir: string, signedIn: boolean) {
+	const p = pageOnly(pageVar(body(dir, /results\.resp$/)));
+	const sl = p.contents.twoColumnSearchResultsRenderer.primaryContents.sectionListRenderer;
+	const all = sl.contents.flatMap((c: any) => c.itemSectionRenderer?.contents ?? []);
+	const query: string = find(p, "searchFilterRenderer").navigationEndpoint.searchEndpoint.query;
+	const io = signedIn ? "in" : "out";
+	const video = videoRendererTpl(all.find((it: any) => it.videoRenderer));
+	save(`item/video_search_${io}`, video.item, video.samples);
+	if (!signedIn) {
+		const pl = all.find((it: any) => it.lockupViewModel?.contentType === "LOCKUP_CONTENT_TYPE_PLAYLIST");
+		const plId: string = pl.lockupViewModel.contentId;
+		const pt = playlistSearchTpl(pl);
+		save("item/playlist_search", pt.out, [plId, ...pt.samples]);
+		const cont = clean(sl.contents.find((c: any) => c.continuationItemRenderer));
+		find(cont, "continuationCommand").token = "{{CONTINUATION}}";
+		save("item/continuation_search", cont);
+	}
+	sl.contents = [{ itemSectionRenderer: { contents: "{{ITEMS}}" } }, "{{CONTINUATION_ITEM}}"];
+	p.estimatedResults = "{{ESTIMATED}}";
+	const h = p.header.searchHeaderRenderer;
+	const chips = h.chipBar.chipCloudRenderer;
+	chips.chips = chips.chips.filter((c: any) => SEARCH_CHIPS[contentOf(c.chipCloudChipRenderer.text)]);
+	for (const c of chips.chips) {
+		const r = c.chipCloudChipRenderer;
+		const k = SEARCH_CHIPS[contentOf(r.text)];
+		r.isSelected = `{{CHIP_${k}_SELECTED}}`;
+		r.navigationEndpoint = { commandMetadata: { webCommandMetadata: { sendPost: true, apiUrl: "/youtubei/v1/search" } }, continuationCommand: { token: `{{CHIP_${k}}}`, request: "CONTINUATION_REQUEST_TYPE_SEARCH", command: { showReloadUiCommand: { targetId: "search-feed" } } } };
+	}
+	const groups = find(h, "searchFilterOptionsDialogRenderer").groups;
+	const kept = groups.filter((g: any) => contentOf(g.searchFilterGroupRenderer.title) !== "Features");
+	for (const g of kept) {
+		const gr = g.searchFilterGroupRenderer;
+		gr.filters = gr.filters.filter((f: any) => SEARCH_FILTERS[contentOf(f.searchFilterRenderer.label)]);
+		for (const f of gr.filters) {
+			const r = f.searchFilterRenderer;
+			const k = SEARCH_FILTERS[contentOf(r.label)];
+			r.status = `{{F_${k}_STATUS}}`;
+			r.navigationEndpoint = { commandMetadata: { webCommandMetadata: { url: `/results?search_query={{QUERY_URL}}&sp={{F_${k}}}`, webPageType: "WEB_PAGE_TYPE_SEARCH", rootVe: 4724 } }, searchEndpoint: { query: "{{QUERY}}", params: `{{F_${k}}}` } };
+		}
+	}
+	find(h, "searchFilterOptionsDialogRenderer").groups = kept;
+	save(`search/page_${io}`, tokenize(p, [[query, "QUERY"]]), [query]);
+	if (!signedIn) {
+		// a chip tap reloads the results and the header
+		const reload = clean(JSON.parse(body("search-chips", /^005-.*search\.resp$/)));
+		const cmds = reload.onResponseReceivedCommands;
+		for (const c of cmds) c.reloadContinuationItemsCommand.continuationItems = c.reloadContinuationItemsCommand.slot === "RELOAD_CONTINUATION_SLOT_HEADER" ? ["{{HEADER}}"] : ["{{BODY}}"];
+		save("search/reload", { estimatedResults: "{{ESTIMATED}}", onResponseReceivedCommands: cmds });
+		// channel results (signed out; signed in, the subscribe button is swapped)
+		const ep = pageVar(body("results-empty", /^001-/));
+		const ch = clean(ep.contents.twoColumnSearchResultsRenderer.primaryContents.sectionListRenderer.contents[0].itemSectionRenderer.contents.find((i: any) => i.channelRenderer));
+		const cr = ch.channelRenderer;
+		const handle = contentOf(cr.subscriberCountText);
+		wholeToken(cr, "thumbnails", "AVATAR_88_176");
+		cr.descriptionSnippet = { runs: [{ text: "{{DESCRIPTION_SHORT}}" }] };
+		const chSignIn = find(cr, "signInEndpoint");
+		delete chSignIn.continueAction;
+		delete chSignIn.idamTag;
+		chSignIn.nextEndpoint.commandMetadata.webCommandMetadata.url = "/results?search_query={{QUERY_URL}}";
+		chSignIn.nextEndpoint.searchEndpoint.query = "{{QUERY}}";
+		const chPairs: [string, string][] = [[cr.channelId, "CHANNEL_ID"], [cr.navigationEndpoint.browseEndpoint.canonicalBaseUrl, "CHANNEL_URL"]];
+		const chExact: [string, string][] = [[contentOf(cr.title), "CHANNEL_NAME"], [handle, "AT_HANDLE"], [contentOf(cr.videoCountText), "SUBSCRIBERS"], [cr.videoCountText.accessibility.accessibilityData.label, "SUBSCRIBERS_LABEL"]];
+		save("item/channel_search", tokenize(ch, chPairs, [[cr.channelId, "CHANNEL_ID"]], chExact), [cr.channelId, contentOf(cr.title)]);
+	}
+}
+
+// a playlist search result: byline, the first videos, "View full playlist"
+// and the description. The first video row is the sample for every row
+// (builders repeat it); the others are dropped
+function playlistSearchTpl(sample: any) {
+	const item = clean(sample);
+	const lv = item.lockupViewModel;
+	const rows = lv.metadata.lockupMetadataViewModel.metadata.contentMetadataViewModel.metadataRows;
+	const by = rows[0].metadataParts[0];
+	const chCmd = by.text.commandRuns[0].onTap.innertubeCommand;
+	const pairs: [string, string][] = [[chCmd.browseEndpoint.browseId, "CHANNEL_ID"], [chCmd.browseEndpoint.canonicalBaseUrl, "CHANNEL_URL"]];
+	const samples = [by.text.content, chCmd.browseEndpoint.browseId];
+	by.text.content = "{{CHANNEL_NAME}}";
+	by.text.commandRuns[0].length = by.text.styleRuns[0].length = "{{CHANNEL_NAME_LENGTH}}";
+	delete by.icon; // verification badge
+	const videoRows = rows.filter((r: any) => find(r, "watchEndpoint"));
+	const vr = videoRows[0].metadataParts[0];
+	const vCmd = vr.text.commandRuns[0].onTap.innertubeCommand;
+	samples.push(vr.text.content, ...videoRows.slice(1).map((r: any) => r.metadataParts[0].text.content));
+	vr.text.content = "{{ROW_TEXT}}";
+	vr.text.commandRuns[0].length = "{{ROW_TEXT_LENGTH}}";
+	if (vr.text.styleRuns) vr.text.styleRuns[0].length = "{{ROW_TEXT_LENGTH}}";
+	vCmd.commandMetadata.webCommandMetadata.url = "/watch?v={{ROW_VIDEO_ID}}&list={{PLAYLIST_ID}}";
+	vCmd.watchEndpoint.videoId = "{{ROW_VIDEO_ID}}";
+	delete vCmd.watchEndpoint.playerParams;
+	const desc = rows.find((r: any) => r.lockupContentMetadataRowExtension?.contentType === "METADATA_ROW_CONTENT_TYPE_DESCRIPTION");
+	if (desc) {
+		samples.push(desc.metadataParts[0].text.content);
+		desc.metadataParts[0].text.content = "{{DESCRIPTION_SHORT}}";
+	}
+	lv.metadata.lockupMetadataViewModel.metadata.contentMetadataViewModel.metadataRows = rows.filter((r: any) => !videoRows.slice(1).includes(r));
+	// thumbnail and title play the playlist from its first video
+	const first: string = lv.rendererContext.commandContext.onTap.innertubeCommand.watchEndpoint.videoId;
+	samples.push(first);
+	const prepared = strings(dropKey(dropKey(item, "playerParams"), "loggingContext"), (x) => x.split(first).join("{{FIRST_VIDEO_ID}}").replace(/&pp=[^&"]*/, ""));
+	const out = playlistLockup(prepared, pairs, [[chCmd.browseEndpoint.browseId, "CHANNEL_ID"]]);
+	return { out, samples };
+}
+
+// the signed-in subscribe button (subscribeButtonRenderer), as channel
+// results and the watch page use it
+function subscribeRenderer() {
+	const p = clean(pageVar(body("in-watch", /^001-/)));
+	const sec = p.contents.twoColumnWatchNextResults.results.results.contents[1].videoSecondaryInfoRenderer;
+	const owner = sec.owner.videoOwnerRenderer;
+	const chId: string = owner.navigationEndpoint.browseEndpoint.browseId;
+	const chName = contentOf(owner.title);
+	const vid: string = p.currentVideoEndpoint.watchEndpoint.videoId;
+	const b = sec.subscribeButton;
+	b.subscribeButtonRenderer.subscribed = "{{SUBSCRIBED}}";
+	const out = tokenize(
+		b,
+		[[chId, "CHANNEL_ID"], [`Subscribe to ${chName}.`, "SUBSCRIBE_LABEL"], [`Unsubscribe from ${chName}.`, "UNSUBSCRIBE_LABEL"], [`notification setting for ${chName}`, "BELL_LABEL_SUFFIX"]],
+		[[chId, "CHANNEL_ID"], [vid, "VIDEO_ID"]],
+		[[chName, "CHANNEL_NAME"]],
+	);
+	save("item/subscribe_button_renderer", out, [chId, chName, vid]);
+}
+
+function search() {
+	searchPage("results", false);
+	searchPage("in-results", true);
+	subscribeRenderer();
+}
+
+// ======================================================================
 const only = process.argv.slice(2);
 personalValues();
 const steps: [string, () => void][] = [
@@ -885,6 +1060,7 @@ const steps: [string, () => void][] = [
 	["chrome", chrome],
 	["feeds", feeds],
 	["watch", watch],
+	["search", search],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;
