@@ -259,8 +259,8 @@
 																			}
 																		}
 																	],
-																	"sectionIdentifier": "6b08d60e-0000-2b06-a88c-b8db38f48582",
-																	"targetId": "6b08d60e-0000-2b06-a88c-b8db38f48582"
+																	"sectionIdentifier": "{{ABOUT_TARGET}}",
+																	"targetId": "{{ABOUT_TARGET}}"
 																}
 															}
 														],

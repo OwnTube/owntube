@@ -370,6 +370,9 @@ function channel() {
 	// the About panel loads through a continuation
 	const aboutCont = find(d, "continuationCommand");
 	aboutCont.token = "{{ABOUT_CONTINUATION}}";
+	// the About content is appended to the panel's item section by its id
+	const aboutSection = find(d, "itemSectionRenderer");
+	aboutSection.sectionIdentifier = aboutSection.targetId = "{{ABOUT_TARGET}}";
 	// header link: first custom link of the channel
 	const attr = h.content.pageHeaderViewModel.attribution.attributionViewModel;
 	attr.text.content = " {{LINK_TEXT}}";
@@ -495,6 +498,7 @@ function channel() {
 	// --- About panel ---
 	const about = clean(JSON.parse(body("channel-about", /007-.*browse/)));
 	const avm = find(about, "aboutChannelViewModel");
+	find(about, "appendContinuationItemsAction").targetId = "{{ABOUT_TARGET}}";
 	const aboutPairs: [string, string][] = [
 		...channelPairs(),
 		[avm.country, "COUNTRY"],

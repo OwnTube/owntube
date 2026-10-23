@@ -93,7 +93,7 @@ export async function channelHeader(c: Channel, viewer: Viewer, vars: Vars) {
 	const shown = first ? linkText(first.url) : "";
 	const more = c.links.length > 1 ? ` and ${c.links.length - 1} more link${c.links.length > 2 ? "s" : ""}` : "";
 	// link and banner parts are removed below when the channel has none
-	const header = make("channel/header", { ...vars, VIDEO_COUNT_LENGTH: String(vars.VIDEO_COUNT).length, ABOUT_CONTINUATION: encodeToken({ k: "about", c: c.id }), LINK_TEXT: `${shown}${more}`, LINK_TEXT_LENGTH: shown.length + 1, LINK_URL: first?.url ?? "", BANNER: [] });
+	const header = make("channel/header", { ...vars, VIDEO_COUNT_LENGTH: String(vars.VIDEO_COUNT).length, ABOUT_CONTINUATION: encodeToken({ k: "about", c: c.id }), ABOUT_TARGET: aboutTarget(c), LINK_TEXT: `${shown}${more}`, LINK_TEXT_LENGTH: shown.length + 1, LINK_URL: first?.url ?? "", BANNER: [] });
 	const ph = header.content.pageHeaderViewModel;
 	if (!c.banner_path) delete ph.banner;
 	else ph.banner.imageBannerViewModel.image.sources = [1060, 1138, 1707, 2120, 2276, 2560].map((w) => ({ url: `${PUBLIC_ORIGIN}/ggpht/${c.id}/banner=w${w}-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj`, width: w, height: Math.round((w * 424) / 2560) }));
@@ -139,7 +139,8 @@ export async function channelPage(c: Channel, tab: ChannelTab, viewer: Viewer) {
 	};
 }
 
-// the About dialog's content
+// the About dialog's content, appended to the dialog's section by this id
+const aboutTarget = (c: Channel) => `about-${c.id}`;
 export async function aboutPanel(c: Channel, viewer: Viewer) {
 	const [{ views }] = await (await import("../db")).sql`select coalesce(sum(view_count), 0)::bigint as views from videos where channel_id = ${c.id} and deleted_at is null and visibility = 'public' and playable`;
 	const joined = `Joined ${dateText(c.created_at)}`;
@@ -149,6 +150,7 @@ export async function aboutPanel(c: Channel, viewer: Viewer) {
 		VIEW_COUNT: `${grouped(Number(views))} views`,
 		JOINED: joined,
 		JOINED_LENGTH: joined.length,
+		ABOUT_TARGET: aboutTarget(c),
 		COUNTRY: "",
 		LINKS: c.links.map((l) => {
 			const shown = linkText(l.url);
@@ -157,6 +159,8 @@ export async function aboutPanel(c: Channel, viewer: Viewer) {
 	});
 	const avm = fill(r, {}).onResponseReceivedEndpoints[0].appendContinuationItemsAction.continuationItems[0].aboutChannelRenderer.metadata.aboutChannelViewModel;
 	delete avm.country;
+	// the channel's address on this site, as YouTube shows its own (no scheme)
+	avm.displayCanonicalChannelUrl = `${new URL(PUBLIC_ORIGIN).host}/@${c.handle}`;
 	if (!c.links.length) {
 		delete avm.links;
 		delete avm.customLinksLabel;

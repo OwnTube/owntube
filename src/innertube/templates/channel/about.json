@@ -198,7 +198,7 @@
 						}
 					}
 				],
-				"targetId": "6b14db59-0000-2ca6-be6c-582429bfa788"
+				"targetId": "{{ABOUT_TARGET}}"
 			}
 		}
 	]
