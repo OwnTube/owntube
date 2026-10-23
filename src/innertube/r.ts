@@ -34,6 +34,7 @@ export type Channel = {
 	description: string;
 	avatar_path: string | null;
 	banner_path: string | null;
+	links: { title: string; url: string }[];
 	created_at: Date;
 	subscriber_count: number;
 	video_count: number;

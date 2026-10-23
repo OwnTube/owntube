@@ -1814,6 +1814,18 @@ function studioComments() {
 	save("studio/comments_section", section);
 }
 
+// Customization (channel_edit/get_channel_page_settings): what every channel
+// shares (the Home tab's default shelves, the pronoun and language lists,
+// the flags); the channel's own name, handle, pictures, description and
+// links are filled per request
+function studioChannelEditing() {
+	const [[req, res]] = bodies("studio-editing", /channel_edit_get_channel_page_settings\.resp$/);
+	const data = clean(res.channelPageSettingsData);
+	personal.push(req.post.externalChannelId, data.handle?.handle, data.brandTitle?.original);
+	for (const k of ["externalChannelId", "brandTitle", "personalTitle", "handle", "vanityUrl", "vanityId", "description", "banner", "animatedBanner", "userSetProfilePicture", "defaultProfilePicture", "channelLinksInfo", "businessEmail"]) delete data[k];
+	save("studio/channel_page_settings", data);
+}
+
 // ======================================================================
 
 // ======================================================================
@@ -2147,6 +2159,7 @@ const steps: [string, () => void][] = [
 	["studio-dashboard", studioDashboard],
 	["studio-analytics", studioAnalytics],
 	["studio-comments", studioComments],
+	["studio-editing", studioChannelEditing],
 	["badges", badges],
 	["settings", settingsPages],
 	["switcher", accountSwitcher],

@@ -1,0 +1,1632 @@
+{
+	"status": {
+		"statusCode": "CREATOR_ENTITY_STATUS_OK"
+	},
+	"trailerVideoInfo": {},
+	"featuredVideoInfo": {},
+	"shelfInfo": [
+		{
+			"itemsCount": 1,
+			"predefinedShelfInfo": {
+				"type": "SHELF_TYPE_FOR_YOU",
+				"saved": true,
+				"forYouShelfInfo": {
+					"includeLongFormVideos": true,
+					"includeShorts": true,
+					"includeLivestreams": true,
+					"contentRecency": "FOR_YOU_CONTENT_RECENCY_NONE"
+				}
+			}
+		},
+		{
+			"itemsCount": 0,
+			"predefinedShelfInfo": {
+				"type": "SHELF_TYPE_RECENT_UPLOADS",
+				"saved": true
+			}
+		},
+		{
+			"itemsCount": 0,
+			"predefinedShelfInfo": {
+				"type": "SHELF_TYPE_SHORT_MOBILE_VIDEOS_UPLOADS",
+				"saved": true
+			}
+		},
+		{
+			"itemsCount": 0,
+			"predefinedShelfInfo": {
+				"type": "SHELF_TYPE_LIVE_EVENTS_PREVIOUS",
+				"saved": true
+			}
+		},
+		{
+			"itemsCount": 0,
+			"predefinedShelfInfo": {
+				"type": "SHELF_TYPE_CREATED_PLAYLISTS",
+				"saved": true
+			}
+		},
+		{
+			"itemsCount": 0,
+			"predefinedShelfInfo": {
+				"type": "SHELF_TYPE_RECENT_POSTS",
+				"saved": true
+			}
+		},
+		{
+			"itemsCount": 0,
+			"predefinedShelfInfo": {
+				"type": "SHELF_TYPE_VIDEO_COLLABORATIONS",
+				"saved": true
+			}
+		},
+		{
+			"itemsCount": 0,
+			"predefinedShelfInfo": {
+				"type": "SHELF_TYPE_POPULAR_UPLOADS",
+				"saved": false
+			}
+		},
+		{
+			"itemsCount": 0,
+			"predefinedShelfInfo": {
+				"type": "SHELF_TYPE_LIVE_EVENTS_CURRENT",
+				"saved": false
+			}
+		},
+		{
+			"itemsCount": 0,
+			"predefinedShelfInfo": {
+				"type": "SHELF_TYPE_LIVE_EVENTS_UPCOMING",
+				"saved": false
+			}
+		},
+		{
+			"itemsCount": 0,
+			"predefinedShelfInfo": {
+				"type": "SHELF_TYPE_SUBSCRIPTIONS",
+				"saved": false
+			}
+		},
+		{
+			"itemsCount": 0,
+			"predefinedShelfInfo": {
+				"type": "SHELF_TYPE_POPULAR_CLIPS",
+				"saved": false
+			}
+		}
+	],
+	"titleWriteable": true,
+	"canUseAnyVideoAsTrailer": false,
+	"maxShelves": 12,
+	"profilePictureWriteable": true,
+	"isDasherUser": false,
+	"isTitleCanonical": true,
+	"isAvatarCanonical": true,
+	"disableCustomUrlClaiming": true,
+	"pronouns": {
+		"allPronounsInfo": [
+			{
+				"pronounsOption": "PRONOUNS_OPTION_COS",
+				"displayString": "cos",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_6",
+				"displayString": "TA 的",
+				"languageCodes": [
+					"zh-CN",
+					"zh-HK"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_9",
+				"displayString": "X也们的",
+				"languageCodes": [
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_2",
+				"displayString": "TA 们",
+				"languageCodes": [
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZIJN",
+				"displayString": "zijn",
+				"languageCodes": [
+					"nl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IW_4",
+				"displayString": "אתן",
+				"languageCodes": [
+					"iw"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_EL_3",
+				"displayString": "η",
+				"languageCodes": [
+					"el"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_AER",
+				"displayString": "aer",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_EL_6",
+				"displayString": "αυτές",
+				"languageCodes": [
+					"el"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HERS",
+				"displayString": "hers",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_YIR",
+				"displayString": "yir",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IS_3",
+				"displayString": "hán",
+				"languageCodes": [
+					"is"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_FR_3",
+				"displayString": "iels",
+				"languageCodes": [
+					"fr"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IT_1",
+				"displayString": "lo",
+				"languageCodes": [
+					"it"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_FR_4",
+				"displayString": "elle",
+				"languageCodes": [
+					"fr"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_DE_4",
+				"displayString": "sie",
+				"languageCodes": [
+					"de"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_VI_1",
+				"displayString": "Anh ấy",
+				"languageCodes": [
+					"vi"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_AR_1",
+				"displayString": "هو",
+				"languageCodes": [
+					"ar"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ES_3",
+				"displayString": "ella",
+				"languageCodes": [
+					"ca",
+					"es"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_AR_6",
+				"displayString": "أنتم",
+				"languageCodes": [
+					"ar"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HULLE",
+				"displayString": "hulle",
+				"languageCodes": [
+					"af"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PT_6",
+				"displayString": "delu",
+				"languageCodes": [
+					"pt"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_11",
+				"displayString": "X也們的",
+				"languageCodes": [
+					"zh-HK"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_18",
+				"displayString": "他们",
+				"languageCodes": [
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HAN",
+				"displayString": "han",
+				"languageCodes": [
+					"no",
+					"sv",
+					"da"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HEM",
+				"displayString": "hem",
+				"languageCodes": [
+					"nl",
+					"da"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_4",
+				"displayString": "TA 們",
+				"languageCodes": [
+					"zh-HK"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_TH_5",
+				"displayString": "เรา",
+				"languageCodes": [
+					"th"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_EIR",
+				"displayString": "eir",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_EL_1",
+				"displayString": "ο",
+				"languageCodes": [
+					"el"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_TH_6",
+				"displayString": "ฉัน",
+				"languageCodes": [
+					"th"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_VI_3",
+				"displayString": "Họ",
+				"languageCodes": [
+					"vi"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HIS",
+				"displayString": "his",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IT",
+				"displayString": "it",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZIR",
+				"displayString": "zir",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_DE_2",
+				"displayString": "ihn",
+				"languageCodes": [
+					"de"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HER",
+				"displayString": "her",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_XYR",
+				"displayString": "xyr",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IW_8",
+				"displayString": "הן",
+				"languageCodes": [
+					"iw"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_THEY",
+				"displayString": "they",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IL",
+				"displayString": "il",
+				"languageCodes": [
+					"fr"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_SHE",
+				"displayString": "she",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_27",
+				"displayString": "她們的",
+				"languageCodes": [
+					"zh-HK",
+					"zh-TW"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_VE",
+				"displayString": "ve",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_SY",
+				"displayString": "sy",
+				"languageCodes": [
+					"af"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HIJ",
+				"displayString": "hij",
+				"languageCodes": [
+					"nl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PT_4",
+				"displayString": "dela",
+				"languageCodes": [
+					"pt"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_20",
+				"displayString": "他們",
+				"languageCodes": [
+					"zh-HK",
+					"zh-TW"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PL_8",
+				"displayString": "on_",
+				"languageCodes": [
+					"pl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZE",
+				"displayString": "ze",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_XHE",
+				"displayString": "xhe",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_DE_1",
+				"displayString": "er",
+				"languageCodes": [
+					"de"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IW_5",
+				"displayString": "אתם",
+				"languageCodes": [
+					"iw"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_EM",
+				"displayString": "em",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_5",
+				"displayString": "TA 們的",
+				"languageCodes": [
+					"zh-HK"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IW_1",
+				"displayString": "הוא",
+				"languageCodes": [
+					"iw"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_AE",
+				"displayString": "ae",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IW_2",
+				"displayString": "אתה",
+				"languageCodes": [
+					"iw"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_EL_2",
+				"displayString": "αυτός",
+				"languageCodes": [
+					"el"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_EL_9",
+				"displayString": "το",
+				"languageCodes": [
+					"el"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_VER",
+				"displayString": "ver",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_12",
+				"displayString": "X也的",
+				"languageCodes": [
+					"zh-CN",
+					"zh-HK"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HAM",
+				"displayString": "ham",
+				"languageCodes": [
+					"da",
+					"no"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PL_9",
+				"displayString": "je_",
+				"languageCodes": [
+					"pl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_NE",
+				"displayString": "ne",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ES_2",
+				"displayString": "ellas",
+				"languageCodes": [
+					"es"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_NIR",
+				"displayString": "nir",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ON",
+				"displayString": "on",
+				"languageCodes": [
+					"cs",
+					"pl",
+					"hr",
+					"sl",
+					"sk"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_26",
+				"displayString": "她們",
+				"languageCodes": [
+					"zh-HK",
+					"zh-TW"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HIR",
+				"displayString": "hir",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HAAR",
+				"displayString": "haar",
+				"languageCodes": [
+					"af",
+					"nl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_FR_2",
+				"displayString": "iel",
+				"languageCodes": [
+					"fr"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PL_3",
+				"displayString": "one",
+				"languageCodes": [
+					"sl",
+					"pl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_DE_3",
+				"displayString": "sein",
+				"languageCodes": [
+					"de"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_AR_4",
+				"displayString": "أنتِ",
+				"languageCodes": [
+					"ar"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_XEM",
+				"displayString": "xem",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PL_2",
+				"displayString": "jej",
+				"languageCodes": [
+					"pl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_FAE",
+				"displayString": "fae",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_3",
+				"displayString": "TA 们的",
+				"languageCodes": [
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_7",
+				"displayString": "X也",
+				"languageCodes": [
+					"zh-HK",
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IW_3",
+				"displayString": "את",
+				"languageCodes": [
+					"iw"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_VI_2",
+				"displayString": "Cô ấy",
+				"languageCodes": [
+					"vi"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_TH_1",
+				"displayString": "เขา",
+				"languageCodes": [
+					"th"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_AR_5",
+				"displayString": "أنتَ",
+				"languageCodes": [
+					"ar"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_VI",
+				"displayString": "vi",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_THONS",
+				"displayString": "thons",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_10",
+				"displayString": "X也們",
+				"languageCodes": [
+					"zh-HK"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_DEN",
+				"displayString": "den",
+				"languageCodes": [
+					"da"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_VIS",
+				"displayString": "vis",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_19",
+				"displayString": "他们的",
+				"languageCodes": [
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ONI",
+				"displayString": "oni",
+				"languageCodes": [
+					"sk",
+					"sl",
+					"cs",
+					"hr",
+					"pl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PL_7",
+				"displayString": "ono",
+				"languageCodes": [
+					"pl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PL_10",
+				"displayString": "onx",
+				"languageCodes": [
+					"cs",
+					"pl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PL_11",
+				"displayString": "jex",
+				"languageCodes": [
+					"pl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_25",
+				"displayString": "她们的",
+				"languageCodes": [
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_28",
+				"displayString": "她的",
+				"languageCodes": [
+					"zh-HK",
+					"zh-CN",
+					"zh-TW"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IW_7",
+				"displayString": "היא",
+				"languageCodes": [
+					"iw"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PT_5",
+				"displayString": "elu",
+				"languageCodes": [
+					"pt"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_24",
+				"displayString": "她们",
+				"languageCodes": [
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ELL",
+				"displayString": "ell",
+				"languageCodes": [
+					"ca"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_31",
+				"displayString": "无也们的",
+				"languageCodes": [
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PT_8",
+				"displayString": "dile",
+				"languageCodes": [
+					"pt"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ES_4",
+				"displayString": "elle",
+				"languageCodes": [
+					"es"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_NERS",
+				"displayString": "ners",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_22",
+				"displayString": "他的",
+				"languageCodes": [
+					"zh-HK",
+					"zh-TW",
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_CS_1",
+				"displayString": "oni*y",
+				"languageCodes": [
+					"cs"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_VEM",
+				"displayString": "vem",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_16",
+				"displayString": "ㄊㄚ的",
+				"languageCodes": [
+					"zh-TW"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HUN",
+				"displayString": "hun",
+				"languageCodes": [
+					"no",
+					"nl",
+					"da"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HEN",
+				"displayString": "hen",
+				"languageCodes": [
+					"no",
+					"da",
+					"sv",
+					"nl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_17",
+				"displayString": "他",
+				"languageCodes": [
+					"zh-TW",
+					"zh-CN",
+					"zh-HK"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PL_4",
+				"displayString": "ich",
+				"languageCodes": [
+					"pl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PT_7",
+				"displayString": "ilê",
+				"languageCodes": [
+					"pt"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_THEM",
+				"displayString": "them",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_13",
+				"displayString": "ㄊㄚ",
+				"languageCodes": [
+					"zh-TW"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_DEM",
+				"displayString": "dem",
+				"languageCodes": [
+					"de",
+					"da"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PT_2",
+				"displayString": "dele",
+				"languageCodes": [
+					"pt"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_CO",
+				"displayString": "co",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_1",
+				"displayString": "TA",
+				"languageCodes": [
+					"zh-CN",
+					"zh-HK"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ES_1",
+				"displayString": "él",
+				"languageCodes": [
+					"es"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_EL_5",
+				"displayString": "οι",
+				"languageCodes": [
+					"el"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZIE",
+				"displayString": "zie",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IW_6",
+				"displayString": "הם",
+				"languageCodes": [
+					"iw"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_TH_2",
+				"displayString": "เธอ",
+				"languageCodes": [
+					"th"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_FAER",
+				"displayString": "faer",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_DE_5",
+				"displayString": "ihr",
+				"languageCodes": [
+					"de"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_YEM",
+				"displayString": "yem",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_CA_2",
+				"displayString": "elli",
+				"languageCodes": [
+					"ca"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IT_2",
+				"displayString": "lei",
+				"languageCodes": [
+					"it"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_NO_1",
+				"displayString": "henne",
+				"languageCodes": [
+					"no"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_DE_6",
+				"displayString": "dey",
+				"languageCodes": [
+					"de"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_29",
+				"displayString": "无也",
+				"languageCodes": [
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_32",
+				"displayString": "无也的",
+				"languageCodes": [
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_AR_7",
+				"displayString": "أنتنّ",
+				"languageCodes": [
+					"ar"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_NEE",
+				"displayString": "nee",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PERS",
+				"displayString": "pers",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HY",
+				"displayString": "hy",
+				"languageCodes": [
+					"af"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_SL_1",
+				"displayString": "on_a",
+				"languageCodes": [
+					"sl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ES_6",
+				"displayString": "elles",
+				"languageCodes": [
+					"es"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_DE",
+				"displayString": "de",
+				"languageCodes": [
+					"da"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_THON",
+				"displayString": "thon",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_15",
+				"displayString": "ㄊㄚ們的",
+				"languageCodes": [
+					"zh-TW"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PL_6",
+				"displayString": "jenu",
+				"languageCodes": [
+					"pl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_TH_4",
+				"displayString": "พวกเขา",
+				"languageCodes": [
+					"th"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZIJ",
+				"displayString": "zij",
+				"languageCodes": [
+					"nl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IS_2",
+				"displayString": "hún",
+				"languageCodes": [
+					"is"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_AR_2",
+				"displayString": "هي",
+				"languageCodes": [
+					"ar"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HIM",
+				"displayString": "him",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_MER",
+				"displayString": "mer",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IT_4",
+				"displayString": "ləi",
+				"languageCodes": [
+					"it"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_AR_9",
+				"displayString": "هم",
+				"languageCodes": [
+					"ar"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_XE",
+				"displayString": "xe",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HENDE",
+				"displayString": "hende",
+				"languageCodes": [
+					"da"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_14",
+				"displayString": "ㄊㄚ們",
+				"languageCodes": [
+					"zh-TW"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PT_3",
+				"displayString": "ela",
+				"languageCodes": [
+					"pt"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ONY",
+				"displayString": "ony",
+				"languageCodes": [
+					"cs",
+					"sk"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_NIRS",
+				"displayString": "nirs",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_21",
+				"displayString": "他們的",
+				"languageCodes": [
+					"zh-HK",
+					"zh-TW"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ONA",
+				"displayString": "ona",
+				"languageCodes": [
+					"sk",
+					"pl",
+					"hr",
+					"cs",
+					"sl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PER",
+				"displayString": "per",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_HE",
+				"displayString": "he",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_XIS",
+				"displayString": "xis",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_SL_2",
+				"displayString": "one_i",
+				"languageCodes": [
+					"sl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_XIM",
+				"displayString": "xim",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IT_5",
+				"displayString": "lə",
+				"languageCodes": [
+					"it"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_MERS",
+				"displayString": "mers",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_YEIR",
+				"displayString": "yeir",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_AERS",
+				"displayString": "aers",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_EY",
+				"displayString": "ey",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_DIE",
+				"displayString": "die",
+				"languageCodes": [
+					"nl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_EL_7",
+				"displayString": "αυτοί",
+				"languageCodes": [
+					"el"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IS_1",
+				"displayString": "hann",
+				"languageCodes": [
+					"is"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_E",
+				"displayString": "e",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_EL_4",
+				"displayString": "αυτή",
+				"languageCodes": [
+					"el"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_TH_3",
+				"displayString": "พวกเธอ",
+				"languageCodes": [
+					"th"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_VIR",
+				"displayString": "vir",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PL_5",
+				"displayString": "onu",
+				"languageCodes": [
+					"pl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_AR_3",
+				"displayString": "هن",
+				"languageCodes": [
+					"ar"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_THEIRS",
+				"displayString": "theirs",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PT_1",
+				"displayString": "ele",
+				"languageCodes": [
+					"pt"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_30",
+				"displayString": "无也们",
+				"languageCodes": [
+					"zh-CN"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_NER",
+				"displayString": "ner",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_23",
+				"displayString": "她",
+				"languageCodes": [
+					"zh-CN",
+					"zh-TW",
+					"zh-HK"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ES_5",
+				"displayString": "ellos",
+				"languageCodes": [
+					"es"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_FR_1",
+				"displayString": "lui",
+				"languageCodes": [
+					"fr",
+					"it"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ITS",
+				"displayString": "its",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_YE",
+				"displayString": "ye",
+				"languageCodes": [
+					"en"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_IT_3",
+				"displayString": "la",
+				"languageCodes": [
+					"it",
+					"ca"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_PL_1",
+				"displayString": "jego",
+				"languageCodes": [
+					"pl"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_SV_1",
+				"displayString": "hon",
+				"languageCodes": [
+					"sv"
+				]
+			},
+			{
+				"pronounsOption": "PRONOUNS_OPTION_ZH_8",
+				"displayString": "X也们",
+				"languageCodes": [
+					"zh-CN"
+				]
+			}
+		],
+		"allLanguagesInfo": [
+			{
+				"languageCode": "is",
+				"nativeName": "íslenska",
+				"translatedName": "Icelandic"
+			},
+			{
+				"languageCode": "sk",
+				"nativeName": "Slovenčina",
+				"translatedName": "Slovak"
+			},
+			{
+				"languageCode": "en",
+				"nativeName": "English",
+				"translatedName": "English"
+			},
+			{
+				"languageCode": "ar",
+				"nativeName": "العربية",
+				"translatedName": "Arabic"
+			},
+			{
+				"languageCode": "af",
+				"nativeName": "Afrikaans",
+				"translatedName": "Afrikaans"
+			},
+			{
+				"languageCode": "nl",
+				"nativeName": "Nederlands",
+				"translatedName": "Dutch"
+			},
+			{
+				"languageCode": "da",
+				"nativeName": "Dansk",
+				"translatedName": "Danish"
+			},
+			{
+				"languageCode": "it",
+				"nativeName": "Italiano",
+				"translatedName": "Italian"
+			},
+			{
+				"languageCode": "pl",
+				"nativeName": "polski",
+				"translatedName": "Polish"
+			},
+			{
+				"languageCode": "zh-CN",
+				"nativeName": "中文（中国）",
+				"translatedName": "Chinese (China)"
+			},
+			{
+				"languageCode": "es",
+				"nativeName": "Español",
+				"translatedName": "Spanish"
+			},
+			{
+				"languageCode": "zh-HK",
+				"nativeName": "中文（香港）",
+				"translatedName": "Chinese (Hong Kong)"
+			},
+			{
+				"languageCode": "de",
+				"nativeName": "Deutsch",
+				"translatedName": "German"
+			},
+			{
+				"languageCode": "sl",
+				"nativeName": "slovenščina",
+				"translatedName": "Slovenian"
+			},
+			{
+				"languageCode": "th",
+				"nativeName": "ไทย",
+				"translatedName": "Thai"
+			},
+			{
+				"languageCode": "vi",
+				"nativeName": "Tiếng Việt",
+				"translatedName": "Vietnamese"
+			},
+			{
+				"languageCode": "sv",
+				"nativeName": "Svenska",
+				"translatedName": "Swedish"
+			},
+			{
+				"languageCode": "pt",
+				"nativeName": "Português",
+				"translatedName": "Portuguese"
+			},
+			{
+				"languageCode": "no",
+				"nativeName": "norsk",
+				"translatedName": "Norwegian"
+			},
+			{
+				"languageCode": "zh-TW",
+				"nativeName": "中文（台灣）",
+				"translatedName": "Chinese (Taiwan)"
+			},
+			{
+				"languageCode": "fr",
+				"nativeName": "Français",
+				"translatedName": "French"
+			},
+			{
+				"languageCode": "ca",
+				"nativeName": "català",
+				"translatedName": "Catalan"
+			},
+			{
+				"languageCode": "el",
+				"nativeName": "Ελληνικά",
+				"translatedName": "Greek"
+			},
+			{
+				"languageCode": "cs",
+				"nativeName": "Čeština",
+				"translatedName": "Czech"
+			},
+			{
+				"languageCode": "hr",
+				"nativeName": "Hrvatski",
+				"translatedName": "Croatian"
+			},
+			{
+				"languageCode": "iw",
+				"nativeName": "עברית",
+				"translatedName": "Hebrew"
+			}
+		]
+	},
+	"homeTab": {
+		"enabled": false
+	},
+	"isFakeShelfInfo": true,
+	"collaborationsConfig": {
+		"hideNonOwnedCollaborationsFromChannelContent": false
+	}
+}

@@ -75,13 +75,23 @@ async function playlistsTab(c: Channel, viewer: Viewer, vars: Vars) {
 	return { sectionListRenderer: make("channel/playlists_sections", { ...vars, ITEMS: await channelPlaylistLockups(c, viewer), TARGET_ID: `browse-feed${c.id}playlists` }) };
 }
 
+// a link as YouTube writes it beside a channel: no scheme, no trailing slash
+const linkText = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+const linkCommand = (url: string) => ({
+	innertubeCommand: { commandMetadata: { webCommandMetadata: { url, webPageType: "WEB_PAGE_TYPE_UNKNOWN", rootVe: 83769 } }, urlEndpoint: { url, target: "TARGET_NEW_WINDOW", nofollow: true } },
+});
+
 export async function channelHeader(c: Channel, viewer: Viewer, vars: Vars) {
+	// the header names the first link (the About panel lists them all)
+	const first = c.links[0];
+	const shown = first ? linkText(first.url) : "";
+	const more = c.links.length > 1 ? ` and ${c.links.length - 1} more link${c.links.length > 2 ? "s" : ""}` : "";
 	// link and banner parts are removed below when the channel has none
-	const header = make("channel/header", { ...vars, VIDEO_COUNT_LENGTH: String(vars.VIDEO_COUNT).length, ABOUT_CONTINUATION: encodeToken({ k: "about", c: c.id }), LINK_TEXT: "", LINK_TEXT_LENGTH: 0, LINK_URL: "", BANNER: [] });
+	const header = make("channel/header", { ...vars, VIDEO_COUNT_LENGTH: String(vars.VIDEO_COUNT).length, ABOUT_CONTINUATION: encodeToken({ k: "about", c: c.id }), LINK_TEXT: `${shown}${more}`, LINK_TEXT_LENGTH: shown.length + 1, LINK_URL: first?.url ?? "", BANNER: [] });
 	const ph = header.content.pageHeaderViewModel;
 	if (!c.banner_path) delete ph.banner;
 	else ph.banner.imageBannerViewModel.image.sources = [1060, 1138, 1707, 2120, 2276, 2560].map((w) => ({ url: `${PUBLIC_ORIGIN}/ggpht/${c.id}/banner=w${w}-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj`, width: w, height: Math.round((w * 424) / 2560) }));
-	delete ph.attribution; // no channel links stored yet
+	if (!first) delete ph.attribution;
 	if (!c.description) delete ph.description;
 	// signed in: the real subscribe button (or the owner's buttons) in place of the sign-in modal
 	const action = await subscribeAction(c, viewer, vars);
@@ -132,12 +142,17 @@ export async function aboutPanel(c: Channel, viewer: Viewer) {
 		JOINED: joined,
 		JOINED_LENGTH: joined.length,
 		COUNTRY: "",
-		LINKS: [],
+		LINKS: c.links.map((l) => {
+			const shown = linkText(l.url);
+			return { channelExternalLinkViewModel: { title: { content: l.title }, link: { content: shown, commandRuns: [{ startIndex: 0, length: shown.length, onTap: linkCommand(l.url) }] } } };
+		}),
 	});
 	const avm = fill(r, {}).onResponseReceivedEndpoints[0].appendContinuationItemsAction.continuationItems[0].aboutChannelRenderer.metadata.aboutChannelViewModel;
 	delete avm.country;
-	delete avm.links;
-	delete avm.customLinksLabel;
+	if (!c.links.length) {
+		delete avm.links;
+		delete avm.customLinksLabel;
+	}
 	return r;
 }
 

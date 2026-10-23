@@ -47,7 +47,7 @@ if (cookieFile) {
 	await ctx.addCookies(cookies);
 }
 // InnerTube methods that only read
-const READS = /^(browse|next|player|search|guide|get_watch|get_panel|account\/account_menu|account\/accounts_list|notification\/get_unseen_count|notification\/get_notification_menu|share\/get_share_panel|att\/get|reel\/reel_item_watch|reel\/reel_watch_sequence|navigation\/resolve_url|playlist\/get_add_to_playlist|comment\/get_comment.*|creator\/(get|list|search|fetch)_.*|ars\/(get|list)_.*|updated_metadata|music\/get_.*|yta_web\/.*|creator_music\/(get|list|search)_.*|get_survey|promotions\/get_.*|feature_eligibility\/check_.*|creator\/check_.*|upload\/feedback)$/;
+const READS = /^(browse|next|player|search|guide|get_watch|get_panel|account\/account_menu|account\/accounts_list|notification\/get_unseen_count|notification\/get_notification_menu|share\/get_share_panel|att\/get|reel\/reel_item_watch|reel\/reel_watch_sequence|navigation\/resolve_url|playlist\/get_add_to_playlist|comment\/get_comment.*|creator\/(get|list|search|fetch)_.*|ars\/(get|list)_.*|updated_metadata|music\/get_.*|yta_web\/.*|creator_music\/(get|list|search)_.*|get_survey|promotions\/get_.*|feature_eligibility\/check_.*|creator\/check_.*|channel_edit\/get_.*|upload\/feedback)$/;
 const allowWrites = new Set((process.env.ALLOW_WRITES ?? "").split(",").filter(Boolean));
 const blocked: string[] = [];
 if (cookieFile)

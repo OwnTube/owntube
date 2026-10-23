@@ -61,15 +61,22 @@ function avatarSvg(seed: string, letter: string) {
 // signed-out viewers (comment box) and deleted channels
 const PLACEHOLDER_AVATAR = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88"><rect width="88" height="88" fill="#bdbdbd"/><circle cx="44" cy="34" r="16" fill="#fff"/><path d="M14 80c4-17 16-25 30-25s26 8 30 25z" fill="#fff"/></svg>`;
 
-async function ggpht(url: URL): Promise<Response> {
-	const m = /^\/ggpht\/(UC[A-Za-z0-9_-]{22})\/(avatar|banner)/.exec(url.pathname);
+// a channel's picture or banner. The URLs don't change when the channel
+// changes its picture (Studio's Customization), so browsers revalidate;
+// "avatar-default" is the letter picture a channel has without one of its own
+async function ggpht(req: Request, url: URL): Promise<Response> {
+	const m = /^\/ggpht\/(UC[A-Za-z0-9_-]{22})\/(avatar-default|avatar|banner)/.exec(url.pathname);
 	if (!m) return new Response("not found", { status: 404 });
 	const [c] = await sql`select title, avatar_path, banner_path from channels where id = ${m[1]}`;
-	if (!c) return m[2] === "avatar" ? new Response(PLACEHOLDER_AVATAR, { headers: { "content-type": "image/svg+xml", "cache-control": "public, max-age=3600" } }) : new Response("not found", { status: 404 });
-	const p = m[2] === "avatar" ? c.avatar_path : c.banner_path;
-	if (p && existsSync(join(MEDIA_DIR, p))) return new Response(Bun.file(join(MEDIA_DIR, p)), { headers: { "cache-control": "public, max-age=3600" } });
-	if (m[2] === "banner") return new Response("not found", { status: 404 });
-	return new Response(avatarSvg(m[1], [...c.title][0] ?? "?"), { headers: { "content-type": "image/svg+xml", "cache-control": "public, max-age=3600" } });
+	if (!c) return m[2] !== "banner" ? new Response(PLACEHOLDER_AVATAR, { headers: { "content-type": "image/svg+xml", "cache-control": "public, max-age=3600" } }) : new Response("not found", { status: 404 });
+	const p = m[2] === "avatar" ? c.avatar_path : m[2] === "banner" ? c.banner_path : null;
+	const own = p && existsSync(join(MEDIA_DIR, p));
+	if (m[2] === "banner" && !own) return new Response("not found", { status: 404 });
+	const etag = `"${own ? p : `letter-${encodeURIComponent(c.title)}`}"`;
+	const headers = { "cache-control": "public, no-cache", etag, "x-content-type-options": "nosniff" };
+	if (req.headers.get("if-none-match") === etag) return new Response(null, { status: 304, headers });
+	if (own) return new Response(Bun.file(join(MEDIA_DIR, p)), { headers });
+	return new Response(avatarSvg(m[1], [...c.title][0] ?? "?"), { headers: { ...headers, "content-type": "image/svg+xml" } });
 }
 
 // /api/stats/playback is pinged once when playback starts: that is a view.
@@ -115,7 +122,7 @@ export async function instanceRoutes(req: Request, url: URL, viewer: Viewer): Pr
 		return new Response(null, { status: 303, headers });
 	}
 	if (path === "/getAccountSwitcherEndpoint") return accountSwitcher(req);
-	if (path.startsWith("/ggpht/")) return ggpht(url);
+	if (path.startsWith("/ggpht/")) return ggpht(req, url);
 	if (path.startsWith("/api/stats/")) return stats(url, viewer);
 	if (path === "/complete/search") return suggest(url);
 	if (path === "/favicon.ico") {
