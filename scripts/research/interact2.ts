@@ -2,7 +2,7 @@ import { launch, signIn, watchPage } from "../probe";
 const { browser, ctx } = await launch();
 const page = await ctx.newPage();
 const r = watchPage(page);
-await signIn(page, "bob", "owntube-demo");
+await signIn(page, "bob", "yewtube-demo");
 const bodies: string[] = [];
 page.on("request", (q) => { if (q.url().includes("/youtubei/") && !q.url().includes("log_event")) bodies.push(`${new URL(q.url()).pathname} ${(q.postData() ?? "").slice(0, 0)}`); });
 await page.goto("http://localhost:8080/watch?v=Ib21Xm-oD7h");

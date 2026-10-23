@@ -1,15 +1,15 @@
-// OwnTube: a GIF button for the official client's comment boxes (src/gifs.ts).
+// yewtube: a GIF button for the official client's comment boxes (src/gifs.ts).
 //
 // The button opens a picker that searches KLIPY through this instance. A
 // picked GIF is shown in the box; when the box's Comment button sends
 // comment/create_comment or create_comment_reply, the request gets the GIF's
-// signed token as `owntubeGif`, and the server stores it with the comment.
+// signed token as `yewtubeGif`, and the server stores it with the comment.
 // The client then shows the GIF itself, as it does for GIF comments on
 // YouTube. With an empty box, a zero-width space lets the client submit; the
 // server drops it.
 (() => {
-	if (window.__owntubeGifs) return;
-	window.__owntubeGifs = true;
+	if (window.__yewtubeGifs) return;
+	window.__yewtubeGifs = true;
 
 	const CREATE = /\/youtubei\/v1\/comment\/create_comment(_reply)?$/;
 	const ZWSP = "​";
@@ -33,7 +33,7 @@
 			headers.delete("content-encoding");
 		}
 		const body = JSON.parse(new TextDecoder().decode(bytes));
-		body.owntubeGif = gif.token;
+		body.yewtubeGif = gif.token;
 		const response = await originalFetch.call(this, new Request(request, { body: JSON.stringify(body), headers }));
 		if (response.ok) detach(box);
 		return response;

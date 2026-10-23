@@ -24,7 +24,7 @@ const MAX_UMP_RANGE = 64 * 1024 * 1024;
 export function streamUrl(videoId: string, itag: number, mime: string, size: number, viewer = "0"): string {
 	const expire = Math.floor(Date.now() / 1000) + URL_TTL_S;
 	const sig = sign(`vp.${videoId}.${itag}.${expire}.${viewer}`);
-	const q = new URLSearchParams({ id: videoId, itag: String(itag), source: "owntube", expire: String(expire), v: viewer, mime, clen: String(size), sig });
+	const q = new URLSearchParams({ id: videoId, itag: String(itag), source: "yewtube", expire: String(expire), v: viewer, mime, clen: String(size), sig });
 	return `${PUBLIC_ORIGIN}/videoplayback?${q}`;
 }
 

@@ -3,7 +3,7 @@
 // handle (from compat_misses), page errors and failed requests, with a
 // screenshot per page. A survey for Studio work, not a test.
 //
-//   bun scripts/research/studio-walk.ts [--login bob:owntube-demo] [--out dir] [--only path,...]
+//   bun scripts/research/studio-walk.ts [--login bob:yewtube-demo] [--out dir] [--only path,...]
 
 import { mkdirSync } from "node:fs";
 import { sql } from "../../src/db";
@@ -13,7 +13,7 @@ const ORIGIN = process.env.ORIGIN ?? "http://localhost:8080";
 const STUDIO = process.env.STUDIO_ORIGIN ?? ORIGIN.replace(/:(\d+)$/, (_, p) => `:${Number(p) + 1}`);
 const args = process.argv.slice(2);
 const opt = (n: string) => (args.includes(n) ? args[args.indexOf(n) + 1] : undefined);
-const [login, password] = (opt("--login") ?? "bob:owntube-demo").split(":");
+const [login, password] = (opt("--login") ?? "bob:yewtube-demo").split(":");
 const out = opt("--out") ?? "data/studio-walk";
 mkdirSync(out, { recursive: true });
 

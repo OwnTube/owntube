@@ -4,7 +4,7 @@
 //
 //   bun scripts/seed.ts              creates what is missing
 //   bun scripts/seed.ts --reprocess  also re-encodes every video (after a pipeline change)
-//   SEED_PASSWORD=... to choose the accounts' password (default: owntube-demo)
+//   SEED_PASSWORD=... to choose the accounts' password (default: yewtube-demo)
 
 import { existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
@@ -14,7 +14,7 @@ import { migrate, sql } from "../src/db";
 import { newVideoId } from "../src/ids";
 import { enqueue, runQueueOnce } from "../src/media/process";
 
-const PASSWORD = process.env.SEED_PASSWORD ?? "owntube-demo";
+const PASSWORD = process.env.SEED_PASSWORD ?? "yewtube-demo";
 
 const ACCOUNTS = [
 	{ login: "alice", name: "Alice Makes Things", about: "Test patterns, tones and other generated footage." },

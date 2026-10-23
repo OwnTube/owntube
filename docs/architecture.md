@@ -1,8 +1,8 @@
 # Architecture and reverse-engineering notes
 
-OwnTube runs the official YouTube desktop web client and YouTube Studio against its own server. It does not rebuild either frontend. The client's HTML, JavaScript, CSS and images are archived from YouTube at a pinned build and served byte for byte, except for the documented edits in [client-patches.md](client-patches.md). Everything the client asks the server for (pages, InnerTube API calls, thumbnails, media) is answered from PostgreSQL and local media.
+yewtube runs the official YouTube desktop web client and YouTube Studio against its own server. It does not rebuild either frontend. The client's HTML, JavaScript, CSS and images are archived from YouTube at a pinned build and served byte for byte, except for the documented edits in [client-patches.md](client-patches.md). Everything the client asks the server for (pages, InnerTube API calls, thumbnails, media) is answered from PostgreSQL and local media.
 
-The only pages OwnTube writes itself are sign-in and sign-up (local accounts, styled after Google's account pages) and the operator admin panel.
+The only pages yewtube writes itself are sign-in and sign-up (local accounts, styled after Google's account pages) and the operator admin panel.
 
 ## Request flow
 
@@ -12,7 +12,7 @@ browser ── /, /watch, /@handle, /results ...  ─▶ pageFor()  ─▶ pinne
         ── /youtubei/v1/<method>              ─▶ InnerTube router ─▶ handlers ─▶ templates filled from Postgres
         ── /videoplayback?id&itag&range       ─▶ local media files (byte ranges, optional UMP framing)
         ── /vi/<id>/<name>.jpg                ─▶ local thumbnails
-        ── /signin, /register, /admin         ─▶ OwnTube's own pages
+        ── /signin, /register, /admin         ─▶ yewtube's own pages
 
 studio host ── same split for Studio's shell, assets, /youtubei/v1 and the resumable /upload/studio endpoint
 ```
@@ -83,7 +83,7 @@ Operators can verify a channel or mark it as an Official Artist Channel, and giv
 
 ## GIFs in comments
 
-YouTube's desktop client already draws a GIF under a comment: `commentSurfaceEntity.imageAttachmentViewModel.commentImageAttachmentViewModel` (`image.sources`, `aspectRatio`, an accessibility label) is rendered by `ytw-comment-image-attachment-view-model`. It has no way to pick one, so with `KLIPY_API_KEY` set the page gets [`assets/gifs.js`](../assets/gifs.js) (page rule `gif-picker`): a GIF button after the composer's emoji button and a picker above the box, styled in YouTube's light and dark colours (the pinned build's own colour variables have generated names). [`src/gifs.ts`](../src/gifs.ts) proxies KLIPY search and trending with the server's key, returns each result with a token the instance signs, caches GIF files in `MEDIA_DIR/gifs`, and stores starred GIFs per account (`gif_favorites`). The picker adds the token to the create-comment request as `owntubeGif`; [`comments.ts`](../src/innertube/comments.ts) accepts only signed tokens and stores the GIF in `comments.gif`. A comment may then have no text; the zero-width space the picker types into an empty box, so the client enables Comment, is dropped.
+YouTube's desktop client already draws a GIF under a comment: `commentSurfaceEntity.imageAttachmentViewModel.commentImageAttachmentViewModel` (`image.sources`, `aspectRatio`, an accessibility label) is rendered by `ytw-comment-image-attachment-view-model`. It has no way to pick one, so with `KLIPY_API_KEY` set the page gets [`assets/gifs.js`](../assets/gifs.js) (page rule `gif-picker`): a GIF button after the composer's emoji button and a picker above the box, styled in YouTube's light and dark colours (the pinned build's own colour variables have generated names). [`src/gifs.ts`](../src/gifs.ts) proxies KLIPY search and trending with the server's key, returns each result with a token the instance signs, caches GIF files in `MEDIA_DIR/gifs`, and stores starred GIFs per account (`gif_favorites`). The picker adds the token to the create-comment request as `yewtubeGif`; [`comments.ts`](../src/innertube/comments.ts) accepts only signed tokens and stores the GIF in `comments.gif`. A comment may then have no text; the zero-width space the picker types into an empty box, so the client enables Comment, is dropped.
 
 The idea comes from the desktop_gifs browser extension; this is a separate implementation (its code is GPL-licensed and isn't used).
 

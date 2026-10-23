@@ -42,7 +42,7 @@ const { browser, ctx } = await launch();
 const page = await ctx.newPage();
 const pageErrors: string[] = [];
 page.on("pageerror", (e) => pageErrors.push(e.message.slice(0, 200)));
-await signIn(page, LOGIN, "owntube-demo");
+await signIn(page, LOGIN, "yewtube-demo");
 const [{ channel }] = await sql`select c.id as channel from channels c join users u on u.id = c.user_id where u.login = ${LOGIN}`;
 const made: string[] = [];
 

@@ -3,7 +3,7 @@
 // GIF-only comment and a reply with a GIF, each shown by the client after a
 // reload. Every comment and favorite it adds is removed before it ends.
 //
-//   bun scripts/e2e/gifs.ts [--login bob:owntube-demo] [--video <id>] [--shots dir]
+//   bun scripts/e2e/gifs.ts [--login bob:yewtube-demo] [--video <id>] [--shots dir]
 //
 // Needs the server running with KLIPY_API_KEY set.
 
@@ -14,10 +14,10 @@ import { launch, signIn, watchPage } from "../probe";
 const ORIGIN = process.env.ORIGIN ?? "http://localhost:8080";
 const args = process.argv.slice(2);
 const opt = (n: string) => (args.includes(n) ? args[args.indexOf(n) + 1] : undefined);
-const [login, password] = (opt("--login") ?? "bob:owntube-demo").split(":");
+const [login, password] = (opt("--login") ?? "bob:yewtube-demo").split(":");
 const shots = opt("--shots");
 if (shots) mkdirSync(shots, { recursive: true });
-const videoId = opt("--video") ?? (await sql`select id from videos where privacy = 'public' order by created_at limit 1`)[0]?.id;
+const videoId = opt("--video") ?? (await sql`select id from videos where visibility = 'public' and status = 'ready' and deleted_at is null order by created_at limit 1`)[0]?.id;
 
 const { browser, ctx } = await launch();
 const page = await ctx.newPage();

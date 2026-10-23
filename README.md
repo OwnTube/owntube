@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/images/owntube-logo.png" width="144" height="144" alt="OwnTube: a widened white scribbled play triangle on red" />
+  <img src="docs/images/yewtube-logo.png" width="144" height="144" alt="yewtube: a widened white scribbled play triangle on red" />
 </p>
 
-<h1 align="center">OwnTube</h1>
+<h1 align="center">yewtube</h1>
 
 <p align="center">
   <strong>YouTube's web client. Your server.</strong>
@@ -28,14 +28,14 @@
 
 ---
 
-OwnTube serves a pinned build of the official YouTube web client and answers its requests with its own backend. Accounts, channels, video metadata, and playback data come from the instance's PostgreSQL database; video streams and thumbnails come from its media storage.
+yewtube serves a pinned build of the official YouTube web client and answers its requests with its own backend. Accounts, channels, video metadata, and playback data come from the instance's PostgreSQL database; video streams and thumbnails come from its media storage.
 
 The existing YouTube interface and player provide the browsing and watching experience. The official YouTube Studio client is also pinned and served on a separate origin for creator pages and uploads. Compatibility work happens primarily on the server, with small client patches where required for routing, bootstrap configuration, and local operation.
 
-**OwnTube is in early alpha.** Browsing, local accounts, playback, comments, playlists, and creator support are being implemented against the real clients. Studio's editing/publishing workflow and the custom operator dashboard are unfinished; this is not feature parity with YouTube.
+**yewtube is in early alpha.** Browsing, local accounts, playback, comments, playlists, and creator support are being implemented against the real clients. Studio's editing/publishing workflow and the custom operator dashboard are unfinished; this is not feature parity with YouTube.
 
 <p align="center">
-  <img src="evidence/playback/01-playing.png" width="960" alt="Committed playback evidence: the official YouTube watch interface displaying an OwnTube test video" />
+  <img src="evidence/playback/01-playing.png" width="960" alt="Committed playback evidence: the official YouTube watch interface displaying an yewtube test video" />
 </p>
 <p align="center"><sub>Watch-page playback evidence included in this repository.</sub></p>
 
@@ -46,7 +46,7 @@ The table below describes the committed source, not a guarantee that every contr
 | Area | Current scope |
 | --- | --- |
 | Watch and playback | Local stream/player responses, related videos, playlist panels, signed media URLs, byte ranges, and UMP delivery |
-| Accounts | Local registration, sign-in, sessions, and channel records; these are OwnTube accounts, not Google accounts |
+| Accounts | Local registration, sign-in, sessions, and channel records; these are yewtube accounts, not Google accounts |
 | Client and media | `src/client/` and `src/media/` are published, along with the pinned client archives and sample media |
 | Home and channels | Home feed, channel home/videos/playlists tabs, and channel About panels |
 | Search | Video, channel, and playlist results, supported sort/filter controls, continuations, and suggestions |
@@ -93,13 +93,13 @@ bun install
 Create a PostgreSQL database using your local PostgreSQL account:
 
 ```sh
-createdb owntube
+createdb yewtube
 ```
 
 Set the connection string for that account, replacing the placeholders:
 
 ```sh
-export DATABASE_URL='postgres://YOUR_POSTGRES_USER:YOUR_POSTGRES_PASSWORD@localhost:5432/owntube'
+export DATABASE_URL='postgres://YOUR_POSTGRES_USER:YOUR_POSTGRES_PASSWORD@localhost:5432/yewtube'
 export PUBLIC_ORIGIN='http://localhost:8080'
 ```
 
@@ -136,7 +136,7 @@ Studio uses the actual pinned creator client, separate from the custom operator 
 
 - On localhost, the default origins are `http://localhost:8080` and `http://localhost:8081`. Use the same hostname for both; browser cookies are shared across ports.
 - For a hosted instance, configure `PUBLIC_ORIGIN` and `STUDIO_ORIGIN` explicitly, for example `https://video.example.com` and `https://studio.example.com`. Set `COOKIE_DOMAIN=example.com` so both hosts receive the session cookies.
-- Route both hostnames to OwnTube through your reverse proxy, preserving the external Host header. The application can distinguish the hosts on either listening port.
+- Route both hostnames to yewtube through your reverse proxy, preserving the external Host header. The application can distinguish the hosts on either listening port.
 - Studio requires a signed-in local account and restricts creator data to that account's channel. Other creator pages beyond content management are not implemented.
 
 To pin a new Studio build, use `bun scripts/fetch-studio.ts --page /absolute/path/to/captured-studio-page.html --dark-page /absolute/path/to/the-same-page-captured-dark.html` (the second capture with the account's Appearance set to dark, which loads the same build's dark variant). The fetcher sanitizes the supplied signed-in page before archiving it. Raw captures remain outside the committed source.
@@ -147,13 +147,13 @@ Bun loads a project-root `.env` file automatically. Environment variables can al
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `DATABASE_URL` | `postgres://owntube:owntube@localhost:5432/owntube` | PostgreSQL connection |
+| `DATABASE_URL` | `postgres://yewtube:yewtube@localhost:5432/yewtube` | PostgreSQL connection |
 | `PORT` | `8080` | HTTP listen port |
 | `PUBLIC_ORIGIN` | `http://localhost:$PORT` | Public origin used in generated URLs and authentication |
 | `STUDIO_PORT` | `PORT + 1` | Second HTTP listen port for Studio |
 | `STUDIO_ORIGIN` | Localhost: same scheme/hostname with `STUDIO_PORT`; otherwise `studio.<public-host>` | External origin for the pinned Studio client |
 | `COOKIE_DOMAIN` | Unset | Parent cookie domain when the main client and Studio use different hostnames |
-| `INSTANCE_NAME` | `OwnTube` | Instance name |
+| `INSTANCE_NAME` | `yewtube` | Instance name |
 | `MEDIA_DIR` | `data/media` | Local media directory |
 | `MAX_UPLOAD_BYTES` | `2147483648` | Maximum request body and resumable upload size in bytes |
 | `UPSTREAM_ASSET_FETCH` | Off | Set to `1` to enable the development fallback for missing client assets |
@@ -231,4 +231,4 @@ Useful protocol research references include [YouTube.js](https://github.com/Luan
 
 ---
 
-<p align="center"><sub>Actual client. Independent backend. OwnTube.</sub></p>
+<p align="center"><sub>Actual client. Independent backend. yewtube.</sub></p>

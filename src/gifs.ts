@@ -5,7 +5,7 @@
 // assets/gifs.js adds a GIF button and picker to its comment boxes. The
 // picker searches through this server, so the API key stays here, and every
 // result carries a token this instance signs. comment/create_comment and
-// create_comment_reply take that token as `owntubeGif` (comments.ts), so only
+// create_comment_reply take that token as `yewtubeGif` (comments.ts), so only
 // GIFs that came from a search can be attached.
 //
 // GIF files are fetched from KLIPY's CDN once and served from MEDIA_DIR/gifs,

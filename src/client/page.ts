@@ -135,7 +135,7 @@ export function buildYtcfg(kind: PageKind, viewer: Viewer, pageUrl: string, nonc
 		cfg.ID_TOKEN = undefined;
 	}
 	cfg.SIGNIN_URL = `${PUBLIC_ORIGIN}/signin?next=${encodeURIComponent(pageUrl)}`;
-	cfg.INNERTUBE_API_KEY = "AIzaSyOwnTubeLocalInstanceKeyNotGoogle01";
+	cfg.INNERTUBE_API_KEY = "AIzaSyYewTubeLocalInstanceKeyNotGoogle01";
 	for (const k of ["LINK_API_KEY", "LINK_API_KEY_REDIRECT", "VOZ_API_KEY", "RECAPTCHA_V3_SITEKEY", "GAPI_HINT_PARAMS", "GAPI_HOST", "YPC_MB_URL", "LINK_GAL_DOMAIN", "LINK_OIS_DOMAIN", "PERSIST_IDENTITY_IFRAME_URL", "YTR_FAMILY_CREATION_URL", "LIVE_CHAT_BASE_TANGO_CONFIG"]) delete cfg[k];
 	const client = cfg.INNERTUBE_CONTEXT.client;
 	delete client.remoteHost;

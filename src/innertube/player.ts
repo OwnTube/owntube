@@ -70,7 +70,7 @@ export async function streamingData(video: Video, viewer: Viewer) {
 }
 
 function stats(path: string, video: Video, viewer: Viewer) {
-	const q = new URLSearchParams({ docid: video.id, ns: "yt", el: "detailpage", len: String(Math.round((video.duration_ms ?? 0) / 1000)), of: "owntube", vm: viewer ? viewer.userId : "0" });
+	const q = new URLSearchParams({ docid: video.id, ns: "yt", el: "detailpage", len: String(Math.round((video.duration_ms ?? 0) / 1000)), of: "yewtube", vm: viewer ? viewer.userId : "0" });
 	return { baseUrl: `${PUBLIC_ORIGIN}/api/stats/${path}?${q}` };
 }
 

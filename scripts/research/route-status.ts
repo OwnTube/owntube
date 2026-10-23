@@ -4,7 +4,7 @@
 // the client's error page, page errors, failed requests and the InnerTube
 // methods the instance did not handle (compat_misses). A screenshot alone
 // says nothing about whether a page works; this output does.
-//   bun scripts/research/route-status.ts [--login bob:owntube-demo] [--out data/route-status] [--only /a,/b]
+//   bun scripts/research/route-status.ts [--login bob:yewtube-demo] [--out data/route-status] [--only /a,/b]
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import { sql } from "../../src/db";
@@ -13,7 +13,7 @@ import { launch, signIn } from "../probe";
 const ORIGIN = process.env.ORIGIN ?? "http://localhost:8080";
 const args = process.argv.slice(2);
 const opt = (n: string) => (args.includes(n) ? args[args.indexOf(n) + 1] : undefined);
-const [login, password] = (opt("--login") ?? "bob:owntube-demo").split(":");
+const [login, password] = (opt("--login") ?? "bob:yewtube-demo").split(":");
 const out = opt("--out") ?? "data/route-status";
 mkdirSync(out, { recursive: true });
 

@@ -20,7 +20,7 @@ import { isVideoId } from "../ids";
 import { responseContext, videoThumbnails } from "../innertube/r";
 import { ApiError, route } from "../innertube/router";
 
-const PREFIX = "owntube-feedback:";
+const PREFIX = "yewtube-feedback:";
 export const feedbackToken = (videoId: string) => Buffer.from(PREFIX + videoId).toString("base64url");
 const tokenVideo = (token: unknown) => {
 	const s = Buffer.from(String(token ?? ""), "base64url").toString();

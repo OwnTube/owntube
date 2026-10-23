@@ -70,11 +70,11 @@ export function buildStudioYtcfg(viewer: NonNullable<Viewer>, pageUrl: string, n
 	cfg.DELEGATION_CONTEXT = { externalChannelId: viewer.channelId, roleType: { channelRoleType: "CREATOR_CHANNEL_ROLE_TYPE_OWNER" } };
 	cfg.INNERTUBE_CONTEXT_SERIALIZED_DELEGATION_CONTEXT = delegationContext(viewer.channelId);
 	cfg.SIGNIN_URL = `${PUBLIC_ORIGIN}/signin?next=${encodeURIComponent(STUDIO_ORIGIN + pageUrl)}`;
-	cfg.INNERTUBE_API_KEY = "AIzaSyOwnTubeLocalInstanceKeyNotGoogle01";
+	cfg.INNERTUBE_API_KEY = "AIzaSyYewTubeLocalInstanceKeyNotGoogle01";
 	cfg.UPLOAD_CONFIG = {
 		scottyUrl: `${STUDIO_ORIGIN}/upload/studio`,
 		// keys the client's local record of unfinished uploads to this account
-		localStorageUserKey: Buffer.from(new Bun.CryptoHasher("sha256").update(`owntube-upload:${viewer.userId}`).digest()).toString("base64"),
+		localStorageUserKey: Buffer.from(new Bun.CryptoHasher("sha256").update(`yewtube-upload:${viewer.userId}`).digest()).toString("base64"),
 		showKrNotice: false,
 		thumbnailsScottyUrl: `${STUDIO_ORIGIN}/upload/studiothumbnail`,
 		audioTracksScottyUrl: `${STUDIO_ORIGIN}/upload/audiotrack`,

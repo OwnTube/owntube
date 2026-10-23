@@ -109,7 +109,7 @@ type Step = {
 
 function page(s: Step) {
 	const body = `<div class="page"><main class="card">
-<img class="logo" src="/_ot/owntube-logo-96.png" alt="${esc(INSTANCE_NAME)}" width="40" height="40">
+<img class="logo" src="/_ot/yewtube-logo-96.png" alt="${esc(INSTANCE_NAME)}" width="40" height="40">
 <h1>${esc(s.heading)}</h1>${s.sub ? `<p class="sub">${esc(s.sub)}</p>` : ""}
 <form method="post" action="${esc(s.action)}" novalidate>
 ${s.chip ? `<a class="chip" href="${esc(s.chip.href)}" aria-label="${esc(s.chip.text)}, switch account"><span class="av" aria-hidden="true">${esc([...s.chip.text][0]?.toUpperCase() ?? "")}</span><span>${esc(s.chip.text)}</span>${CHEVRON}</a>` : ""}

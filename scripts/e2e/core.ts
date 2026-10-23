@@ -5,7 +5,7 @@
 // the seeded account is undone before it ends. Fails on page errors, failed
 // requests and requests to any other host.
 //
-//   bun scripts/e2e/core.ts [--login bob:owntube-demo] [--query "Test pattern"] [--shots dir]
+//   bun scripts/e2e/core.ts [--login bob:yewtube-demo] [--query "Test pattern"] [--shots dir]
 //
 // Needs `bun scripts/seed.ts` data (or an account and another channel's public
 // video matching --query) and the server running with Studio on STUDIO_ORIGIN.
@@ -18,7 +18,7 @@ const ORIGIN = process.env.ORIGIN ?? "http://localhost:8080";
 const STUDIO = process.env.STUDIO_ORIGIN ?? ORIGIN.replace(/:(\d+)$/, (_, p) => `:${Number(p) + 1}`);
 const args = process.argv.slice(2);
 const opt = (n: string) => (args.includes(n) ? args[args.indexOf(n) + 1] : undefined);
-const [login, password] = (opt("--login") ?? "bob:owntube-demo").split(":");
+const [login, password] = (opt("--login") ?? "bob:yewtube-demo").split(":");
 const query = opt("--query") ?? "Test pattern";
 const shots = opt("--shots");
 if (shots) mkdirSync(shots, { recursive: true });

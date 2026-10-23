@@ -1,6 +1,6 @@
-# OwnTube development instructions
+# yewtube development instructions
 
-OwnTube serves the actual YouTube web client against an independent database, backend, APIs, and media storage. Keep the official public client as the main browsing and playback interface, with only necessary compatibility patches.
+yewtube serves the actual YouTube web client against an independent database, backend, APIs, and media storage. Keep the official public client as the main browsing and playback interface, with only necessary compatibility patches.
 
 ## Admin panel
 
@@ -9,7 +9,7 @@ The owner dropped the earlier mockup in [docs/admin-panel/](docs/admin-panel/REA
 - Every `/admin` route checks the operator server-side. Signed-out GET requests redirect to sign-in; anyone else who is not an operator gets a 404, so the panel's existence is not revealed.
 - Every mutation is a same-origin POST carrying the viewer's form token, ends in a redirect back to the page with a `done` code, and is written to `admin_actions` (the Audit log).
 - Use real queries and persisted state only: no sample figures, demo buttons, or placeholder features.
-- Keep the shared layout: masthead with OwnTube's logo, left navigation (a chip bar on narrow screens), cards in a 3-column grid with 24 px gaps, tables that scroll horizontally rather than hide columns. Use YouTube's light/dark palettes, the bundled Roboto 400/500/700, and the inline Lucide-style icons in `ui.ts`. Use plain labels and factual copy.
+- Keep the shared layout: masthead with yewtube's logo, left navigation (a chip bar on narrow screens), cards in a 3-column grid with 24 px gaps, tables that scroll horizontally rather than hide columns. Use YouTube's light/dark palettes, the bundled Roboto 400/500/700, and the inline Lucide-style icons in `ui.ts`. Use plain labels and factual copy.
 - Verify changes in the browser in both palettes and at phone width, and keep the public client and Studio working.
 
 ## Appearance must follow the user

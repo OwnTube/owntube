@@ -183,8 +183,8 @@ export async function commentsContinuation(tok: { v: string; s?: string; c?: str
 // the text and GIF of a new comment; with a GIF the text may be empty (the
 // picker types a zero-width space so the client lets an empty box submit)
 function content(body: any): { text: string; gif: Gif | null } {
-	const gif = body.owntubeGif !== undefined && GIFS_ENABLED ? gifFromToken(body.owntubeGif) : null;
-	if (body.owntubeGif !== undefined && !gif) throw new ApiError(400, "That GIF can't be attached. Pick it again.");
+	const gif = body.yewtubeGif !== undefined && GIFS_ENABLED ? gifFromToken(body.yewtubeGif) : null;
+	if (body.yewtubeGif !== undefined && !gif) throw new ApiError(400, "That GIF can't be attached. Pick it again.");
 	let text = String(body.commentText ?? "").replace(/\r\n?/g, "\n");
 	if (gif) text = text.replace(/\u200b/g, "");
 	text = text.trim();

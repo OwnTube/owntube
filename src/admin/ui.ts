@@ -220,8 +220,8 @@ ${APPEARANCES.map(([a, label]) => `<form method="post" action="/admin/appearance
 			`<a href="${href}"${key === f.section ? ' class="on" aria-current="page"' : ""}>${icon(key)}<span>${label}</span>${f.counts?.[key] ? `<span class="count">${f.counts[key]}</span>` : ""}</a>`,
 	).join("");
 	return `<!doctype html><html lang="en" data-appearance="${f.appearance}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(f.title)} - ${esc(INSTANCE_NAME)} admin</title><link rel="icon" href="/_ot/owntube-logo-96.png"><style>${CSS}</style></head><body>
-<header class="mast"><a class="brand" href="/admin"><img src="/_ot/owntube-logo-96.png" alt="" width="28" height="28"><span>${esc(INSTANCE_NAME)}</span><span class="tag">Admin</span></a>
+<title>${esc(f.title)} - ${esc(INSTANCE_NAME)} admin</title><link rel="icon" href="/_ot/yewtube-logo-96.png"><style>${CSS}</style></head><body>
+<header class="mast"><a class="brand" href="/admin"><img src="/_ot/yewtube-logo-96.png" alt="" width="28" height="28"><span>${esc(INSTANCE_NAME)}</span><span class="tag">Admin</span></a>
 <div class="end"><a class="btn" href="/">${icon("external", 20)}View site</a>${menu}</div></header>
 <nav class="sections" aria-label="Admin sections">${SECTIONS.map(([key, label, href]) => `<a class="chip${key === f.section ? " on" : ""}" href="${href}"${key === f.section ? ' aria-current="page"' : ""}>${label}</a>`).join("")}</nav>
 <div class="shell"><nav class="guide" aria-label="Admin sections">${guide}<hr><div class="foot">Signed in as @${esc(v.handle)}, operator of this instance.</div></nav>

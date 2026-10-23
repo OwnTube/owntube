@@ -105,7 +105,7 @@ function device(ua: string | null): string {
 }
 const when = (d: Date | null) => (d ? new Date(d).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }) + " UTC" : "");
 
-export const header = (title: string, href: string) => `<header><img src="/_ot/owntube-logo-96.png" alt=""><a href="${esc(href)}">${esc(title)}</a><a class="back" href="/">Back to ${esc(INSTANCE_NAME)}</a></header>`;
+export const header = (title: string, href: string) => `<header><img src="/_ot/yewtube-logo-96.png" alt=""><a href="${esc(href)}">${esc(title)}</a><a class="back" href="/">Back to ${esc(INSTANCE_NAME)}</a></header>`;
 
 const form = (viewer: NonNullable<Viewer>, action: string, inner: string, attrs = "") =>
 	`<form method="post" action="${action}"${attrs}><input type="hidden" name="token" value="${esc(viewer.apiSecret)}">${inner}</form>`;
