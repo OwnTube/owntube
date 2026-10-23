@@ -2,7 +2,7 @@
 
 YewTube runs the official YouTube desktop web client and YouTube Studio against its own server. It does not rebuild either frontend. The client's HTML, JavaScript, CSS and images are archived from YouTube at a pinned build and served byte for byte, except for the documented edits in [client-patches.md](client-patches.md). Everything the client asks the server for (pages, InnerTube API calls, thumbnails, media) is answered from PostgreSQL and local media.
 
-The only pages YewTube writes itself are sign-in and sign-up (local accounts, styled after Google's account pages) and the operator admin panel.
+The only pages YewTube writes itself are sign-in and sign-up (local accounts, styled after Google's account pages), the local account page (`/myaccount`, where the account menu's Google Account and "Your data in YouTube" entries lead), Send feedback (`/feedback`) and the operator admin panel.
 
 ## Request flow
 
@@ -12,7 +12,8 @@ browser ── /, /watch, /@handle, /results ...  ─▶ pageFor()  ─▶ pinne
         ── /youtubei/v1/<method>              ─▶ InnerTube router ─▶ handlers ─▶ templates filled from Postgres
         ── /videoplayback?id&itag&range       ─▶ local media files (byte ranges, optional UMP framing)
         ── /vi/<id>/<name>.jpg                ─▶ local thumbnails
-        ── /signin, /register, /admin         ─▶ YewTube's own pages
+        ── /signin, /register, /myaccount,
+           /feedback, /admin                  ─▶ YewTube's own pages
 
 studio host ── same split for Studio's shell, assets, /youtubei/v1 and the resumable /upload/studio endpoint
 ```
@@ -54,6 +55,8 @@ Accounts are local to the instance; the sign-in form never asks for a Google pas
 - `OT_SID`: httpOnly, identifies the session.
 - `SAPISID` (or `APISID` on plain http): the session's API secret, readable by page script.
 
+Several accounts can be signed in on one browser, as with Google accounts: `OT_ACCOUNTS` (httpOnly) lists their session ids in sign-in order, and `OT_SID` / `SAPISID` belong to the active one. The account menu's Switch account (`GET /getAccountSwitcherEndpoint`, on both origins) lists them; choosing one loads `/signin?action_handle_signin=true&authuser=N&next=…`, which makes it active and returns to the page the list was opened on. Add account is `/signin?add=1`. Sign out ends every session on the browser.
+
 The official client signs each InnerTube request with `Authorization: SAPISIDHASH <ts>_<sha1(ts secret origin)>`. A page on another origin cannot read the secret, so mutating InnerTube methods require a valid signature and that doubles as the CSRF check. `COOKIE_DOMAIN` shares the session between the main host and the Studio host.
 
 ## Appearance
@@ -66,9 +69,13 @@ The client keeps its Appearance choice in the `PREF` cookie: flag 165 (`f6` bit 
 - `player` returns `streamingData` pointing at `/videoplayback?id&itag`. [`src/media/serve.ts`](../src/media/serve.ts) answers `range=` requests and, when the player asks for `ump=1`, wraps the bytes in UMP parts ([`src/media/ump.ts`](../src/media/ump.ts)). UMP is turned off by a player flag override, so the plain path is the normal one.
 - The player's proof-of-origin token generation is turned off (no BotGuard is loaded), and the `att/get` challenge carries no program.
 
+## Settings
+
+The settings pages (`/account*`, browse ids `SPaccount_*`) are YouTube's own, from captures ([`src/innertube/settings.ts`](../src/innertube/settings.ts), templates `settings/*`), with options for Google's services left out. Each switch carries a `setSettingEndpoint` the client sends to `account/set_setting`; the last value per item is kept in `account_settings` and decides whether the switch shows as on. Dialogs open with `get_panel` and save with `submit_form` ([`src/innertube/panels.ts`](../src/innertube/panels.ts)), as Preferred languages does. Choices the client keeps itself (captions, video previews, download quality) never reach the server.
+
 ## Studio
 
-Studio runs as the pinned creator client on its own origin ([`src/studio/`](../src/studio/)). Its channel data is prefetched into the page as Studio expects. Notes from tracing the bundle:
+Studio runs as the pinned creator client on its own origin ([`src/studio/`](../src/studio/)). Its channel data is prefetched into the page as Studio expects. Its account menu is Studio's own (template `account/studio_menu`), with links to the main origin. Notes from tracing the bundle:
 
 - A video's owner needs `CREATOR_VIDEO_PERMISSION_WATCH` among its permissions; without it Studio lists the video as "[Private video]".
 - Drafts are recognised by a `draftStatus` other than `DRAFT_STATUS_NONE`.
@@ -76,6 +83,10 @@ Studio runs as the pinned creator client on its own origin ([`src/studio/`](../s
 - While a video uploads or processes, `statusDetails.feedbackServiceContinuationToken` makes Studio poll `upload/feedback`, whose items carry transfer progress, per-resolution processing state and, once done, thumbnails ([`src/studio/feedback.ts`](../src/studio/feedback.ts)). No copyright or guidelines checks run, so Studio shows its own "Checks complete" state.
 - Figures come from hourly tables ([`migrations/008_stats.sql`](../migrations/008_stats.sql), [`src/stats.ts`](../src/stats.ts)): a view when the player's playback ping arrives (once per viewer and hour), watch time from the played segments in watchtime pings, and subscribers gained and lost. Studio asks for figures as analytics queries (metrics, dimensions, restricts, time range), which [`src/studio/analytics.ts`](../src/studio/analytics.ts) answers as result tables; metrics this instance doesn't record answer zero, marked undefined.
 - The dashboard ([`src/studio/dashboard.ts`](../src/studio/dashboard.ts)) answers the facts card's query nodes and connectors, and adds the latest video's snapshot (ranked by views among the 10 latest) and the published videos card. YouTube's own Creator Insider carousel and "What's new in Studio" card are served as captured (templates `studio/dashboard_*`), without the account's impression tokens; their images are pinned in the archive, and their links go to YouTube and its help center.
+
+## Google's help service
+
+Both clients load Google's in-product help and feedback service by script URL and then call `help.service.Lazy.create` (Studio also `help.api.Lazy.create`). Patches `app-help-service` and `studio-help-service` point those URLs at `/_ot/help.js` ([`assets/help.js`](../assets/help.js)), which defines the same globals: feedback opens `/feedback`, help opens YouTube's help center in a new tab, and the rest do nothing.
 
 ## Badges and marks
 

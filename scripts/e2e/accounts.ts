@@ -44,7 +44,7 @@ async function open(): Promise<Page> {
 }
 const shot = async (page: Page, name: string) => shots && (await page.screenshot({ path: `${shots}/${name}.png` }));
 const visibleTexts = (page: Page, selector: string) =>
-	page.evaluate((s) => [...document.querySelectorAll(s)].filter((e) => (e as HTMLElement).offsetParent).map((e) => (e as HTMLElement).innerText.replace(/\s+/g, " ").trim()), selector);
+	page.evaluate((s) => Array.from(document.querySelectorAll(s)).filter((e) => (e as HTMLElement).offsetParent).map((e) => (e as HTMLElement).innerText.replace(/\s+/g, " ").trim()), selector);
 const datasync = (page: Page) => page.evaluate(() => (window as any).ytcfg?.get("DATASYNC_ID") as string | undefined);
 const menuItem = (page: Page, text: string) => page.locator("ytd-multi-page-menu-renderer ytd-compact-link-renderer", { hasText: text }).first();
 async function addAccount(page: Page, l: string, p: string) {

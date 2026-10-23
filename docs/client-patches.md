@@ -15,14 +15,17 @@ Applied to JavaScript and CSS on the way out. A patch whose match count differs 
 | `icons-allowed-hosts` | app | 1 | The icon manager only fetches and inlines .svg icons whose URL starts with one of these origins (pUs). Adds the instance origin so the relocated icons above are inlined like upstream ones. |
 | `player-trusted-stream-host` | player | 1 | non-localhost origins only. The player refuses media URLs ('Untrusted URL') unless they match its stream allowlist or start with http://local / https://local. A localhost instance needs nothing; any other host is added to the allowlist's host alternation. |
 | `player-trusted-image-host` | player | 1 | The player keeps only thumbnail URLs on its trusted image hosts (videoDetails.thumbnail -> poster, miniplayer, end screen); for anything else it builds http(s)://i1.ytimg.com/vi/<id>/... itself. Adds the instance host so it uses this instance's thumbnails. |
+| `player-first-party-host` | player | 1 | A page may set the player's event label (`el=detailpage` on the watch page) only if its URL is on this allowlist (youtube.com and Google's sites); on any other host the player takes itself for an embed, and embeds don't autoplay. It shows when the player script loads after a watch page has started (a search result clicked right after the page renders): the video was cued instead of played. Adds the instance host. |
 | `player-base-host` | player | 1 | The player derives its base URL from the page location only if the host is on this allowlist, else uses www.youtube.com. That base URL hosts the QoE stats (/api/stats/qoe) and ptracking beacons. Adds the instance host so those go to this instance. |
 | `fonts-stylesheet-host` | app | 5 | The app inserts five font stylesheets (italic Roboto, Roboto Mono, a games font) at run time from fonts.googleapis.com. Points them at the archived copies; the page's own stylesheet link is rewritten by the page renderer. |
 | `no-redirect-prefetch` | app | 1 | On every load the app fetches https://youtube.com once to warm the youtube.com -> www redirect. Nothing to warm here; the list is emptied. |
+| `app-help-service` | app | 1 | Google's in-product help and feedback service, loaded by URL when the client opens help or feedback. Points it at this instance's stand-in (`/_ot/help.js`, [assets/help.js](../assets/help.js)): feedback opens `/feedback`, help opens YouTube's help center. |
 | `studio-gstatic-youtube-img-host` | studio | 1004 | Studio's illustrations, icons and animations, named in string literals and in its Polymer templates' attribute bindings. Points them at the archived copies under the Studio origin's /_up/. |
 | `studio-css-gstatic-host` | Studio stylesheet | 10 | Background images in Studio's stylesheet (onboarding and partner-program artwork). |
 | `studio-icons-material-host` | studio | 2 | The prefix Studio's icon manager builds SVG icon URLs from, as in the main app. |
 | `studio-icons-allowed-hosts` | studio | 1 | Studio's icon manager has the same origin allowlist as the main app's; adds the Studio origin so the relocated icons are fetched and inlined. |
 | `studio-fonts-stylesheet-host` | studio | 4 | Font stylesheets Studio inserts at run time. |
+| `studio-help-service` | studio | 3 | Studio preloads Google's help and feedback service on every page (its CSP refuses it) and loads Google's help API for the Help button. All three URLs point at the instance's stand-in: Send feedback opens the main origin's `/feedback`, help opens YouTube's help center. |
 
 ## Page shell rules (main client)
 

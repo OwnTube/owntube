@@ -20,19 +20,23 @@ Anything not listed here gets an empty `{responseContext}` envelope and appears 
 | `/feed/playlists` | Playlists | `FEplaylist_aggregation` (signed in) |
 | `/feed/channels` | All subscriptions | `FEchannels` (signed in) |
 | `/upload` | — | Redirects to Studio's upload dialog |
+| `/account`, `/account_notifications`, `/account_playback`, `/account_privacy`, `/account_sharing`, `/account_billing`, `/account_advanced`, `/account_downloads`, `/account_time_management` | Settings | `SPaccount_*` (signed in; signed out goes to sign-in) |
 
 ## InnerTube methods (`/youtubei/v1/…`, main client)
 
 | Method | Handler | Notes |
 | --- | --- | --- |
-| `browse` | [`browse.ts`](../../src/innertube/browse.ts) | Browse ids above, `VL…` playlists, `UC…` channels, `SP…` settings (a "not available" message), `FEnotifications_inbox` (empty). Continuations for home, subscriptions, history, playlists/channels feeds, channel videos, About panel, playlist items. |
+| `browse` | [`browse.ts`](../../src/innertube/browse.ts) | Browse ids above, `VL…` playlists, `UC…` channels, `SPaccount_*` settings pages ([`settings.ts`](../../src/innertube/settings.ts); 401 `unauthorized` when signed out), `FEnotifications_inbox` (empty). Continuations for home, subscriptions, history, playlists/channels feeds, channel videos, About panel, playlist items. |
 | `navigation/resolve_url` | `browse.ts` | Resolves `/@handle`, channel and feed URLs to browse endpoints. |
 | `next` | [`watch-routes.ts`](../../src/innertube/watch-routes.ts) | Watch page data: metadata, owner, actions, related videos, playlist panel. Continuations for related videos, comments and replies. |
 | `player` | `watch-routes.ts` | `playabilityStatus`, `videoDetails`, `streamingData` pointing at `/videoplayback`, no captions. |
 | `get_watch` | `watch-routes.ts` | Combined `next` + `player` used by some in-page navigations. |
 | `search` | [`search.ts`](../../src/innertube/search.ts) | Videos, channels and playlists; sort and type/duration/upload-date filters from `sp`; continuations. |
 | `guide` | [`guide.ts`](../../src/innertube/guide.ts) | Side guide with the viewer's subscriptions and playlists. |
-| `account/account_menu` | `guide.ts` | Avatar menu from the captured template, with an Admin link for operators. |
+| `account/account_menu` | `guide.ts` | Avatar menu from the captured template, Google's entries pointing at local pages, with an Admin link for operators. On the Studio host, Studio's own menu (`account/studio_menu`). |
+| `account/set_setting` | `settings.ts` | Mutation. `{settingItemId, newValue: {boolValue \| intValue \| stringValue}}` for the ids the settings pages carry; stored in `account_settings`. |
+| `get_panel` | [`panels.ts`](../../src/innertube/panels.ts) | `PAadd_to_playlist` (the Save sheet, `playlists.ts`), `PApreferred_language_settings` (`settings.ts`). |
+| `submit_form` | `panels.ts` | Mutation. `SUBMIT_ID_PREFERRED_LANGUAGE_SETTINGS_FORM`. |
 | `notification/get_unseen_count` | `guide.ts` | Always 0. |
 | `notification/modify_channel_preference` | [`actions.ts`](../../src/innertube/actions.ts) | Acknowledged with a toast; not persisted. |
 | `like/like`, `like/dislike`, `like/removelike` | `actions.ts` | Mutation. Video ratings; for a playlist target, saves or removes it from the library. |
@@ -42,7 +46,6 @@ Anything not listed here gets an empty `{responseContext}` envelope and appears 
 | `feedback` | [`history.ts`](../../src/innertube/history.ts) | Removing one entry or clearing watch history (signed tokens issued by this instance); other feedback tokens are accepted and ignored. |
 | `comment/create_comment`, `comment/create_comment_reply`, `comment/perform_comment_action` | [`comments.ts`](../../src/innertube/comments.ts) | Mutation. Posting, replying, liking and unliking, and deleting your own comments. Accepts `yewtubeGif` (a GIF token from `/_ot/gifs/search`). |
 | `playlist/create`, `browse/edit_playlist`, `playlist/delete` | [`playlists.ts`](../../src/innertube/playlists.ts) | Mutation. Create, add/remove/move videos, rename, privacy, description, delete. |
-| `get_panel` | `playlists.ts` | `PAadd_to_playlist` (the Save sheet). |
 | `att/get` | [`router.ts`](../../src/innertube/router.ts) | A challenge without a BotGuard program. |
 | `log_event`, `att/log`, `visitor_id`, `stats/qoe`, `stats/watchtime` | `router.ts` | Accepted and dropped. |
 
@@ -55,6 +58,9 @@ Anything not listed here gets an empty `{responseContext}` envelope and appears 
 | `creator/get_creator_videos` | `studio/api.ts` | Video details for the edit page and upload dialog. Owner permissions include `CREATOR_VIDEO_PERMISSION_WATCH`. |
 | `creator/list_creator_playlists` | `studio/api.ts` | The channel's playlists. |
 | `creator/get_creator_communications` | `studio/api.ts` | Empty. |
+| `creator/get_creator_google_hats_trigger_ids`, `get_survey`, `att/esr` | `studio/api.ts` | Empty, as YouTube answers with no survey to show. |
+| `promotions/get_account` | `studio/api.ts` | Account currency, time zone and country for the promotions UI. |
+| `creator/check_creator_bulk_action` | `studio/api.ts` | Always done: only bulk delete exists. |
 | `notification/get_unseen_count` | `studio/api.ts` | Always 0. |
 | `upload/createvideo` | `studio/api.ts` | Mutation. Creates the video (private draft) for an upload's resource id; processing starts once the transfer completes. |
 | `video_manager/metadata_update` | `studio/api.ts` | Mutation. Title, description, visibility, draft state; sets the publish time when a video is first made non-private. |
@@ -76,7 +82,11 @@ Anything not listed here gets an empty `{responseContext}` envelope and appears 
 | `/error_204`, `/_csp` | main | Client errors and CSP reports, recorded in diagnostics |
 | `/getDatasyncIdsEndpoint` | main | The signed-in account's datasync id |
 | `/sw.js` | main | A worker that unregisters itself |
-| `/signin`, `/register`, `/logout` | main | Local accounts |
+| `/signin`, `/register`, `/logout` | main | Local accounts. `/signin?add=1` signs another account in alongside; `/signin?action_handle_signin=true&authuser=N&next=` makes the Nth account on the browser active. `/logout` signs every account on the browser out (GET from this origin or Studio's). |
+| `/getAccountSwitcherEndpoint` | both | Switch account list (`)]}'` + JSON) for the accounts signed in on the browser; links lead back to the page it was opened on |
+| `/myaccount` | main | The local account: info, password, sessions, data, account deletion ([`myaccount.ts`](../../src/myaccount.ts)) |
+| `/feedback` | main | Send feedback, read by operators on the admin panel ([`feedback.ts`](../../src/feedback.ts)) |
+| `/_ot/help.js` | both | Stand-in for Google's help and feedback service ([`assets/help.js`](../../assets/help.js)) |
 | `/admin/…` | main | Operator admin panel |
 | `/_ot/gifs.js`, `/_ot/gifs/search?q=&page=`, `/_ot/gifs/favorites` (GET, POST JSON), `/_ot/gifs/media/<id>/<sm\|md>.webp` | main | GIFs in comments, only with `KLIPY_API_KEY` ([`gifs.ts`](../../src/gifs.ts)); search and favorites need a signed-in viewer |
 | `/upload/studio` and the session URLs it returns | Studio | Resumable uploads (Scotty protocol) |

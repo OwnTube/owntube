@@ -8,6 +8,7 @@ import type { Viewer } from "../client/page";
 import { loadStudioPin } from "../client/store";
 import { PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
 import { sql } from "../db";
+import { helpScript } from "../help";
 import { accountSwitcher } from "../innertube/guide";
 import { innertube } from "../innertube/router";
 import { serveStudioAsset } from "./assets";
@@ -47,6 +48,7 @@ export async function studioRoutes(req: Request, url: URL, viewer: Viewer): Prom
 	if (asset) return asset;
 	if (path.startsWith("/youtubei/v1/")) return innertube(req, url, viewer);
 	if (path === "/getAccountSwitcherEndpoint") return accountSwitcher(req);
+	if (path === "/_ot/help.js") return helpScript();
 	const up = await uploadRoutes(req, url, viewer);
 	if (up) return up;
 	if (path === "/favicon.ico") return Response.redirect(`${STUDIO_ORIGIN}/_up/www.gstatic.com/youtube/img/creator/favicon/favicon_v2.ico`, 302);

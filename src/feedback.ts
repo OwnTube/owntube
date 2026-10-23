@@ -5,7 +5,7 @@
 
 import { header, localPage } from "./myaccount";
 import type { Viewer } from "./client/page";
-import { INSTANCE_NAME, PUBLIC_ORIGIN } from "./config";
+import { INSTANCE_NAME, PUBLIC_ORIGIN, STUDIO_ORIGIN } from "./config";
 import { sql } from "./db";
 import { rateLimit } from "./ratelimit";
 
@@ -13,11 +13,13 @@ const esc = (s: unknown) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "
 
 const MAX = 5000;
 
-// the page someone was on, when it is one of this instance's
+// the page someone was on, when it is one of this instance's: a path on the
+// main origin, or a whole Studio URL
 function pageOf(value: string | null): string {
 	if (!value) return "";
 	try {
 		const u = new URL(value, PUBLIC_ORIGIN);
+		if (u.origin === STUDIO_ORIGIN && STUDIO_ORIGIN !== PUBLIC_ORIGIN) return u.origin + u.pathname + u.search;
 		return u.origin === PUBLIC_ORIGIN && u.pathname !== "/feedback" ? u.pathname + u.search : "";
 	} catch {
 		return "";

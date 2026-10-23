@@ -16,6 +16,7 @@ import { rateLimit } from "./ratelimit";
 import { accountRoutes, instanceAsset } from "./signin";
 import { myAccountRoutes } from "./myaccount";
 import { feedbackRoutes } from "./feedback";
+import { helpScript } from "./help";
 import { adminRoutes } from "./admin";
 import { gifRoutes } from "./gifs";
 import { suggest } from "./innertube/search";
@@ -100,6 +101,7 @@ export async function instanceRoutes(req: Request, url: URL, viewer: Viewer): Pr
 	if (mine) return mine;
 	const gifs = await gifRoutes(req, url, viewer);
 	if (gifs) return gifs;
+	if (path === "/_ot/help.js") return helpScript();
 	if (path.startsWith("/_ot/")) return instanceAsset(path) ?? new Response("not found", { status: 404 });
 	if (path === "/logout") {
 		if (req.method !== "POST" && req.method !== "GET") return new Response("method not allowed", { status: 405 });

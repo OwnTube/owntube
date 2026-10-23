@@ -12,7 +12,9 @@ The goal is every page, setting and creator workflow of the official clients wor
 
 ## Main client pages
 
+- Guide destinations, hidden from the guide until each is served (`UNSERVED` in `src/innertube/guide.ts`): Shorts (`/shorts/`), YouTube's Music and Live channels, Gaming, Podcasts, Playables, Your memberships (`/channel_memberships`), Report history, Downloads. Every one is captured signed in and signed out (`captures/site-in`, `site-out`).
 - Shorts: the Shorts player (`/shorts/<id>`) and the Shorts shelf and tab.
+- Signed-out `/playlist?list=WL` and `LL` answer 404; YouTube shows the page with a sign-in alert.
 - Channel tabs: Shorts, Live, Posts (community posts with polls and images), channel search, Store; channel trailer and featured sections on Home.
 - Home chips and personalised ordering; "Not interested" and "Don't recommend channel" feedback.
 - Explore pages: Trending, Music, Gaming, News, Sports, Courses, Fashion, Podcasts; Movies; Premium and YouTube Kids entry points (shown as unavailable).
@@ -27,17 +29,17 @@ The goal is every page, setting and creator workflow of the official clients wor
 
 ## Settings (`/account*`)
 
-Every settings page in the client, backed by stored preferences:
+The settings pages are served natively and their switches persist ([compat/parity.md](compat/parity.md#main-client-settings-account)). What's left:
 
-- Account: channel name and handle, profile picture, banner (with Studio's Customization).
-- Notifications: subscriptions, recommended, activity, replies, mentions, email.
-- Playback and performance: captions always on, auto-generated captions, AV1 preference, ambient mode, inline playback.
-- Privacy: keep subscriptions private, keep saved playlists private, history pause.
-- Connected apps, Billing and payments, Advanced settings (channel id, move channel, delete channel).
-- Downloads quality.
-- Language, Location and Restricted mode from the account menu.
+- Apply the stored choices: generate notifications according to the Notifications switches, and hide subscriptions on the channel page when "Keep all my subscriptions private" is on.
+- Account: channel name, handle and profile picture are edited in Studio's Customization, which isn't served yet.
+- Purchases and memberships (`/paid_memberships`): needs a capture of an account without purchases.
+- Language and Location from the account menu: only English is pinned.
+- Restricted Mode: nothing is filtered.
 
 ## YouTube Studio
+
+- The Help button and Send feedback go through Google's help service; both now open local equivalents (a stand-in script). Check the rest of Studio's help entry points (help cards, "Learn more" links).
 
 - Dashboard comments and recent subscribers cards.
 - Content tabs: Shorts, Live, Posts, Playlists (create/edit in Studio), Podcasts; filters and search; views in the list.

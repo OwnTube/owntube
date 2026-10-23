@@ -33,6 +33,15 @@ route("creator/get_creator_channels", async (ctx) => {
 // announcements, survey and promotion slots: none
 route("creator/get_creator_communications", (ctx) => ok(ctx.viewer, {}));
 route("notification/get_unseen_count", (ctx) => ok(ctx.viewer, { unseenCount: 0 }));
+// Google's survey prompts (HaTS) and attestation signals: nothing to answer,
+// as YouTube answers when it has no survey to show
+route("creator/get_creator_google_hats_trigger_ids", (ctx) => ok(ctx.viewer, {}));
+route("get_survey", (ctx) => ok(ctx.viewer, {}));
+route("att/esr", (ctx) => ok(ctx.viewer, {}));
+// the account's settings for promotions (ads), which this instance doesn't run
+route("promotions/get_account", (ctx) => ok(ctx.viewer, { accountData: { currencyCode: "USD", timezone: "UTC", countryCode: "US" }, adstubeConfigs: {} }));
+// bulk actions besides delete don't exist yet, so none is ever running
+route("creator/check_creator_bulk_action", (ctx) => ok(ctx.viewer, { status: "BULK_ACTION_STATUS_DONE" }));
 
 route("creator/list_creator_playlists", async (ctx) => {
 	const viewer = owner(ctx);

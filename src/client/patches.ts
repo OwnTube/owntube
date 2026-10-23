@@ -71,6 +71,16 @@ export const PATCHES: Patch[] = [
 		why: "The player keeps only thumbnail URLs on its trusted image hosts (videoDetails.thumbnail -> poster, miniplayer, end screen); for anything else it builds http(s)://i1.ytimg.com/vi/<id>/... itself. Adds the instance host so it uses this instance's thumbnails.",
 	},
 	{
+		id: "player-first-party-host",
+		asset: "player",
+		// the allowlist (Ffb) of hosts whose pages may tell the player what
+		// kind of page it is on (youtube.com and Google's own sites)
+		find: 'Ffb=RegExp("',
+		replace: (c) => 'Ffb=RegExp("^https?://' + regexHost(c) + String.raw`(:[0-9]+)?/|`,
+		expect: 1,
+		why: "A page may set the player's event label (el=detailpage on the watch page) only if its URL is on this allowlist; on any other host the player takes itself for an embed, and an embed doesn't autoplay. That shows when the player script loads after a watch page has started (a result clicked quickly after the page renders): the video is cued instead of played. Adds the instance host.",
+	},
+	{
 		id: "player-base-host",
 		asset: "player",
 		// the allowlist (sva) for the player's own base URL: corp proxies and
@@ -95,6 +105,14 @@ export const PATCHES: Patch[] = [
 		replace: () => "this.redirectsToPreload=[]",
 		expect: 1,
 		why: "On every load the app fetches https://youtube.com once to warm the youtube.com -> www redirect. Nothing to warm here; the list is emptied.",
+	},
+	{
+		id: "app-help-service",
+		asset: "app",
+		find: '"https://www.gstatic.com/feedback/js/help/prod/service/lazy.min.js"',
+		replace: (c) => quote(`${c.origin}/_ot/help.js`),
+		expect: 1,
+		why: "Google's in-product help and feedback service, loaded by URL when the client opens help or feedback. Points it at this instance's stand-in (assets/help.js): feedback opens /feedback, help opens YouTube's help center.",
 	},
 	// ---- YouTube Studio ----
 	{
@@ -136,6 +154,30 @@ export const PATCHES: Patch[] = [
 		replace: (c) => `"${c.studioOrigin}/_up/fonts.googleapis.com/css`,
 		expect: 4,
 		why: "Font stylesheets Studio inserts at run time.",
+	},
+	{
+		id: "studio-help-service",
+		asset: "studio",
+		find: /"https:\/\/www\.gstatic\.com\/feedback\/js\/help\/prod\/service\/lazy\.min\.js"|"https:\/\/www\.google\.com\/tools\/feedback\/(?:help_api|open_to_help_guide_lazy)\.js"/,
+		replace: (c) => quote(`${c.studioOrigin}/_ot/help.js`),
+		expect: 3,
+		why: "Studio preloads Google's help and feedback service on every page (the CSP refuses it) and loads Google's help API for the Help button. All three point at the instance's stand-in (assets/help.js): Send feedback opens the main origin's /feedback, help opens YouTube's help center.",
+	},
+	{
+		id: "studio-help-button",
+		asset: "studio",
+		find: /openHelp=function\(\)\{_\.\w+\("client",this\.configureAndStartHelp\)\}/,
+		replace: () => "openHelp=function(){this.configureAndStartHelp()}",
+		expect: 1,
+		why: "The Help button first loads Google's API loader (apis.google.com, gapi \"client\"), which isn't served, and only then starts the help service. It now starts the help service directly, which is the instance's stand-in (studio-help-service): help opens YouTube's help center.",
+	},
+	{
+		id: "studio-feedback-direct",
+		asset: "studio",
+		find: /else (\w+)\(a,b,c,e\)\.catch\(function\(k\)\{!k\|\|k instanceof \w+\|\|(\w+)\(a,b,c,e\)\}\)/,
+		replace: (_c, _uservoice, loader) => `else ${loader}(a,b,c,e)`,
+		expect: 1,
+		why: "Send feedback (userfeedback.api.startFeedback) first tries Google's uservoice form (a request to google.com and a gstatic script, both refused by the CSP) and then falls back to Google's feedback loader, which calls window.GOOGLE_FEEDBACK_START when the page defines it. Goes to the loader directly; the instance's stand-in (assets/help.js) defines it to open /feedback.",
 	},
 ];
 
