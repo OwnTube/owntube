@@ -64,7 +64,7 @@ The main client is pinned in [`pin/client.json`](pin/client.json), and Studio in
 
 ### Known limitations
 
-- Studio covers uploading, processing progress, metadata editing, publishing, and deletion. Other Studio pages, such as analytics and comment moderation, are not backed by data. No copyright or Community Guidelines checks run, so Studio shows its default "Checks complete" state.
+- Studio covers uploading, processing progress, metadata editing, publishing, and deletion. Channel analytics (overview, content, audience) shows the views, watch time and subscribers this instance records; figures it doesn't record (impressions, traffic sources, demographics) show YouTube's no-data states. Other Studio pages, such as comment moderation, are not backed by data. No copyright or Community Guidelines checks run, so Studio shows its default "Checks complete" state.
 - Custom thumbnail and additional audio-track upload URLs are configured in Studio, but their upload handlers are not implemented.
 - Shorts open in YouTube's own Shorts player (`/shorts/`), with likes, subscribing, comments and scrolling between Shorts; Home has no Shorts shelf yet and channels have no Shorts tab. Live streaming and monetization are not implemented.
 - Notifications currently have an empty inbox/count. The bell-preference handler acknowledges requests without persisting a preference or delivering notifications.

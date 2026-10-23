@@ -55,7 +55,11 @@ for (const file of sources) {
 	// the details step: the title box is filled with the file name first
 	const titleBox = page.locator("ytcp-video-title #textbox").first();
 	await titleBox.waitFor({ timeout: 30000 });
-	const [v] = await sql`select id from videos where channel_id = ${channel} and original_filename = ${file.split("/").pop()!} order by created_at desc limit 1`;
+	// the dialog shows the details step before createvideo has answered
+	let v: { id: string } | undefined;
+	for (const end = Date.now() + 15000; !v && Date.now() < end; await page.waitForTimeout(500)) {
+		[v] = (await sql`select id from videos where channel_id = ${channel} and original_filename = ${file.split("/").pop()!} and created_at > ${new Date(Date.now() - 120000)} order by created_at desc limit 1`) as { id: string }[];
+	}
 	check(`${file}: createvideo registered the upload`, !!v);
 	if (!v) continue;
 	made.push(v.id);
@@ -78,13 +82,16 @@ for (const file of sources) {
 	}
 	check(`${file}: processed`, row.status === "ready", `${row.status}${row.error ? ` ${row.error}` : ""} after ${((Date.now() - t0) / 1000).toFixed(0)}s`);
 	await page.locator("#done-button").click();
-	await page.waitForTimeout(3000);
-	const [after] = await sql`select title, visibility, draft, published_at from videos where id = ${v.id}`;
+	let after: any;
+	for (const end = Date.now() + 15000; Date.now() < end; await page.waitForTimeout(500)) {
+		[after] = await sql`select title, visibility, draft, published_at from videos where id = ${v.id}`;
+		if (after.visibility === "public" && after.title === title) break;
+	}
 	check(`${file}: published with the title`, after.title === title && after.visibility === "public" && !after.draft && !!after.published_at, JSON.stringify(after));
 
 	// Studio's content list
 	await page.goto(`${STUDIO}/channel/${channel}/videos/upload`, { waitUntil: "domcontentloaded" });
-	await page.waitForTimeout(5000);
+	await page.locator("ytcp-video-row", { hasText: title }).first().waitFor({ timeout: 15000 }).catch(() => {});
 	check(`${file}: listed in Studio content`, (await page.locator("ytcp-video-row", { hasText: title }).count()) > 0);
 	// the channel's Videos tab on the main site
 	const main = await ctx.newPage();

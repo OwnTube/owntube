@@ -1764,6 +1764,47 @@ function studioDashboard() {
 	save("studio/dashboard_product_updates", tokenize(clean(card("product_updates")), []));
 }
 
+// Studio's analytics (yta_web/get_screen and get_cards), from a channel
+// without views: the screen layout (its tabs and the card configs in each),
+// the cards each tab's screen request answers with, and every card's body as
+// YouTube sends it when there is nothing to show. src/studio/screens.ts fills
+// the cards this instance has figures for and sends these bodies for the rest
+// (traffic sources, demographics, impressions, ...), moved to the current day.
+function studioAnalytics() {
+	const screens = bodies("studio-all", /yta_web_get_screen\.resp$/);
+	const all = [...screens, ...bodies("studio-all", /yta_web_get_cards\.resp$/)];
+	const channelId: string = screens[0][0].post.screenConfig.entity.channelId;
+	const layout = clean(screens[0][1].layout);
+	const now: string = layout.desktopLayout.selectedTimePeriod.nowSeconds;
+	// the capture's day: the day after the last of the 28 daily points (which
+	// start at the account's local midnight)
+	const series = find(screens[0][1].cards, "datums");
+	const dayStart = series[series.length - 1].x + 86_400_000;
+	const tokens = (o: any) => {
+		const t = wholeToken(wholeToken(wholeToken(clean(o), "nowSeconds", "NOW_SECONDS"), "channelId", "CHANNEL_ID"), "externalChannelId", "CHANNEL_ID");
+		return tokenize(t, []);
+	};
+	save("studio/analytics_layout", tokens(layout), [channelId, now]);
+	const tabs: Record<string, unknown[]> = {};
+	for (const [req, res] of screens) tabs[req.post.desktopState.tabId] = res.cards.map((c: any) => tokens(c.config));
+	save("studio/analytics_screens", tabs, [channelId, now]);
+	// one body per distinct config
+	const seen = new Set<string>();
+	const cards: unknown[] = [];
+	for (const [, res] of all)
+		for (const c of res.cards) {
+			const t = tokens(c);
+			const key = JSON.stringify(t.config);
+			if (seen.has(key)) continue;
+			seen.add(key);
+			// the inspiration feed's token is the request's
+			if (t.contentInspirationFeedCardData) delete t.contentInspirationFeedCardData.serverToken;
+			cards.push(t);
+		}
+	const day = new Date(dayStart);
+	save("studio/analytics_cards", { dayStart, dateId: Number(`${day.getUTCFullYear()}${String(day.getUTCMonth() + 1).padStart(2, "0")}${String(day.getUTCDate()).padStart(2, "0")}`), cards }, [channelId, now]);
+}
+
 // ======================================================================
 
 // ======================================================================
@@ -2095,6 +2136,7 @@ const steps: [string, () => void][] = [
 	["playlist-panel", playlistPanelTpl],
 	["studio", studio],
 	["studio-dashboard", studioDashboard],
+	["studio-analytics", studioAnalytics],
 	["badges", badges],
 	["settings", settingsPages],
 	["switcher", accountSwitcher],

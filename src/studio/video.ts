@@ -132,6 +132,8 @@ export function creatorVideo(v: VideoRow): Record<string, unknown> {
 		videoStreamUrl: v.status === "ready" ? watchUrl : "",
 		viewCountIsHidden: false,
 		publicMetrics: { viewCount: String(v.view_count), commentCount: String(v.comment_count), likeCount: String(v.like_count), dislikeCount: "0" },
+		publicShorts: { isShortsRenderable: isShort(v) },
+		shorts: { isShortsRenderable: isShort(v) },
 		visibility: {
 			effectiveStatus,
 			effectiveVisibility: effective,

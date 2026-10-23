@@ -1,0 +1,7114 @@
+{
+	"dayStart": 1792652400000,
+	"dateId": 20261022,
+	"cards": [
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"personalizedHeaderCardConfig": {},
+				"analysisType": "ANALYSIS_TYPE_UNKNOWN",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"personalizedHeaderCardData": {
+				"title": "Your channel didn’t get any views in the last 28 days",
+				"subtitle": ""
+			},
+			"analysisVariant": {
+				"analysisSummary": {
+					"type": "CATALYST_ANALYSIS_TYPE_CHANNEL_OVERVIEW",
+					"eligibility": "ANALYSIS_ELIGIBILITY_NOT_ELIGIBLE",
+					"sentiment": "ANALYSIS_SENTIMENT_NEUTRAL"
+				},
+				"personalizedChannelOverviewVariant": {
+					"timePeriod": "ANALYTICS_TIME_PERIOD_TYPE_FOUR_WEEKS"
+				}
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_PERSONALIZED_HEADER_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"keyMetricCardConfig": {
+					"timePeriod": {},
+					"includeCatalysis": true,
+					"metricTabConfigs": [
+						{
+							"metric": "EXTERNAL_VIEWS"
+						},
+						{
+							"metric": "EXTERNAL_WATCH_TIME"
+						},
+						{
+							"metric": "SUBSCRIBERS_NET_CHANGE"
+						}
+					],
+					"includeVideoOverlays": true
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"keyMetricCardData": {
+				"keyMetricTabs": [
+					{
+						"metricTabConfig": {
+							"metric": "EXTERNAL_VIEWS"
+						},
+						"primaryContent": {
+							"metric": "EXTERNAL_VIEWS",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							}
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "EXTERNAL_WATCH_TIME"
+						},
+						"primaryContent": {
+							"metric": "EXTERNAL_WATCH_TIME",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							},
+							"previousTotal": 0
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "SUBSCRIBERS_NET_CHANGE"
+						},
+						"primaryContent": {
+							"metric": "SUBSCRIBERS_NET_CHANGE",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							},
+							"previousTotal": 0
+						}
+					}
+				]
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"keyMetricCardConfig": {
+					"metricTabConfigs": [
+						{
+							"metric": "EXTERNAL_VIEWS",
+							"includeCumulative": false
+						},
+						{
+							"metric": "EXTERNAL_WATCH_TIME",
+							"includeCumulative": false
+						},
+						{
+							"metric": "SUBSCRIBERS_NET_CHANGE",
+							"includeCumulative": false
+						}
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_KEY_METRIC_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"analysisType": "ANALYSIS_TYPE_UNKNOWN",
+				"analysisDriverCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"isHidden": true,
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_ANALYSIS_DRIVER_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "VIDEO",
+					"metrics": [
+						"AVERAGE_WATCH_TIME",
+						"AVERAGE_WATCH_PERCENTAGE",
+						"EXTERNAL_VIEWS"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"maxRowCount": 10,
+					"metricsToOrderBy": [
+						"EXTERNAL_VIEWS"
+					]
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "VIDEO"
+							},
+							"strings": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "AVERAGE_WATCH_TIME",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"milliseconds": {}
+						},
+						{
+							"metric": {
+								"type": "AVERAGE_WATCH_PERCENTAGE",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"percentages": {}
+						},
+						{
+							"metric": {
+								"type": "EXTERNAL_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "VIDEO",
+					"metrics": [
+						"AVERAGE_WATCH_TIME",
+						"AVERAGE_WATCH_PERCENTAGE",
+						"EXTERNAL_VIEWS"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_REALTIME",
+				"latestActivityCardConfig": {
+					"tableLimit": 3,
+					"includeSubsData": true
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE"
+			},
+			"latestActivityCardData": {
+				"datas": [
+					{
+						"timePeriod": "ANALYTICS_TIME_PERIOD_TYPE_REALTIME_LAST_48_HOURS",
+						"mainChartData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "HOUR"
+									},
+									"timestamps": {
+										"values": [
+											1792526400000,
+											1792530000000,
+											1792533600000,
+											1792537200000,
+											1792540800000,
+											1792544400000,
+											1792548000000,
+											1792551600000,
+											1792555200000,
+											1792558800000,
+											1792562400000,
+											1792566000000,
+											1792569600000,
+											1792573200000,
+											1792576800000,
+											1792580400000,
+											1792584000000,
+											1792587600000,
+											1792591200000,
+											1792594800000,
+											1792598400000,
+											1792602000000,
+											1792605600000,
+											1792609200000,
+											1792612800000,
+											1792616400000,
+											1792620000000,
+											1792623600000,
+											1792627200000,
+											1792630800000,
+											1792634400000,
+											1792638000000,
+											1792641600000,
+											1792645200000,
+											1792648800000,
+											1792652400000,
+											1792656000000,
+											1792659600000,
+											1792663200000,
+											1792666800000,
+											1792670400000,
+											1792674000000,
+											1792677600000,
+											1792681200000,
+											1792684800000,
+											1792688400000,
+											1792692000000,
+											1792695600000
+										]
+									},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": false,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"counts": {
+										"values": [
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0,
+											0
+										]
+									}
+								}
+							]
+						},
+						"topEntitiesData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "VIDEO"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": false,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"counts": {}
+								}
+							]
+						},
+						"sparkChartData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "HOUR"
+									},
+									"timestamps": {},
+									"columnAnomalies": {}
+								},
+								{
+									"dimension": {
+										"type": "VIDEO"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": false,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"counts": {}
+								}
+							]
+						}
+					}
+				],
+				"lifetimeSubsData": {
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "SUBSCRIBERS_NET_CHANGE",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {
+								"values": [
+									0
+								]
+							},
+							"undefinedValueIndices": [
+								0
+							]
+						}
+					]
+				}
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_LATEST_ACTIVITY_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE",
+				"courseEntrypointCardConfig": {
+					"limit": 25,
+					"timePeriod": {
+						"nowSeconds": "{{NOW_SECONDS}}",
+						"entity": {
+							"channelId": "{{CHANNEL_ID}}"
+						},
+						"timePeriodType": "ANALYTICS_TIME_PERIOD_TYPE_FOUR_WEEKS"
+					}
+				}
+			},
+			"isHidden": true,
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_COURSE_ENTRYPOINT_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE",
+				"podcastOverviewCardConfig": {
+					"limit": 25,
+					"timePeriod": {
+						"nowSeconds": "{{NOW_SECONDS}}",
+						"entity": {
+							"channelId": "{{CHANNEL_ID}}"
+						},
+						"timePeriodType": "ANALYTICS_TIME_PERIOD_TYPE_FOUR_WEEKS"
+					}
+				}
+			},
+			"isHidden": true,
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_PODCAST_OVERVIEW_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"entitySnapshotCardConfig": {
+					"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_VIDEO",
+					"prefetchVideosForChannel": true
+				}
+			},
+			"isHidden": true,
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_ENTITY_SNAPSHOT_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"personalizedHeaderCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_ALL_CONTENT"
+			},
+			"personalizedHeaderCardData": {
+				"analysisName": "All"
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_PERSONALIZED_HEADER_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "CREATOR_CONTENT_TYPE",
+					"metrics": [
+						"RECENT_VIEWERS"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"maxRowCount": 5
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "CREATOR_CONTENT_TYPE"
+							},
+							"enumValues": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "RECENT_VIEWERS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {
+								"ids": [
+									0
+								]
+							},
+							"counts": {}
+						}
+					],
+					"anomalyContext": [
+						{
+							"key": 0,
+							"value": {
+								"type": "ANALYTICS_ANOMALY_TYPE_DAILY_DATA_PROCESSING",
+								"startDate": 1792566000000,
+								"endDate": 1792738800000,
+								"columns": [
+									{
+										"type": "RECENT_VIEWERS"
+									}
+								],
+								"permanence": "ANALYTICS_ANOMALY_PERMANENCE_TEMPORARY",
+								"impact": "ANALYTICS_ANOMALY_IMPACT_DATA_MISSING"
+							}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "CREATOR_CONTENT_TYPE",
+					"metrics": [
+						"RECENT_VIEWERS"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "CREATOR_CONTENT_TYPE",
+					"metrics": [
+						"FREQUENT_VIEWERS"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"maxRowCount": 5
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "CREATOR_CONTENT_TYPE"
+							},
+							"enumValues": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "FREQUENT_VIEWERS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {
+								"ids": [
+									0
+								]
+							},
+							"counts": {}
+						}
+					],
+					"anomalyContext": [
+						{
+							"key": 0,
+							"value": {
+								"type": "ANALYTICS_ANOMALY_TYPE_DAILY_DATA_PROCESSING",
+								"startDate": 1792566000000,
+								"endDate": 1792738800000,
+								"columns": [
+									{
+										"type": "FREQUENT_VIEWERS"
+									}
+								],
+								"permanence": "ANALYTICS_ANOMALY_PERMANENCE_TEMPORARY",
+								"impact": "ANALYTICS_ANOMALY_IMPACT_DATA_MISSING"
+							}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "CREATOR_CONTENT_TYPE",
+					"metrics": [
+						"FREQUENT_VIEWERS"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "CREATOR_CONTENT_TYPE",
+					"metrics": [
+						"SUBSCRIBERS_NET_CHANGE"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"maxRowCount": 5
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "CREATOR_CONTENT_TYPE"
+							},
+							"enumValues": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "SUBSCRIBERS_NET_CHANGE",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "CREATOR_CONTENT_TYPE",
+					"metrics": [
+						"SUBSCRIBERS_NET_CHANGE"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "CREATOR_CONTENT_TYPE",
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"maxRowCount": 5,
+					"restrict": {
+						"inValues": [
+							"LIVE_STREAM",
+							"SHORTS",
+							"VIDEO_ON_DEMAND",
+							"POSTS"
+						],
+						"dimension": {
+							"type": "CREATOR_CONTENT_TYPE"
+						}
+					}
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "CREATOR_CONTENT_TYPE"
+							},
+							"enumValues": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "EXTERNAL_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "CREATOR_CONTENT_TYPE",
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentTypePerformanceCardConfig": {
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					]
+				}
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_CONTENT_TYPE_PERFORMANCE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"contentTypePerformanceCardData": {}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"funnelCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"funnelCardData": {
+				"totalData": {
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "VIDEO_THUMBNAIL_IMPRESSIONS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {
+								"values": [
+									0
+								]
+							},
+							"undefinedValueIndices": [
+								0
+							]
+						},
+						{
+							"metric": {
+								"type": "VIDEO_THUMBNAIL_IMPRESSIONS_VTR",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"percentages": {
+								"values": [
+									0
+								]
+							},
+							"undefinedValueIndices": [
+								0
+							]
+						},
+						{
+							"metric": {
+								"type": "VIDEO_THUMBNAIL_IMPRESSED_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {
+								"values": [
+									0
+								]
+							},
+							"undefinedValueIndices": [
+								0
+							]
+						},
+						{
+							"metric": {
+								"type": "VIDEO_THUMBNAIL_IMPRESSED_WATCH_TIME",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"milliseconds": {
+								"values": [
+									0
+								]
+							},
+							"undefinedValueIndices": [
+								0
+							]
+						},
+						{
+							"metric": {
+								"type": "AVERAGE_WATCH_TIME_FROM_VIDEO_THUMBNAIL_IMPRESSIONS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"milliseconds": {
+								"values": [
+									0
+								]
+							},
+							"undefinedValueIndices": [
+								0
+							]
+						}
+					]
+				},
+				"homePageTrafficData": {
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "VIDEO_THUMBNAIL_IMPRESSIONS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {
+								"values": [
+									0
+								]
+							},
+							"undefinedValueIndices": [
+								0
+							]
+						}
+					]
+				},
+				"trendingTrafficData": {
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "VIDEO_THUMBNAIL_IMPRESSIONS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {
+								"values": [
+									0
+								]
+							},
+							"undefinedValueIndices": [
+								0
+							]
+						}
+					]
+				},
+				"watchPageTrafficData": {
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "VIDEO_THUMBNAIL_IMPRESSIONS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {
+								"values": [
+									0
+								]
+							},
+							"undefinedValueIndices": [
+								0
+							]
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_FUNNEL_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "CREATOR_CONTENT_TYPE",
+					"metrics": [
+						"VIDEO_COUNT_FIRST_PUBLISHED"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"maxRowCount": 5
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "CREATOR_CONTENT_TYPE"
+							},
+							"enumValues": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "VIDEO_COUNT_FIRST_PUBLISHED",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {
+								"ids": [
+									0
+								]
+							},
+							"counts": {}
+						}
+					],
+					"anomalyContext": [
+						{
+							"key": 0,
+							"value": {
+								"type": "ANALYTICS_ANOMALY_TYPE_DAILY_DATA_PROCESSING",
+								"startDate": 1792566000000,
+								"endDate": 1792738800000,
+								"columns": [
+									{
+										"type": "VIDEO_COUNT_FIRST_PUBLISHED"
+									}
+								],
+								"permanence": "ANALYTICS_ANOMALY_PERMANENCE_TEMPORARY",
+								"impact": "ANALYTICS_ANOMALY_IMPACT_DATA_MISSING"
+							}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "CREATOR_CONTENT_TYPE",
+					"metrics": [
+						"VIDEO_COUNT_FIRST_PUBLISHED"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE",
+				"formatsOverlapCardConfig": {}
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_FORMATS_OVERLAP_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"formatsOverlapCardData": {}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "TRAFFIC_SOURCE_TYPE",
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"asPercentagesOfTotal": true,
+					"maxRowCount": 50
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "TRAFFIC_SOURCE_TYPE"
+							},
+							"enumValues": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "EXTERNAL_VIEWS",
+								"asPercentagesOfTotal": true,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"percentages": {}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "TRAFFIC_SOURCE_TYPE",
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"shortVideoRemixCardConfig": {
+					"maxRowCount": 5
+				},
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_ALL_CONTENT"
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_SHORT_VIDEO_REMIX_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"shortVideoRemixCardData": {
+				"tableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "DAY"
+							},
+							"timestamps": {
+								"values": [
+									1790233200000,
+									1790319600000,
+									1790406000000,
+									1790492400000,
+									1790578800000,
+									1790665200000,
+									1790751600000,
+									1790838000000,
+									1790924400000,
+									1791010800000,
+									1791097200000,
+									1791183600000,
+									1791270000000,
+									1791356400000,
+									1791442800000,
+									1791529200000,
+									1791615600000,
+									1791702000000,
+									1791788400000,
+									1791874800000,
+									1791961200000,
+									1792047600000,
+									1792134000000,
+									1792220400000,
+									1792306800000,
+									1792393200000,
+									1792479600000,
+									1792566000000
+								]
+							},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "SHORTS_REMIX_COUNT",
+								"asPercentagesOfTotal": false,
+								"includeTotal": true,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {
+								"values": [
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0
+								]
+							}
+						},
+						{
+							"metric": {
+								"type": "SHORTS_REMIX_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": true,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {
+								"values": [
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0
+								]
+							}
+						}
+					]
+				},
+				"topRemixedTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "VIDEO"
+							},
+							"strings": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "SHORTS_REMIX_COUNT",
+								"asPercentagesOfTotal": false,
+								"includeTotal": true,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						},
+						{
+							"metric": {
+								"type": "SHORTS_REMIX_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": true,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						}
+					]
+				}
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"personalizedHeaderCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_VIDEO"
+			},
+			"personalizedHeaderCardData": {
+				"analysisName": "Videos"
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_PERSONALIZED_HEADER_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"keyMetricCardConfig": {
+					"metricTabConfigs": [
+						{
+							"metric": "EXTERNAL_VIEWS"
+						},
+						{
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS"
+						},
+						{
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS_VTR"
+						},
+						{
+							"metric": "AVERAGE_WATCH_TIME"
+						}
+					],
+					"includeVideoOverlays": true
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_VIDEO"
+			},
+			"keyMetricCardData": {
+				"keyMetricTabs": [
+					{
+						"metricTabConfig": {
+							"metric": "EXTERNAL_VIEWS"
+						},
+						"primaryContent": {
+							"metric": "EXTERNAL_VIEWS",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							}
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS"
+						},
+						"primaryContent": {
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							},
+							"previousTotal": 0
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS_VTR"
+						},
+						"primaryContent": {
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS_VTR",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							}
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "AVERAGE_WATCH_TIME"
+						},
+						"primaryContent": {
+							"metric": "AVERAGE_WATCH_TIME",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							}
+						}
+					}
+				]
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"keyMetricCardConfig": {
+					"metricTabConfigs": [
+						{
+							"metric": "EXTERNAL_VIEWS",
+							"includeCumulative": false
+						},
+						{
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS",
+							"includeCumulative": false
+						},
+						{
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS_VTR",
+							"includeCumulative": false
+						},
+						{
+							"metric": "AVERAGE_WATCH_TIME",
+							"includeCumulative": false
+						}
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_KEY_METRIC_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"audienceRetentionHighlightsCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"isHidden": true,
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_AUDIENCE_RETENTION_HIGHLIGHTS_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_VIDEO",
+				"tableCarouselCardConfig": {
+					"tableCardConfigs": [
+						{
+							"dimension": "TRAFFIC_SOURCE_TYPE",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5
+						},
+						{
+							"dimension": "TRAFFIC_SOURCE_DETAIL",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5,
+							"restrict": {
+								"inValues": [
+									"EXT_URL"
+								],
+								"dimension": {
+									"type": "TRAFFIC_SOURCE_TYPE"
+								}
+							},
+							"secondaryTableCardConfig": {
+								"dimension": "TRAFFIC_SOURCE_TYPE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 50
+							}
+						},
+						{
+							"dimension": "TRAFFIC_SOURCE_DETAIL",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5,
+							"restrict": {
+								"inValues": [
+									"YT_SEARCH"
+								],
+								"dimension": {
+									"type": "TRAFFIC_SOURCE_TYPE"
+								}
+							},
+							"secondaryTableCardConfig": {
+								"dimension": "TRAFFIC_SOURCE_TYPE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 50
+							}
+						},
+						{
+							"dimension": "TRAFFIC_SOURCE_DETAIL",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5,
+							"restrict": {
+								"inValues": [
+									"YT_RELATED"
+								],
+								"dimension": {
+									"type": "TRAFFIC_SOURCE_TYPE"
+								}
+							},
+							"secondaryTableCardConfig": {
+								"dimension": "TRAFFIC_SOURCE_TYPE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 50
+							}
+						},
+						{
+							"dimension": "TRAFFIC_SOURCE_DETAIL",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5,
+							"restrict": {
+								"inValues": [
+									"PLAYLIST"
+								],
+								"dimension": {
+									"type": "TRAFFIC_SOURCE_TYPE"
+								}
+							},
+							"secondaryTableCardConfig": {
+								"dimension": "TRAFFIC_SOURCE_TYPE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 50
+							}
+						}
+					]
+				}
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CAROUSEL_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"tableCarouselCardData": {
+				"tableCards": [
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_TYPE"
+									},
+									"enumValues": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						}
+					},
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_DETAIL"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"secondaryTableCardData": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "TRAFFIC_SOURCE_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					},
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_DETAIL"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"secondaryTableCardData": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "TRAFFIC_SOURCE_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					},
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_DETAIL"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"secondaryTableCardData": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "TRAFFIC_SOURCE_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					},
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_DETAIL"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"secondaryTableCardData": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "TRAFFIC_SOURCE_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					}
+				],
+				"tableCardsIndices": [
+					0,
+					1,
+					2,
+					3,
+					4
+				]
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "VIDEO",
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"maxRowCount": 5,
+					"restrict": {
+						"inValues": [
+							"VIDEO_ON_DEMAND",
+							"SHORTS",
+							"LIVE_STREAM"
+						],
+						"dimension": {
+							"type": "CREATOR_CONTENT_TYPE"
+						}
+					}
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_VIDEO"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "VIDEO"
+							},
+							"strings": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "EXTERNAL_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "VIDEO",
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"personalizedHeaderCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_SHORTS"
+			},
+			"personalizedHeaderCardData": {
+				"analysisName": "Shorts"
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_PERSONALIZED_HEADER_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"keyMetricCardConfig": {
+					"metricTabConfigs": [
+						{
+							"metric": "EXTERNAL_VIEWS"
+						},
+						{
+							"metric": "ENGAGED_VIEWS"
+						},
+						{
+							"metric": "RATINGS_LIKES"
+						},
+						{
+							"metric": "SUBSCRIBERS_NET_CHANGE"
+						}
+					],
+					"includeVideoOverlays": true
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_SHORTS"
+			},
+			"keyMetricCardData": {
+				"keyMetricTabs": [
+					{
+						"metricTabConfig": {
+							"metric": "EXTERNAL_VIEWS"
+						},
+						"primaryContent": {
+							"metric": "EXTERNAL_VIEWS",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							}
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "ENGAGED_VIEWS"
+						},
+						"primaryContent": {
+							"metric": "ENGAGED_VIEWS",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							},
+							"previousTotal": 0
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "RATINGS_LIKES"
+						},
+						"primaryContent": {
+							"metric": "RATINGS_LIKES",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							},
+							"previousTotal": 0
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "SUBSCRIBERS_NET_CHANGE"
+						},
+						"primaryContent": {
+							"metric": "SUBSCRIBERS_NET_CHANGE",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							},
+							"previousTotal": 0
+						}
+					}
+				]
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"keyMetricCardConfig": {
+					"metricTabConfigs": [
+						{
+							"metric": "EXTERNAL_VIEWS",
+							"includeCumulative": false
+						},
+						{
+							"metric": "ENGAGED_VIEWS",
+							"includeCumulative": false
+						},
+						{
+							"metric": "RATINGS_LIKES",
+							"includeCumulative": false
+						},
+						{
+							"metric": "SUBSCRIBERS_NET_CHANGE",
+							"includeCumulative": false
+						}
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_KEY_METRIC_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_SHORTS",
+				"tableCarouselCardConfig": {
+					"tableCardConfigs": [
+						{
+							"dimension": "TRAFFIC_SOURCE_TYPE",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5
+						},
+						{
+							"dimension": "TRAFFIC_SOURCE_DETAIL",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5,
+							"restrict": {
+								"inValues": [
+									"EXT_URL"
+								],
+								"dimension": {
+									"type": "TRAFFIC_SOURCE_TYPE"
+								}
+							},
+							"secondaryTableCardConfig": {
+								"dimension": "TRAFFIC_SOURCE_TYPE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 50
+							}
+						},
+						{
+							"dimension": "TRAFFIC_SOURCE_DETAIL",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5,
+							"restrict": {
+								"inValues": [
+									"YT_SEARCH"
+								],
+								"dimension": {
+									"type": "TRAFFIC_SOURCE_TYPE"
+								}
+							},
+							"secondaryTableCardConfig": {
+								"dimension": "TRAFFIC_SOURCE_TYPE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 50
+							}
+						},
+						{
+							"dimension": "TRAFFIC_SOURCE_DETAIL",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5,
+							"restrict": {
+								"inValues": [
+									"YT_RELATED"
+								],
+								"dimension": {
+									"type": "TRAFFIC_SOURCE_TYPE"
+								}
+							},
+							"secondaryTableCardConfig": {
+								"dimension": "TRAFFIC_SOURCE_TYPE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 50
+							}
+						},
+						{
+							"dimension": "TRAFFIC_SOURCE_DETAIL",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5,
+							"restrict": {
+								"inValues": [
+									"PLAYLIST"
+								],
+								"dimension": {
+									"type": "TRAFFIC_SOURCE_TYPE"
+								}
+							},
+							"secondaryTableCardConfig": {
+								"dimension": "TRAFFIC_SOURCE_TYPE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 50
+							}
+						}
+					]
+				}
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CAROUSEL_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"tableCarouselCardData": {
+				"tableCards": [
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_TYPE"
+									},
+									"enumValues": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						}
+					},
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_DETAIL"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"secondaryTableCardData": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "TRAFFIC_SOURCE_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					},
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_DETAIL"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"secondaryTableCardData": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "TRAFFIC_SOURCE_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					},
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_DETAIL"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"secondaryTableCardData": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "TRAFFIC_SOURCE_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					},
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_DETAIL"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"secondaryTableCardData": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "TRAFFIC_SOURCE_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					}
+				],
+				"tableCardsIndices": [
+					0,
+					1,
+					2,
+					3,
+					4
+				]
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_SHORTS",
+				"stackedBarCardConfig": {
+					"metric": "SHORTS_FEED_IMPRESSIONS_VTR",
+					"isDetailScreen": false
+				}
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_STACKED_BAR_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"stackedBarCardData": {
+				"overviewCardData": {
+					"cardData": {
+						"metricColumns": [
+							{
+								"metric": {
+									"type": "SHORTS_FEED_IMPRESSIONS_VTR",
+									"asPercentagesOfTotal": false,
+									"includeTotal": false,
+									"cumulative": false
+								},
+								"columnAnomalies": {},
+								"percentages": {
+									"values": [
+										0
+									]
+								},
+								"undefinedValueIndices": [
+									0
+								]
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "VIDEO",
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"maxRowCount": 5,
+					"restrict": {
+						"inValues": [
+							"VIDEO_ON_DEMAND",
+							"SHORTS",
+							"LIVE_STREAM"
+						],
+						"dimension": {
+							"type": "CREATOR_CONTENT_TYPE"
+						}
+					}
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_SHORTS"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "VIDEO"
+							},
+							"strings": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "EXTERNAL_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "VIDEO",
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"shortVideoRemixCardConfig": {
+					"maxRowCount": 5
+				},
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_SHORTS"
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_SHORT_VIDEO_REMIX_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"shortVideoRemixCardData": {
+				"tableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "DAY"
+							},
+							"timestamps": {
+								"values": [
+									1790233200000,
+									1790319600000,
+									1790406000000,
+									1790492400000,
+									1790578800000,
+									1790665200000,
+									1790751600000,
+									1790838000000,
+									1790924400000,
+									1791010800000,
+									1791097200000,
+									1791183600000,
+									1791270000000,
+									1791356400000,
+									1791442800000,
+									1791529200000,
+									1791615600000,
+									1791702000000,
+									1791788400000,
+									1791874800000,
+									1791961200000,
+									1792047600000,
+									1792134000000,
+									1792220400000,
+									1792306800000,
+									1792393200000,
+									1792479600000,
+									1792566000000
+								]
+							},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "SHORTS_REMIX_COUNT",
+								"asPercentagesOfTotal": false,
+								"includeTotal": true,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {
+								"values": [
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0
+								]
+							}
+						},
+						{
+							"metric": {
+								"type": "SHORTS_REMIX_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": true,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {
+								"values": [
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0
+								]
+							}
+						}
+					]
+				},
+				"topRemixedTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "VIDEO"
+							},
+							"strings": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "SHORTS_REMIX_COUNT",
+								"asPercentagesOfTotal": false,
+								"includeTotal": true,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						},
+						{
+							"metric": {
+								"type": "SHORTS_REMIX_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": true,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						}
+					]
+				}
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"personalizedHeaderCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_LIVE_STREAMS"
+			},
+			"personalizedHeaderCardData": {
+				"analysisName": "Live"
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_PERSONALIZED_HEADER_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"keyMetricCardConfig": {
+					"metricTabConfigs": [
+						{
+							"metric": "EXTERNAL_VIEWS"
+						},
+						{
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS"
+						},
+						{
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS_VTR"
+						},
+						{
+							"metric": "AVERAGE_WATCH_TIME"
+						}
+					],
+					"includeVideoOverlays": true
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_LIVE_STREAMS"
+			},
+			"keyMetricCardData": {
+				"keyMetricTabs": [
+					{
+						"metricTabConfig": {
+							"metric": "EXTERNAL_VIEWS"
+						},
+						"primaryContent": {
+							"metric": "EXTERNAL_VIEWS",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							}
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS"
+						},
+						"primaryContent": {
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							},
+							"previousTotal": 0
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS_VTR"
+						},
+						"primaryContent": {
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS_VTR",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							}
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "AVERAGE_WATCH_TIME"
+						},
+						"primaryContent": {
+							"metric": "AVERAGE_WATCH_TIME",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							}
+						}
+					}
+				]
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"keyMetricCardConfig": {
+					"metricTabConfigs": [
+						{
+							"metric": "EXTERNAL_VIEWS",
+							"includeCumulative": false
+						},
+						{
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS",
+							"includeCumulative": false
+						},
+						{
+							"metric": "VIDEO_THUMBNAIL_IMPRESSIONS_VTR",
+							"includeCumulative": false
+						},
+						{
+							"metric": "AVERAGE_WATCH_TIME",
+							"includeCumulative": false
+						}
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_KEY_METRIC_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_LIVE_STREAMS",
+				"tableCarouselCardConfig": {
+					"tableCardConfigs": [
+						{
+							"dimension": "TRAFFIC_SOURCE_TYPE",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5
+						},
+						{
+							"dimension": "TRAFFIC_SOURCE_DETAIL",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5,
+							"restrict": {
+								"inValues": [
+									"EXT_URL"
+								],
+								"dimension": {
+									"type": "TRAFFIC_SOURCE_TYPE"
+								}
+							},
+							"secondaryTableCardConfig": {
+								"dimension": "TRAFFIC_SOURCE_TYPE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 50
+							}
+						},
+						{
+							"dimension": "TRAFFIC_SOURCE_DETAIL",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5,
+							"restrict": {
+								"inValues": [
+									"YT_SEARCH"
+								],
+								"dimension": {
+									"type": "TRAFFIC_SOURCE_TYPE"
+								}
+							},
+							"secondaryTableCardConfig": {
+								"dimension": "TRAFFIC_SOURCE_TYPE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 50
+							}
+						},
+						{
+							"dimension": "TRAFFIC_SOURCE_DETAIL",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5,
+							"restrict": {
+								"inValues": [
+									"YT_RELATED"
+								],
+								"dimension": {
+									"type": "TRAFFIC_SOURCE_TYPE"
+								}
+							},
+							"secondaryTableCardConfig": {
+								"dimension": "TRAFFIC_SOURCE_TYPE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 50
+							}
+						},
+						{
+							"dimension": "TRAFFIC_SOURCE_DETAIL",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+							"asPercentagesOfTotal": true,
+							"maxRowCount": 5,
+							"restrict": {
+								"inValues": [
+									"PLAYLIST"
+								],
+								"dimension": {
+									"type": "TRAFFIC_SOURCE_TYPE"
+								}
+							},
+							"secondaryTableCardConfig": {
+								"dimension": "TRAFFIC_SOURCE_TYPE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 50
+							}
+						}
+					]
+				}
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CAROUSEL_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"tableCarouselCardData": {
+				"tableCards": [
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_TYPE"
+									},
+									"enumValues": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						}
+					},
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_DETAIL"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"secondaryTableCardData": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "TRAFFIC_SOURCE_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					},
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_DETAIL"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"secondaryTableCardData": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "TRAFFIC_SOURCE_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					},
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_DETAIL"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"secondaryTableCardData": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "TRAFFIC_SOURCE_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					},
+					{
+						"mainTableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "TRAFFIC_SOURCE_DETAIL"
+									},
+									"strings": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"secondaryTableCardData": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "TRAFFIC_SOURCE_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					}
+				],
+				"tableCardsIndices": [
+					0,
+					1,
+					2,
+					3,
+					4
+				]
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "VIDEO",
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"maxRowCount": 5,
+					"restrict": {
+						"inValues": [
+							"VIDEO_ON_DEMAND",
+							"SHORTS",
+							"LIVE_STREAM"
+						],
+						"dimension": {
+							"type": "CREATOR_CONTENT_TYPE"
+						}
+					}
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_LIVE_STREAMS"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "VIDEO"
+							},
+							"strings": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "EXTERNAL_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "VIDEO",
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE",
+				"liveChannelCcvCardConfig": {}
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_LIVE_CHANNEL_CCV_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"liveChannelCcvCardData": {}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"personalizedHeaderCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_POSTS"
+			},
+			"personalizedHeaderCardData": {
+				"analysisName": "Posts"
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_PERSONALIZED_HEADER_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"keyMetricCardConfig": {
+					"metricTabConfigs": [
+						{
+							"metric": "POST_IMPRESSIONS"
+						},
+						{
+							"metric": "POST_LIKES"
+						},
+						{
+							"metric": "POST_SUBSCRIBERS_NET_CHANGE"
+						}
+					],
+					"includeVideoOverlays": true
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_POSTS"
+			},
+			"keyMetricCardData": {
+				"keyMetricTabs": [
+					{
+						"metricTabConfig": {
+							"metric": "POST_IMPRESSIONS"
+						},
+						"primaryContent": {
+							"metric": "POST_IMPRESSIONS",
+							"total": 0,
+							"anomalies": [
+								{
+									"type": "ANALYTICS_ANOMALY_TYPE_DATA_UNDERREPORTED",
+									"startDate": 1765180800000,
+									"endDate": 1791097200000,
+									"columns": [
+										{
+											"type": "POST_IMPRESSIONS"
+										}
+									],
+									"permanence": "ANALYTICS_ANOMALY_PERMANENCE_TEMPORARY",
+									"impact": "ANALYTICS_ANOMALY_IMPACT_INFORMATION"
+								}
+							],
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							}
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "POST_LIKES"
+						},
+						"primaryContent": {
+							"metric": "POST_LIKES",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							},
+							"previousTotal": 0
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "POST_SUBSCRIBERS_NET_CHANGE"
+						},
+						"primaryContent": {
+							"metric": "POST_SUBSCRIBERS_NET_CHANGE",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							},
+							"previousTotal": 0
+						}
+					}
+				]
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"keyMetricCardConfig": {
+					"metricTabConfigs": [
+						{
+							"metric": "POST_IMPRESSIONS",
+							"includeCumulative": false
+						},
+						{
+							"metric": "POST_LIKES",
+							"includeCumulative": false
+						},
+						{
+							"metric": "POST_SUBSCRIBERS_NET_CHANGE",
+							"includeCumulative": false
+						}
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_KEY_METRIC_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"postsEngagementRateCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_POSTS_ENGAGEMENT_RATE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"postsEngagementRateCardData": {
+				"tables": [
+					{
+						"postType": "POST_ATTACHMENT_TYPE_ENUM_IMAGE"
+					},
+					{
+						"postType": "POST_ATTACHMENT_TYPE_ENUM_POLL"
+					},
+					{
+						"postType": "POST_ATTACHMENT_TYPE_ENUM_QUIZ"
+					},
+					{
+						"postType": "POST_ATTACHMENT_TYPE_ENUM_NONE"
+					},
+					{
+						"postType": "POST_ATTACHMENT_TYPE_ENUM_VIDEO_LINK"
+					}
+				]
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"personalizedHeaderCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_PLAYLISTS"
+			},
+			"personalizedHeaderCardData": {
+				"analysisName": "Playlists"
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_PERSONALIZED_HEADER_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "PLAYLIST",
+					"metrics": [
+						"PLAYLIST_VIEWS",
+						"EXTERNAL_VIEWS"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"maxRowCount": 5,
+					"metricsToOrderBy": [
+						"PLAYLIST_VIEWS",
+						"EXTERNAL_VIEWS"
+					],
+					"availableSortings": [
+						{
+							"headerMetric": "PLAYLIST_VIEWS",
+							"metricsToOrderBy": [
+								"PLAYLIST_VIEWS",
+								"EXTERNAL_VIEWS"
+							]
+						},
+						{
+							"headerMetric": "EXTERNAL_VIEWS",
+							"metricsToOrderBy": [
+								"EXTERNAL_VIEWS",
+								"PLAYLIST_VIEWS"
+							]
+						}
+					]
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_PLAYLISTS"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "PLAYLIST"
+							},
+							"strings": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "PLAYLIST_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						},
+						{
+							"metric": {
+								"type": "EXTERNAL_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "PLAYLIST",
+					"metrics": [
+						"PLAYLIST_VIEWS",
+						"EXTERNAL_VIEWS"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"personalizedHeaderCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_PODCASTS"
+			},
+			"personalizedHeaderCardData": {
+				"analysisName": "Podcasts"
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_PERSONALIZED_HEADER_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "PODCAST",
+					"metrics": [
+						"PLAYLIST_VIEWS",
+						"EXTERNAL_VIEWS"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"maxRowCount": 5,
+					"metricsToOrderBy": [
+						"PLAYLIST_VIEWS",
+						"EXTERNAL_VIEWS"
+					],
+					"availableSortings": [
+						{
+							"headerMetric": "PLAYLIST_VIEWS",
+							"metricsToOrderBy": [
+								"PLAYLIST_VIEWS",
+								"EXTERNAL_VIEWS"
+							]
+						},
+						{
+							"headerMetric": "EXTERNAL_VIEWS",
+							"metricsToOrderBy": [
+								"EXTERNAL_VIEWS",
+								"PLAYLIST_VIEWS"
+							]
+						}
+					]
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_PODCASTS"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "PODCAST"
+							},
+							"strings": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "PLAYLIST_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						},
+						{
+							"metric": {
+								"type": "EXTERNAL_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "PODCAST",
+					"metrics": [
+						"PLAYLIST_VIEWS",
+						"EXTERNAL_VIEWS"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"personalizedHeaderCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_COURSES"
+			},
+			"personalizedHeaderCardData": {
+				"analysisName": "Courses"
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_PERSONALIZED_HEADER_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "COURSE",
+					"metrics": [
+						"PLAYLIST_VIEWS",
+						"EXTERNAL_VIEWS"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"maxRowCount": 5,
+					"metricsToOrderBy": [
+						"PLAYLIST_VIEWS",
+						"EXTERNAL_VIEWS"
+					],
+					"availableSortings": [
+						{
+							"headerMetric": "PLAYLIST_VIEWS",
+							"metricsToOrderBy": [
+								"PLAYLIST_VIEWS",
+								"EXTERNAL_VIEWS"
+							]
+						},
+						{
+							"headerMetric": "EXTERNAL_VIEWS",
+							"metricsToOrderBy": [
+								"EXTERNAL_VIEWS",
+								"PLAYLIST_VIEWS"
+							]
+						}
+					]
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_COURSES"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "COURSE"
+							},
+							"strings": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "PLAYLIST_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						},
+						{
+							"metric": {
+								"type": "EXTERNAL_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "COURSE",
+					"metrics": [
+						"PLAYLIST_VIEWS",
+						"EXTERNAL_VIEWS"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"headlinesCardConfig": {
+					"queries": [
+						{
+							"externalChannelId": "{{CHANNEL_ID}}",
+							"type": "CATALYST_ANALYSIS_TYPE_CHANNEL_NEW_RETURNING"
+						}
+					]
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE"
+			},
+			"isHidden": true,
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_HEADLINES_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"keyMetricCardConfig": {
+					"timePeriod": {},
+					"metricTabConfigs": [
+						{
+							"metric": "ESTIMATED_UNIQUE_VIEWERS_LAST28_DAYS"
+						},
+						{
+							"metric": "SUBSCRIBERS_NET_CHANGE"
+						}
+					],
+					"includeVideoOverlays": true
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"keyMetricCardData": {
+				"keyMetricTabs": [
+					{
+						"metricTabConfig": {
+							"metric": "ESTIMATED_UNIQUE_VIEWERS_LAST28_DAYS"
+						},
+						"primaryContent": {
+							"metric": "ESTIMATED_UNIQUE_VIEWERS_LAST28_DAYS",
+							"total": 0,
+							"anomalies": [
+								{
+									"type": "ANALYTICS_ANOMALY_TYPE_DAILY_DATA_PROCESSING",
+									"startDate": 1792479600000,
+									"endDate": 1792738800000,
+									"columns": [
+										{
+											"type": "ESTIMATED_UNIQUE_VIEWERS_LAST28_DAYS"
+										}
+									],
+									"permanence": "ANALYTICS_ANOMALY_PERMANENCE_TEMPORARY",
+									"impact": "ANALYTICS_ANOMALY_IMPACT_DATA_MISSING"
+								}
+							],
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							}
+						}
+					},
+					{
+						"metricTabConfig": {
+							"metric": "SUBSCRIBERS_NET_CHANGE"
+						},
+						"primaryContent": {
+							"metric": "SUBSCRIBERS_NET_CHANGE",
+							"total": 0,
+							"mainSeries": {
+								"datums": [
+									{
+										"x": 1790233200000,
+										"y": 0
+									},
+									{
+										"x": 1790319600000,
+										"y": 0
+									},
+									{
+										"x": 1790406000000,
+										"y": 0
+									},
+									{
+										"x": 1790492400000,
+										"y": 0
+									},
+									{
+										"x": 1790578800000,
+										"y": 0
+									},
+									{
+										"x": 1790665200000,
+										"y": 0
+									},
+									{
+										"x": 1790751600000,
+										"y": 0
+									},
+									{
+										"x": 1790838000000,
+										"y": 0
+									},
+									{
+										"x": 1790924400000,
+										"y": 0
+									},
+									{
+										"x": 1791010800000,
+										"y": 0
+									},
+									{
+										"x": 1791097200000,
+										"y": 0
+									},
+									{
+										"x": 1791183600000,
+										"y": 0
+									},
+									{
+										"x": 1791270000000,
+										"y": 0
+									},
+									{
+										"x": 1791356400000,
+										"y": 0
+									},
+									{
+										"x": 1791442800000,
+										"y": 0
+									},
+									{
+										"x": 1791529200000,
+										"y": 0
+									},
+									{
+										"x": 1791615600000,
+										"y": 0
+									},
+									{
+										"x": 1791702000000,
+										"y": 0
+									},
+									{
+										"x": 1791788400000,
+										"y": 0
+									},
+									{
+										"x": 1791874800000,
+										"y": 0
+									},
+									{
+										"x": 1791961200000,
+										"y": 0
+									},
+									{
+										"x": 1792047600000,
+										"y": 0
+									},
+									{
+										"x": 1792134000000,
+										"y": 0
+									},
+									{
+										"x": 1792220400000,
+										"y": 0
+									},
+									{
+										"x": 1792306800000,
+										"y": 0
+									},
+									{
+										"x": 1792393200000,
+										"y": 0
+									},
+									{
+										"x": 1792479600000,
+										"y": 0
+									},
+									{
+										"x": 1792566000000,
+										"y": 0
+									}
+								],
+								"timeUnit": "TIME_PERIOD_UNIT_DAYS"
+							},
+							"previousTotal": 0
+						}
+					}
+				]
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"keyMetricCardConfig": {
+					"metricTabConfigs": [
+						{
+							"metric": "ESTIMATED_UNIQUE_VIEWERS_LAST28_DAYS",
+							"includeCumulative": false
+						},
+						{
+							"metric": "SUBSCRIBERS_NET_CHANGE",
+							"includeCumulative": false
+						}
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_KEY_METRIC_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"stackedBarCardConfig": {
+					"metric": "RECENT_VIEWERS28_DAYS",
+					"additionalMetrics": [
+						"OCCASIONAL_VIEWERS28_DAYS",
+						"FREQUENT_VIEWERS28_DAYS"
+					]
+				}
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_STACKED_BAR_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"stackedBarCardData": {
+				"overviewCardData": {
+					"anomalies": [
+						{
+							"type": "ANALYTICS_ANOMALY_TYPE_DAILY_DATA_PROCESSING",
+							"startDate": 1792479600000,
+							"endDate": 1792738800000,
+							"columns": [
+								{
+									"type": "OCCASIONAL_VIEWERS28_DAYS"
+								},
+								{
+									"type": "FREQUENT_VIEWERS28_DAYS"
+								},
+								{
+									"type": "RECENT_VIEWERS28_DAYS"
+								}
+							],
+							"permanence": "ANALYTICS_ANOMALY_PERMANENCE_TEMPORARY",
+							"impact": "ANALYTICS_ANOMALY_IMPACT_DATA_MISSING"
+						}
+					],
+					"cardData": {
+						"dimensionColumns": [
+							{
+								"dimension": {
+									"type": "DAY"
+								},
+								"dateIds": {
+									"values": [
+										20261021,
+										20261020,
+										20261019,
+										20261018,
+										20261017,
+										20261016,
+										20261015,
+										20261014,
+										20261013,
+										20261012,
+										20261011,
+										20261010,
+										20261009,
+										20261008,
+										20261007,
+										20261006,
+										20261005,
+										20261004,
+										20261003,
+										20261002,
+										20261001,
+										20260930,
+										20260929,
+										20260928,
+										20260927,
+										20260926,
+										20260925,
+										20260924
+									]
+								},
+								"columnAnomalies": {}
+							}
+						],
+						"metricColumns": [
+							{
+								"metric": {
+									"type": "RECENT_VIEWERS28_DAYS",
+									"asPercentagesOfTotal": false,
+									"includeTotal": false,
+									"cumulative": false
+								},
+								"columnAnomalies": {
+									"ids": [
+										2
+									]
+								},
+								"counts": {
+									"values": [
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0
+									]
+								}
+							},
+							{
+								"metric": {
+									"type": "OCCASIONAL_VIEWERS28_DAYS",
+									"asPercentagesOfTotal": false,
+									"includeTotal": false,
+									"cumulative": false
+								},
+								"columnAnomalies": {
+									"ids": [
+										2
+									]
+								},
+								"counts": {
+									"values": [
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0
+									]
+								}
+							},
+							{
+								"metric": {
+									"type": "FREQUENT_VIEWERS28_DAYS",
+									"asPercentagesOfTotal": false,
+									"includeTotal": false,
+									"cumulative": false
+								},
+								"columnAnomalies": {
+									"ids": [
+										2
+									]
+								},
+								"counts": {
+									"values": [
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0,
+										0
+									]
+								}
+							}
+						],
+						"anomalyContext": [
+							{
+								"key": 2,
+								"value": {
+									"type": "ANALYTICS_ANOMALY_TYPE_DAILY_DATA_PROCESSING",
+									"startDate": 1792479600000,
+									"endDate": 1792738800000,
+									"columns": [
+										{
+											"type": "OCCASIONAL_VIEWERS28_DAYS"
+										},
+										{
+											"type": "FREQUENT_VIEWERS28_DAYS"
+										},
+										{
+											"type": "RECENT_VIEWERS28_DAYS"
+										}
+									],
+									"permanence": "ANALYTICS_ANOMALY_PERMANENCE_TEMPORARY",
+									"impact": "ANALYTICS_ANOMALY_IMPACT_DATA_MISSING"
+								}
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"stickyVideosCardConfig": {
+					"daysSincePublish": 7
+				}
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_STICKY_VIDEOS_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"stickyVideosCardData": {
+				"publishDateRange": {
+					"inclusiveStart": 20260718,
+					"exclusiveEnd": 20261016
+				}
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"audienceOnlineCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"audienceOnlineCardData": {
+				"hourlyUsersOnline": [
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				]
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_AUDIENCE_ONLINE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"belledSubscribersCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"belledSubscribersCardData": {
+				"resultTable": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "SUBSCRIBER_BELL_STATE"
+							},
+							"enumValues": {},
+							"columnAnomalies": {}
+						},
+						{
+							"dimension": {
+								"type": "SUBSCRIBER_REACHABILITY_STATE"
+							},
+							"enumValues": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "BELL_SUBSCRIBERS_NET_CHANGE",
+								"asPercentagesOfTotal": false,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {
+								"ids": [
+									0
+								]
+							},
+							"counts": {}
+						}
+					],
+					"anomalyContext": [
+						{
+							"key": 0,
+							"value": {
+								"type": "ANALYTICS_ANOMALY_TYPE_PRIVACY_THRESHOLDED",
+								"columns": [
+									{
+										"type": "BELL_SUBSCRIBERS_NET_CHANGE"
+									}
+								],
+								"impact": "ANALYTICS_ANOMALY_IMPACT_DATA_MISSING"
+							}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_BELLED_SUBSCRIBERS_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "SUBSCRIBED_TO_UPLOADER_STATE",
+					"metrics": [
+						"EXTERNAL_WATCH_TIME"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"asPercentagesOfTotal": true,
+					"maxRowCount": 5
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "SUBSCRIBED_TO_UPLOADER_STATE"
+							},
+							"enumValues": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "EXTERNAL_WATCH_TIME",
+								"asPercentagesOfTotal": true,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"percentages": {}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "SUBSCRIBED_TO_UPLOADER_STATE",
+					"metrics": [
+						"EXTERNAL_WATCH_TIME"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"demographicsByContentTypeCardConfig": {}
+			},
+			"sideEntities": {
+				"demographics": [
+					{
+						"demographicsType": "AGE_13_17",
+						"metadata": {
+							"title": "13–17"
+						}
+					},
+					{
+						"demographicsType": "AGE_18_24",
+						"metadata": {
+							"title": "18–24"
+						}
+					},
+					{
+						"demographicsType": "AGE_25_34",
+						"metadata": {
+							"title": "25–34"
+						}
+					},
+					{
+						"demographicsType": "AGE_35_44",
+						"metadata": {
+							"title": "35–44"
+						}
+					},
+					{
+						"demographicsType": "AGE_45_54",
+						"metadata": {
+							"title": "45–54"
+						}
+					},
+					{
+						"demographicsType": "AGE_55_64",
+						"metadata": {
+							"title": "55–64"
+						}
+					},
+					{
+						"demographicsType": "AGE_65_",
+						"metadata": {
+							"title": "65+"
+						}
+					},
+					{
+						"demographicsType": "FEMALE",
+						"metadata": {
+							"title": "Female"
+						}
+					},
+					{
+						"demographicsType": "MALE",
+						"metadata": {
+							"title": "Male"
+						}
+					},
+					{
+						"demographicsType": "GENDER_UNKNOWN",
+						"metadata": {
+							"title": "Unknown"
+						}
+					},
+					{
+						"demographicsType": "GENDER_USER_SPECIFIED",
+						"metadata": {
+							"title": "User-specified"
+						}
+					}
+				]
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_DEMOGRAPHICS_BY_CONTENT_TYPE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"demographicsByContentTypeCardData": {
+				"tables": [
+					{
+						"tableData": {
+							"dimensionColumns": [
+								{
+									"dimension": {
+										"type": "VIEWER_AGE"
+									},
+									"enumValues": {},
+									"columnAnomalies": {}
+								},
+								{
+									"dimension": {
+										"type": "VIEWER_GENDER"
+									},
+									"enumValues": {},
+									"columnAnomalies": {}
+								}
+							],
+							"metricColumns": [
+								{
+									"metric": {
+										"type": "EXTERNAL_VIEWS",
+										"asPercentagesOfTotal": true,
+										"includeTotal": false,
+										"cumulative": false
+									},
+									"columnAnomalies": {},
+									"percentages": {}
+								}
+							]
+						},
+						"contentType": "CONTENT_ANALYSIS_TYPE_ALL_CONTENT"
+					}
+				]
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"multiTableCardConfig": {
+					"tableConfigs": [
+						{
+							"dimension": "VIDEO",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"orderByColumn": "EXTERNAL_VIEWS",
+							"restrict": {
+								"inValues": [
+									"AUDIENCE_LOYALTY_SEGMENT_RECENT"
+								],
+								"dimension": {
+									"type": "AUDIENCE_LOYALTY_SEGMENT"
+								}
+							},
+							"maxRowCount": 5,
+							"asPercentagesOfTotal": false
+						},
+						{
+							"dimension": "VIDEO",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"orderByColumn": "EXTERNAL_VIEWS",
+							"restrict": {
+								"inValues": [
+									"AUDIENCE_LOYALTY_SEGMENT_OCCASIONAL"
+								],
+								"dimension": {
+									"type": "AUDIENCE_LOYALTY_SEGMENT"
+								}
+							},
+							"maxRowCount": 5,
+							"asPercentagesOfTotal": false
+						},
+						{
+							"dimension": "VIDEO",
+							"metrics": [
+								"EXTERNAL_VIEWS"
+							],
+							"orderByColumn": "EXTERNAL_VIEWS",
+							"restrict": {
+								"inValues": [
+									"AUDIENCE_LOYALTY_SEGMENT_FREQUENT"
+								],
+								"dimension": {
+									"type": "AUDIENCE_LOYALTY_SEGMENT"
+								}
+							},
+							"maxRowCount": 5,
+							"asPercentagesOfTotal": false
+						}
+					]
+				}
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_MULTI_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"multiTableCardData": {
+				"singleTableData": [
+					{},
+					{},
+					{}
+				]
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"channelCompetitionCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE"
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_CHANNEL_COMPETITION_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"channelCompetitionCardData": {}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"audienceInterestsCardConfig": {},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE"
+			},
+			"sideEntities": {},
+			"audienceInterestsCardData": {
+				"tables": [
+					{
+						"contentType": "CONTENT_ANALYSIS_TYPE_ALL_CONTENT"
+					},
+					{
+						"contentType": "CONTENT_ANALYSIS_TYPE_VIDEO"
+					},
+					{
+						"contentType": "CONTENT_ANALYSIS_TYPE_SHORTS"
+					},
+					{
+						"contentType": "CONTENT_ANALYSIS_TYPE_LIVE_STREAMS"
+					},
+					{
+						"contentType": "CONTENT_ANALYSIS_TYPE_PODCASTS"
+					}
+				]
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_AUDIENCE_INTERESTS_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE",
+				"formatsAudienceWatchOnYtCardConfig": {
+					"includeTrendAnalysis": true,
+					"checkContentAudienceWatch": false
+				}
+			},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_FORMATS_AUDIENCE_WATCH_ON_YT_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"formatsAudienceWatchOnYtCardData": {}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"tableCardByContentTypeCardConfig": {
+					"tableCardConfig": {
+						"dimension": "DEVICE_PLATFORM_TYPE",
+						"metrics": [
+							"EXTERNAL_WATCH_TIME"
+						],
+						"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+						"asPercentagesOfTotal": true
+					}
+				}
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD_BY_CONTENT_TYPE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"tableCardByContentTypeCardData": {
+				"tables": [
+					{
+						"contentType": "CONTENT_ANALYSIS_TYPE_ALL_CONTENT",
+						"tableCard": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "DEVICE_PLATFORM_TYPE"
+										},
+										"enumValues": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_WATCH_TIME",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"tableCardByContentTypeCardConfig": {
+					"tableCardConfig": {
+						"dimension": "COUNTRY",
+						"metrics": [
+							"EXTERNAL_VIEWS"
+						],
+						"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+						"asPercentagesOfTotal": true,
+						"maxRowCount": 5
+					}
+				}
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD_BY_CONTENT_TYPE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"tableCardByContentTypeCardData": {
+				"tables": [
+					{
+						"contentType": "CONTENT_ANALYSIS_TYPE_ALL_CONTENT",
+						"tableCard": {
+							"mainTableData": {
+								"dimensionColumns": [
+									{
+										"dimension": {
+											"type": "COUNTRY"
+										},
+										"strings": {},
+										"columnAnomalies": {}
+									}
+								],
+								"metricColumns": [
+									{
+										"metric": {
+											"type": "EXTERNAL_VIEWS",
+											"asPercentagesOfTotal": true,
+											"includeTotal": false,
+											"cumulative": false
+										},
+										"columnAnomalies": {},
+										"percentages": {}
+									}
+								]
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"tableCardConfig": {
+					"dimension": "CAPTION_LANGUAGE",
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					],
+					"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+					"asPercentagesOfTotal": true,
+					"maxRowCount": 5
+				},
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+			},
+			"sideEntities": {},
+			"tableCardData": {
+				"mainTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "CAPTION_LANGUAGE"
+							},
+							"strings": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "EXTERNAL_VIEWS",
+								"asPercentagesOfTotal": true,
+								"includeTotal": false,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"percentages": {}
+						}
+					]
+				}
+			},
+			"loggingConfig": {
+				"tableCardConfig": {
+					"dimension": "CAPTION_LANGUAGE",
+					"metrics": [
+						"EXTERNAL_VIEWS"
+					]
+				},
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_TABLE_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			}
+		},
+		{
+			"config": {
+				"contentInspirationFeedCardConfig": {}
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_CONTENT_INSPIRATION_FEED_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"contentInspirationFeedCardData": {
+				"hasWritePermission": true,
+				"shelves": [
+					{
+						"shelfType": "CONTENT_INSPIRATION_SHELF_TYPE_EMPTY_STATE",
+						"searchQueries": {
+							"searchQueries": [
+								{
+									"query": "The history of architecture in New York",
+									"languageCode": "en"
+								},
+								{
+									"query": "Easy and fast fluffy pancakes recipe",
+									"languageCode": "en"
+								},
+								{
+									"query": "Best budget noise-cancelling headphones",
+									"languageCode": "en"
+								},
+								{
+									"query": "How to make a paper dragon",
+									"languageCode": "en"
+								},
+								{
+									"query": "Psychology facts about human behavior",
+									"languageCode": "en"
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"config": {
+				"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+				"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+				"shortVideoRemixCardConfig": {
+					"maxRowCount": 5
+				}
+			},
+			"sideEntities": {},
+			"loggingConfig": {
+				"cardType": "ANALYTICS_CARD_CONFIG_TYPE_SHORT_VIDEO_REMIX_CARD",
+				"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_CHANNEL"
+			},
+			"shortVideoRemixCardData": {
+				"tableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "DAY"
+							},
+							"timestamps": {
+								"values": [
+									1790233200000,
+									1790319600000,
+									1790406000000,
+									1790492400000,
+									1790578800000,
+									1790665200000,
+									1790751600000,
+									1790838000000,
+									1790924400000,
+									1791010800000,
+									1791097200000,
+									1791183600000,
+									1791270000000,
+									1791356400000,
+									1791442800000,
+									1791529200000,
+									1791615600000,
+									1791702000000,
+									1791788400000,
+									1791874800000,
+									1791961200000,
+									1792047600000,
+									1792134000000,
+									1792220400000,
+									1792306800000,
+									1792393200000,
+									1792479600000,
+									1792566000000
+								]
+							},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "SHORTS_REMIX_COUNT",
+								"asPercentagesOfTotal": false,
+								"includeTotal": true,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {
+								"values": [
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0
+								]
+							}
+						},
+						{
+							"metric": {
+								"type": "SHORTS_REMIX_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": true,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {
+								"values": [
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0,
+									0
+								]
+							}
+						}
+					]
+				},
+				"topRemixedTableData": {
+					"dimensionColumns": [
+						{
+							"dimension": {
+								"type": "VIDEO"
+							},
+							"strings": {},
+							"columnAnomalies": {}
+						}
+					],
+					"metricColumns": [
+						{
+							"metric": {
+								"type": "SHORTS_REMIX_COUNT",
+								"asPercentagesOfTotal": false,
+								"includeTotal": true,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						},
+						{
+							"metric": {
+								"type": "SHORTS_REMIX_VIEWS",
+								"asPercentagesOfTotal": false,
+								"includeTotal": true,
+								"cumulative": false
+							},
+							"columnAnomalies": {},
+							"counts": {}
+						}
+					]
+				}
+			}
+		}
+	]
+}

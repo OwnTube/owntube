@@ -21,6 +21,10 @@ import { creatorVideo, maskedVideo, videosFor } from "./video";
 export function fullMask(o: Record<string, unknown>) {
 	return Object.fromEntries(Object.keys(o).map((k) => [k, o[k] && typeof o[k] === "object" && !Array.isArray(o[k]) ? { all: true } : true]));
 }
+// the client checks a video's mask for these before using it (absent from
+// the entity means none: not a livestream or premiere, no ownership claims)
+const VIDEO_MASK_EXTRA = { contentOwnershipModelSettings: { all: true }, livestream: { all: true }, publicLivestream: { all: true }, premiere: { all: true }, publicPremiere: { all: true }, responseStatus: { all: true } };
+export const videoMask = (video: Record<string, unknown>) => ({ ...fullMask(video), ...VIDEO_MASK_EXTRA });
 
 type Node = { key: string; value: { query?: Query; getTypicalPerformance?: any; getCreatorVideos?: { mask?: any } } };
 type Connector = { extractorParams?: { resultKey?: string; resultTableExtractorParams?: { dimension?: { type: string } } }; fillerParams?: { targetKey?: string } };
@@ -119,7 +123,7 @@ route("creator/get_channel_dashboard", async (ctx: Ctx) => {
 	if (latest.length) cards.push({ body: { listCard: { items: latest.map((v) => ({ recentVideoItem: { videoId: v.id } })) } }, id: "recent_videos" });
 	const entities = latest.length || snap ? { videos: (await videosFor(viewer.channelId, [...new Set([...latest.map((v) => v.id), ...((snap?.body.basicCard.item.entitySnapshotItem.entitySnapshotCardData.ranking.entities ?? []).map((e) => e.entity.videoId))])])).map((v) => {
 		const video = creatorVideo(v);
-		return { mask: fullMask(video), video };
+		return { mask: videoMask(video), video };
 	}) } : {};
 	return { responseContext: responseContext(viewer), cards, entities };
 });

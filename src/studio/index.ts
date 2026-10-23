@@ -17,6 +17,7 @@ import { uploadRoutes } from "./upload";
 import "./api";
 import "./feedback";
 import "./dashboard";
+import "./screens";
 
 // Studio's pages may load images and media from the main origin (avatars,
 // thumbnails, the player's streams) and nothing from anywhere else
@@ -49,6 +50,9 @@ export async function studioRoutes(req: Request, url: URL, viewer: Viewer): Prom
 	if (path.startsWith("/youtubei/v1/")) return innertube(req, url, viewer);
 	if (path === "/getAccountSwitcherEndpoint") return accountSwitcher(req);
 	if (path === "/_ot/help.js") return helpScript();
+	// the attestation frame Studio loads in a hidden iframe; YouTube's is an
+	// empty document, and the loader gives up (and later throws) if it's slow
+	if (path === "/ytscframe") return new Response("<!DOCTYPE html>", { headers: { "content-type": "text/html; charset=utf-8" } });
 	const up = await uploadRoutes(req, url, viewer);
 	if (up) return up;
 	if (path === "/favicon.ico") return Response.redirect(`${STUDIO_ORIGIN}/_up/www.gstatic.com/youtube/img/creator/favicon/favicon_v2.ico`, 302);

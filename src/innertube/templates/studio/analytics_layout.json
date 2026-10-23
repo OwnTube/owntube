@@ -1,0 +1,539 @@
+{
+	"desktopLayout": {
+		"tabs": [
+			{
+				"tabId": "ANALYTICS_TAB_ID_OVERVIEW",
+				"cardSection": {
+					"topSectionCards": [
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"personalizedHeaderCardConfig": {},
+							"analysisType": "ANALYSIS_TYPE_UNKNOWN",
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"keyMetricCardConfig": {
+								"timePeriod": {},
+								"includeCatalysis": true,
+								"metricTabConfigs": [
+									{
+										"metric": "EXTERNAL_VIEWS"
+									},
+									{
+										"metric": "EXTERNAL_WATCH_TIME"
+									},
+									{
+										"metric": "SUBSCRIBERS_NET_CHANGE"
+									}
+								],
+								"includeVideoOverlays": true
+							},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"analysisType": "ANALYSIS_TYPE_UNKNOWN",
+							"analysisDriverCardConfig": {},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"tableCardConfig": {
+								"dimension": "VIDEO",
+								"metrics": [
+									"AVERAGE_WATCH_TIME",
+									"AVERAGE_WATCH_PERCENTAGE",
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"maxRowCount": 10,
+								"metricsToOrderBy": [
+									"EXTERNAL_VIEWS"
+								]
+							},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+						}
+					],
+					"rightSidebarCards": [
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_REALTIME",
+							"latestActivityCardConfig": {
+								"tableLimit": 3,
+								"includeSubsData": true
+							},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE"
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE",
+							"courseEntrypointCardConfig": {
+								"limit": 25,
+								"timePeriod": {
+									"nowSeconds": "{{NOW_SECONDS}}",
+									"entity": {
+										"channelId": "{{CHANNEL_ID}}"
+									},
+									"timePeriodType": "ANALYTICS_TIME_PERIOD_TYPE_FOUR_WEEKS"
+								}
+							}
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE",
+							"podcastOverviewCardConfig": {
+								"limit": 25,
+								"timePeriod": {
+									"nowSeconds": "{{NOW_SECONDS}}",
+									"entity": {
+										"channelId": "{{CHANNEL_ID}}"
+									},
+									"timePeriodType": "ANALYTICS_TIME_PERIOD_TYPE_FOUR_WEEKS"
+								}
+							}
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+							"entitySnapshotCardConfig": {
+								"entityType": "ANALYTICS_SCREEN_ENTITY_TYPE_VIDEO",
+								"prefetchVideosForChannel": true
+							}
+						}
+					]
+				}
+			},
+			{
+				"tabId": "ANALYTICS_TAB_ID_CONTENT",
+				"analysisLayouts": [
+					{
+						"cardSection": {
+							"topSectionCards": [
+								{
+									"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+									"keyMetricCardConfig": {
+										"metricTabConfigs": [
+											{
+												"metric": "EXTERNAL_VIEWS"
+											},
+											{
+												"metric": "VIDEO_THUMBNAIL_IMPRESSIONS"
+											},
+											{
+												"metric": "VIDEO_THUMBNAIL_IMPRESSIONS_VTR"
+											},
+											{
+												"metric": "AVERAGE_WATCH_TIME"
+											}
+										],
+										"includeVideoOverlays": true
+									},
+									"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+									"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_VIDEO"
+								},
+								{
+									"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+									"audienceRetentionHighlightsCardConfig": {},
+									"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+								}
+							],
+							"leftSectionCards": [
+								{
+									"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+									"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+									"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_VIDEO",
+									"tableCarouselCardConfig": {
+										"tableCardConfigs": [
+											{
+												"dimension": "TRAFFIC_SOURCE_TYPE",
+												"metrics": [
+													"EXTERNAL_VIEWS"
+												],
+												"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+												"asPercentagesOfTotal": true,
+												"maxRowCount": 5
+											},
+											{
+												"dimension": "TRAFFIC_SOURCE_DETAIL",
+												"metrics": [
+													"EXTERNAL_VIEWS"
+												],
+												"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+												"asPercentagesOfTotal": true,
+												"maxRowCount": 5,
+												"restrict": {
+													"inValues": [
+														"EXT_URL"
+													],
+													"dimension": {
+														"type": "TRAFFIC_SOURCE_TYPE"
+													}
+												},
+												"secondaryTableCardConfig": {
+													"dimension": "TRAFFIC_SOURCE_TYPE",
+													"metrics": [
+														"EXTERNAL_VIEWS"
+													],
+													"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+													"asPercentagesOfTotal": true,
+													"maxRowCount": 50
+												}
+											},
+											{
+												"dimension": "TRAFFIC_SOURCE_DETAIL",
+												"metrics": [
+													"EXTERNAL_VIEWS"
+												],
+												"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+												"asPercentagesOfTotal": true,
+												"maxRowCount": 5,
+												"restrict": {
+													"inValues": [
+														"YT_SEARCH"
+													],
+													"dimension": {
+														"type": "TRAFFIC_SOURCE_TYPE"
+													}
+												},
+												"secondaryTableCardConfig": {
+													"dimension": "TRAFFIC_SOURCE_TYPE",
+													"metrics": [
+														"EXTERNAL_VIEWS"
+													],
+													"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+													"asPercentagesOfTotal": true,
+													"maxRowCount": 50
+												}
+											},
+											{
+												"dimension": "TRAFFIC_SOURCE_DETAIL",
+												"metrics": [
+													"EXTERNAL_VIEWS"
+												],
+												"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+												"asPercentagesOfTotal": true,
+												"maxRowCount": 5,
+												"restrict": {
+													"inValues": [
+														"YT_RELATED"
+													],
+													"dimension": {
+														"type": "TRAFFIC_SOURCE_TYPE"
+													}
+												},
+												"secondaryTableCardConfig": {
+													"dimension": "TRAFFIC_SOURCE_TYPE",
+													"metrics": [
+														"EXTERNAL_VIEWS"
+													],
+													"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+													"asPercentagesOfTotal": true,
+													"maxRowCount": 50
+												}
+											},
+											{
+												"dimension": "TRAFFIC_SOURCE_DETAIL",
+												"metrics": [
+													"EXTERNAL_VIEWS"
+												],
+												"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+												"asPercentagesOfTotal": true,
+												"maxRowCount": 5,
+												"restrict": {
+													"inValues": [
+														"PLAYLIST"
+													],
+													"dimension": {
+														"type": "TRAFFIC_SOURCE_TYPE"
+													}
+												},
+												"secondaryTableCardConfig": {
+													"dimension": "TRAFFIC_SOURCE_TYPE",
+													"metrics": [
+														"EXTERNAL_VIEWS"
+													],
+													"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+													"asPercentagesOfTotal": true,
+													"maxRowCount": 50
+												}
+											}
+										]
+									}
+								},
+								{
+									"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+									"funnelCardConfig": {},
+									"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+								}
+							],
+							"rightSectionCards": [
+								{
+									"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+									"tableCardConfig": {
+										"dimension": "VIDEO",
+										"metrics": [
+											"EXTERNAL_VIEWS"
+										],
+										"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+										"maxRowCount": 5,
+										"restrict": {
+											"inValues": [
+												"VIDEO_ON_DEMAND",
+												"SHORTS",
+												"LIVE_STREAM"
+											],
+											"dimension": {
+												"type": "CREATOR_CONTENT_TYPE"
+											}
+										}
+									},
+									"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+									"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_VIDEO"
+								},
+								{
+									"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+									"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+									"shortVideoRemixCardConfig": {
+										"maxRowCount": 5
+									}
+								}
+							]
+						},
+						"headerCardConfig": {
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"personalizedHeaderCardConfig": {},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+							"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_VIDEO"
+						},
+						"contentAnalysisType": "CONTENT_ANALYSIS_TYPE_VIDEO"
+					}
+				]
+			},
+			{
+				"tabId": "ANALYTICS_TAB_ID_AUDIENCE",
+				"cardSection": {
+					"topSectionCards": [
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"headlinesCardConfig": {
+								"queries": [
+									{
+										"externalChannelId": "{{CHANNEL_ID}}",
+										"type": "CATALYST_ANALYSIS_TYPE_CHANNEL_NEW_RETURNING"
+									}
+								]
+							},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE"
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"keyMetricCardConfig": {
+								"timePeriod": {},
+								"metricTabConfigs": [
+									{
+										"metric": "ESTIMATED_UNIQUE_VIEWERS_LAST28_DAYS"
+									},
+									{
+										"metric": "SUBSCRIBERS_NET_CHANGE"
+									}
+								],
+								"includeVideoOverlays": true
+							},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+						}
+					],
+					"leftSectionCards": [
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+							"stackedBarCardConfig": {
+								"metric": "RECENT_VIEWERS28_DAYS",
+								"additionalMetrics": [
+									"OCCASIONAL_VIEWERS28_DAYS",
+									"FREQUENT_VIEWERS28_DAYS"
+								]
+							}
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+							"stickyVideosCardConfig": {
+								"daysSincePublish": 7
+							}
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"audienceOnlineCardConfig": {},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"belledSubscribersCardConfig": {},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"tableCardConfig": {
+								"dimension": "SUBSCRIBED_TO_UPLOADER_STATE",
+								"metrics": [
+									"EXTERNAL_WATCH_TIME"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 5
+							},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+							"demographicsByContentTypeCardConfig": {}
+						}
+					],
+					"rightSectionCards": [
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+							"multiTableCardConfig": {
+								"tableConfigs": [
+									{
+										"dimension": "VIDEO",
+										"metrics": [
+											"EXTERNAL_VIEWS"
+										],
+										"orderByColumn": "EXTERNAL_VIEWS",
+										"restrict": {
+											"inValues": [
+												"AUDIENCE_LOYALTY_SEGMENT_RECENT"
+											],
+											"dimension": {
+												"type": "AUDIENCE_LOYALTY_SEGMENT"
+											}
+										},
+										"maxRowCount": 5,
+										"asPercentagesOfTotal": false
+									},
+									{
+										"dimension": "VIDEO",
+										"metrics": [
+											"EXTERNAL_VIEWS"
+										],
+										"orderByColumn": "EXTERNAL_VIEWS",
+										"restrict": {
+											"inValues": [
+												"AUDIENCE_LOYALTY_SEGMENT_OCCASIONAL"
+											],
+											"dimension": {
+												"type": "AUDIENCE_LOYALTY_SEGMENT"
+											}
+										},
+										"maxRowCount": 5,
+										"asPercentagesOfTotal": false
+									},
+									{
+										"dimension": "VIDEO",
+										"metrics": [
+											"EXTERNAL_VIEWS"
+										],
+										"orderByColumn": "EXTERNAL_VIEWS",
+										"restrict": {
+											"inValues": [
+												"AUDIENCE_LOYALTY_SEGMENT_FREQUENT"
+											],
+											"dimension": {
+												"type": "AUDIENCE_LOYALTY_SEGMENT"
+											}
+										},
+										"maxRowCount": 5,
+										"asPercentagesOfTotal": false
+									}
+								]
+							}
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"channelCompetitionCardConfig": {},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE"
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"audienceInterestsCardConfig": {},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE"
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_HIDE",
+							"formatsAudienceWatchOnYtCardConfig": {
+								"includeTrendAnalysis": true,
+								"checkContentAudienceWatch": false
+							}
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+							"tableCardByContentTypeCardConfig": {
+								"tableCardConfig": {
+									"dimension": "DEVICE_PLATFORM_TYPE",
+									"metrics": [
+										"EXTERNAL_WATCH_TIME"
+									],
+									"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+									"asPercentagesOfTotal": true
+								}
+							}
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE",
+							"tableCardByContentTypeCardConfig": {
+								"tableCardConfig": {
+									"dimension": "COUNTRY",
+									"metrics": [
+										"EXTERNAL_VIEWS"
+									],
+									"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+									"asPercentagesOfTotal": true,
+									"maxRowCount": 5
+								}
+							}
+						},
+						{
+							"autoUpdateInterval": "ANALYTICS_AUTO_UPDATE_INTERVAL_NEVER",
+							"tableCardConfig": {
+								"dimension": "CAPTION_LANGUAGE",
+								"metrics": [
+									"EXTERNAL_VIEWS"
+								],
+								"order": "ANALYTICS_TABLE_CARD_ORDER_TOP_METRIC",
+								"asPercentagesOfTotal": true,
+								"maxRowCount": 5
+							},
+							"failureMode": "ANALYTICS_CARD_FAILURE_MODE_FAIL_PAGE"
+						}
+					]
+				}
+			},
+			{
+				"tabId": "ANALYTICS_TAB_ID_CONTENT_INSPIRATION",
+				"cardSection": {
+					"topSectionCards": [
+						{
+							"contentInspirationFeedCardConfig": {}
+						}
+					]
+				}
+			}
+		],
+		"selectedTimePeriod": {
+			"nowSeconds": "{{NOW_SECONDS}}",
+			"entity": {
+				"channelId": "{{CHANNEL_ID}}"
+			},
+			"timePeriodType": "ANALYTICS_TIME_PERIOD_TYPE_FOUR_WEEKS"
+		},
+		"defaultDesktopState": {
+			"tabId": "ANALYTICS_TAB_ID_OVERVIEW",
+			"selectedContentAnalysis": "CONTENT_ANALYSIS_TYPE_UNKNOWN"
+		}
+	}
+}

@@ -9,11 +9,13 @@
 // metric (counts, milliseconds or percentages). The shapes are those of the
 // captured get_channel_dashboard and yta_web responses.
 //
-// Supported dimensions: none (totals), DAY, HOUR, VIDEO. Restricts by USER
-// (the channel), VIDEO and CREATOR_CONTENT_TYPE (uploads only here). Metrics
+// Supported dimensions: none (totals), DAY, HOUR, VIDEO, CREATOR_CONTENT_TYPE
+// (videos and Shorts). Restricts by USER (the channel), VIDEO and
+// CREATOR_CONTENT_TYPE (no live streams or posts here). Metrics
 // this instance has no data for (impressions, revenue, demographics, ...)
 // come back undefined, which Studio shows as "—".
 
+import { isShort } from "../data";
 import { sql, textArray } from "../db";
 
 export type Query = {
@@ -40,7 +42,8 @@ const METRICS: Record<string, [Kind, (a: Agg) => number]> = {
 	WATCH_TIME: ["milliseconds", (a) => a.watch],
 	AVERAGE_WATCH_TIME: ["milliseconds", (a) => (a.views ? a.watch / a.views : 0)],
 	AVERAGE_VIEW_DURATION: ["milliseconds", (a) => (a.views ? a.watch / a.views : 0)],
-	AVERAGE_WATCH_PERCENTAGE: ["percentages", (a) => (a.views && a.duration ? Math.min(1, a.watch / a.views / a.duration) : 0)],
+	// percentages are in percent (Studio shows the value as is)
+	AVERAGE_WATCH_PERCENTAGE: ["percentages", (a) => (a.views && a.duration ? Math.min(100, (100 * a.watch) / a.views / a.duration) : 0)],
 	SUBSCRIBERS_NET_CHANGE: ["counts", (a) => a.gained - a.lost],
 	SUBSCRIBERS_GAINED: ["counts", (a) => a.gained],
 	SUBSCRIBERS_LOST: ["counts", (a) => a.lost],
@@ -89,9 +92,11 @@ async function facts(channelId: string, videoIds: string[], start: number, end: 
 	return out;
 }
 
-export type ChannelVideo = { id: string; duration_ms: number | null; created_at: Date; published_at: Date | null };
+export type ChannelVideo = { id: string; duration_ms: number | null; created_at: Date; published_at: Date | null; width: number | null; height: number | null };
 export const channelVideos = async (channelId: string) =>
-	(await sql`select id, duration_ms, created_at, published_at from videos where channel_id = ${channelId} and deleted_at is null`) as unknown as ChannelVideo[];
+	(await sql`select id, duration_ms, created_at, published_at, width, height from videos where channel_id = ${channelId} and deleted_at is null`) as unknown as ChannelVideo[];
+// a video's CREATOR_CONTENT_TYPE as analytics names it
+export const contentTypeOf = (v: ChannelVideo) => (isShort(v) ? "SHORTS" : "VIDEO_ON_DEMAND");
 
 export type Options = { dayFormat?: "dateIds" | "timestamps"; videos?: ChannelVideo[] };
 
@@ -99,6 +104,7 @@ export async function runQuery(channelId: string, q: Query, opts: Options = {}) 
 	const videos = opts.videos ?? (await channelVideos(channelId));
 	const dims = (q.dimensions ?? []).map((d) => d.type);
 	const metrics = q.metrics ?? [];
+	const byId = new Map(videos.map((v) => [v.id, v]));
 	let ids = videos.map((v) => v.id);
 	let channelLevel = true; // whether channel-wide facts (subscribers) count
 	let none = false;
@@ -109,7 +115,11 @@ export async function runQuery(channelId: string, q: Query, opts: Options = {}) 
 		else if (t === "VIDEO") {
 			ids = ids.filter((id) => values.includes(id));
 			channelLevel = false;
-		} else if (t === "CREATOR_CONTENT_TYPE") none ||= !values.some((v) => v === "VIDEO_ON_DEMAND" || v === "CREATOR_CONTENT_TYPE_VIDEO_ON_DEMAND");
+		} else if (t === "CREATOR_CONTENT_TYPE") {
+			const types = values.map((v) => v.replace(/^CREATOR_CONTENT_TYPE_/, ""));
+			// subscribers aren't attributed to videos here, so they stay channel-wide
+			ids = ids.filter((id) => types.includes(contentTypeOf(byId.get(id)!)));
+		}
 		// restricts on data this instance doesn't keep (traffic sources,
 		// countries, devices, ...) match nothing
 		else none = true;
@@ -117,7 +127,6 @@ export async function runQuery(channelId: string, q: Query, opts: Options = {}) 
 	const since = Math.min(Date.now(), ...videos.map((v) => +new Date(v.published_at ?? v.created_at)));
 	const [start, end] = timeRange(q, since);
 	const all = none ? [] : await facts(channelId, ids, start, end);
-	const byId = new Map(videos.map((v) => [v.id, v]));
 
 	// group keys, in dimension order, and their aggregates
 	const groups = new Map<string, { key: (string | number)[]; agg: Agg }>();
@@ -137,7 +146,9 @@ export async function runQuery(channelId: string, q: Query, opts: Options = {}) 
 	if (!dims.length) group([]);
 	for (const f of all) {
 		if (f.video === null && !channelLevel) continue;
-		const key = dims.map((d) => (d === "VIDEO" ? f.video : d === "DAY" ? Math.floor(f.at / DAY) * DAY : d === "HOUR" ? Math.floor(f.at / HOUR) * HOUR : ""));
+		const key = dims.map((d) =>
+			d === "VIDEO" ? f.video : d === "CREATOR_CONTENT_TYPE" ? f.video && contentTypeOf(byId.get(f.video)!) : d === "DAY" ? Math.floor(f.at / DAY) * DAY : d === "HOUR" ? Math.floor(f.at / HOUR) * HOUR : "",
+		);
 		if (key.some((k) => k === null)) continue;
 		const g = group(key as (string | number)[]);
 		if (dims.includes("VIDEO")) g.agg.duration = byId.get(g.key[dims.indexOf("VIDEO")] as string)?.duration_ms ?? 0;
@@ -165,6 +176,7 @@ export async function runQuery(channelId: string, q: Query, opts: Options = {}) 
 		const values = rows.map((r) => r.key[i]);
 		const col: Record<string, unknown> = { dimension: { type: d } };
 		if (d === "VIDEO") col.strings = values.length ? { values } : {};
+		else if (d === "CREATOR_CONTENT_TYPE") col.enumValues = values.length ? { values } : {};
 		else if (d === "DAY" && opts.dayFormat !== "timestamps") col.dateIds = { values: values.map((v) => dateId(v as number)) };
 		else if (d === "DAY" || d === "HOUR") col.timestamps = { values };
 		else col.strings = {};
@@ -186,7 +198,7 @@ export async function runQuery(channelId: string, q: Query, opts: Options = {}) 
 		}
 		if (m.asPercentagesOfTotal) {
 			const sum = values.reduce((s, v) => s + v, 0);
-			col.percentages = { values: values.map((v) => (sum ? v / sum : 0)) };
+			col.percentages = { values: values.map((v) => (sum ? (100 * v) / sum : 0)) };
 		} else col[def[0]] = { values: def[0] === "milliseconds" ? values.map(Math.round) : values };
 		return col;
 	});

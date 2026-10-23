@@ -62,6 +62,9 @@ Anything not listed here gets an empty `{responseContext}` envelope and appears 
 | `creator/list_creator_playlists` | `studio/api.ts` | The channel's playlists. |
 | `creator/get_creator_communications` | `studio/api.ts` | Empty. |
 | `creator/get_creator_google_hats_trigger_ids`, `get_survey`, `att/esr` | `studio/api.ts` | Empty, as YouTube answers with no survey to show. |
+| `creator/get_channel_dashboard` | [`studio/dashboard.ts`](../../src/studio/dashboard.ts) | The dashboard cards: channel facts from analytics queries, the latest video snapshot, recent uploads, and YouTube's news cards from the capture. |
+| `yta_web/get_screen` | [`studio/screens.ts`](../../src/studio/screens.ts) | An analytics tab: the captured layout (a Shorts section added to Content when the channel has Shorts) and the tab's cards. Only the channel's owner (403 otherwise, 401 signed out). |
+| `yta_web/get_cards` | `studio/screens.ts` | Cards by config, for the requested period. Headline, key metrics, top content, realtime and video tables come from [`studio/analytics.ts`](../../src/studio/analytics.ts); the videos a card lists are sent along as `sideEntities.videos` ({mask, entityData}); other cards get the captured no-data bodies with their dates moved to today. |
 | `promotions/get_account` | `studio/api.ts` | Account currency, time zone and country for the promotions UI. |
 | `creator/check_creator_bulk_action` | `studio/api.ts` | Always done: only bulk delete exists. |
 | `notification/get_unseen_count` | `studio/api.ts` | Always 0. |
@@ -93,4 +96,5 @@ Anything not listed here gets an empty `{responseContext}` envelope and appears 
 | `/admin/…` | main | Operator admin panel |
 | `/_ot/gifs.js`, `/_ot/gifs/search?q=&page=`, `/_ot/gifs/favorites` (GET, POST JSON), `/_ot/gifs/media/<id>/<sm\|md>.webp` | main | GIFs in comments, only with `KLIPY_API_KEY` ([`gifs.ts`](../../src/gifs.ts)); search and favorites need a signed-in viewer |
 | `/upload/studio` and the session URLs it returns | Studio | Resumable uploads (Scotty protocol) |
+| `/ytscframe` | Studio | The empty document Studio's attestation code loads in a hidden iframe, as YouTube serves it |
 | `/channel/UC…/…` | Studio | Studio pages for the signed-in channel |

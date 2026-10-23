@@ -12,6 +12,7 @@
 import { mkdirSync } from "node:fs";
 import type { Page } from "playwright-core";
 import { sql } from "../../src/db";
+import { recordSubscription } from "../../src/stats";
 import { launch, signIn } from "../probe";
 
 const ORIGIN = process.env.ORIGIN ?? "http://localhost:8080";
@@ -122,6 +123,8 @@ const before = {
 	const page = await open();
 	await signIn(page, login, password);
 	await sql`delete from video_reactions r using users u where u.id = r.user_id and u.login = ${login} and r.video_id = ${first.id}`;
+	// leaving is recorded as the client would (Studio's subscriber figures)
+	if (before.subscribed) await recordSubscription(first.channel_id, false);
 	await sql`delete from subscriptions s using users u where u.id = s.user_id and u.login = ${login} and s.channel_id = ${first.channel_id}`;
 	await page.goto(`${ORIGIN}/shorts/${first.id}`, { waitUntil: "domcontentloaded" });
 	await reel(page).waitFor({ timeout: 15000 });
@@ -158,6 +161,8 @@ const before = {
 	await reel(page).locator("yt-shorts-video-title-view-model").first().click();
 	const desc = page.locator("ytd-engagement-panel-section-list-renderer[target-id='engagement-panel-structured-description']");
 	await desc.waitFor({ state: "visible", timeout: 5000 }).catch(() => {});
+	// the panel opens before its contents arrive
+	await desc.getByText(first.title).first().waitFor({ timeout: 8000 }).catch(() => {});
 	check("the description panel shows the title", (await desc.innerText().catch(() => "")).includes(first.title));
 	await shot(page, "03-shorts-description");
 	// share
@@ -176,7 +181,10 @@ const before = {
 await sql`delete from video_reactions r using users u where u.id = r.user_id and u.login = ${login} and r.video_id = ${first.id}`;
 if (before.reaction) await sql`insert into video_reactions (user_id, video_id, kind) select id, ${first.id}, ${before.reaction} from users where login = ${login}`;
 await sql`update videos set like_count = (select count(*) from video_reactions r where r.video_id = ${first.id} and r.kind = 'like') where id = ${first.id}`;
-if (!before.subscribed) await sql`delete from subscriptions s using users u where u.id = s.user_id and u.login = ${login} and s.channel_id = ${first.channel_id}`;
+if (!before.subscribed) {
+	await sql`delete from subscriptions s using users u where u.id = s.user_id and u.login = ${login} and s.channel_id = ${first.channel_id}`;
+	await recordSubscription(first.channel_id, false);
+}
 
 check("no page errors", errors.length === 0, errors.slice(0, 5));
 await browser.close();
