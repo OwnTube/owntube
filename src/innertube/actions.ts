@@ -4,7 +4,7 @@
 
 import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
-import { getChannel, getVideo } from "../data";
+import { isShort, getChannel, getVideo } from "../data";
 import { sql } from "../db";
 import { recordSubscription } from "../stats";
 import { isChannelId, isVideoId } from "../ids";
@@ -115,7 +115,7 @@ async function shareTarget(entity: string, viewer: Viewer) {
 	const [videoId, playlistId, channelId] = [1, 2, 3].map((n) => str(f.get(n)?.[0]) ?? "");
 	if (isVideoId(videoId)) {
 		const v = await getVideo(videoId, viewer);
-		if (v) return { url: `${PUBLIC_ORIGIN}/watch?v=${v.id}`, title: v.title, summary: v.description.slice(0, 200), thumb: `${PUBLIC_ORIGIN}/vi/${v.id}/maxresdefault.jpg` };
+		if (v) return { url: isShort(v) && v.visibility === "public" ? `${PUBLIC_ORIGIN}/shorts/${v.id}` : `${PUBLIC_ORIGIN}/watch?v=${v.id}`, title: v.title, summary: v.description.slice(0, 200), thumb: `${PUBLIC_ORIGIN}/vi/${v.id}/maxresdefault.jpg` };
 	}
 	if (playlistId) {
 		const p = await getPlaylist(playlistId, viewer);

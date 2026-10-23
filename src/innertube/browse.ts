@@ -106,6 +106,10 @@ async function continuation(token: string, viewer: Viewer) {
 		if (t.reload) return { responseContext: responseContext(viewer), ...(await videoGridReload(c, viewer, t.s ?? "newest")) };
 		items = await videoGridItems(c, viewer, t.o, t.s ?? "newest");
 		target = `browse-feed${c.id}videos`;
+	} else if (t.k === "comments") {
+		// the Shorts player's comments panel
+		const { commentsContinuation } = await import("./comments");
+		return commentsContinuation(t as unknown as { v: string; s?: string; o?: number; k: string; t?: string }, viewer);
 	} else if (t.k === "playlist" && t.p) {
 		const { playlistItemsContinuation } = await import("./playlists");
 		return playlistItemsContinuation(t.p, t.o, viewer);

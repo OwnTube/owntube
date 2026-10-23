@@ -35,6 +35,8 @@ const THUMBS = [
 	{ name: "sddefault", w: 640, h: 480 },
 	{ name: "maxresdefault", w: 1280, h: 720 },
 	{ name: "hq720", w: 1280, h: 720 },
+	// the whole frame at the video's own aspect, up to 1080x1920 (the Shorts player's poster)
+	{ name: "frame0", w: 1080, h: 1920 },
 ];
 
 export type Probe = { duration: number; width: number; height: number; fps: number; hasAudio: boolean; rotation: number };
@@ -142,17 +144,26 @@ async function encode(videoId: string, src: string, dir: string, p: Probe) {
 	return rows;
 }
 
+// the size of w x h scaled down to fit in maxW x maxH, in even pixels
+function fit(w: number, h: number, maxW: number, maxH: number): [number, number] {
+	const s = Math.min(1, maxW / w, maxH / h);
+	return [Math.trunc((w * s) / 2) * 2, Math.trunc((h * s) / 2) * 2];
+}
+
 async function thumbnails(videoId: string, src: string, dir: string, p: Probe) {
 	const at = Math.min(p.duration * 0.25, 30).toFixed(2);
 	const rows = [];
 	for (const t of THUMBS) {
 		// 4:3 names are letterboxed like YouTube's; 16:9 ones are cropped to fill
-		const box = t.w / t.h > 1.5
+		const box = t.name === "frame0"
+			? `scale=${t.w}:${t.h}:force_original_aspect_ratio=decrease,scale=trunc(iw/2)*2:trunc(ih/2)*2`
+			: t.w / t.h > 1.5
 			? `scale=${t.w}:${t.h}:force_original_aspect_ratio=increase,crop=${t.w}:${t.h}`
 			: `scale=${t.w}:${t.h}:force_original_aspect_ratio=decrease,pad=${t.w}:${t.h}:(ow-iw)/2:(oh-ih)/2:black`;
 		const file = `${t.name}.jpg`;
 		await run(["ffmpeg", "-v", "error", "-y", "-ss", at, "-i", src, "-frames:v", "1", "-vf", box, "-q:v", "3", join(dir, file)]);
-		rows.push({ video_id: videoId, name: t.name, path: join(videoId, file), width: t.w, height: t.h });
+		const [w, h] = t.name === "frame0" ? fit(p.width, p.height, t.w, t.h) : [t.w, t.h];
+		rows.push({ video_id: videoId, name: t.name, path: join(videoId, file), width: w, height: h });
 	}
 	return rows;
 }

@@ -8,12 +8,15 @@
 
 import { PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
 import { sql, textArray } from "../db";
+import { isShort } from "../data";
 import { videoThumbnails } from "../innertube/r";
 import { type Mask, applyMask } from "./channel";
 import { feedbackToken } from "./feedback";
 
 export type VideoRow = {
 	id: string;
+	width: number | null;
+	height: number | null;
 	channel_id: string;
 	title: string;
 	description: string;
@@ -34,7 +37,7 @@ export type VideoRow = {
 };
 
 export const VIDEO_COLUMNS = sql`v.id, v.channel_id, v.title, v.description, v.visibility, v.status, v.error, v.duration_ms, v.view_count, v.like_count, v.comment_count,
-	v.created_at, v.published_at, v.draft, v.made_for_kids, v.original_filename,
+	v.created_at, v.published_at, v.draft, v.made_for_kids, v.original_filename, v.width, v.height,
 	(select t.received from upload_transfers t where t.video_id = v.id order by t.created_at desc limit 1) as received,
 	(select t.size from upload_transfers t where t.video_id = v.id order by t.created_at desc limit 1) as size`;
 
@@ -78,7 +81,7 @@ export function creatorVideo(v: VideoRow): Record<string, unknown> {
 		commentFilter: "VIDEO_COMMENT_FILTER_NONE",
 		commentsDisabledInternally: false,
 		commentSettings: { commentsEnabledState: "VIDEO_COMMENTS_ENABLED_STATE_ON", allowedCommenterMode: "ALLOWED_COMMENTER_MODE_ANYONE", commenterMinimumSubscriptionTime: "COMMENTER_MINIMUM_SUBSCRIPTION_TIME_ONE_DAY" },
-		contentType: "CREATOR_CONTENT_TYPE_VIDEO_ON_DEMAND",
+		contentType: contentType(v),
 		crowdsourcingEnabled: false,
 		defaultCommentSortOrder: "VIDEO_COMMENT_SORT_ORDER_TOP",
 		// the value Studio gives the drafts it creates itself
@@ -145,5 +148,9 @@ export async function videosFor(channelId: string, ids?: string[]) {
 		where v.channel_id = ${channelId} and v.deleted_at is null ${ids ? sql`and v.id = any(${textArray(ids)}::text[])` : sql``}
 		order by coalesce(v.published_at, v.created_at) desc`) as unknown as VideoRow[];
 }
+
+// Studio's Content tabs: Shorts are vertical or square and up to three
+// minutes (data.ts isShort); everything else is a video on demand
+export const contentType = (v: VideoRow) => (isShort(v) ? "CREATOR_CONTENT_TYPE_SHORTS" : "CREATOR_CONTENT_TYPE_VIDEO_ON_DEMAND");
 
 export const maskedVideo = (v: VideoRow, mask: Mask) => applyMask(creatorVideo(v), mask);

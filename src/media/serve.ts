@@ -107,8 +107,9 @@ export async function thumbnail(url: URL, viewer: Viewer): Promise<Response> {
 	if (!m) return new Response("not found", { status: 404 });
 	const [, id, name] = m;
 	const [row] = await sql`select t.path, v.visibility from video_thumbnails t join videos v on v.id = t.video_id
-		where t.video_id = ${id} and t.name = ${name === "frame0" ? "hqdefault" : name} and v.deleted_at is null
-		and (v.visibility <> 'private' or v.channel_id = ${viewer?.channelId ?? ""} or ${viewer?.isAdmin ?? false})`;
+		where t.video_id = ${id} and t.name in (${name}, ${name === "frame0" ? "hqdefault" : name}) and v.deleted_at is null
+		and (v.visibility <> 'private' or v.channel_id = ${viewer?.channelId ?? ""} or ${viewer?.isAdmin ?? false})
+		order by t.name = ${name} desc limit 1`;
 	if (!row) return new Response("not found", { status: 404 });
 	const p = normalize(join(MEDIA_DIR, row.path));
 	const cache = row.visibility === "private" ? "private, no-store" : "public, max-age=86400";

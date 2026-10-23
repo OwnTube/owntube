@@ -11,6 +11,7 @@ import { playlistPanel } from "./innertube/playlists";
 import { browsePage } from "./innertube/browse";
 import { searchPage } from "./innertube/search";
 import { recordWatch } from "./innertube/history";
+import { shortsPage } from "./innertube/shorts";
 
 export async function pageFor(url: URL, viewer: Viewer): Promise<PageData | Response | undefined> {
 	const path = url.pathname;
@@ -37,6 +38,6 @@ export async function pageFor(url: URL, viewer: Viewer): Promise<PageData | Resp
 		};
 	}
 	if (path === "/results") return searchPage(url, viewer);
-	if (/^\/shorts\/[A-Za-z0-9_-]{11}$/.test(path)) return Response.redirect(`/watch?v=${path.slice(8)}`, 302);
+	if (/^\/shorts\/(?:[A-Za-z0-9_-]{11})?$/.test(path)) return shortsPage(url, viewer);
 	return browsePage(url, viewer);
 }

@@ -18,7 +18,7 @@ import { baseVars } from "./vars";
 // Guide entries whose destination this instance doesn't serve yet; the
 // templates keep them, and each comes back when its page does
 // (docs/compat/parity.md tracks them)
-const UNSERVED = new Set(["/shorts/", "/channel/UC-9-kyTW8ZkZNDHQJ6FgpwQ", "/channel/UC4R8DWoMoI7CAwX8_LjQHig", "/gaming", "/podcasts", "/playables", "/channel_memberships", "/reporthistory"]);
+const UNSERVED = new Set(["/channel/UC-9-kyTW8ZkZNDHQJ6FgpwQ", "/channel/UC4R8DWoMoI7CAwX8_LjQHig", "/gaming", "/podcasts", "/playables", "/channel_memberships", "/reporthistory"]);
 const entryUrl = (e: any) => {
 	const r = Object.values(e)[0] as any;
 	return (r?.navigationEndpoint ?? r?.serviceEndpoint)?.commandMetadata?.webCommandMetadata?.url;

@@ -130,24 +130,34 @@ async function load(videoId: string, viewer: Viewer, opts: { parent?: string; so
 		order by ${order}, c.id limit ${opts.limit} offset ${opts.offset}`) as Row[];
 }
 
+// The Shorts player's comments panel (tokens with t: "s") loads through
+// browse into its own section; the watch page's through next.
+const SHORTS_SECTION = "shorts-engagement-panel-comments-section";
+const retarget = (o: any): any =>
+	o === "comments-section" ? SHORTS_SECTION : Array.isArray(o) ? o.map(retarget) : o && typeof o === "object" ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, retarget(v)])) : o;
+
 // count, sort menu and composer (comments/header_*)
-function header(videoId: string, count: number, sort: string, viewer: Viewer) {
-	return make(`comments/header_${io(viewer)}`, {
+function header(videoId: string, count: number, sort: string, viewer: Viewer, shorts = false) {
+	const h = make(`comments/header_${io(viewer)}`, {
 		...baseVars(viewer, `/watch?v=${videoId}`),
 		...(viewer ? viewerVars(viewer) : {}),
 		COUNT: grouped(count),
 		COMMENTS_WORD: count === 1 ? " Comment" : " Comments",
 		COUNT_SHORT: compact(count),
-		SORT_TOP: encodeToken({ k: "comments", v: videoId, s: "top" }),
-		SORT_NEW: encodeToken({ k: "comments", v: videoId, s: "new" }),
+		SORT_TOP: encodeToken({ k: "comments", v: videoId, s: "top", ...(shorts ? { t: "s" } : {}) }),
+		SORT_NEW: encodeToken({ k: "comments", v: videoId, s: "new", ...(shorts ? { t: "s" } : {}) }),
 		SORT_TOP_SELECTED: sort === "top",
 		SORT_NEW_SELECTED: sort === "new",
 		CREATE_PARAMS: encodeToken({ v: videoId }),
 		VIEWER_THUMBS: viewerThumbs(viewer),
 	});
+	if (!shorts) return h;
+	// the Shorts panel has its own title and sort menu: only the composer
+	const r = h.commentsHeaderRenderer;
+	return { commentsHeaderRenderer: { createRenderer: retarget(r.createRenderer) } };
 }
 
-export async function commentsContinuation(tok: { v: string; s?: string; c?: string; o?: number; k?: string }, viewer: Viewer) {
+export async function commentsContinuation(tok: { v: string; s?: string; c?: string; o?: number; k?: string; t?: string }, viewer: Viewer) {
 	const video = await getVideo(tok.v, viewer);
 	if (!video) throw new ApiError(404, "Video not found");
 	const offset = tok.o ?? 0;
@@ -166,15 +176,17 @@ export async function commentsContinuation(tok: { v: string; s?: string; c?: str
 	const rows = await load(tok.v, viewer, { sort, offset, limit: PAGE });
 	const threads = rows.map((r) => thread(r, viewer));
 	const items: unknown[] = threads.map((t) => t.item);
-	if (rows.length === PAGE) items.push(continuationItem(encodeToken({ k: "comments", v: tok.v, s: sort, o: offset + PAGE }), "/youtubei/v1/next"));
+	const shorts = tok.t === "s";
+	const section = shorts ? SHORTS_SECTION : "comments-section";
+	if (rows.length === PAGE) items.push(continuationItem(encodeToken({ k: "comments", v: tok.v, s: sort, o: offset + PAGE, ...(shorts ? { t: "s" } : {}) }), shorts ? "/youtubei/v1/browse" : "/youtubei/v1/next"));
 	const update = entityUpdate([sharedPayload(viewer), ...threads.flatMap((t) => t.mutations)]);
-	if (offset > 0) return { responseContext: responseContext(viewer), onResponseReceivedEndpoints: [{ appendContinuationItemsAction: { continuationItems: items, targetId: "comments-section" } }], ...update };
+	if (offset > 0) return { responseContext: responseContext(viewer), onResponseReceivedEndpoints: [{ appendContinuationItemsAction: { continuationItems: items, targetId: section } }], ...update };
 	const [{ n }] = await sql`select count(*)::int as n from comments where video_id = ${tok.v} and deleted_at is null`;
 	return {
 		responseContext: responseContext(viewer),
 		onResponseReceivedEndpoints: [
-			{ reloadContinuationItemsCommand: { targetId: "comments-section", continuationItems: [header(tok.v, n, sort, viewer)], slot: "RELOAD_CONTINUATION_SLOT_HEADER" } },
-			{ reloadContinuationItemsCommand: { targetId: "comments-section", continuationItems: items, slot: "RELOAD_CONTINUATION_SLOT_BODY" } },
+			{ reloadContinuationItemsCommand: { targetId: section, continuationItems: [header(tok.v, n, sort, viewer, shorts)], slot: "RELOAD_CONTINUATION_SLOT_HEADER" } },
+			{ reloadContinuationItemsCommand: { targetId: section, continuationItems: items, slot: "RELOAD_CONTINUATION_SLOT_BODY" } },
 		],
 		...update,
 	};

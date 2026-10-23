@@ -40,6 +40,8 @@ Each replacement is a named rule that must match. A rule that misses is recorded
 
 After the first load the client navigates in-page through InnerTube (`browse`, `next`, `player`, `search`, `navigation/resolve_url`), as on YouTube.
 
+A Short's page (`/shorts/<id>`, [`src/innertube/shorts.ts`](../src/innertube/shorts.ts)) also fills `ytInitialReelWatchSequenceResponse` with the Shorts that follow, which is how YouTube serves it; `/shorts/` instead names the newest Short in `replacementEndpoint` and leaves the sequence empty, so the client navigates there and requests `reel/reel_watch_sequence`. A Short is a public, ready video that is vertical or square and at most three minutes long; any other video's `/shorts/` URL redirects to its watch page.
+
 ## InnerTube responses
 
 Handlers are registered by method name in [`src/innertube/router.ts`](../src/innertube/router.ts). An unregistered method gets an empty envelope (`{responseContext}`) and is listed under "Unhandled requests" in the admin panel.
@@ -65,7 +67,7 @@ The client keeps its Appearance choice in the `PREF` cookie: flag 165 (`f6` bit 
 
 ## Media
 
-- Uploads arrive through Studio's resumable upload protocol ([`src/studio/upload.ts`](../src/studio/upload.ts)) and are processed by an in-process worker ([`src/media/process.ts`](../src/media/process.ts)) with FFmpeg into the formats the player requests: itag 18 progressive MP4, H.264/MP4 and VP9/WebM DASH ladders up to the source height, AAC (140) and Opus (251) audio, and thumbnails at YouTube's names and sizes.
+- Uploads arrive through Studio's resumable upload protocol ([`src/studio/upload.ts`](../src/studio/upload.ts)) and are processed by an in-process worker ([`src/media/process.ts`](../src/media/process.ts)) with FFmpeg into the formats the player requests: itag 18 progressive MP4, H.264/MP4 and VP9/WebM DASH ladders up to the source height, AAC (140) and Opus (251) audio, and thumbnails at YouTube's names and sizes, plus `frame0` (the full frame at the video's aspect, which the Shorts player shows while loading).
 - `player` returns `streamingData` pointing at `/videoplayback?id&itag`. [`src/media/serve.ts`](../src/media/serve.ts) answers `range=` requests and, when the player asks for `ump=1`, wraps the bytes in UMP parts ([`src/media/ump.ts`](../src/media/ump.ts)). UMP is turned off by a player flag override, so the plain path is the normal one.
 - The player's proof-of-origin token generation is turned off (no BotGuard is loaded), and the `att/get` challenge carries no program.
 

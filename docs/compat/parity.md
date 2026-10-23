@@ -27,6 +27,7 @@ Every page, menu, dialog and workflow of the pinned YouTube desktop client and Y
 | e2e:accounts | [`scripts/e2e/accounts.ts`](../../scripts/e2e/accounts.ts) |
 | e2e:gifs | [`scripts/e2e/gifs.ts`](../../scripts/e2e/gifs.ts) |
 | e2e:upload | [`scripts/e2e/upload.ts`](../../scripts/e2e/upload.ts) |
+| e2e:shorts | [`scripts/e2e/shorts.ts`](../../scripts/e2e/shorts.ts) |
 | survey | [`scripts/research/route-status.ts`](../../scripts/research/route-status.ts) (main site) and [`studio-walk.ts`](../../scripts/research/studio-walk.ts) (Studio). These report each page's data shape, alerts, unhandled methods and failed requests, signed out and signed in. |
 | manual | Checked by hand in a browser during development. |
 
@@ -51,8 +52,12 @@ Every page, menu, dialog and workflow of the pinned YouTube desktop client and Y
 | `/feed/playlists` | guide, You | in (out → sign-in) | browse · `FEplaylist_aggregation` | playlists, saved playlists | ✓✓✓✓ | browser verified | survey | — |
 | `/feed/channels` | guide | in (out → sign-in) | browse · `FEchannels` | subscriptions | ✓✓✓✓ | browser verified | survey | — |
 | `/feed/downloads` | guide (hidden) | in | — | — | ✗ | captured | site-in `11-…` | Needs the offline Downloads page; hidden from the guide until served |
-| `/shorts/<id>` | links to Shorts | out, in | redirects to `/watch?v=` | — | ✓ | implemented | manual | The Shorts player (`reel/reel_item_watch`, `reel/reel_watch_sequence`) |
-| `/shorts/` | guide (hidden) | out, in | — | — | ✗ | captured | site-in `02-…`, captures-shorts | Shorts feed and player; hidden from the guide |
+| `/shorts/<id>` | Shorts links, the next Short (↓) | out, in | shorts · `reel/reel_item_watch` data + `ytInitialReelWatchSequenceResponse` (the following Shorts) · `player` | videos (vertical or square, ≤ 3 min, public, ready) | ✓✓✓✓ | browser verified | e2e:shorts, manual (light, dark, phone width) | A video that isn't a Short redirects to the watch page, as YouTube does; Shorts with music, remix and the sound page are left out (no audio library) |
+| `/shorts/` | guide > Shorts | out, in | shorts · newest Short + `replacementEndpoint` + `sequenceContinuation` → `reel/reel_watch_sequence`; in-app: seedless `reel/reel_item_watch` | — | ✓✓✓✓ | browser verified | e2e:shorts | Ordering is newest first, not personalised |
+| Shorts player: like, subscribe (signed-out sign-in prompt), share (`/shorts/` link) | reel action bar | out, in | `like/like`, `subscription/subscribe`, `share/get_share_panel` | video_reactions, subscriptions | – | browser verified | e2e:shorts | No dislike in this build's Shorts action bar (as captured) |
+| Shorts comments panel | comments button | out, in | `browse` continuation (`FEcomment_shorts…` on YouTube; our token `k: comments, t: s`) into `shorts-engagement-panel-comments-section`; header is the composer only | comments | – | browser verified | e2e:shorts, captures `shorts-comments` | Replies, likes and deleting go through the same handlers as the watch page |
+| Shorts description panel | title | out, in | in `reel_item_watch` (title, channel, likes/views/age factoids, description) | videos | – | browser verified | e2e:shorts | — |
+| Shorts overflow menu (Description, Save, Full screen, Playback speed, Send feedback) | — | out, in | in `reel_item_watch` | — | – | captured | captures `shorts-menu` | The desktop client doesn't render this menu (neither on YouTube); kept in the data as YouTube sends it |
 | `/channel/UC-9-kyTW8ZkZNDHQJ6FgpwQ` (Music), `/channel/UC4R8DWoMoI7CAwX8_LjQHig` (Live) | guide Explore (hidden) | out, in | — | — | ✗ | captured | site-in `12-…`, `13-…` | YouTube's own destination channels; need local equivalents |
 | `/gaming`, `/podcasts`, `/playables` | guide Explore (hidden) | out, in | — | — | ✗ | captured | site-in `14-…`–`16-…` | Destination pages; hidden from the guide |
 | `/feed/trending`, `/feed/explore` | old links | out, in | — | — | ✗ | captured | site-in `19-…`, `20-…` | YouTube now sends these to other destinations; to do |
@@ -124,13 +129,24 @@ Studio runs on its own origin. Signed-out visitors are sent to the main origin's
 | Dashboard | nav | `creator/get_channel_dashboard`, analytics queries | stats tables | browser verified | manual | Latest comments, recent subscribers cards |
 | Upload dialog: transfer, details, visibility, publish, processing | Create > Upload | `/upload/studio`, `upload/createvideo`, `video_manager/metadata_update`, `upload/feedback` | videos, media | browser verified | e2e:upload, manual | Checks run nothing ("Checks complete") |
 | Content > Videos: list, sort, paging, delete one or many | nav | `creator/list_creator_videos`, `video/delete`, bulk delete | videos | browser verified | e2e:core, manual | Views column shows "–"; filters; bulk edit |
-| Content > Playlists | nav | `creator/list_creator_playlists` | playlists | implemented | manual | Create and edit in Studio |
-| Content > Shorts, Live, Posts, Podcasts, Promotions, Collaborations | nav | `creator/list_creator_videos` | — | implemented | survey | Empty lists |
+| Content > Videos / Shorts split | nav | `creator/list_creator_videos` with `contentTypeIs CREATOR_CONTENT_TYPE_SHORTS` (Shorts) or its negation (Videos), evaluated per video | videos | browser verified | manual 2026-10-23 (bob: Videos lists the two landscape videos, Shorts the two portrait ones) | — |
+| Content > Live | nav | `creator/list_creator_videos` | — | implemented | survey | No live streams exist |
+| Content > Posts, Playlists, Podcasts, Promotions, Collaborations, Ideas | nav | (tab-specific methods) | — | captured | survey 2026-10-23: page error "Nn`" on each | The tabs crash before loading; not served |
+| Analytics: Overview, Content, Audience, Research | nav | `yta_web/get_screen` | stats tables | captured | survey: `yta_web/get_screen` unhandled | Screens don't load |
+| Video analytics | video nav | `yta_web/get_screen` | — | captured | survey | As channel analytics |
 | Video details: title, description, visibility | Content row | `creator/get_creator_videos`, `video_manager/metadata_update` | videos | browser verified | manual | Thumbnail upload, playlists, audience, tags, category, language, license, comments settings, scheduling |
-| Video analytics, comments, subtitles, editor, copyright | video nav | — | — | captured | studio-all | See the Studio survey |
-| Analytics (Overview, Content, Audience, Research) | nav | `yta_web/*` | stats tables | implemented | survey | Only views, watch time and subscribers are recorded |
-| Community (comments) | nav | — | — | captured | studio-all | Moderation, replies, hearts |
-| Subtitles, Content detection, Earn, Customization, Audio library | nav | — | — | captured | studio-all | Pages load; most of their data is missing |
+| Video comments | video nav | `comment/get_comments`, `comment/check_creator_comments_bulk_action` | — | captured | survey: both unhandled | — |
+| Video subtitles | video nav | `crowdsourcing/get_video_translations`, `creator/get_supported_content_languages` | — | captured | survey: unhandled | — |
+| Video editor | video nav | `video_editor/*` (6 methods), `creator/list_creator_info_cards`, `creator/get_creator_endscreens` | — | captured | survey: unhandled; one illustration 404 | — |
+| Video copyright | video nav | `creator/list_creator_received_claims` | — | captured | survey: unhandled | No checking system exists; must not report checks as done |
+| Video details extras | edit page | `get_creator_social_suggestions`, `feature_eligibility/check_feature_rate_limit` | — | captured | survey: unhandled | — |
+| Community: comments | nav | `comment/get_comments`, `comment/check_creator_comments_bulk_action` | comments | captured | survey: unhandled | Moderation, replies, hearts |
+| Subtitles | nav | `crowdsourcing/list_video_translations`, `get_video_translations`, `creator/get_supported_content_languages` | — | captured | survey: unhandled | — |
+| Copyright | nav | `copyright/list_complaint_videos` | — | captured | survey: unhandled; one icon 404 | — |
+| Earn (`/monetization`, `/monetization/overview`) | nav | — | — | captured | survey: no errors, no unhandled methods | Content not checked |
+| Customization (profile, layout) | nav | `channel_edit/get_channel_page_settings` | channels | captured | survey: unhandled | `/editing/sections` redirects to `/editing/profile` |
+| Audio library | nav | `creator_music/list_tracks` | — | captured | survey: unhandled | No audio library exists |
+| Content detection | nav | — | — | captured | survey: page error "Nn`" | — |
 | Settings dialog | nav | — | — | captured | studio-all | Upload defaults, permissions, community |
 | Send feedback (left nav) | nav | Google's feedback loader → stand-in `/_ot/help.js` | feedback | browser verified | manual | Opens the main origin's `/feedback` with the Studio page attached |
 | Help button | masthead | Google's help service → stand-in | — | browser verified | manual | Opens YouTube's help center (Studio's article for the page when it names one) |

@@ -15,6 +15,7 @@ import "./innertube/guide";
 import "./innertube/actions";
 import "./innertube/playlists";
 import "./innertube/comments";
+import "./innertube/shorts";
 import { startProcessing } from "./media/process";
 import { pruneTransfers } from "./studio/upload";
 import { thumbnail, videoplayback } from "./media/serve";

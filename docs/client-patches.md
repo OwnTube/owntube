@@ -25,6 +25,8 @@ Applied to JavaScript and CSS on the way out. A patch whose match count differs 
 | `studio-icons-material-host` | studio | 2 | The prefix Studio's icon manager builds SVG icon URLs from, as in the main app. |
 | `studio-icons-allowed-hosts` | studio | 1 | Studio's icon manager has the same origin allowlist as the main app's; adds the Studio origin so the relocated icons are fetched and inlined. |
 | `studio-fonts-stylesheet-host` | studio | 4 | Font stylesheets Studio inserts at run time. |
+| `studio-help-button` | studio | 1 | Studio's Help button loads Google's API loader (apis.google.com) before configuring help, which fails without Google's scripts. The button configures and opens help directly, through the stand-in. |
+| `studio-feedback-direct` | studio | 1 | Send feedback first tries Google's newer feedback client and falls back to the classic one only on some errors. Goes straight to the classic path, which calls the stand-in's `GOOGLE_FEEDBACK_START`. |
 | `studio-help-service` | studio | 3 | Studio preloads Google's help and feedback service on every page (its CSP refuses it) and loads Google's help API for the Help button. All three URLs point at the instance's stand-in: Send feedback opens the main origin's `/feedback`, help opens YouTube's help center. |
 
 ## Page shell rules (main client)

@@ -10,7 +10,7 @@ import { responseContext } from "../innertube/r";
 import { ApiError, type Ctx, route } from "../innertube/router";
 import { creatorChannel } from "./channel";
 import { attachSource } from "./upload";
-import { maskedVideo, videosFor } from "./video";
+import { type VideoRow, contentType, maskedVideo, videosFor } from "./video";
 
 function owner(ctx: Ctx): NonNullable<Viewer> {
 	if (!ctx.viewer) throw new ApiError(401, "Sign in to use Studio.", "authError");
@@ -53,23 +53,32 @@ route("creator/list_creator_playlists", async (ctx) => {
 // The content page's filter is a tree of and/not/channelIdIs/contentTypeIs
 // conditions. This instance has uploads only (no Shorts, streams, films):
 // a filter that asks for Shorts or a stream matches nothing.
-function wantsOtherContent(filter: any, channelId: string): boolean {
-	const walk = (f: any, negated: boolean): boolean => {
-		if (!f || typeof f !== "object") return false;
-		if (f.not) return walk(f.not.operand, !negated);
-		if (f.and) return (f.and.operands ?? []).some((o: any) => walk(o, negated));
-		if (negated) return false;
-		if (f.contentTypeIs) return f.contentTypeIs.value !== "CREATOR_CONTENT_TYPE_VIDEO_ON_DEMAND";
-		if (f.videoOriginIs) return f.videoOriginIs.value !== "VIDEO_ORIGIN_UPLOAD";
-		if (f.channelIdIs) return f.channelIdIs.value !== channelId;
-		return !!f.tvfilmTypeIs;
+// The Content list's filter, evaluated per video. Conditions this instance
+// can't evaluate (undefined) neither keep nor drop a video, negated or not.
+function matchesFilter(filter: any, v: VideoRow, channelId: string): boolean {
+	const walk = (f: any): boolean | undefined => {
+		if (!f || typeof f !== "object") return undefined;
+		if (f.not) {
+			const r = walk(f.not.operand);
+			return r === undefined ? undefined : !r;
+		}
+		if (f.and) return (f.and.operands ?? []).map(walk).every((r: boolean | undefined) => r !== false);
+		if (f.or) {
+			const rs = (f.or.operands ?? []).map(walk);
+			return rs.every((r: boolean | undefined) => r === undefined) ? undefined : rs.some((r: boolean | undefined) => r === true);
+		}
+		if (f.contentTypeIs) return f.contentTypeIs.value === contentType(v);
+		if (f.videoOriginIs) return f.videoOriginIs.value === "VIDEO_ORIGIN_UPLOAD";
+		if (f.channelIdIs) return f.channelIdIs.value === channelId;
+		if (f.tvfilmTypeIs) return false;
+		return undefined;
 	};
-	return walk(filter, false);
+	return walk(filter) !== false;
 }
 
 route("creator/list_creator_videos", async (ctx) => {
 	const viewer = owner(ctx);
-	const rows = wantsOtherContent(ctx.body.filter, viewer.channelId) ? [] : await videosFor(viewer.channelId);
+	const rows = (await videosFor(viewer.channelId)).filter((v) => matchesFilter(ctx.body.filter, v, viewer.channelId));
 	const size = Math.min(Math.max(Number(ctx.body.pageSize) || 30, 1), 100);
 	const start = Math.max(0, Number(Buffer.from(String(ctx.body.pageToken ?? ""), "base64url").toString()) || 0);
 	const page = rows.slice(start, start + size);

@@ -10,7 +10,8 @@ Anything not listed here gets an empty `{responseContext}` envelope and appears 
 | --- | --- | --- |
 | `/` | Home | `FEwhat_to_watch`: recent public videos, infinite scroll |
 | `/watch?v=&list=&index=&t=` | Watch | `next` + `player` for the video; playlist panel when `list` is set; records history for signed-in viewers |
-| `/shorts/<id>` | — | Redirects to `/watch?v=<id>` |
+| `/shorts/<id>` | Shorts | `reel/reel_item_watch` data, `player`, and the following Shorts in `ytInitialReelWatchSequenceResponse`; a video that isn't a Short redirects to `/watch?v=<id>` |
+| `/shorts/` | Shorts | The newest Short with `replacementEndpoint` and `sequenceContinuation` (the client moves to `/shorts/<id>` and asks for the sequence) |
 | `/results?search_query=&sp=` | Search | `search` |
 | `/@handle`, `/channel/UC…` and `/featured`, `/videos`, `/playlists` | Channel | Channel browse with tabs |
 | `/playlist?list=` | Playlist | `VL<list>` browse |
@@ -26,7 +27,9 @@ Anything not listed here gets an empty `{responseContext}` envelope and appears 
 
 | Method | Handler | Notes |
 | --- | --- | --- |
-| `browse` | [`browse.ts`](../../src/innertube/browse.ts) | Browse ids above, `VL…` playlists, `UC…` channels, `SPaccount_*` settings pages ([`settings.ts`](../../src/innertube/settings.ts); 401 `unauthorized` when signed out), `FEnotifications_inbox` (empty). Continuations for home, subscriptions, history, playlists/channels feeds, channel videos, About panel, playlist items. |
+| `browse` | [`browse.ts`](../../src/innertube/browse.ts) | Browse ids above, `VL…` playlists, `UC…` channels, `SPaccount_*` settings pages ([`settings.ts`](../../src/innertube/settings.ts); 401 `unauthorized` when signed out), `FEnotifications_inbox` (empty). Continuations for home, subscriptions, history, playlists/channels feeds, channel videos, About panel, playlist items, and the Shorts comments panel. |
+| `reel/reel_item_watch` | [`shorts.ts`](../../src/innertube/shorts.ts) | One Short (`playerRequest.videoId`): overlay, like/subscribe/share, comments and description panels, element templates. Seedless (guide): the newest Short with `replacementEndpoint`. Records history. |
+| `reel/reel_watch_sequence` | `shorts.ts` | `sequenceParams` (our token): the next 10 Shorts, newest first, and a continuation. |
 | `navigation/resolve_url` | `browse.ts` | Resolves `/@handle`, channel and feed URLs to browse endpoints. |
 | `next` | [`watch-routes.ts`](../../src/innertube/watch-routes.ts) | Watch page data: metadata, owner, actions, related videos, playlist panel. Continuations for related videos, comments and replies. |
 | `player` | `watch-routes.ts` | `playabilityStatus`, `videoDetails`, `streamingData` pointing at `/videoplayback`, no captions. |
@@ -74,7 +77,7 @@ Anything not listed here gets an empty `{responseContext}` envelope and appears 
 | --- | --- | --- |
 | `/s/…`, `/_up/<host>/…` | both | Archived client assets, patched at serve time |
 | `/videoplayback?id&itag&range[&ump=1]` | main | Media bytes |
-| `/vi/<id>/<name>.jpg`, `/vi_webp/…` | main | Thumbnails; private ones only for the owner and operators |
+| `/vi/<id>/<name>.jpg`, `/vi_webp/…` | main | Thumbnails; private ones only for the owner and operators. `frame0` is the full frame at the video's aspect (the Shorts poster; hqdefault for videos processed before it existed) |
 | `/ggpht/UC…/avatar`, `/ggpht/UC…/banner` | main | Channel images |
 | `/complete/search` | main | Search suggestions |
 | `/api/stats/playback`, `/api/stats/watchtime` | main | Watch history and resume position |

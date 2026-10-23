@@ -4,6 +4,7 @@
 // match exactly once (or `optional`):
 //   - the ytcfg.set({...}) bootstrap configuration      -> buildYtcfg()
 //   - var ytInitialData / ytInitialPlayerResponse        -> this instance's data
+//   - var ytInitialReelWatchSequenceResponse (Shorts)    -> this instance's sequence
 //   - window.ytAtN({...}) BotGuard attestation challenge -> removed
 //   - serverContract() ytPageType/ytCommand/ytUrl        -> this route
 //   - the passive Google sign-in iframe                  -> removed
@@ -46,6 +47,7 @@ export type PageData = {
 	playerResponse?: unknown;
 	command: unknown; // the navigation endpoint that leads here
 	thumbnail?: string;
+	reelSequence?: unknown; // a Short's page: the Shorts that follow (ytInitialReelWatchSequenceResponse)
 };
 
 // experiment flags this instance sets over the pinned build's values
@@ -240,6 +242,9 @@ export function renderPage(data: PageData, viewer: Viewer, nonce: string, dark =
 			: replaceJsonAfter(html, "var ytInitialPlayerResponse = {", "null", "ytInitialPlayerResponse");
 	}
 	html = replaceJsonAfter(html, "var ytInitialData = {", json(data.initialData), "ytInitialData");
+	// a string the page JSON.parses; '{}' (empty) makes the client request the sequence
+	if (data.reelSequence)
+		html = html.replace(/var ytInitialReelWatchSequenceResponse = '(?:[^'\\]|\\.)*';/, () => `var ytInitialReelWatchSequenceResponse = ${json(JSON.stringify(data.reelSequence))};`);
 	const thumb = data.thumbnail ?? "";
 	let socialDone = false;
 	const rules: Rule[] = [

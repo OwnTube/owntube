@@ -26,6 +26,8 @@ const VIDEOS = [
 	{ owner: "alice", title: "Colour bars, 30 seconds", description: "Colour bars and a 1 kHz tone.", src: "smptehdbars=size=1280x720:rate=30", audio: "sine=frequency=1000:sample_rate=44100", seconds: 30 },
 	{ owner: "bob", title: "Mandelbrot zoom", description: "A slow zoom into the Mandelbrot set, rendered by ffmpeg.", src: "mandelbrot=size=854x480:rate=25", audio: "sine=frequency=220:sample_rate=44100", seconds: 25 },
 	{ owner: "bob", title: "Game of Life", description: "Conway's Game of Life from a random start.", src: "life=size=640x360:rate=30:mold=10:ratio=0.2:death_color=#202040:life_color=#40d0ff,scale=1280:720:flags=neighbor", audio: "anoisesrc=color=pink:amplitude=0.05:sample_rate=44100", seconds: 20 },
+	{ owner: "bob", title: "Cellular automaton #shorts", description: "Rule 110, scrolling, in portrait.", src: "cellauto=rule=110:size=360x640:rate=30,scale=720:1280:flags=neighbor", audio: "sine=frequency=550:sample_rate=44100", seconds: 12 },
+	{ owner: "bob", title: "RGB test, portrait", description: "", src: "rgbtestsrc=size=720x1280:rate=30", audio: "sine=frequency=660:sample_rate=44100", seconds: 8 },
 	{ owner: "alice", title: "Gradient sweep (vertical video)", description: "A portrait video, to check how the player letterboxes it.", src: "gradients=size=720x1280:rate=30:speed=0.02", audio: "sine=frequency=330:sample_rate=44100", seconds: 15 },
 ];
 

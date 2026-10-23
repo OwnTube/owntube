@@ -1,0 +1,33 @@
+{
+	"command": {
+		"commandMetadata": {
+			"webCommandMetadata": {
+				"url": "/shorts/{{VIDEO_ID}}",
+				"webPageType": "WEB_PAGE_TYPE_SHORTS",
+				"rootVe": 37414
+			}
+		},
+		"reelWatchEndpoint": {
+			"videoId": "{{VIDEO_ID}}",
+			"thumbnail": {
+				"thumbnails": "{{FRAME0}}",
+				"isOriginalAspectRatio": true
+			},
+			"overlay": {
+				"reelPlayerOverlayRenderer": {
+					"style": "REEL_PLAYER_OVERLAY_STYLE_SHORTS",
+					"reelPlayerNavigationModel": "REEL_PLAYER_NAVIGATION_MODEL_UNSPECIFIED"
+				}
+			},
+			"loggingContext": {
+				"vssLoggingContext": {
+					"serializedContextData": "CgIIDA%3D%3D"
+				},
+				"qoeLoggingContext": {
+					"serializedContextData": "CgIIDA%3D%3D"
+				}
+			},
+			"ustreamerConfig": "CAw="
+		}
+	}
+}

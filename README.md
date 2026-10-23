@@ -66,7 +66,7 @@ The main client is pinned in [`pin/client.json`](pin/client.json), and Studio in
 
 - Studio covers uploading, processing progress, metadata editing, publishing, and deletion. Other Studio pages, such as analytics and comment moderation, are not backed by data. No copyright or Community Guidelines checks run, so Studio shows its default "Checks complete" state.
 - Custom thumbnail and additional audio-track upload URLs are configured in Studio, but their upload handlers are not implemented.
-- Shorts URLs open the ordinary watch page; there is no dedicated Shorts browsing experience. Live streaming and monetization are not implemented.
+- Shorts open in YouTube's own Shorts player (`/shorts/`), with likes, subscribing, comments and scrolling between Shorts; Home has no Shorts shelf yet and channels have no Shorts tab. Live streaming and monetization are not implemented.
 - Notifications currently have an empty inbox/count. The bell-preference handler acknowledges requests without persisting a preference or delivering notifications.
 - Unsupported InnerTube methods are recorded in diagnostics and may return an empty response envelope. A successful HTTP response alone does not establish a working feature.
 

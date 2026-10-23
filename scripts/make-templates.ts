@@ -1945,6 +1945,136 @@ function studioMenu() {
 	save("account/studio_menu", r);
 }
 
+// ======================================================================
+// shorts
+// The Shorts player's item (reel/reel_item_watch, also the /shorts/ page's
+// ytInitialData) and a sequence entry (reel/reel_watch_sequence). Signed in,
+// the item comes from the sequence's prefetched first entry (a channel the
+// account isn't subscribed to, so it has the subscribe button); signed out,
+// from reel_item_watch.
+// ======================================================================
+const SHORTS_MENU = new Set(["Description", "Save to playlist", "Full screen", "Playback speed", "Send feedback"]);
+const SHORTS_PANELS = new Set(["engagement-panel-comments-section", "engagement-panel-structured-description"]);
+const SHORTS_ACTIONS = new Set(["id.reel_comment_button", "id.reel_share_button"]);
+function shortsItem(raw: any, id: string, signedIn: boolean) {
+	const r = clean(raw);
+	for (const k of ["topbar", "desktopTopbar", "tooltip"]) delete r[k];
+	const elements = r.frameworkUpdates?.elementUpdate;
+	delete r.frameworkUpdates;
+	const ov = r.overlay.reelPlayerOverlayRenderer;
+	const vm = ov.playerOverlay.reelPlayerOverlayViewModel;
+	const meta = vm.metapanel.reelMetapanelViewModel;
+	const bar = meta.metadataItems.find((m: any) => m.reelChannelBarViewModel).reelChannelBarViewModel;
+	const titleVm = meta.metadataItems.find((m: any) => m.shortsVideoTitleViewModel).shortsVideoTitleViewModel;
+	const like = find(vm.actionBar, "likeButtonViewModel");
+	const title: string = titleVm.text.content.trim();
+	const atHandle: string = bar.channelName.content;
+	const chEndpoint = find(bar.channelName, "browseEndpoint");
+	const chId: string = chEndpoint.browseId;
+	const chUrl = `/${atHandle}`;
+	const sd = r.engagementPanels.find((e: any) => e.engagementPanelSectionListRenderer.targetId === "engagement-panel-structured-description");
+	const dh = find(sd, "videoDescriptionHeaderRenderer");
+	const chName: string = contentOf(dh.channel);
+
+	// ---- what this instance doesn't offer ----
+	ov.menu.menuRenderer.items = ov.menu.menuRenderer.items.filter((it: any) => SHORTS_MENU.has(contentOf(it.listItemViewModel?.title)));
+	// comment teaser, links to other Shorts: picked by YouTube's recommendations
+	meta.metadataItems = meta.metadataItems.filter((m: any) => m.reelChannelBarViewModel || m.shortsVideoTitleViewModel);
+	// hashtags link to hashtag pages, which aren't served
+	titleVm.text = { content: "{{TITLE}}" };
+	// like, comments, share (no Remix, no sound page)
+	vm.actionBar.reelActionBarViewModel.buttonViewModels = vm.actionBar.reelActionBarViewModel.buttonViewModels.filter((b: any) => b.likeButtonViewModel || SHORTS_ACTIONS.has(b.buttonViewModel?.accessibilityId));
+	r.engagementPanels = r.engagementPanels.filter((e: any) => SHORTS_PANELS.has(e.engagementPanelSectionListRenderer.targetId));
+	const sdItems = find(sd, "structuredDescriptionContentRenderer").items;
+	find(sd, "structuredDescriptionContentRenderer").items = sdItems.filter((it: any) => it.videoTitleHeaderViewModel || it.videoDescriptionHeaderRenderer || it.expandableVideoDescriptionBodyRenderer);
+	// the channel's Shorts tab isn't served: channel links open the channel
+	for (const h of findAllHolders(r, "browseEndpoint")) {
+		const b = h.browseEndpoint;
+		if (b.browseId === chId && /\/shorts$/.test(b.canonicalBaseUrl ?? "")) {
+			b.canonicalBaseUrl = chUrl;
+			delete b.params;
+			if (h.commandMetadata?.webCommandMetadata) h.commandMetadata.webCommandMetadata.url = chUrl;
+		}
+	}
+	// a signed-out subscribe opens the sign-in prompt; its continue action is Google's
+	for (const h of findAllHolders(r, "signInEndpoint")) {
+		delete h.signInEndpoint.continueAction;
+		delete h.signInEndpoint.idamTag;
+	}
+
+	// ---- the video's own values ----
+	const header = ov.reelPlayerHeaderSupportedRenderers.reelPlayerHeaderRenderer;
+	header.timestampText = { simpleText: "{{PUBLISHED_LABEL}}" };
+	header.accessibility.accessibilityData.label = "{{TITLE}} {{AT_HANDLE}} {{PUBLISHED_LABEL}}";
+	const tb = like.toggleButtonViewModel.toggleButtonViewModel;
+	const [def, tog] = [tb.defaultButtonViewModel.buttonViewModel, tb.toggledButtonViewModel.buttonViewModel];
+	def.title = "{{LIKES}}";
+	def.accessibilityText = "{{LIKE_A11Y}}";
+	tog.title = "{{LIKES_IF_LIKED}}";
+	tog.accessibilityText = "{{LIKED_A11Y}}";
+	tb.isToggled = "{{LIKED}}";
+	like.likeStatusEntity.likeStatus = "{{LIKE_STATUS}}";
+	const comment = vm.actionBar.reelActionBarViewModel.buttonViewModels.find((b: any) => b.buttonViewModel?.accessibilityId === "id.reel_comment_button").buttonViewModel;
+	comment.title = "{{COMMENT_COUNT}}";
+	comment.accessibilityText = "{{COMMENT_A11Y}}";
+	const subBtn = find(bar, "subscribeButtonViewModel");
+	if (subBtn?.subscribeButtonContent) {
+		for (const s of findAll(subBtn, "subscribeState")) s.subscribed = s.subscribed ? true : false;
+	}
+	wholeToken(bar, "sources", "AVATAR_48", (h) => /ggpht/.test(JSON.stringify(h.sources)));
+	wholeToken(dh, "thumbnails", "AVATAR_88", (h) => /ggpht/.test(JSON.stringify(h.thumbnails)));
+	dh.channel = { simpleText: "{{CHANNEL_NAME}}" };
+	dh.views = { simpleText: "{{VIEWS_FULL}}" };
+	dh.publishDate = { simpleText: "{{DATE}}" };
+	const [lf, vf, uf] = dh.factoid;
+	lf.factoidRenderer.value = { simpleText: "{{LIKES_COMPACT}}" };
+	lf.factoidRenderer.accessibilityText = "{{LIKES_LABEL}}";
+	vf.viewCountFactoidRenderer.factoid.factoidRenderer.value = { simpleText: "{{VIEWS_COMPACT}}" };
+	vf.viewCountFactoidRenderer.factoid.factoidRenderer.accessibilityText = "{{VIEWS_FULL}}";
+	uf.uploadTimeFactoidRenderer.factoid.factoidRenderer.value = { simpleText: "{{UPLOAD_VALUE}}" };
+	uf.uploadTimeFactoidRenderer.factoid.factoidRenderer.label = { simpleText: "{{UPLOAD_LABEL}}" };
+	uf.uploadTimeFactoidRenderer.factoid.factoidRenderer.accessibilityText = "{{UPLOAD_A11Y}}";
+	find(sd, "videoTitleHeaderViewModel").videoTitle = { content: "{{TITLE}}" };
+	find(sd, "expandableVideoDescriptionBodyRenderer").descriptionBodyText = { runs: [{ text: "{{DESCRIPTION}}" }] };
+	// comments load through this instance's continuations
+	const cp = r.engagementPanels.find((e: any) => e.engagementPanelSectionListRenderer.targetId === "engagement-panel-comments-section");
+	const ch = find(cp, "engagementPanelTitleHeaderRenderer");
+	ch.contextualInfo = { runs: [{ text: "{{COMMENT_COUNT}}" }] };
+	const sorts = find(cp, "subMenuItems");
+	sorts[0].serviceEndpoint.continuationCommand.token = "{{COMMENTS_TOP}}";
+	sorts[1].serviceEndpoint.continuationCommand.token = "{{COMMENTS_NEWEST}}";
+	find(find(cp, "continuationItemRenderer"), "continuationCommand").token = "{{COMMENTS_TOP}}";
+	r.frameworkUpdates = "{{FRAMEWORK_UPDATES}}";
+	const out = tokenize(r, [[id, "VIDEO_ID"], [chId, "CHANNEL_ID"], [chUrl, "CHANNEL_URL"], [atHandle, "AT_HANDLE"]], [[id, "VIDEO_ID"], [chId, "CHANNEL_ID"]], [[chName, "CHANNEL_NAME"]]);
+	save(`shorts/item_${signedIn ? "in" : "out"}`, out, [id, title, chId, chName]);
+	return elements;
+}
+function shorts() {
+	const seqIn = JSON.parse(body("site-in", /reel_reel_watch_sequence\.resp$/));
+	const first = seqIn.entries[0].command.reelWatchEndpoint;
+	shortsItem(first.unserializedPrefetchData.reelItemWatchResponse, first.videoId, true);
+	const outId = pageVar(body("shorts", /^001-/)).replacementEndpoint.reelWatchEndpoint.videoId;
+	const elements = shortsItem(JSON.parse(body("shorts", /reel_reel_item_watch\.resp$/)), outId, false);
+	// the Shorts player's element templates for the parts kept (panels, like
+	// and action buttons), as YouTube sends them with every item
+	const used = /^(engagement_panel_overlay|reel_action_button|reel_like_button|button|button_inner|animated_asset_no_ts)\.eml\|/;
+	const el = clean(elements);
+	el.updates = el.updates.filter((u: any) => !u.templateUpdate || used.test(u.templateUpdate.identifier));
+	for (const u of el.updates) if (u.resourceStatusInResponseCheck) u.resourceStatusInResponseCheck.resourceStatuses = u.resourceStatusInResponseCheck.resourceStatuses.filter((s: any) => used.test(s.identifier));
+	save("shorts/elements", el);
+	// a sequence entry, without YouTube's recommendation params
+	const seq = JSON.parse(body("shorts", /reel_reel_watch_sequence\.resp$/));
+	const e = clean(seq.entries[1]);
+	const rw = e.command.reelWatchEndpoint;
+	const id: string = rw.videoId;
+	for (const k of ["playerParams", "params", "softRefreshContinuation", "unserializedPrefetchData"]) delete rw[k];
+	rw.thumbnail.thumbnails = "{{FRAME0}}";
+	save("shorts/entry", tokenize(e, [[id, "VIDEO_ID"]], [[id, "VIDEO_ID"]]), [id]);
+	const c = clean(seq.continuationEndpoint);
+	c.continuationCommand.token = "{{CONTINUATION}}";
+	save("shorts/continuation", c);
+}
+
 const only = process.argv.slice(2);
 personalValues();
 const steps: [string, () => void][] = [
@@ -1969,6 +2099,7 @@ const steps: [string, () => void][] = [
 	["settings", settingsPages],
 	["switcher", accountSwitcher],
 	["studio-menu", studioMenu],
+	["shorts", shorts],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;

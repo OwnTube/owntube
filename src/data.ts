@@ -25,6 +25,16 @@ export async function latestVideos(limit: number, offset = 0, excludeId = ""): P
 		where ${LISTED} and v.id <> ${excludeId} order by v.published_at desc, v.id limit ${limit} offset ${offset}`) as Video[];
 }
 
+// Shorts: vertical or square, up to three minutes (YouTube's definition)
+export const SHORT_MAX_MS = 180_000;
+const SHORT = sql`v.height >= v.width and v.width > 0 and v.duration_ms <= ${SHORT_MAX_MS}`;
+export const isShort = (v: { width?: number | null; height?: number | null; duration_ms?: number | null }) => !!v.width && !!v.height && v.height >= v.width && (v.duration_ms ?? Infinity) <= SHORT_MAX_MS;
+
+export async function shortVideos(limit: number, offset = 0, excludeId = ""): Promise<Video[]> {
+	return (await sql`select ${VIDEO_COLUMNS} from videos v join channels c on c.id = v.channel_id
+		where ${LISTED} and ${SHORT} and v.id <> ${excludeId} order by v.published_at desc, v.id limit ${limit} offset ${offset}`) as Video[];
+}
+
 export async function relatedVideos(video: Video, limit: number, offset = 0): Promise<Video[]> {
 	// same channel first, then everything else by recency
 	return (await sql`select ${VIDEO_COLUMNS} from videos v join channels c on c.id = v.channel_id
