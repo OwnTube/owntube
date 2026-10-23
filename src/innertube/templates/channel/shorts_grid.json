@@ -1,0 +1,92 @@
+{
+	"contents": "{{ITEMS}}",
+	"header": {
+		"chipBarViewModel": {
+			"chips": [
+				{
+					"chipViewModel": {
+						"text": "Latest",
+						"selected": "{{SELECTED_LATEST}}",
+						"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+						"tapCommand": {
+							"innertubeCommand": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"sendPost": true,
+										"apiUrl": "/youtubei/v1/browse"
+									}
+								},
+								"continuationCommand": {
+									"token": "{{SORT_LATEST}}",
+									"request": "CONTINUATION_REQUEST_TYPE_BROWSE",
+									"command": {
+										"showReloadUiCommand": {
+											"targetId": "{{TARGET_ID}}"
+										}
+									}
+								}
+							}
+						},
+						"accessibilityLabel": "Latest"
+					}
+				},
+				{
+					"chipViewModel": {
+						"text": "Popular",
+						"selected": "{{SELECTED_POPULAR}}",
+						"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+						"tapCommand": {
+							"innertubeCommand": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"sendPost": true,
+										"apiUrl": "/youtubei/v1/browse"
+									}
+								},
+								"continuationCommand": {
+									"token": "{{SORT_POPULAR}}",
+									"request": "CONTINUATION_REQUEST_TYPE_BROWSE",
+									"command": {
+										"showReloadUiCommand": {
+											"targetId": "{{TARGET_ID}}"
+										}
+									}
+								}
+							}
+						},
+						"accessibilityLabel": "Popular"
+					}
+				},
+				{
+					"chipViewModel": {
+						"text": "Oldest",
+						"selected": "{{SELECTED_OLDEST}}",
+						"displayType": "CHIP_VIEW_MODEL_DISPLAY_TYPE_UNSPECIFIED",
+						"tapCommand": {
+							"innertubeCommand": {
+								"commandMetadata": {
+									"webCommandMetadata": {
+										"sendPost": true,
+										"apiUrl": "/youtubei/v1/browse"
+									}
+								},
+								"continuationCommand": {
+									"token": "{{SORT_OLDEST}}",
+									"request": "CONTINUATION_REQUEST_TYPE_BROWSE",
+									"command": {
+										"showReloadUiCommand": {
+											"targetId": "{{TARGET_ID}}"
+										}
+									}
+								}
+							}
+						},
+						"accessibilityLabel": "Oldest"
+					}
+				}
+			]
+		}
+	},
+	"targetId": "{{TARGET_ID}}",
+	"style": "RICH_GRID_STYLE_SHORTS_GRID"
+}

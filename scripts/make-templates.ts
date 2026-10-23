@@ -303,6 +303,33 @@ function homeChips() {
 	save("home/chip_bar", tokenize(bar, []));
 }
 
+// a channel's Shorts tab: YouTube's Shorts grid with its Latest/Popular/Oldest
+// chips (the items are item/shorts_lockup_rich, filled in by channel.ts)
+function channelShorts() {
+	const page = pageVar(body("site-in", /^116-/));
+	const tab = page.contents.twoColumnBrowseResultsRenderer.tabs.find((t: any) => t.tabRenderer?.selected).tabRenderer;
+	const grid = clean(tab.content.richGridRenderer);
+	for (const c of find(grid.header, "chipBarViewModel").chips) {
+		const label = c.chipViewModel.text.toUpperCase();
+		find(c, "continuationCommand").token = `{{SORT_${label}}}`;
+		find(c, "showReloadUiCommand").targetId = "{{TARGET_ID}}";
+		c.chipViewModel.selected = `{{SELECTED_${label}}}`;
+	}
+	grid.contents = "{{ITEMS}}";
+	grid.targetId = "{{TARGET_ID}}";
+	save("channel/shorts_grid", tokenize(grid, []));
+
+	// Home's Shorts shelf (its feedback menu left out); its items are the
+	// lockups of item/shorts_lockup_rich without the grid item around them
+	const home = pageVar(body("channel-about", /^001-/));
+	const sections = home.contents.twoColumnBrowseResultsRenderer.tabs.find((t: any) => t.tabRenderer?.selected).tabRenderer.content.sectionListRenderer.contents;
+	const shelf = clean(structuredClone(sections.find((x: any) => find(x, "reelShelfRenderer"))));
+	const reel = find(shelf, "reelShelfRenderer");
+	delete reel.button;
+	reel.items = "{{ITEMS}}";
+	save("channel/shorts_shelf", tokenize(shelf, []));
+}
+
 // ======================================================================
 // channel
 // ======================================================================
@@ -2192,6 +2219,7 @@ const steps: [string, () => void][] = [
 	["feeds", feeds],
 	["home-shorts", homeShorts],
 	["home-chips", homeChips],
+	["channel-shorts", channelShorts],
 	["watch", watch],
 	["search", search],
 	["playlist", playlistPage],

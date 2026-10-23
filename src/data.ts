@@ -80,11 +80,14 @@ export async function searchChannels(query: string, limit: number, offset = 0): 
 		from channels c where c.title ilike ${like} or c.handle ilike ${like} order by subscriber_count desc, c.id limit ${limit} offset ${offset}`) as Channel[];
 }
 
-export async function channelVideos(channelId: string, viewer: Viewer, limit: number, offset: number, sort: "newest" | "popular" | "oldest" = "newest"): Promise<Video[]> {
+// a channel's videos as its tabs list them: Videos leaves out Shorts, which
+// have a tab of their own
+export async function channelVideos(channelId: string, viewer: Viewer, limit: number, offset: number, sort: "newest" | "popular" | "oldest" = "newest", kind: "videos" | "shorts" = "videos"): Promise<Video[]> {
 	const own = viewer?.channelId === channelId;
 	const order = sort === "popular" ? sql`v.view_count desc` : sort === "oldest" ? sql`coalesce(v.published_at, v.created_at) asc` : sql`coalesce(v.published_at, v.created_at) desc`;
+	const shape = kind === "shorts" ? sql`coalesce(${SHORT}, false)` : sql`not coalesce(${SHORT}, false)`;
 	return (await sql`select ${VIDEO_COLUMNS} from videos v join channels c on c.id = v.channel_id
-		where v.channel_id = ${channelId} and v.deleted_at is null and (${own} or (v.playable and v.visibility = 'public'))
+		where v.channel_id = ${channelId} and v.deleted_at is null and (${own} or (v.playable and v.visibility = 'public')) and ${shape}
 		order by ${order}, v.id limit ${limit} offset ${offset}`) as Video[];
 }
 

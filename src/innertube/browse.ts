@@ -106,9 +106,10 @@ async function continuation(token: string, viewer: Viewer) {
 		const c = await getChannel({ id: t.c });
 		if (!c) throw new ApiError(404, "Not found");
 		if (t.k === "about") return { responseContext: responseContext(viewer), ...(await aboutPanel(c, viewer)) };
-		if (t.reload) return { responseContext: responseContext(viewer), ...(await videoGridReload(c, viewer, t.s ?? "newest")) };
-		items = await videoGridItems(c, viewer, t.o, t.s ?? "newest");
-		target = `browse-feed${c.id}videos`;
+		const kind = t.f === "shorts" ? "shorts" : "videos";
+		if (t.reload) return { responseContext: responseContext(viewer), ...(await videoGridReload(c, viewer, t.s ?? "newest", kind)) };
+		items = await videoGridItems(c, viewer, t.o, t.s ?? "newest", kind);
+		target = `browse-feed${c.id}${kind}`;
 	} else if (t.k === "comments") {
 		// the Shorts player's comments panel
 		const { commentsContinuation } = await import("./comments");
@@ -143,7 +144,7 @@ export async function resolvePath(url: URL): Promise<{ browseId: string; params?
 		const list = url.searchParams.get("list");
 		return list ? { browseId: `VL${list}` } : undefined;
 	}
-	const m = /^\/(?:@([A-Za-z0-9._-]{3,30})|channel\/(UC[A-Za-z0-9_-]{22}))(?:\/(featured|videos|playlists))?$/.exec(decodeURIComponent(p));
+	const m = /^\/(?:@([A-Za-z0-9._-]{3,30})|channel\/(UC[A-Za-z0-9_-]{22}))(?:\/(featured|videos|shorts|playlists))?$/.exec(decodeURIComponent(p));
 	if (m) {
 		const c = await getChannel(m[1] ? { handle: m[1] } : { id: m[2] });
 		if (!c) return undefined;

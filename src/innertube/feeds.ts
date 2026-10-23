@@ -25,7 +25,7 @@ function page(videos: Video[], viewer: Viewer, next: Record<string, unknown>) {
 }
 
 // a Short on home's shelf, with its whole first frame (process.ts frame0)
-function shortLockup(v: Video, viewer: Viewer) {
+export function shortLockup(v: Video, viewer: Viewer) {
 	const scale = Math.min(1, 720 / (v.height || 720));
 	const frame = [{ url: `${PUBLIC_ORIGIN}/vi/${v.id}/frame0.jpg`, width: Math.round((v.width || 405) * scale), height: Math.round((v.height || 720) * scale) }];
 	return make("item/shorts_lockup_rich", {

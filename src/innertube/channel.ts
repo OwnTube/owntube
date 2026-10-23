@@ -1,6 +1,7 @@
 // Channel pages, built from YouTube's channel responses (templates channel/*):
-// the page header, the tab strip, the Home shelves, the Videos grid with its
-// Latest/Popular/Oldest chips, the Playlists grid and the About panel.
+// the page header, the tab strip, the Home shelves, the Videos and Shorts
+// grids with their Latest/Popular/Oldest chips, the Playlists grid and the
+// About panel.
 
 import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
@@ -12,15 +13,17 @@ import { channelTabFromParams } from "./proto";
 import { make, tpl, fill, type Vars } from "./tpl";
 import { baseVars, channelVars, videoVars } from "./vars";
 import { subscribeAction } from "./subscribe";
+import { shortLockup } from "./feeds";
 
 export const CHANNEL_PAGE = 30;
-export type ChannelTab = "featured" | "videos" | "playlists";
+export type ChannelTab = "featured" | "videos" | "shorts" | "playlists";
+export type GridKind = "videos" | "shorts";
 export type ChannelSort = "newest" | "popular" | "oldest";
 
 // tab from the client's params blob ({2: "videos", ...}); none means Home
 export function channelTab(params: string | undefined): ChannelTab {
 	const t = channelTabFromParams(params);
-	return t === "videos" || t === "playlists" ? t : "featured";
+	return t === "videos" || t === "shorts" || t === "playlists" ? t : "featured";
 }
 
 // the params YouTube uses for each tab (constant across channels)
@@ -29,17 +32,17 @@ export function tabParams(tab: ChannelTab): string {
 	return page.tabs[tab].tabRenderer.endpoint.browseEndpoint.params;
 }
 
-const gridTarget = (c: Channel) => `browse-feed${c.id}videos`;
+const gridTarget = (c: Channel, kind: GridKind) => `browse-feed${c.id}${kind}`;
 
-export async function videoGridItems(c: Channel, viewer: Viewer, offset: number, sort: ChannelSort): Promise<unknown[]> {
-	const videos = await channelVideos(c.id, viewer, CHANNEL_PAGE, offset, sort);
-	const items: unknown[] = videos.map((v) => make("item/video_lockup_channel", { ...baseVars(viewer, `/@${c.handle}/videos`), ...videoVars(v) }));
-	if (videos.length === CHANNEL_PAGE) items.push(make("item/continuation", { CONTINUATION: encodeToken({ k: "chvideos", c: c.id, o: offset + CHANNEL_PAGE, s: sort }) }));
+export async function videoGridItems(c: Channel, viewer: Viewer, offset: number, sort: ChannelSort, kind: GridKind = "videos"): Promise<unknown[]> {
+	const videos = await channelVideos(c.id, viewer, CHANNEL_PAGE, offset, sort, kind);
+	const items: unknown[] = videos.map((v) => (kind === "shorts" ? shortLockup(v, viewer) : make("item/video_lockup_channel", { ...baseVars(viewer, `/@${c.handle}/videos`), ...videoVars(v) })));
+	if (videos.length === CHANNEL_PAGE) items.push(make("item/continuation", { CONTINUATION: encodeToken({ k: "chvideos", c: c.id, o: offset + CHANNEL_PAGE, s: sort, f: kind }) }));
 	return items;
 }
 
-function sortVars(c: Channel, sort: ChannelSort): Vars {
-	const token = (s: ChannelSort) => encodeToken({ k: "chvideos", c: c.id, o: 0, s, reload: true });
+function sortVars(c: Channel, sort: ChannelSort, kind: GridKind): Vars {
+	const token = (s: ChannelSort) => encodeToken({ k: "chvideos", c: c.id, o: 0, s, f: kind, reload: true });
 	return {
 		SORT_LATEST: token("newest"),
 		SORT_POPULAR: token("popular"),
@@ -47,13 +50,13 @@ function sortVars(c: Channel, sort: ChannelSort): Vars {
 		SELECTED_LATEST: sort === "newest",
 		SELECTED_POPULAR: sort === "popular",
 		SELECTED_OLDEST: sort === "oldest",
-		TARGET_ID: gridTarget(c),
+		TARGET_ID: gridTarget(c, kind),
 	};
 }
 
 // a chip tap: new chip bar (header slot) and the re-sorted grid (body slot)
-export async function videoGridReload(c: Channel, viewer: Viewer, sort: ChannelSort) {
-	return make("channel/videos_reload", { ...channelVars(c), ...sortVars(c, sort), ITEMS: await videoGridItems(c, viewer, 0, sort) });
+export async function videoGridReload(c: Channel, viewer: Viewer, sort: ChannelSort, kind: GridKind = "videos") {
+	return make("channel/videos_reload", { ...channelVars(c), ...sortVars(c, sort, kind), ITEMS: await videoGridItems(c, viewer, 0, sort, kind) });
 }
 
 async function homeTab(c: Channel, viewer: Viewer, vars: Vars) {
@@ -67,7 +70,10 @@ async function homeTab(c: Channel, viewer: Viewer, vars: Vars) {
 			ITEMS: videos.map((v) => make("item/video_lockup_shelf", { ...vars, ...videoVars(v) })),
 		});
 	};
-	const sections = [await shelf("Videos", "newest"), c.video_count > 4 ? await shelf("Popular videos", "popular") : undefined].filter(Boolean);
+	// YouTube's Shorts shelf comes after the video shelves
+	const shorts = await channelVideos(c.id, viewer, 12, 0, "newest", "shorts");
+	const shortsShelf = shorts.length ? make("channel/shorts_shelf", { ITEMS: shorts.map((v) => (shortLockup(v, viewer) as { richItemRenderer: { content: unknown } }).richItemRenderer.content) }) : undefined;
+	const sections = [await shelf("Videos", "newest"), c.video_count > 4 ? await shelf("Popular videos", "popular") : undefined, shortsShelf].filter(Boolean);
 	return { sectionListRenderer: make("channel/home_sections", { ...vars, SECTIONS: sections, TARGET_ID: `browse-feed${c.id}featured` }) };
 }
 
@@ -107,12 +113,14 @@ export async function channelPage(c: Channel, tab: ChannelTab, viewer: Viewer) {
 	const vars = { ...baseVars(viewer, path), ...channelVars(c) };
 	const page = make("channel/page", vars);
 	let content: unknown;
-	if (tab === "videos") content = { richGridRenderer: make("channel/videos_grid", { ...vars, ...sortVars(c, "newest"), ITEMS: await videoGridItems(c, viewer, 0, "newest") }) };
+	if (tab === "videos") content = { richGridRenderer: make("channel/videos_grid", { ...vars, ...sortVars(c, "newest", "videos"), ITEMS: await videoGridItems(c, viewer, 0, "newest") }) };
+	else if (tab === "shorts") content = { richGridRenderer: make("channel/shorts_grid", { ...sortVars(c, "newest", "shorts"), ITEMS: await videoGridItems(c, viewer, 0, "newest", "shorts") }) };
 	else if (tab === "playlists") content = await playlistsTab(c, viewer, vars);
 	else content = await homeTab(c, viewer, vars);
 	// YouTube lists only the tabs a channel has content for
 	const hasPlaylists = (await channelPlaylistLockups(c, viewer)).length > 0;
-	const show = ["featured", ...(c.video_count ? ["videos"] : []), ...(hasPlaylists ? ["playlists"] : []), "search"];
+	const has = async (kind: GridKind) => (await channelVideos(c.id, viewer, 1, 0, "newest", kind)).length > 0;
+	const show = ["featured", ...((await has("videos")) ? ["videos"] : []), ...((await has("shorts")) ? ["shorts"] : []), ...(hasPlaylists ? ["playlists"] : []), "search"];
 	const tabs = show.map((name) => {
 		const t = page.tabs[name];
 		if (name === tab) Object.assign(t.tabRenderer, { selected: true, content });
