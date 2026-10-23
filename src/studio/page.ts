@@ -80,6 +80,10 @@ export function buildStudioYtcfg(viewer: NonNullable<Viewer>, pageUrl: string, n
 		audioTracksScottyUrl: `${STUDIO_ORIGIN}/upload/audiotrack`,
 		maxShortVideoDuration: { seconds: 180 },
 	};
+	// Customization's picture and banner uploads; without these the client
+	// resolves channel_image_upload/... against YOUTUBE_ROOT_URL, the main site
+	cfg.CHANNEL_PROFILE_IMAGE_UPLOAD_URL = `${STUDIO_ORIGIN}/channel_image_upload/profile`;
+	cfg.CHANNEL_BANNER_IMAGE_UPLOAD_URL = `${STUDIO_ORIGIN}/channel_image_upload/banner`;
 	cfg.REAUTH_SERVLET_URL = `${STUDIO_ORIGIN}/reauth`;
 	cfg.YOUTUBE_ROOT_URL = `${PUBLIC_ORIGIN}/`;
 	cfg.VALID_SESSION_TEMPDATA_DOMAINS = [new URL(PUBLIC_ORIGIN).hostname, new URL(STUDIO_ORIGIN).hostname];
