@@ -287,6 +287,22 @@ export function videoLockup(sample: any) {
 // the first array element under `listKey` that contains `key`
 const sampleOf = (o: any, key: string, pred: (x: any) => boolean = () => true) => holder(o, key, pred);
 
+// home's chip bar: YouTube's feedFilterChipBarRenderer, its chips (the
+// selected one and one that reloads the grid by continuation) filled in by
+// feeds.ts
+function homeChips() {
+	const bar = clean(structuredClone(gridOf(pageVar(body("in-home", /^001-/))).header));
+	const chips: any[] = bar.feedFilterChipBarRenderer.contents;
+	const chip = (name: string) => chips.find((c) => c.chipCloudChipRenderer.text.runs[0].text === name);
+	const selected = chip("All");
+	save("item/home_chip_selected", tokenize(selected, [["All", "TEXT"]]));
+	const other = chip("Recently uploaded");
+	find(other, "continuationCommand").token = "{{TOKEN}}";
+	save("item/home_chip", tokenize(other, [["Recently uploaded", "TEXT"]]));
+	bar.feedFilterChipBarRenderer.contents = "{{CHIPS}}";
+	save("home/chip_bar", tokenize(bar, []));
+}
+
 // ======================================================================
 // channel
 // ======================================================================
@@ -695,10 +711,11 @@ function feeds() {
 	find(cont, "continuationCommand").token = "{{CONTINUATION}}";
 	save("item/continuation_rich", cont);
 
-	// home: the grid (personal topic chips left out), and YouTube's empty-feed nudge
+	// home: the grid (its chip bar filled in by feeds.ts, home-chips), and
+	// YouTube's empty-feed nudge
 	const hp = pageOnly(home);
 	const hg = gridOf(hp);
-	delete hg.header;
+	hg.header = "{{HEADER}}";
 	hg.contents = "{{ITEMS}}";
 	save("home/page", tokenize(hp, []));
 	const empty = pageOnly(pageVar(body("menus-out", /^001-/)));
@@ -2174,6 +2191,7 @@ const steps: [string, () => void][] = [
 	["chrome", chrome],
 	["feeds", feeds],
 	["home-shorts", homeShorts],
+	["home-chips", homeChips],
 	["watch", watch],
 	["search", search],
 	["playlist", playlistPage],

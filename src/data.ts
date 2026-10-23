@@ -24,10 +24,26 @@ const LISTED = sql`v.playable and v.visibility = 'public' and v.deleted_at is nu
 export const SHORT_MAX_MS = 180_000;
 export const SHORT = sql`v.height >= v.width and v.width > 0 and v.duration_ms <= ${SHORT_MAX_MS}`;
 
-// home's grid: everything but Shorts, which get their own shelf
-export async function longVideos(limit: number, offset = 0): Promise<Video[]> {
+// home's grid: everything but Shorts, which get their own shelf. The chips
+// above it pick the order: All (unwatched first, then views weighed against
+// age, a week of age costing a factor of e), Recently uploaded, Watched (the
+// viewer's history) and New to you (channels the viewer hasn't watched or
+// subscribed to)
+export type HomeFilter = "all" | "recent" | "watched" | "new";
+export async function longVideos(limit: number, offset = 0, filter: HomeFilter = "recent", viewer?: Viewer): Promise<Video[]> {
+	const user = viewer?.userId ?? null;
+	const watched = sql`exists(select 1 from watch_history w where w.user_id = ${user} and w.video_id = v.id)`;
+	const where =
+		filter === "watched" ? watched
+		: filter === "new" ? sql`v.channel_id <> ${viewer?.channelId ?? ""} and not exists(select 1 from subscriptions s where s.user_id = ${user} and s.channel_id = v.channel_id)
+			and not exists(select 1 from watch_history w join videos wv on wv.id = w.video_id where w.user_id = ${user} and wv.channel_id = v.channel_id)`
+		: sql`true`;
+	const order =
+		filter === "watched" ? sql`(select w.watched_at from watch_history w where w.user_id = ${user} and w.video_id = v.id) desc`
+		: filter === "all" ? sql`${watched} asc, ln(v.view_count + 2) - extract(epoch from now() - v.published_at) / 604800 desc`
+		: sql`v.published_at desc`;
 	return (await sql`select ${VIDEO_COLUMNS} from videos v join channels c on c.id = v.channel_id
-		where ${LISTED} and not coalesce(${SHORT}, false) order by v.published_at desc, v.id limit ${limit} offset ${offset}`) as Video[];
+		where ${LISTED} and not coalesce(${SHORT}, false) and ${where} order by ${order}, v.published_at desc, v.id limit ${limit} offset ${offset}`) as Video[];
 }
 export const isShort = (v: { width?: number | null; height?: number | null; duration_ms?: number | null }) => !!v.width && !!v.height && v.height >= v.width && (v.duration_ms ?? Infinity) <= SHORT_MAX_MS;
 

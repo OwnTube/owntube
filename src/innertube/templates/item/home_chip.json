@@ -1,0 +1,37 @@
+{
+	"chipCloudChipRenderer": {
+		"style": {
+			"styleType": "STYLE_HOME_FILTER"
+		},
+		"text": {
+			"runs": [
+				{
+					"text": "{{TEXT}}"
+				}
+			]
+		},
+		"navigationEndpoint": {
+			"commandMetadata": {
+				"webCommandMetadata": {
+					"sendPost": true,
+					"apiUrl": "/youtubei/v1/browse"
+				}
+			},
+			"continuationCommand": {
+				"token": "{{TOKEN}}",
+				"request": "CONTINUATION_REQUEST_TYPE_BROWSE",
+				"command": {
+					"showReloadUiCommand": {
+						"targetId": "browse-feedFEwhat_to_watch",
+						"content": {
+							"ghostGridViewModel": {
+								"numRows": 4
+							}
+						}
+					}
+				},
+				"invalidationGroupId": "browse-feedFEwhat_to_watch"
+			}
+		}
+	}
+}

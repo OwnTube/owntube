@@ -8,6 +8,7 @@
 						"content": {
 							"richGridRenderer": {
 								"contents": "{{ITEMS}}",
+								"header": "{{HEADER}}",
 								"targetId": "browse-feedFEwhat_to_watch",
 								"reflowOptions": {
 									"minimumRowsOfVideosAtStart": 1,

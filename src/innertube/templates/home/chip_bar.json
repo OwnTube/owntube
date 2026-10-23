@@ -1,0 +1,38 @@
+{
+	"feedFilterChipBarRenderer": {
+		"contents": "{{CHIPS}}",
+		"nextButton": {
+			"buttonRenderer": {
+				"style": "STYLE_DEFAULT",
+				"size": "SIZE_DEFAULT",
+				"isDisabled": false,
+				"icon": {
+					"iconType": "CHEVRON_RIGHT"
+				},
+				"tooltip": "Next",
+				"accessibilityData": {
+					"accessibilityData": {
+						"label": "Next"
+					}
+				}
+			}
+		},
+		"previousButton": {
+			"buttonRenderer": {
+				"style": "STYLE_DEFAULT",
+				"size": "SIZE_DEFAULT",
+				"isDisabled": false,
+				"icon": {
+					"iconType": "CHEVRON_LEFT"
+				},
+				"tooltip": "Previous",
+				"accessibilityData": {
+					"accessibilityData": {
+						"label": "Previous"
+					}
+				}
+			}
+		},
+		"styleType": "FEED_FILTER_CHIP_BAR_STYLE_TYPE_DEFAULT"
+	}
+}

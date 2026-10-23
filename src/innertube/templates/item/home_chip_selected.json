@@ -1,0 +1,15 @@
+{
+	"chipCloudChipRenderer": {
+		"style": {
+			"styleType": "STYLE_HOME_FILTER"
+		},
+		"text": {
+			"runs": [
+				{
+					"text": "{{TEXT}}"
+				}
+			]
+		},
+		"isSelected": true
+	}
+}

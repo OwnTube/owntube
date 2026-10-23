@@ -5,10 +5,10 @@
 // them back verbatim, so their contents are ours to choose.
 
 import type { PageData, PageKind, Viewer } from "../client/page";
-import { getChannel } from "../data";
+import { type HomeFilter, getChannel } from "../data";
 import { decodeToken, encodeToken, isChannelId } from "../ids";
 import { topbar } from "./chrome";
-import { homeItems, homePage, subscriptionsItems, subscriptionsPage } from "./feeds";
+import { homeChipReload, homeItems, homePage, subscriptionsItems, subscriptionsPage } from "./feeds";
 import { notificationsInbox } from "./guide";
 import { historyContinuation, historyPage } from "./history";
 import { channelsPage, channelsReload, playlistsPage, playlistsReload, youPage } from "./library";
@@ -87,12 +87,15 @@ export async function buildBrowse(browseId: string, params: string | undefined, 
 	return undefined;
 }
 
+const homeFilter = (f: unknown): HomeFilter => (f === "recent" || f === "watched" || f === "new" ? f : "all");
+
 async function continuation(token: string, viewer: Viewer) {
 	const t = decodeToken<{ k: string; o: number; c?: string; s?: ChannelSort; reload?: boolean; p?: string; q?: string; f?: string }>(token);
 	if (!t) throw new ApiError(400, "Invalid continuation");
 	let items: unknown[] = [];
 	let target = "";
-	if (t.k === "home") [items, target] = [await homeItems(viewer, t.o), "browse-feedFEwhat_to_watch"];
+	if (t.k === "home") [items, target] = [await homeItems(viewer, t.o, homeFilter(t.f)), "browse-feedFEwhat_to_watch"];
+	else if (t.k === "homechip") return { responseContext: responseContext(viewer), onResponseReceivedActions: [await homeChipReload(viewer, homeFilter(t.f))] };
 	else if (t.k === "subs") [items, target] = [await subscriptionsItems(viewer, t.o), "browse-feedFEsubscriptions"];
 	else if (t.k === "history") return historyContinuation(viewer, t.o, t.q);
 	else if (t.k === "plfeed" || t.k === "chfeed") {

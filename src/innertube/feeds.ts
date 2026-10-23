@@ -1,11 +1,12 @@
 // Feed pages built from YouTube's responses: home and subscriptions
 // (templates home/*, subscriptions/*, item/video_lockup_rich*,
-// item/shorts_lockup_rich). Home is YouTube's: videos in the grid, Shorts
-// on a shelf of their own after the first row.
+// item/shorts_lockup_rich, home/chip_bar, item/home_chip*). Home is
+// YouTube's: the chip bar, videos in the grid, Shorts on a shelf of their own
+// a few rows down.
 
 import type { Viewer } from "../client/page";
 import { PUBLIC_ORIGIN } from "../config";
-import { longVideos, shortVideos, subscriptionFeed } from "../data";
+import { type HomeFilter, longVideos, shortVideos, subscriptionFeed } from "../data";
 import { encodeToken } from "../ids";
 import { type Video, compactViews, countLabel } from "./r";
 import { make } from "./tpl";
@@ -38,20 +39,38 @@ function shortLockup(v: Video, viewer: Viewer) {
 	});
 }
 
-export async function homeItems(viewer: Viewer, offset: number) {
-	const items = page(await longVideos(FEED_PAGE, offset), viewer, { k: "home", o: offset + FEED_PAGE });
-	if (offset) return items;
-	// the client moves the shelf to the end of the first row (reflowOptions)
+// the chips YouTube shows on every home feed (topic chips need topics, which
+// videos here don't have); Watched and New to you need a signed-in viewer
+const CHIPS: [HomeFilter, string][] = [["all", "All"], ["recent", "Recently uploaded"], ["watched", "Watched"], ["new", "New to you"]];
+const chipBar = (viewer: Viewer, selected: HomeFilter) =>
+	make("home/chip_bar", {
+		CHIPS: CHIPS.filter(([f]) => viewer || f === "all" || f === "recent").map(([f, text]) =>
+			f === selected ? make("item/home_chip_selected", { TEXT: text }) : make("item/home_chip", { TEXT: text, TOKEN: encodeToken({ k: "homechip", f }) }),
+		),
+	});
+
+// Shorts' shelf sits where YouTube's response puts it, after the seventh
+// video; the client moves it on to the end of that row (reflowOptions)
+const SHELF_AT = 7;
+
+export async function homeItems(viewer: Viewer, offset: number, filter: HomeFilter = "all") {
+	const items = page(await longVideos(FEED_PAGE, offset, filter, viewer), viewer, { k: "home", o: offset + FEED_PAGE, f: filter });
+	if (offset || filter !== "all") return items;
 	const shorts = await shortVideos(SHELF_SHORTS);
-	if (shorts.length) items.splice(Math.min(1, items.length), 0, make("home/shorts_shelf", { ITEMS: shorts.map((v) => shortLockup(v, viewer)) }));
+	if (shorts.length) items.splice(Math.min(SHELF_AT, items.length), 0, make("home/shorts_shelf", { ITEMS: shorts.map((v) => shortLockup(v, viewer)) }));
 	return items;
+}
+
+// a chip's continuation: the grid reloaded with that feed
+export async function homeChipReload(viewer: Viewer, filter: HomeFilter) {
+	return { reloadContinuationItemsCommand: { targetId: "browse-feedFEwhat_to_watch", continuationItems: await homeItems(viewer, 0, filter), slot: "RELOAD_CONTINUATION_SLOT_BODY" } };
 }
 export const subscriptionsItems = async (viewer: Viewer, offset: number) => page(await subscriptionFeed(viewer, FEED_PAGE, offset), viewer, { k: "subs", o: offset + FEED_PAGE });
 
 export async function homePage(viewer: Viewer) {
 	const items = await homeItems(viewer, 0);
 	// nothing uploaded yet: YouTube's own empty feed
-	return items.length ? make("home/page", { ITEMS: items }) : make("home/empty", baseVars(viewer));
+	return items.length ? make("home/page", { ITEMS: items, HEADER: chipBar(viewer, "all") }) : make("home/empty", baseVars(viewer));
 }
 
 export async function subscriptionsPage(viewer: Viewer) {
