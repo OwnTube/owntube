@@ -41,7 +41,6 @@ The settings pages are served natively and their switches persist ([compat/parit
 
 - The Help button and Send feedback go through Google's help service; both now open local equivalents (a stand-in script). Check the rest of Studio's help entry points (help cards, "Learn more" links).
 
-- Dashboard recent subscribers card.
 - Content tabs: Posts (`post/list_creator_posts`), Inspiration (`creator/list_video_ideas`), the promotions illustration; then filters and search, views in the list, create/edit playlists. (The "Nn`" errors an earlier survey reported came from URLs that aren't in Studio's route table.)
 - Methods the Studio survey found unhandled, by page: subtitles `crowdsourcing/get_video_translations`, `crowdsourcing/list_video_translations`, `creator/get_supported_content_languages`; copyright `copyright/list_complaint_videos`, `creator/list_creator_received_claims`; customization `channel_edit/get_channel_page_settings`; audio library `creator_music/list_tracks`; editor `video_editor/*`, `creator/list_creator_info_cards`, `creator/get_creator_endscreens`; video details `get_creator_social_suggestions`, `feature_eligibility/check_feature_rate_limit`.
 - Video details: custom thumbnail upload, playlists, audience (made for kids), age restriction, tags, category, language, recording date/location, license, embedding, comments and ratings settings, scheduling.

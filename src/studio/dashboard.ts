@@ -11,11 +11,13 @@
 
 import type { Viewer } from "../client/page";
 import { sql } from "../db";
-import { avatarThumbnails, responseContext, runs } from "../innertube/r";
+import { responseContext, runs } from "../innertube/r";
 import { ApiError, type Ctx, route } from "../innertube/router";
 import { make } from "../innertube/tpl";
 import { baseVars } from "../innertube/vars";
 import { type ChannelVideo, type Query, channelVideos, runQuery } from "./analytics";
+import { publicChannels } from "./channel";
+import { recentSubscribersCard } from "./subscribers";
 import { creatorVideo, maskedVideo, videosFor } from "./video";
 
 // a mask naming every field of an entity, for entities sent along with a card
@@ -105,21 +107,17 @@ async function snapshot(viewer: NonNullable<Viewer>, videos: ChannelVideo[]) {
 
 // the latest comments others left on the channel's videos that it hasn't
 // answered (Comments' Unresponded filter); the card names them, and the
-// comment and author entities travel with the response
+// comment entities travel with the response
 async function latestComments(viewer: NonNullable<Viewer>) {
-	const rows = (await sql`select c.id, c.text, c.created_at, c.video_id, c.author_channel_id, ch.title, ch.handle, ch.verification
-		from comments c join videos v on v.id = c.video_id join channels ch on ch.id = c.author_channel_id
+	const rows = (await sql`select c.id, c.text, c.created_at, c.video_id, c.author_channel_id
+		from comments c join videos v on v.id = c.video_id
 		where v.channel_id = ${viewer.channelId} and v.deleted_at is null and c.deleted_at is null and c.spam_at is null and c.parent_id is null and c.author_channel_id <> ${viewer.channelId}
 		and not exists(select 1 from comments r where r.parent_id = c.id and r.author_channel_id = ${viewer.channelId} and r.deleted_at is null)
-		order by c.created_at desc, c.id limit 3`) as { id: string; text: string; created_at: Date; video_id: string; author_channel_id: string; title: string; handle: string; verification: string }[];
+		order by c.created_at desc, c.id limit 3`) as { id: string; text: string; created_at: Date; video_id: string; author_channel_id: string }[];
 	if (!rows.length) return undefined;
 	const comments = rows.map((r) => {
 		const comment = { commentId: r.id, text: runs(r.text), creationTime: { seconds: String(Math.floor(+r.created_at / 1000)) }, commentDecoration: {}, attachmentTypes: [] };
 		return { mask: fullMask(comment), comment };
-	});
-	const channels = [...new Map(rows.map((r) => [r.author_channel_id, r])).values()].map((r) => {
-		const channel = { channelId: r.author_channel_id, title: r.title, channelHandle: `@${r.handle}`, thumbnailDetails: avatarThumbnails(r.author_channel_id), isNameVerified: r.verification !== "none" };
-		return { mask: fullMask(channel), channel };
 	});
 	// the header and the button are items of the card (the client gives this
 	// card no title); the button opens Comments with the same filter
@@ -130,7 +128,7 @@ async function latestComments(viewer: NonNullable<Viewer>) {
 		{ buttonAction: { buttonAction: { text: "View more", commentsAction: { commentsFilter: { commentCategoryIn: { values: ["COMMENT_CATEGORY_NOT_ENGAGED"] } } } } } },
 	];
 	const card = { body: { listCard: { items } }, id: "comment" };
-	return { card, comments, channels, videoIds: rows.map((r) => r.video_id) };
+	return { card, comments, channelIds: rows.map((r) => r.author_channel_id), videoIds: rows.map((r) => r.video_id) };
 }
 
 route("creator/get_channel_dashboard", async (ctx: Ctx) => {
@@ -154,10 +152,15 @@ route("creator/get_channel_dashboard", async (ctx: Ctx) => {
 	if (latest.length) cards.push({ body: { listCard: { items: latest.map((v) => ({ recentVideoItem: { videoId: v.id } })) } }, id: "recent_videos" });
 	const recent = await latestComments(viewer);
 	if (recent) cards.push(recent.card);
+	const subscribers = await recentSubscribersCard(viewer);
+	cards.push(subscribers.card);
+	// commenters and subscribers, so the cards needn't fetch them
+	const channels = await publicChannels([...new Set([...(recent?.channelIds ?? []), ...subscribers.channelIds])]);
 	const ids = [...new Set([...latest.map((v) => v.id), ...((snap?.body.basicCard.item.entitySnapshotItem.entitySnapshotCardData.ranking.entities ?? []).map((e) => e.entity.videoId)), ...(recent?.videoIds ?? [])])];
 	const entities = {
 		...(ids.length ? { videos: (await videosFor(viewer.channelId, ids)).map((v) => { const video = creatorVideo(v); return { mask: videoMask(video), video }; }) } : {}),
-		...(recent ? { comments: recent.comments, channels: recent.channels } : {}),
+		...(recent ? { comments: recent.comments } : {}),
+		...(channels.length ? { channels: channels.map((channel) => ({ mask: fullMask(channel), channel })) } : {}),
 	};
 	return { responseContext: responseContext(viewer), cards, entities };
 });

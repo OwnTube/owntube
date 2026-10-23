@@ -64,7 +64,7 @@ The main client is pinned in [`pin/client.json`](pin/client.json), and Studio in
 
 ### Known limitations
 
-- Studio covers uploading, processing progress, metadata editing, publishing, and deletion. Channel analytics (overview, content, audience) shows the views, watch time and subscribers this instance records; figures it doesn't record (impressions, traffic sources, demographics) show YouTube's no-data states. Studio's Comments pages list the channel's comments with their filters, and the channel can reply, edit its replies, like, heart, remove, and report comments as spam (held out of public view until approved), one at a time or with the batch bar. Other Studio pages are not backed by data yet. No copyright or Community Guidelines checks run, so Studio shows its default "Checks complete" state.
+- Studio covers uploading, processing progress, metadata editing, publishing, and deletion. Channel analytics (overview, content, audience) shows the views, watch time and subscribers this instance records; figures it doesn't record (impressions, traffic sources, demographics) show YouTube's no-data states. Studio's Comments pages list the channel's comments with their filters, and the channel can reply, edit its replies, like, heart, remove, and report comments as spam (held out of public view until approved), one at a time or with the batch bar. The dashboard shows the latest unanswered comments and the subscribers who made their subscriptions public. Other Studio pages are not backed by data yet. No copyright or Community Guidelines checks run, so Studio shows its default "Checks complete" state.
 - Custom thumbnail and additional audio-track upload URLs are configured in Studio, but their upload handlers are not implemented.
 - Shorts open in YouTube's own Shorts player (`/shorts/`), with likes, subscribing, comments and scrolling between Shorts; Home has no Shorts shelf yet and channels have no Shorts tab. Live streaming and monetization are not implemented.
 - Notifications currently have an empty inbox/count. The bell-preference handler acknowledges requests without persisting a preference or delivering notifications.
@@ -220,7 +220,7 @@ Useful starting points:
 - [`scripts/research/`](scripts/research/): browser capture and investigation tools.
 - [`scripts/e2e/playback.ts`](scripts/e2e/playback.ts): playback verification.
 - [`scripts/e2e/gifs.ts`](scripts/e2e/gifs.ts): GIF comments (needs `KLIPY_API_KEY`).
-- [`scripts/e2e/analytics.ts`](scripts/e2e/analytics.ts), [`scripts/e2e/studio-comments.ts`](scripts/e2e/studio-comments.ts): Studio's analytics and Comments pages against the database.
+- [`scripts/e2e/analytics.ts`](scripts/e2e/analytics.ts), [`scripts/e2e/studio-comments.ts`](scripts/e2e/studio-comments.ts), [`scripts/e2e/studio-subscribers.ts`](scripts/e2e/studio-subscribers.ts): Studio's analytics, Comments pages, and dashboard subscribers against the database.
 
 When reporting a bug, include the pinned build, affected route, reproduction steps, and relevant console or server errors. Sanitize captures before sharing them.
 

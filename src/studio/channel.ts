@@ -2,7 +2,7 @@
 // and creator/get_creator_channels returns it, both through a field mask.
 
 import type { Viewer } from "../client/page";
-import { sql } from "../db";
+import { sql, textArray } from "../db";
 import { make } from "../innertube/tpl";
 import { avatarThumbnails } from "../innertube/r";
 
@@ -37,4 +37,21 @@ export async function creatorChannel(viewer: NonNullable<Viewer>, mask: Mask, ch
 	// only the owner sees the owner's permissions
 	if (c.id !== viewer.channelId) return null;
 	return applyMask(ch, mask);
+}
+
+// another channel as Studio shows it beside the owner's data (a commenter, a
+// subscriber): its public fields only
+export async function publicChannels(ids: string[]) {
+	if (!ids.length) return [];
+	const rows = (await sql`select c.id, c.title, c.handle, c.verification,
+			(select count(*)::int from subscriptions s where s.channel_id = c.id) as subs
+		from channels c where c.id = any(${textArray(ids)}::text[])`) as { id: string; title: string; handle: string; verification: string; subs: number }[];
+	return rows.map((r) => ({
+		channelId: r.id,
+		title: r.title,
+		channelHandle: `@${r.handle}`,
+		thumbnailDetails: avatarThumbnails(r.id),
+		isNameVerified: r.verification !== "none",
+		metric: { subscriberCount: String(r.subs) },
+	}));
 }
