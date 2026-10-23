@@ -131,7 +131,12 @@ Studio runs on its own origin. Signed-out visitors are sent to the main origin's
 | Content > Videos: list, sort, paging, delete one or many | nav | `creator/list_creator_videos`, `video/delete`, bulk delete | videos | browser verified | e2e:core, manual | Views column shows "–"; filters; bulk edit |
 | Content > Videos / Shorts split | nav | `creator/list_creator_videos` with `contentTypeIs CREATOR_CONTENT_TYPE_SHORTS` (Shorts) or its negation (Videos), evaluated per video | videos | browser verified | manual 2026-10-23 (bob: Videos lists the two landscape videos, Shorts the two portrait ones) | — |
 | Content > Live | nav | `creator/list_creator_videos` | — | implemented | survey | No live streams exist |
-| Content > Posts, Playlists, Podcasts, Promotions, Collaborations, Ideas | nav | (tab-specific methods) | — | captured | survey 2026-10-23: page error "Nn`" on each | The tabs crash before loading; not served |
+| Content > Playlists (`/content/playlists`) | Content tabs | `creator/list_creator_playlists` | playlists | implemented | survey 2026-10-23: no errors | Create and edit in Studio |
+| Content > Posts (`/content/posts`) | Content tabs | `post/list_creator_posts` | — | captured | survey: unhandled | No posts exist yet |
+| Content > Podcasts, Collaborations (`/content/podcasts`, `/videos/collaboration`) | Content tabs | — | — | implemented | survey: no errors, no unhandled methods | Empty states not compared with YouTube |
+| Content > Promotions (`/content/promotions`) | Content tabs | `promotions/get_account` | — | implemented | survey: one illustration 404 (`creator/promotions/preview_background_home_v2.svg`) | Ads are a Google service: blocked beyond the empty state |
+| Inspiration / Ideas (`/content/inspiration`) | nav | `creator/list_video_ideas` | — | captured | survey: unhandled | YouTube's suggestions are Google's models: blocked beyond an empty list |
+| Note | — | — | — | — | — | Studio throws "Nn`" for URLs missing from its route table (`/videos/posts` and the like, which an earlier survey used); the paths above are the route table's |
 | Analytics: Overview, Content, Audience, Research | nav | `yta_web/get_screen` | stats tables | captured | survey: `yta_web/get_screen` unhandled | Screens don't load |
 | Video analytics | video nav | `yta_web/get_screen` | — | captured | survey | As channel analytics |
 | Video details: title, description, visibility | Content row | `creator/get_creator_videos`, `video_manager/metadata_update` | videos | browser verified | manual | Thumbnail upload, playlists, audience, tags, category, language, license, comments settings, scheduling |
@@ -146,7 +151,7 @@ Studio runs on its own origin. Signed-out visitors are sent to the main origin's
 | Earn (`/monetization`, `/monetization/overview`) | nav | — | — | captured | survey: no errors, no unhandled methods | Content not checked |
 | Customization (profile, layout) | nav | `channel_edit/get_channel_page_settings` | channels | captured | survey: unhandled | `/editing/sections` redirects to `/editing/profile` |
 | Audio library | nav | `creator_music/list_tracks` | — | captured | survey: unhandled | No audio library exists |
-| Content detection | nav | — | — | captured | survey: page error "Nn`" | — |
+| Content detection | nav | left-nav link to the copyright route (`/copyright`) | — | captured | — | `/content_detection` is not a Studio route |
 | Settings dialog | nav | — | — | captured | studio-all | Upload defaults, permissions, community |
 | Send feedback (left nav) | nav | Google's feedback loader → stand-in `/_ot/help.js` | feedback | browser verified | manual | Opens the main origin's `/feedback` with the Studio page attached |
 | Help button | masthead | Google's help service → stand-in | — | browser verified | manual | Opens YouTube's help center (Studio's article for the page when it names one) |

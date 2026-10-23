@@ -32,9 +32,10 @@ const base = /^(.*\/channel\/UC[\w-]{22})/.exec(page.url())![1];
 const [video] = await sql`select v.id from videos v join channels c on c.id = v.channel_id join users u on u.id = c.user_id where u.login = ${login} order by v.created_at limit 1`;
 
 const all = [
-	"", "/videos/upload", "/videos/short", "/videos/live", "/videos/posts", "/videos/playlists", "/videos/podcasts", "/videos/promotions", "/videos/collaborations", "/videos/ideas",
+	// paths from Studio's route table (channel.videos.tab, channel.content.*, ...)
+	"", "/videos/upload", "/videos/short", "/videos/live", "/videos/collaboration", "/content/playlists", "/content/posts", "/content/podcasts", "/content/promotions", "/content/inspiration",
 	"/analytics/tab-overview/period-default", "/analytics/tab-content/period-default", "/analytics/tab-build_audience/period-default", "/analytics/tab-research/period-default",
-	"/comments/inbox", "/translations", "/copyright", "/monetization", "/monetization/overview", "/editing/profile", "/editing/sections", "/music", "/content_detection",
+	"/comments/inbox", "/translations", "/copyright", "/monetization", "/monetization/overview", "/editing/profile", "/editing/images", "/editing/details", "/music", "/comments/moderate",
 	...(video ? ["edit", "analytics/tab-overview/period-default", "comments/inbox", "translations", "editor", "copyright"].map((p) => `video:${p}`) : []),
 ];
 const only = opt("--only")?.split(",");
