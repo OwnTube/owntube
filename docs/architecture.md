@@ -1,8 +1,8 @@
 # Architecture and reverse-engineering notes
 
-yewtube runs the official YouTube desktop web client and YouTube Studio against its own server. It does not rebuild either frontend. The client's HTML, JavaScript, CSS and images are archived from YouTube at a pinned build and served byte for byte, except for the documented edits in [client-patches.md](client-patches.md). Everything the client asks the server for (pages, InnerTube API calls, thumbnails, media) is answered from PostgreSQL and local media.
+YewTube runs the official YouTube desktop web client and YouTube Studio against its own server. It does not rebuild either frontend. The client's HTML, JavaScript, CSS and images are archived from YouTube at a pinned build and served byte for byte, except for the documented edits in [client-patches.md](client-patches.md). Everything the client asks the server for (pages, InnerTube API calls, thumbnails, media) is answered from PostgreSQL and local media.
 
-The only pages yewtube writes itself are sign-in and sign-up (local accounts, styled after Google's account pages) and the operator admin panel.
+The only pages YewTube writes itself are sign-in and sign-up (local accounts, styled after Google's account pages) and the operator admin panel.
 
 ## Request flow
 
@@ -12,7 +12,7 @@ browser ── /, /watch, /@handle, /results ...  ─▶ pageFor()  ─▶ pinne
         ── /youtubei/v1/<method>              ─▶ InnerTube router ─▶ handlers ─▶ templates filled from Postgres
         ── /videoplayback?id&itag&range       ─▶ local media files (byte ranges, optional UMP framing)
         ── /vi/<id>/<name>.jpg                ─▶ local thumbnails
-        ── /signin, /register, /admin         ─▶ yewtube's own pages
+        ── /signin, /register, /admin         ─▶ YewTube's own pages
 
 studio host ── same split for Studio's shell, assets, /youtubei/v1 and the resumable /upload/studio endpoint
 ```

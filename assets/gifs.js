@@ -1,4 +1,4 @@
-// yewtube: a GIF button for the official client's comment boxes (src/gifs.ts).
+// YewTube: a GIF button for the official client's comment boxes (src/gifs.ts).
 //
 // The button opens a picker that searches KLIPY through this instance. A
 // picked GIF is shown in the box; when the box's Comment button sends

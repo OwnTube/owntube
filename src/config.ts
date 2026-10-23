@@ -19,7 +19,7 @@ export const STUDIO_HOST = new URL(STUDIO_ORIGIN).host;
 export const COOKIE_DOMAIN = process.env.COOKIE_DOMAIN ?? "";
 export const DATABASE_URL = process.env.DATABASE_URL ?? "postgres://yewtube:yewtube@localhost:5432/yewtube";
 export const MEDIA_DIR = process.env.MEDIA_DIR ?? "data/media";
-export const INSTANCE_NAME = process.env.INSTANCE_NAME ?? "yewtube";
+export const INSTANCE_NAME = process.env.INSTANCE_NAME ?? "YewTube";
 // Development aid: fetch a client asset the pin does not have from its
 // upstream host on first use, archive it and list it in client/observed.txt
 // for the next `fetch-client --observed`. Off by default: normal operation

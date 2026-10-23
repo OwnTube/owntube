@@ -1,6 +1,6 @@
 # Patch inventory
 
-Every change yewtube makes to what YouTube served. The archived files in `client/original/` are never modified; these edits happen when an asset or page is served. `bun run check-patches` reports each patch's match count and exits non-zero when a count differs from the expected one. The admin panel's Compatibility page shows the same results for the running instance.
+Every change YewTube makes to what YouTube served. The archived files in `client/original/` are never modified; these edits happen when an asset or page is served. `bun run check-patches` reports each patch's match count and exits non-zero when a count differs from the expected one. The admin panel's Compatibility page shows the same results for the running instance.
 
 Keep this file in sync with [`src/client/patches.ts`](../src/client/patches.ts), [`src/client/page.ts`](../src/client/page.ts) and [`src/studio/page.ts`](../src/studio/page.ts).
 

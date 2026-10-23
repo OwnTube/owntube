@@ -115,4 +115,4 @@ Bun.serve({ port: PORT, ...serveOptions });
 // YouTube Studio's origin; requests are told apart by Host, so a reverse
 // proxy may send both hostnames to either port
 if (STUDIO_PORT !== PORT) Bun.serve({ port: STUDIO_PORT, ...serveOptions });
-console.log(`yewtube listening on ${PUBLIC_ORIGIN} (port ${PORT}); Studio on ${STUDIO_ORIGIN} (port ${STUDIO_PORT})`);
+console.log(`YewTube listening on ${PUBLIC_ORIGIN} (port ${PORT}); Studio on ${STUDIO_ORIGIN} (port ${STUDIO_PORT})`);
