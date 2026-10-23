@@ -65,8 +65,17 @@ const menu = async (c: Locator, item: string) => {
 };
 
 try {
+	// ---- the dashboard's Latest comments card leads to the Unresponded list ----
+	await page.goto(`${STUDIO}/channel/${me.id}`, { waitUntil: "domcontentloaded" });
+	const card = page.locator("ytcd-card", { hasText: "Latest comments" }).first();
+	await card.waitFor({ timeout: 20000 }).catch(() => {});
+	check("the dashboard's Latest comments card shows the comment", await until(async () => (await card.locator("ytcd-comments-snapshot-item", { hasText: text }).count()) === 1, 10000));
+	await shot(page, "00-dashboard");
+	await card.locator("ytcd-card-button-action-item ytcp-button").click().catch(() => {});
+
 	// ---- the channel's comments ----
-	await page.goto(`${STUDIO}/channel/${me.id}/comments/inbox`, { waitUntil: "domcontentloaded" });
+	await until(async () => page.url().includes("/comments/inbox"));
+	check("…and View more opens Comments", page.url().includes(`/channel/${me.id}/comments/inbox`), page.url());
 	await comment().waitFor({ timeout: 15000 }).catch(() => {});
 	check("the viewer's comment is listed (Unresponded)", (await comment().count()) === 1);
 	check("…with its video in the Content column", (await page.locator("ytcp-comment-thread", { hasText: text }).first().innerText().catch(() => "")).includes(video.title));
@@ -104,6 +113,10 @@ try {
 	await page.locator("ytcp-comments-section").first().waitFor({ timeout: 15000 });
 	await page.waitForTimeout(2500);
 	check("a responded comment leaves the Unresponded list", (await comment().count()) === 0);
+	await page.goto(`${STUDIO}/channel/${me.id}`, { waitUntil: "domcontentloaded" });
+	await page.locator("ytcd-card", { hasText: "Channel analytics" }).first().waitFor({ timeout: 20000 }).catch(() => {});
+	await page.waitForTimeout(2000);
+	check("…and the dashboard's Latest comments card", (await page.locator("ytcd-comments-snapshot-item", { hasText: text }).count()) === 0);
 
 	// the video's own page lists all its comments with the filter removed
 	await page.goto(`${STUDIO}/video/${video.id}/comments/inbox`, { waitUntil: "domcontentloaded" });
