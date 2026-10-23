@@ -1,0 +1,161 @@
+{
+	"richItemRenderer": {
+		"content": {
+			"shortsLockupViewModel": {
+				"entityId": "shorts-shelf-item-{{VIDEO_ID}}",
+				"accessibilityText": "{{A11Y}}",
+				"onTap": {
+					"innertubeCommand": {
+						"commandMetadata": {
+							"webCommandMetadata": {
+								"url": "/shorts/{{VIDEO_ID}}",
+								"webPageType": "WEB_PAGE_TYPE_SHORTS",
+								"rootVe": 37414
+							}
+						},
+						"reelWatchEndpoint": {
+							"videoId": "{{VIDEO_ID}}",
+							"thumbnail": {
+								"thumbnails": "{{REEL_THUMBS}}",
+								"isOriginalAspectRatio": true
+							},
+							"overlay": {
+								"reelPlayerOverlayRenderer": {
+									"style": "REEL_PLAYER_OVERLAY_STYLE_SHORTS",
+									"reelPlayerNavigationModel": "REEL_PLAYER_NAVIGATION_MODEL_UNSPECIFIED"
+								}
+							},
+							"sequenceProvider": "REEL_WATCH_SEQUENCE_PROVIDER_RPC"
+						}
+					}
+				},
+				"menuOnTap": {
+					"innertubeCommand": {
+						"showSheetCommand": {
+							"panelLoadingStrategy": {
+								"inlineContent": {
+									"sheetViewModel": {
+										"content": {
+											"listViewModel": {
+												"listItems": [
+													{
+														"listItemViewModel": {
+															"title": {
+																"content": "Add to queue"
+															},
+															"leadingImage": {
+																"sources": [
+																	{
+																		"clientResource": {
+																			"imageName": "ADD_TO_QUEUE_TAIL"
+																		}
+																	}
+																]
+															},
+															"rendererContext": {
+																"loggingContext": {},
+																"commandContext": {
+																	"onTap": {
+																		"innertubeCommand": {
+																			"commandMetadata": {
+																				"webCommandMetadata": {
+																					"sendPost": true
+																				}
+																			},
+																			"signalServiceEndpoint": {
+																				"signal": "CLIENT_SIGNAL",
+																				"actions": [
+																					{
+																						"addToPlaylistCommand": {
+																							"openMiniplayer": true,
+																							"videoId": "{{VIDEO_ID}}",
+																							"listType": "PLAYLIST_EDIT_LIST_TYPE_QUEUE",
+																							"onCreateListCommand": {
+																								"commandMetadata": {
+																									"webCommandMetadata": {
+																										"sendPost": true,
+																										"apiUrl": "/youtubei/v1/playlist/create"
+																									}
+																								},
+																								"createPlaylistServiceEndpoint": {
+																									"videoIds": [
+																										"{{VIDEO_ID}}"
+																									],
+																									"params": "CAQ%3D"
+																								}
+																							},
+																							"videoIds": [
+																								"{{VIDEO_ID}}"
+																							],
+																							"videoCommand": {
+																								"commandMetadata": {
+																									"webCommandMetadata": {
+																										"url": "/watch?v={{VIDEO_ID}}",
+																										"webPageType": "WEB_PAGE_TYPE_WATCH",
+																										"rootVe": 3832
+																									}
+																								},
+																								"watchEndpoint": {
+																									"videoId": "{{VIDEO_ID}}"
+																								}
+																							}
+																						}
+																					}
+																				]
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"menuOnTapA11yLabel": "More actions",
+				"overlayMetadata": {
+					"primaryText": {
+						"content": "{{TITLE}}"
+					},
+					"secondaryText": {
+						"content": "{{VIEWS_SHORT}}"
+					}
+				},
+				"thumbnailViewModel": {
+					"thumbnailViewModel": {
+						"image": {
+							"sources": "{{THUMBS}}"
+						}
+					}
+				},
+				"stackedFrameData": {},
+				"titleTruncationStyle": "SHORTS_LOCKUP_TITLE_TRUNCATION_STYLE_UNKNOWN"
+			}
+		},
+		"onFocusEffect": {
+			"onFocusStyle": "ON_FOCUS_STYLE_BACKGROUND",
+			"onFocusColor": {
+				"lightTheme": 562284869,
+				"darkTheme": 730057029
+			},
+			"textPrimaryColor": {
+				"lightTheme": 4280170758,
+				"darkTheme": 4293721310
+			},
+			"textSecondaryColor": {
+				"lightTheme": 4283532325,
+				"darkTheme": 4290963871
+			},
+			"touchResponseColor": {
+				"lightTheme": 562284869,
+				"darkTheme": 730057029
+			}
+		}
+	}
+}

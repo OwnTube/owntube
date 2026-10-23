@@ -238,7 +238,7 @@ export async function suggest(url: URL): Promise<Response> {
 	const q = (url.searchParams.get("q") ?? "").trim().slice(0, 100);
 	const like = `%${q.replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
 	const rows = q
-		? await sql`select lower(title) as s from videos where status = 'ready' and visibility = 'public' and deleted_at is null and title ilike ${like}
+		? await sql`select lower(title) as s from videos where playable and visibility = 'public' and deleted_at is null and title ilike ${like}
 			union select lower(title) from channels where title ilike ${like}
 			order by 1 limit 20`
 		: [];

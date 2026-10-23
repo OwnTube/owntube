@@ -12,7 +12,7 @@
 import { existsSync, statSync } from "node:fs";
 import { join, normalize } from "node:path";
 import type { Viewer } from "../client/page";
-import { MEDIA_DIR, PUBLIC_ORIGIN } from "../config";
+import { MEDIA_DIR, PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
 import { sql } from "../db";
 import { sign, verify } from "../ids";
 import { umpMediaBody } from "./ump";
@@ -35,7 +35,7 @@ async function formatFile(videoId: string, itag: number) {
 	let f = cache.get(key);
 	if (!f) {
 		const [row] = await sql`select f.path, f.mime_type, f.size from video_formats f join videos v on v.id = f.video_id
-			where f.video_id = ${videoId} and f.itag = ${itag} and v.deleted_at is null and v.status = 'ready'`;
+			where f.video_id = ${videoId} and f.itag = ${itag} and v.deleted_at is null and v.playable`;
 		if (!row) return undefined;
 		f = { path: join(MEDIA_DIR, row.path), mime: row.mime_type.split(";")[0], size: Number(row.size) };
 		cache.set(key, f);
@@ -101,17 +101,29 @@ export async function videoplayback(req: Request, url: URL): Promise<Response> {
 
 // /vi/<id>/<name>.jpg, also the i.ytimg.com variants with _live or webp.
 // A private video's thumbnails are for its owner (Studio shows them) and
-// the instance's operators (the admin panel).
-export async function thumbnail(url: URL, viewer: Viewer): Promise<Response> {
+// the instance's operators (the admin panel). Studio's thumbnail picker
+// also shows the stills (still1-3) and the custom upload (custom). The
+// names stay when the owner picks another thumbnail, so browsers revalidate.
+export async function thumbnail(req: Request, url: URL, viewer: Viewer): Promise<Response> {
 	const m = /^\/vi(?:_webp)?\/([A-Za-z0-9_-]{11})\/([a-z0-9]+)(?:_live)?\.(?:jpg|webp)$/.exec(url.pathname);
 	if (!m) return new Response("not found", { status: 404 });
 	const [, id, name] = m;
-	const [row] = await sql`select t.path, v.visibility from video_thumbnails t join videos v on v.id = t.video_id
-		where t.video_id = ${id} and t.name in (${name}, ${name === "frame0" ? "hqdefault" : name}) and v.deleted_at is null
-		and (v.visibility <> 'private' or v.channel_id = ${viewer?.channelId ?? ""} or ${viewer?.isAdmin ?? false})
-		order by t.name = ${name} desc limit 1`;
+	const picker = /^(still[123]|custom)$/.test(name);
+	const [row] = picker
+		? await sql`select ${`${id}/${name}.jpg`} as path, visibility from videos v where v.id = ${id} and v.deleted_at is null and v.channel_id = ${viewer?.channelId ?? ""}`
+		: await sql`select t.path, v.visibility from video_thumbnails t join videos v on v.id = t.video_id
+			where t.video_id = ${id} and t.name in (${name}, ${name === "frame0" ? "hqdefault" : name}) and v.deleted_at is null
+			and (v.visibility <> 'private' or v.channel_id = ${viewer?.channelId ?? ""} or ${viewer?.isAdmin ?? false})
+			order by t.name = ${name} desc limit 1`;
 	if (!row) return new Response("not found", { status: 404 });
 	const p = normalize(join(MEDIA_DIR, row.path));
-	const cache = row.visibility === "private" ? "private, no-store" : "public, max-age=86400";
-	return new Response(Bun.file(p), { headers: { "content-type": "image/jpeg", "cache-control": cache } });
+	if (!existsSync(p)) return new Response("not found", { status: 404 });
+	const st = statSync(p);
+	const etag = `"${row.path.split("/").pop()}-${st.size}-${Math.floor(st.mtimeMs)}"`;
+	// Studio loads the picker's images as CORS requests with credentials
+	const origin = req.headers.get("origin");
+	const cors: Record<string, string> = origin === STUDIO_ORIGIN || origin === PUBLIC_ORIGIN ? { "access-control-allow-origin": origin, "access-control-allow-credentials": "true" } : {};
+	const headers = { "content-type": "image/jpeg", "cache-control": row.visibility === "private" || picker ? "private, no-cache" : "public, no-cache", etag, vary: "Origin", ...cors };
+	if (req.headers.get("if-none-match") === etag) return new Response(null, { status: 304, headers });
+	return new Response(Bun.file(p), { headers });
 }

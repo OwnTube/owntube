@@ -22,7 +22,7 @@ type Playlist = { id: string; user_id: string; title: string; description: strin
 const VIDEO_COLUMNS = sql`v.id, v.title, v.description, v.channel_id, c.title as channel_title, c.handle as channel_handle, c.avatar_path as channel_avatar,
 	v.duration_ms, v.view_count::int as view_count, v.like_count, v.comment_count, v.published_at, v.created_at, v.visibility, v.status, v.width, v.height`;
 // entries a viewer may see in a playlist
-const PLAYABLE = (viewer: Viewer) => sql`v.deleted_at is null and v.status = 'ready' and (v.visibility <> 'private' or v.channel_id = ${viewer?.channelId ?? ""})`;
+const PLAYABLE = (viewer: Viewer) => sql`v.deleted_at is null and v.playable and (v.visibility <> 'private' or v.channel_id = ${viewer?.channelId ?? ""})`;
 
 async function watchLaterId(viewer: NonNullable<Viewer>): Promise<string> {
 	const [row] = await sql`select id from playlists where user_id = ${viewer.userId} and kind = 'watch_later'`;

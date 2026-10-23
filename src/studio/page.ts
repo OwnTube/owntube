@@ -89,6 +89,10 @@ export function buildStudioYtcfg(viewer: NonNullable<Viewer>, pageUrl: string, n
 	client.visitorData = visitor;
 	client.originalUrl = STUDIO_ORIGIN + pageUrl;
 	Object.assign(cfg.EXPERIMENT_FLAGS, FLAG_OVERRIDES);
+	// changing the channel's name, handle or picture asks for a Google
+	// re-sign-in first (REAUTH_FLOW_YT_CHANNEL_SETTINGS), which a local
+	// account has no flow for; the session already proves the owner
+	cfg.EXPERIMENT_FLAGS.enable_channel_settings_reauth = false;
 	// previews play in the main client's pinned player
 	const pin = loadPin();
 	if (pin) {

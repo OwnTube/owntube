@@ -55,7 +55,7 @@ The table below describes the committed source, not a guarantee that every contr
 | Playlists | Creation, editing, deletion, save-to-playlist sheets, and saving other users' accessible playlists to the library |
 | Reactions and subscriptions | Persisted video likes/dislikes and subscriptions, subscription feeds, and channel lists |
 | Sharing | Share panels with instance-local video, playlist, and channel links; embedding is omitted |
-| YouTube Studio | Official client on a separate origin, owner-scoped channel/video listing, resumable uploads with processing progress, metadata editing, publishing, and single/bulk deletion |
+| YouTube Studio | Official client on a separate origin, owner-scoped channel/video listing, resumable uploads (playable within seconds, full quality ladder in the background), thumbnails, metadata editing, publishing, single/bulk deletion, and channel name, handle, links, picture and banner |
 | Operator admin | Overview, accounts (disable, operator role, sign-out), videos (reprocess, remove), processing jobs, client compatibility, sign-up setting, and an audit log; light/dark/device appearance shared with the client |
 
 The playback screenshots in [`evidence/playback/`](evidence/playback/) record the initial playback milestone. They do not verify every newer page or Studio workflow. The repository also includes a browser playback script for pause, resume, seeking, reload, and quality selection.
@@ -65,12 +65,14 @@ The main client is pinned in [`pin/client.json`](pin/client.json), and Studio in
 ### Known limitations
 
 - Studio covers uploading, processing progress, metadata editing, publishing, and deletion. Channel analytics (overview, content, audience) shows the views, watch time and subscribers this instance records; figures it doesn't record (impressions, traffic sources, demographics) show YouTube's no-data states. Studio's Comments pages list the channel's comments with their filters, and the channel can reply, edit its replies, like, heart, remove, and report comments as spam (held out of public view until approved), one at a time or with the batch bar. The dashboard shows the latest unanswered comments and the subscribers who made their subscriptions public. Other Studio pages are not backed by data yet. No copyright or Community Guidelines checks run, so Studio shows its default "Checks complete" state.
-- Custom thumbnail and additional audio-track upload URLs are configured in Studio, but their upload handlers are not implemented.
-- Shorts open in YouTube's own Shorts player (`/shorts/`), with likes, subscribing, comments and scrolling between Shorts; Home has no Shorts shelf yet and channels have no Shorts tab. Live streaming and monetization are not implemented.
+- Thumbnails can be picked from three generated stills or uploaded in Studio's video details; channel pictures and banners are set in Customization > Profile. The additional audio-track upload URL is configured in Studio, but its handler is not implemented.
+- Shorts open in YouTube's own Shorts player (`/shorts/`), with likes, subscribing, comments and scrolling between Shorts; Home shows them on a Shorts shelf, as YouTube does; channels have no Shorts tab yet. Live streaming and monetization are not implemented.
 - Notifications currently have an empty inbox/count. The bell-preference handler acknowledges requests without persisting a preference or delivering notifications.
 - Unsupported InnerTube methods are recorded in diagnostics and may return an empty response envelope. A successful HTTP response alone does not establish a working feature.
 
 ## Self-hosting
+
+[SETUP.md](SETUP.md) is the operator's guide: setup, configuration, and how uploads, thumbnails and channel images are processed.
 
 You need:
 
@@ -158,6 +160,7 @@ Bun loads a project-root `.env` file automatically. Environment variables can al
 | `MAX_UPLOAD_BYTES` | `2147483648` | Maximum request body and resumable upload size in bytes |
 | `UPSTREAM_ASSET_FETCH` | Off | Set to `1` to enable the development fallback for missing client assets |
 | `NO_WORKER` | Unset | Set to `1` to skip starting the processing worker |
+| `PROCESSING_WORKERS` | `2` | Processing jobs run at once, plus one lane kept for new uploads (see [SETUP.md](SETUP.md)) |
 | `LOG_REQUESTS` | Unset | Set to `1` to log requests |
 | `KLIPY_API_KEY` | Unset | Turns on GIFs in comments, searched through [KLIPY](https://klipy.com) with this key; without it there is no GIF button |
 | `KLIPY_CONTENT_FILTER` | `high` | KLIPY's content filter for GIF searches (`off`, `low`, `medium`, `high`) |

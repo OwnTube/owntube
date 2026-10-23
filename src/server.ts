@@ -17,7 +17,7 @@ import "./innertube/playlists";
 import "./innertube/comments";
 import "./innertube/shorts";
 import { startProcessing } from "./media/process";
-import { pruneTransfers } from "./studio/upload";
+import { pruneTransfers, recoverTransfers } from "./studio/upload";
 import { thumbnail, videoplayback } from "./media/serve";
 import { pageFor } from "./pages";
 import { instanceRoutes } from "./instance";
@@ -50,7 +50,7 @@ async function handle(req: Request): Promise<Response> {
 	if (url.host === STUDIO_HOST) return studioRoutes(req, url, await getViewer(req));
 	if (path.startsWith("/s/") || path.startsWith("/_up/")) return (await serveClientAsset(req, url)) ?? new Response("not found", { status: 404 });
 	if (path === "/videoplayback") return videoplayback(req, url);
-	if (path.startsWith("/vi/") || path.startsWith("/vi_webp/")) return thumbnail(url, await getViewer(req));
+	if (path.startsWith("/vi/") || path.startsWith("/vi_webp/")) return thumbnail(req, url, await getViewer(req));
 	// beacons the client sends; nothing to record
 	if (/^\/(generate_204|csi_204|ptracking|pagead\/.*|api\/stats\/(qoe|atr|delayplay))$/.test(path)) return new Response(null, { status: 204 });
 	if (path === "/error_204") {
@@ -88,9 +88,12 @@ if (!loadPin()) console.warn("no client pinned yet: run `bun scripts/fetch-clien
 await migrate();
 startDiagnostics();
 if (process.env.NO_WORKER !== "1") {
-	startProcessing();
+	await startProcessing();
 	void pruneTransfers();
 	setInterval(() => void pruneTransfers(), 3600_000);
+	// uploads whose file never reached their video
+	void recoverTransfers();
+	setInterval(() => void recoverTransfers(), 60_000);
 }
 
 const serveOptions = {

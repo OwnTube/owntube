@@ -714,6 +714,34 @@ function feeds() {
 	save("subscriptions/signed_out", tokenize(pageOnly(pageVar(body("feed-subscriptions", /^001-/))), []));
 }
 
+// home's Shorts shelf: YouTube's richShelfRenderer of shortsLockupViewModels
+// (the "Show fewer Shorts" feedback menu and inline previews left out)
+function homeShorts() {
+	const home = pageVar(body("in-home", /^001-/));
+	const section = gridOf(home).contents.find((it: any) => find(it, "shortsLockupViewModel"));
+	const sample = structuredClone(find(section, "richShelfRenderer").contents[0]);
+	const lv = find(sample, "shortsLockupViewModel");
+	const id: string = lv.onTap.innertubeCommand.reelWatchEndpoint.videoId;
+	const title: string = lv.overlayMetadata.primaryText.content;
+	const views: string = lv.overlayMetadata.secondaryText.content;
+	let item = pruneLockupMenu(clean(sample));
+	const v = find(item, "shortsLockupViewModel");
+	for (const k of ["badge", "inlinePlayerData", "inlinePopStateEntityKey", "indexInCollection"]) delete v[k];
+	const reel = v.onTap.innertubeCommand.reelWatchEndpoint;
+	for (const k of ["playerParams", "params", "sequenceParams", "loggingContext", "ustreamerConfig"]) delete reel[k];
+	reel.thumbnail.thumbnails = "{{REEL_THUMBS}}";
+	v.thumbnailViewModel.thumbnailViewModel.image.sources = "{{THUMBS}}";
+	v.accessibilityText = "{{A11Y}}";
+	item = dropKey(item, "playerParams");
+	item = tokenize(item, [[id, "VIDEO_ID"], [title, "TITLE"], [views, "VIEWS_SHORT"]], [[id, "VIDEO_ID"]]);
+	save("item/shorts_lockup_rich", item, [id, title]);
+	const shelf = clean(structuredClone(section));
+	const r = find(shelf, "richShelfRenderer");
+	delete r.menu;
+	r.contents = "{{ITEMS}}";
+	save("home/shorts_shelf", tokenize(shelf, []));
+}
+
 // ======================================================================
 // watch page
 // kept: title, counts, like/dislike/share/save, owner and subscribe, the
@@ -2145,6 +2173,7 @@ const steps: [string, () => void][] = [
 	["guide", guide],
 	["chrome", chrome],
 	["feeds", feeds],
+	["home-shorts", homeShorts],
 	["watch", watch],
 	["search", search],
 	["playlist", playlistPage],

@@ -9,6 +9,7 @@ import { isVideoId, newVideoId } from "../ids";
 import { responseContext } from "../innertube/r";
 import { ApiError, type Ctx, route } from "../innertube/router";
 import { creatorChannel } from "./channel";
+import { setCustomThumbnail, setStill } from "./thumbnail";
 import { attachSource } from "./upload";
 import { type VideoRow, contentType, maskedVideo, videosFor } from "./video";
 
@@ -115,7 +116,10 @@ route(
 		const resource = b.resourceId?.scottyResourceId?.id;
 		const [t] = await sql`select id, file_name, video_id from upload_transfers where resource_id = ${String(resource ?? "")} and user_id = ${viewer.userId}`;
 		if (!t) throw new ApiError(400, "No such upload.");
-		if (t.video_id) return ok(viewer, { videoId: t.video_id });
+		if (t.video_id) {
+			await attachSource(t.id);
+			return ok(viewer, { videoId: t.video_id });
+		}
 		const meta = b.initialMetadata ?? {};
 		const fileTitle = String(t.file_name || "").replace(/\.[^.]+$/, "");
 		const title = String(meta.title?.newTitle ?? "").trim().slice(0, 100) || fileTitle.slice(0, 100) || "Untitled";
@@ -125,7 +129,8 @@ route(
 		await sql`insert into videos (id, channel_id, title, visibility, status, draft, original_filename)
 			values (${id}, ${viewer.channelId}, ${title}, ${draft ? "private" : visibility}, 'uploaded', ${draft}, ${String(t.file_name).slice(0, 255)})`;
 		await sql`update upload_transfers set video_id = ${id} where id = ${t.id}`;
-		await attachSource(t.id, id);
+		// the last chunk may have arrived since t was read
+		await attachSource(t.id);
 		return ok(viewer, { videoId: id });
 	},
 	{ mutation: true },
@@ -157,6 +162,15 @@ route(
 		if (privacy && (!v.draft || publish)) set.visibility = privacy;
 		const audience = b.madeForKids?.newMfk ?? b.targetedAudience?.newTargetedAudience;
 		if (audience) set.made_for_kids = /MFK$|CROSSWALK/.test(audience) && !/NOT_MFK/.test(audience);
+		// the thumbnail picker: a still or a custom image uploaded first
+		const still = b.videoStill;
+		if (still?.operation === "SET_AUTOGEN_STILL" || still?.operation === "UPLOAD_CUSTOM_THUMBNAIL") {
+			const done =
+				still.operation === "SET_AUTOGEN_STILL"
+					? await setStill(id, still.newStillId ?? 2)
+					: await setCustomThumbnail(id, still.image?.encryptedScottyResourceId, viewer);
+			if (!done) return ok(viewer, { overallResult: { resultCode: "SOME_ERRORS" }, videoStill: { success: false } });
+		}
 		if (Object.keys(set).length) {
 			// the publish date is when the video first leaves private
 				const vis = set.visibility ?? v.visibility;

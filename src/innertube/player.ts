@@ -94,7 +94,8 @@ export async function playerResponse(video: Video | undefined, viewer: Viewer, r
 	if (!video) {
 		return { responseContext: responseContext(viewer), playabilityStatus: unplayable("ERROR", "This video isn't available anymore"), trackingParams: "" };
 	}
-	const ready = video.status === "ready";
+	// watchable from the first format, while the rest is still being made
+	const ready = video.playable;
 	const lengthSeconds = String(Math.round((video.duration_ms ?? 0) / 1000));
 	const playability = ready
 		? { status: "OK", playableInEmbed: true, miniplayer: { miniplayerRenderer: { playbackMode: "PLAYBACK_MODE_ALLOW" } }, contextParams: "Q0FBU0FnZ0E=" }

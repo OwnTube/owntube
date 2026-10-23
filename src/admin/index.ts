@@ -154,7 +154,7 @@ async function overview(): Promise<View> {
 		(select count(*)::int from users where created_at > now() - interval '7 days') as new_accounts,
 		(select count(*)::int from users where disabled_at is not null) as disabled,
 		(select count(*)::int from videos where deleted_at is null) as videos,
-		(select count(*)::int from videos where deleted_at is null and status = 'ready' and visibility = 'public') as public_videos,
+		(select count(*)::int from videos where deleted_at is null and playable and visibility = 'public') as public_videos,
 		(select coalesce(sum(view_count), 0)::bigint from videos where deleted_at is null) as views,
 		(select count(*)::int from comments where deleted_at is null) as comments,
 		(select coalesce(sum(size), 0)::bigint from video_formats f join videos v on v.id = f.video_id where v.deleted_at is null) as stored,

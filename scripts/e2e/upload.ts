@@ -1,9 +1,11 @@
 // End-to-end upload through Studio's own upload dialog: pick a local file,
 // transfer, process, title it, publish, then find it in Studio's content
 // list and the channel's Videos tab and play it on the main site. Runs once
-// per generated source (with and without an audio track). Removes the
-// videos it made.
-//   bun scripts/e2e/upload.ts            (dev server on ORIGIN / STUDIO_ORIGIN)
+// per generated source (with and without an audio track, and a 53 s
+// 1080p60 H.264/AAC clip, which is remuxed: it must be playable within 30 s
+// of being picked, and play while the rest is still processing). Removes
+// the videos it made.
+//   bun scripts/e2e/upload.ts [--quick]   (dev server on ORIGIN / STUDIO_ORIGIN; --quick skips the long clip)
 
 import { mkdirSync, readFileSync, rmSync, statSync, writeSync } from "node:fs";
 import { join } from "node:path";
@@ -27,6 +29,20 @@ const sources = [
 	await make("with-audio.mp4", ["-f", "lavfi", "-i", "testsrc2=size=1280x720:rate=30", "-f", "lavfi", "-i", "sine=frequency=330", "-t", "5", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac"]),
 	await make("no-audio.webm", ["-f", "lavfi", "-i", "testsrc2=size=640x360:rate=25", "-t", "4", "-c:v", "libvpx-vp9", "-deadline", "realtime", "-cpu-used", "8"]),
 ];
+const LONG = "1080p60-53s.mp4";
+if (!process.argv.includes("--quick")) {
+	sources.push(await make(LONG, ["-f", "lavfi", "-i", "testsrc2=size=1920x1080:rate=60", "-f", "lavfi", "-i", "sine=frequency=440:sample_rate=48000", "-t", "53",
+		"-c:v", "libx264", "-preset", "ultrafast", "-b:v", "8M", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart"]));
+}
+const plays = (main: import("playwright-core").Page) =>
+	main.evaluate(async () => {
+		const video = document.querySelector("video") as HTMLVideoElement | null;
+		if (!video) return -1;
+		video.muted = true;
+		await video.play().catch(() => {});
+		await new Promise((r) => setTimeout(r, 2500));
+		return video.currentTime;
+	});
 
 // requests that fail on the server are logged there
 const LOG = "data/server.log";
@@ -52,6 +68,8 @@ for (const file of sources) {
 	const input = page.locator("ytcp-uploads-file-picker input[type=file]");
 	await input.waitFor({ state: "attached", timeout: 30000 });
 	await input.setInputFiles(file);
+	const picked = Date.now();
+	const long = file.endsWith(LONG);
 	// the details step: the title box is filled with the file name first
 	const titleBox = page.locator("ytcp-video-title #textbox").first();
 	await titleBox.waitFor({ timeout: 30000 });
@@ -72,16 +90,40 @@ for (const file of sources) {
 		await page.waitForTimeout(800);
 	}
 	await page.locator("tp-yt-paper-radio-button[name=PUBLIC]").click();
-	// processing finishes in the background; publishing is allowed meanwhile
-	const t0 = Date.now();
+	// playable from a first format within seconds; the rest follows in the background
 	let row: any;
-	while (Date.now() - t0 < 180_000) {
+	while (Date.now() - picked < 120_000) {
+		[row] = await sql`select status, playable, error from videos where id = ${v.id}`;
+		if (row.playable || row.status === "failed") break;
+		await Bun.sleep(250);
+	}
+	const toPlayable = (Date.now() - picked) / 1000;
+	check(`${file}: playable`, row.playable, `${row.status}${row.error ? ` ${row.error}` : ""} after ${toPlayable.toFixed(1)}s`);
+	if (long) {
+		check(`${file}: playable within 30 s of picking the file`, toPlayable < 30, `${toPlayable.toFixed(1)}s`);
+		const [f] = await sql`select itag, height, mime_type from video_formats where video_id = ${v.id} and kind = 'muxed'`;
+		check(`${file}: remuxed, not re-encoded`, f?.itag === 37 && f?.height === 1080, JSON.stringify(f));
+	}
+	await page.locator("#done-button").click();
+	if (long) {
+		// watched while the ladder is still being made
+		const early = await ctx.newPage();
+		await early.goto(`${ORIGIN}/watch?v=${v.id}`, { waitUntil: "domcontentloaded" });
+		await early.waitForTimeout(4000);
+		const [{ status }] = await sql`select status from videos where id = ${v.id}`;
+		const t = await plays(early);
+		check(`${file}: plays while ${status}`, t > 0.5, `currentTime ${t}`);
+		await early.close();
+	}
+	const t0 = Date.now();
+	while (Date.now() - t0 < (long ? 1_200_000 : 180_000)) {
 		[row] = await sql`select status, error from videos where id = ${v.id}`;
 		if (row.status === "ready" || row.status === "failed") break;
 		await Bun.sleep(1000);
 	}
-	check(`${file}: processed`, row.status === "ready", `${row.status}${row.error ? ` ${row.error}` : ""} after ${((Date.now() - t0) / 1000).toFixed(0)}s`);
-	await page.locator("#done-button").click();
+	check(`${file}: processed`, row.status === "ready" && !row.error, `${row.status}${row.error ? ` ${row.error}` : ""} after ${((Date.now() - picked) / 1000).toFixed(0)}s`);
+	const [{ n }] = await sql`select count(*)::int as n from video_formats where video_id = ${v.id} and kind <> 'muxed'`;
+	check(`${file}: the adaptive formats were added`, n >= 4, `${n}`);
 	let after: any;
 	for (const end = Date.now() + 15000; Date.now() < end; await page.waitForTimeout(500)) {
 		[after] = await sql`select title, visibility, draft, published_at from videos where id = ${v.id}`;
@@ -101,14 +143,7 @@ for (const file of sources) {
 	// playback
 	await main.goto(`${ORIGIN}/watch?v=${v.id}`, { waitUntil: "domcontentloaded" });
 	await main.waitForTimeout(4000);
-	const played = await main.evaluate(async () => {
-		const video = document.querySelector("video") as HTMLVideoElement | null;
-		if (!video) return -1;
-		video.muted = true;
-		await video.play().catch(() => {});
-		await new Promise((r) => setTimeout(r, 2500));
-		return video.currentTime;
-	});
+	const played = await plays(main);
 	check(`${file}: plays on the watch page`, played > 0.5, `currentTime ${played}`);
 	await main.close();
 }

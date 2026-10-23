@@ -1,0 +1,69 @@
+{
+	"richSectionRenderer": {
+		"content": {
+			"richShelfRenderer": {
+				"title": {
+					"runs": [
+						{
+							"text": "Shorts"
+						}
+					]
+				},
+				"contents": "{{ITEMS}}",
+				"showMoreButton": {
+					"buttonRenderer": {
+						"style": "STYLE_OPACITY",
+						"size": "SIZE_DEFAULT",
+						"text": {
+							"runs": [
+								{
+									"text": "Show more"
+								}
+							]
+						},
+						"icon": {
+							"iconType": "EXPAND"
+						},
+						"accessibility": {
+							"label": "Show more"
+						}
+					}
+				},
+				"isExpanded": false,
+				"icon": {
+					"iconType": "YOUTUBE_SHORTS_BRAND_24"
+				},
+				"isTopDividerHidden": false,
+				"isBottomDividerHidden": false,
+				"showLessButton": {
+					"buttonRenderer": {
+						"style": "STYLE_OPACITY",
+						"size": "SIZE_DEFAULT",
+						"text": {
+							"runs": [
+								{
+									"text": "Show less"
+								}
+							]
+						},
+						"icon": {
+							"iconType": "COLLAPSE"
+						},
+						"accessibility": {
+							"label": "Show less"
+						}
+					}
+				},
+				"responsiveContainerConfiguration": {
+					"enableContentSpecificAspectRatio": true
+				},
+				"targetingContext": {
+					"targetId": "item_1_browse-feedFEwhat_to_watch",
+					"targetGroupId": [
+						"CAESAA%3D%3D"
+					]
+				}
+			}
+		}
+	}
+}

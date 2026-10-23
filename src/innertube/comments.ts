@@ -213,7 +213,7 @@ function content(body: any): { text: string; gif: Gif | null } {
 async function insertComment(videoId: string, viewer: NonNullable<Viewer>, { text, gif }: { text: string; gif: Gif | null }, parent: string | null) {
 	if (!(await rateLimit(`comment:${viewer.userId}`, 30, 600))) throw new ApiError(429, "You're commenting too fast. Try again in a few minutes.", "rateLimitExceeded");
 	const video = await getVideo(videoId, viewer);
-	if (!video || video.status !== "ready") throw new ApiError(404, "Video not found");
+	if (!video?.playable) throw new ApiError(404, "Video not found");
 	const id = newCommentId();
 	await sql.begin(async (tx) => {
 		if (parent) {

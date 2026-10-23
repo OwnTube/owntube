@@ -1,7 +1,7 @@
 // Studio's Customization > Profile through the official Studio client,
 // checked against the database and the main site: the channel changes its
 // name, handle (a taken one is refused first), description, links, contact
-// email and picture, publishes, and the channel page shows them. The API
+// email, picture and banner, publishes, and the channel page shows them. The API
 // answers the channel's owner only. The channel is put back at the end.
 //
 //   bun scripts/e2e/studio-customization.ts [--login bob:yewtube-demo] [--shots dir]
@@ -48,8 +48,19 @@ const want = { title: `${before.title} ${stamp}`, handle: `${before.handle}-${st
 const dir = join("data", "e2e-customization");
 mkdirSync(dir, { recursive: true });
 const picture = join(dir, "picture.png");
-const ff = Bun.spawnSync(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "testsrc2=size=400x400", "-frames:v", "1", picture]);
-if (ff.exitCode !== 0) throw new Error(`ffmpeg: ${ff.stderr}`);
+const bannerFile = join(dir, "banner.jpg");
+for (const [src, out] of [["testsrc2=size=400x400", picture], ["smptehdbars=size=2560x1440", bannerFile]]) {
+	const ff = Bun.spawnSync(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", src, "-frames:v", "1", out]);
+	if (ff.exitCode !== 0) throw new Error(`ffmpeg: ${ff.stderr}`);
+}
+// Studio's dialogs for an image: crop, then Done
+const cropDone = async (page: Page, name: string) => {
+	const done = page.getByRole("button", { name: "Done" }).locator("visible=true").first();
+	await done.waitFor({ timeout: 10000 }).catch(() => {});
+	await shot(page, name);
+	await done.click().catch(() => {});
+	await page.waitForTimeout(800);
+};
 
 const { browser, ctx } = await launch();
 const errors: string[] = [];
@@ -71,7 +82,8 @@ try {
 	await handle.fill(takenHandle);
 	check("a taken handle is refused", await until(async () => /isn.t available/i.test(await page.locator("ytcp-channel-editing-channel-handle").innerText())), await page.locator("ytcp-channel-editing-channel-handle").innerText());
 	await handle.fill(want.handle);
-	check("a free handle is accepted", await until(async () => /available/i.test(await page.locator("ytcp-channel-editing-channel-handle").innerText()) && !/isn.t available/i.test(await page.locator("ytcp-channel-editing-channel-handle").innerText())), await page.locator("ytcp-channel-editing-channel-handle").innerText());
+	// an accepted handle shows the channel's new address
+	check("a free handle is accepted", await until(async () => { const t = await page.locator("ytcp-channel-editing-channel-handle").innerText(); return t.includes(`/@${want.handle}`) && !/isn.t available/i.test(t); }), await page.locator("ytcp-channel-editing-channel-handle").innerText());
 
 	const description = page.locator("ytcp-social-suggestion-input #textbox").first();
 	await description.click();
@@ -86,11 +98,9 @@ try {
 	await page.locator("#business-email input").fill(want.email);
 
 	await page.locator("ytcp-profile-image-upload input#file-selector").setInputFiles(picture);
-	const done = page.getByRole("button", { name: "Done" }).locator("visible=true").first();
-	await done.waitFor({ timeout: 10000 }).catch(() => {});
-	await shot(page, "01-crop");
-	await done.click().catch(() => {});
-	await page.waitForTimeout(800);
+	await cropDone(page, "01-crop");
+	await page.locator("ytcp-banner-upload input#file-selector").setInputFiles(bannerFile);
+	await cropDone(page, "01-crop-banner");
 	await shot(page, "02-edited");
 
 	await page.getByRole("button", { name: "Publish" }).first().click();
@@ -101,7 +111,8 @@ try {
 	check("…the description", saved.description === want.description, saved.description);
 	check("…the link", saved.links.length === 1 && saved.links[0].title === want.linkTitle && saved.links[0].url === `https://${want.linkUrl}`, saved.links);
 	check("…the contact email", saved.business_email === want.email, saved.business_email);
-	check("…and the picture", await until(async () => !!(await after()).avatar_path, 10000));
+	check("…the picture", await until(async () => !!(await after()).avatar_path, 10000));
+	check("…and the banner", await until(async () => !!(await after()).banner_path, 10000));
 	await shot(page, "03-published");
 
 	// the main site
@@ -118,6 +129,10 @@ try {
 	await shot(main, "04-channel");
 	const img = await main.request.get(`${ORIGIN}/ggpht/${channelId}/avatar=s88-c-k-c0x00ffffff-no-rj`);
 	check("the picture is served", img.status() === 200 && (img.headers()["content-type"] ?? "").startsWith("image/png"), img.headers()["content-type"]);
+	const banner = await main.request.get(`${ORIGIN}/ggpht/${channelId}/banner=w1060-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj`);
+	check("the banner is served", banner.status() === 200 && (banner.headers()["content-type"] ?? "").startsWith("image/jpeg"), banner.headers()["content-type"]);
+	const shown = await main.evaluate(() => Array.from(document.querySelectorAll("img")).map((i) => i.currentSrc).filter((u) => u.includes("/ggpht/")));
+	check("the channel page shows the banner and picture", shown.some((u) => u.includes("/banner")) && shown.some((u) => u.includes("/avatar")), shown);
 	await main.locator("yt-page-header-renderer yt-description-preview-view-model, yt-page-header-renderer .truncated-text-wiz").first().click().catch(() => {});
 	const about = main.locator("ytd-about-channel-renderer").first();
 	if (await about.waitFor({ timeout: 8000 }).then(() => true).catch(() => false)) {
@@ -148,7 +163,7 @@ try {
 } finally {
 	const now = await load(channelId);
 	for (const p of [now.avatar_path, now.banner_path]) if (p && p !== before.avatar_path && p !== before.banner_path) rmSync(join(MEDIA_DIR, p), { force: true });
-	await sql`update channels set title = ${before.title}, handle = ${before.handle}, description = ${before.description}, links = ${JSON.stringify(before.links)}::jsonb,
+	await sql`update channels set title = ${before.title}, handle = ${before.handle}, description = ${before.description}, links = ${JSON.stringify(before.links)}::text::jsonb,
 		business_email = ${before.business_email}, avatar_path = ${before.avatar_path}, banner_path = ${before.banner_path} where id = ${channelId}`;
 	await sql`delete from channel_identity_changes where channel_id = ${channelId} and changed_at > now() - interval '1 hour' and (new_value like ${`%${stamp}`} or old_value like ${`%${stamp}`})`;
 	rmSync(dir, { recursive: true, force: true });

@@ -133,7 +133,7 @@ export async function channelPage(c: Channel, tab: ChannelTab, viewer: Viewer) {
 
 // the About dialog's content
 export async function aboutPanel(c: Channel, viewer: Viewer) {
-	const [{ views }] = await (await import("../db")).sql`select coalesce(sum(view_count), 0)::bigint as views from videos where channel_id = ${c.id} and deleted_at is null and visibility = 'public' and status = 'ready'`;
+	const [{ views }] = await (await import("../db")).sql`select coalesce(sum(view_count), 0)::bigint as views from videos where channel_id = ${c.id} and deleted_at is null and visibility = 'public' and playable`;
 	const joined = `Joined ${dateText(c.created_at)}`;
 	const r = make("channel/about", {
 		...baseVars(viewer, `/@${c.handle}`),

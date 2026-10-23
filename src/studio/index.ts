@@ -14,6 +14,7 @@ import { innertube } from "../innertube/router";
 import { serveStudioAsset } from "./assets";
 import { renderStudioPage } from "./page";
 import { imageUploadRoute } from "./customization";
+import { thumbnailUploadRoute } from "./thumbnail";
 import { uploadRoutes } from "./upload";
 import "./api";
 import "./feedback";
@@ -56,7 +57,7 @@ export async function studioRoutes(req: Request, url: URL, viewer: Viewer): Prom
 	// the attestation frame Studio loads in a hidden iframe; YouTube's is an
 	// empty document, and the loader gives up (and later throws) if it's slow
 	if (path === "/ytscframe") return new Response("<!DOCTYPE html>", { headers: { "content-type": "text/html; charset=utf-8" } });
-	const up = (await uploadRoutes(req, url, viewer)) ?? (await imageUploadRoute(req, url, viewer));
+	const up = (await uploadRoutes(req, url, viewer)) ?? (await imageUploadRoute(req, url, viewer)) ?? (await thumbnailUploadRoute(req, url, viewer));
 	if (up) return up;
 	if (path === "/favicon.ico") return Response.redirect(`${STUDIO_ORIGIN}/_up/www.gstatic.com/youtube/img/creator/favicon/favicon_v2.ico`, 302);
 	if (req.method !== "GET" && req.method !== "HEAD") return new Response("method not allowed", { status: 405 });

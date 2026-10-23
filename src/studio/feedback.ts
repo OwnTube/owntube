@@ -38,7 +38,7 @@ route("upload/feedback", async (ctx) => {
 	if (!viewer) throw new ApiError(401, "Sign in to use Studio.", "authError");
 	const ids: string[] = [...new Set<string>((Array.isArray(ctx.body.continuations) ? ctx.body.continuations : []).map(tokenVideo).filter((v: string | undefined): v is string => !!v))].slice(0, 50);
 	const rows = ids.length
-		? await sql`select v.id, v.status,
+		? await sql`select v.id, v.status, v.playable,
 				(select max(least(f.width, f.height)) from video_formats f where f.video_id = v.id and f.height is not null) as top,
 				(select count(*)::int from video_thumbnails t where t.video_id = v.id) as thumbs,
 				t.frontend_upload_id, t.received, t.size, t.complete
@@ -46,20 +46,30 @@ route("upload/feedback", async (ctx) => {
 			where v.id = any(${textArray(ids)}::text[]) and v.channel_id = ${viewer.channelId} and v.deleted_at is null`
 		: [];
 	const continuationContents = rows.map((v: any) => {
+		// playable from the first format; the rest of the resolutions follow
 		const ready = v.status === "ready";
-		const failed = v.status === "failed";
+		const playable = v.playable;
+		const failed = v.status === "failed" && !playable;
 		const transferred = v.complete || !v.size ? 1 : Math.min(1, Number(v.received) / Number(v.size));
-		const resolution = (min: number) =>
-			ready ? { status: (v.top ?? 0) >= min ? "PROCESSING_RESOLUTION_STATUS_AVAILABLE" : "PROCESSING_RESOLUTION_STATUS_UNAVAILABLE" } : { status: v.status === "processing" ? "PROCESSING_RESOLUTION_STATUS_PROCESSING" : "PROCESSING_RESOLUTION_STATUS_STARTING_SOON" };
+		const resolution = (min: number) => ({
+			status:
+				(v.top ?? 0) >= min && playable
+					? "PROCESSING_RESOLUTION_STATUS_AVAILABLE"
+					: ready || v.status === "failed"
+						? "PROCESSING_RESOLUTION_STATUS_UNAVAILABLE"
+						: v.status === "processing"
+							? "PROCESSING_RESOLUTION_STATUS_PROCESSING"
+							: "PROCESSING_RESOLUTION_STATUS_STARTING_SOON",
+		});
 		const contents: unknown[] = [{ transferProgressBar: { fractionCompleted: transferred } }];
-		if (ready || failed) contents.push({ uploadStatus: { uploadStatus: ready ? "SUCCESS" : "FAILED" } });
+		if (playable || failed) contents.push({ uploadStatus: { uploadStatus: playable ? "SUCCESS" : "FAILED" } });
 		if (!failed && transferred >= 1) contents.push({ processingResolutionsStatusRenderer: Object.fromEntries(RESOLUTIONS.map(([key, min]) => [key, resolution(min)])) });
-		if (ready && v.thumbs > 0) contents.push({ thumbnailStatus: { thumbnailDetails: videoThumbnails(v.id) } });
+		if (playable && v.thumbs > 0) contents.push({ thumbnailStatus: { thumbnailDetails: videoThumbnails(v.id) } });
 		return {
 			uploadFeedbackItemContinuation: {
 				id: { videoId: v.id, ...(v.frontend_upload_id ? { frontendUploadId: v.frontend_upload_id } : {}) },
 				contents,
-				...(ready ? { draftMediaUploadStatus: "DRAFT_MEDIA_UPLOAD_STATUS_SUCCESS" } : failed ? { draftMediaUploadStatus: "DRAFT_MEDIA_UPLOAD_STATUS_FAILED" } : {}),
+				...(playable ? { draftMediaUploadStatus: "DRAFT_MEDIA_UPLOAD_STATUS_SUCCESS" } : failed ? { draftMediaUploadStatus: "DRAFT_MEDIA_UPLOAD_STATUS_FAILED" } : {}),
 				...(ready || failed ? {} : { continuations: [{ timedContinuationData: { continuation: feedbackToken(v.id), timeoutMs: 2000 } }] }),
 			},
 		};

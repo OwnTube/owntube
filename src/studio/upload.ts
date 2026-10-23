@@ -12,7 +12,11 @@
 //
 // A 400 makes the uploader query the offset and resume from there. The
 // resource id names the file in upload/createvideo (api.ts), which may come
-// before the last byte: the file goes to processing when both have happened.
+// before or after the last byte, or race it: the file goes to processing
+// once both have happened, handed over exactly once by whichever comes
+// second (attached_at is claimed atomically). A recovery pass at startup and
+// every minute hands over any complete transfer whose video still has no
+// file, so an upload is never left at "Uploading".
 
 import { appendFileSync, existsSync, mkdirSync, renameSync, rmSync, statSync } from "node:fs";
 import { join } from "node:path";
@@ -36,12 +40,26 @@ function scotty(status: number, state: string, extra: Record<string, string> = {
 
 const failed = (status: number, message: string) => scotty(status, "final", {}, JSON.stringify({ status: "STATUS_FAILURE", errorMessage: message }));
 
-// the transfer's file to its video: the source for processing
-export async function attachSource(transferId: string, videoId: string) {
-	const [t] = await sql`select complete from upload_transfers where id = ${transferId}`;
-	if (!t?.complete) return;
+// the transfer's file to its video, the source for processing, once the
+// transfer is complete and named by a video; a claim older than ten minutes
+// (a server stopped mid-way) can be taken again
+export async function attachSource(transferId: string) {
+	const [t] = await sql`update upload_transfers set attached_at = now()
+		where id = ${transferId} and complete and video_id is not null and (attached_at is null or attached_at < now() - interval '10 minutes')
+		returning video_id`;
+	if (!t) return;
+	const videoId: string = t.video_id;
 	const source = join(SOURCES, `${videoId}.src`);
-	if (!existsSync(partPath(transferId))) return;
+	const [v] = await sql`select source_path, deleted_at from videos where id = ${videoId}`;
+	if (!v || v.deleted_at || (v.source_path && existsSync(v.source_path))) return;
+	if (!existsSync(partPath(transferId))) {
+		if (!existsSync(source)) await sql`update videos set status = 'failed', error = 'The uploaded file is missing. Upload it again.' where id = ${videoId}`;
+		else {
+			await sql`update videos set source_path = ${source} where id = ${videoId}`;
+			await enqueue(videoId);
+		}
+		return;
+	}
 	try {
 		const p = await probe(partPath(transferId));
 		if (p.duration > 6 * 3600) throw new Error("videos are limited to 6 hours");
@@ -53,6 +71,19 @@ export async function attachSource(transferId: string, videoId: string) {
 	renameSync(partPath(transferId), source);
 	await sql`update videos set source_path = ${source} where id = ${videoId}`;
 	await enqueue(videoId);
+}
+
+// complete transfers whose video never got its file (a lost race, a server
+// stopped between the two)
+export async function recoverTransfers() {
+	const stuck = await sql`select t.id, t.video_id from upload_transfers t join videos v on v.id = t.video_id
+		where t.complete and v.source_path is null and v.deleted_at is null and v.status <> 'failed'
+		and (t.attached_at is null or t.attached_at < now() - interval '10 minutes')`;
+	for (const t of stuck) {
+		console.log(`upload ${t.id}: handing the finished file to ${t.video_id}`);
+		await attachSource(t.id).catch((e) => console.log(`upload ${t.id}: ${e instanceof Error ? e.message : e}`));
+	}
+	return stuck.length;
 }
 
 // transfers that never became a video (the dialog closed mid-upload, or the
@@ -122,6 +153,7 @@ export async function uploadRoutes(req: Request, url: URL, viewer: Viewer): Prom
 	appendFileSync(partPath(t.id), chunk);
 	await sql`update upload_transfers set received = ${total}, complete = ${finalize} where id = ${t.id}`;
 	if (!finalize) return scotty(200, "active");
-	if (t.video_id) await attachSource(t.id, t.video_id);
+	// createvideo may have named the video since t was read
+	await attachSource(t.id);
 	return done();
 }

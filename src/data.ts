@@ -7,7 +7,7 @@ import { sql } from "./db";
 import type { Channel, Video } from "./innertube/r";
 
 const VIDEO_COLUMNS = sql`v.id, v.title, v.description, v.channel_id, c.title as channel_title, c.handle as channel_handle, c.avatar_path as channel_avatar,
-	v.duration_ms, v.view_count::int as view_count, v.like_count, v.comment_count, v.published_at, v.created_at, v.visibility, v.status, v.width, v.height`;
+	v.duration_ms, v.view_count::int as view_count, v.like_count, v.comment_count, v.published_at, v.created_at, v.visibility, v.status, v.playable, v.width, v.height`;
 
 export async function getVideo(id: string, viewer: Viewer): Promise<Video | undefined> {
 	const [v] = await sql`select ${VIDEO_COLUMNS}, (select count(*)::int from subscriptions s where s.channel_id = v.channel_id) as subscriber_count
@@ -17,17 +17,18 @@ export async function getVideo(id: string, viewer: Viewer): Promise<Video | unde
 	return v as Video;
 }
 
-// public, ready videos for feeds and search
-const LISTED = sql`v.status = 'ready' and v.visibility = 'public' and v.deleted_at is null`;
-
-export async function latestVideos(limit: number, offset = 0, excludeId = ""): Promise<Video[]> {
-	return (await sql`select ${VIDEO_COLUMNS} from videos v join channels c on c.id = v.channel_id
-		where ${LISTED} and v.id <> ${excludeId} order by v.published_at desc, v.id limit ${limit} offset ${offset}`) as Video[];
-}
+// public, playable videos for feeds and search
+const LISTED = sql`v.playable and v.visibility = 'public' and v.deleted_at is null`;
 
 // Shorts: vertical or square, up to three minutes (YouTube's definition)
 export const SHORT_MAX_MS = 180_000;
 export const SHORT = sql`v.height >= v.width and v.width > 0 and v.duration_ms <= ${SHORT_MAX_MS}`;
+
+// home's grid: everything but Shorts, which get their own shelf
+export async function longVideos(limit: number, offset = 0): Promise<Video[]> {
+	return (await sql`select ${VIDEO_COLUMNS} from videos v join channels c on c.id = v.channel_id
+		where ${LISTED} and not coalesce(${SHORT}, false) order by v.published_at desc, v.id limit ${limit} offset ${offset}`) as Video[];
+}
 export const isShort = (v: { width?: number | null; height?: number | null; duration_ms?: number | null }) => !!v.width && !!v.height && v.height >= v.width && (v.duration_ms ?? Infinity) <= SHORT_MAX_MS;
 
 export async function shortVideos(limit: number, offset = 0, excludeId = ""): Promise<Video[]> {
@@ -67,7 +68,7 @@ export async function channelVideos(channelId: string, viewer: Viewer, limit: nu
 	const own = viewer?.channelId === channelId;
 	const order = sort === "popular" ? sql`v.view_count desc` : sort === "oldest" ? sql`coalesce(v.published_at, v.created_at) asc` : sql`coalesce(v.published_at, v.created_at) desc`;
 	return (await sql`select ${VIDEO_COLUMNS} from videos v join channels c on c.id = v.channel_id
-		where v.channel_id = ${channelId} and v.deleted_at is null and (${own} or (v.status = 'ready' and v.visibility = 'public'))
+		where v.channel_id = ${channelId} and v.deleted_at is null and (${own} or (v.playable and v.visibility = 'public'))
 		order by ${order}, v.id limit ${limit} offset ${offset}`) as Video[];
 }
 

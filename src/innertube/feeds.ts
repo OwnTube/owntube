@@ -1,14 +1,18 @@
 // Feed pages built from YouTube's responses: home and subscriptions
-// (templates home/*, subscriptions/*, item/video_lockup_rich*).
+// (templates home/*, subscriptions/*, item/video_lockup_rich*,
+// item/shorts_lockup_rich). Home is YouTube's: videos in the grid, Shorts
+// on a shelf of their own after the first row.
 
 import type { Viewer } from "../client/page";
-import { latestVideos, subscriptionFeed } from "../data";
+import { PUBLIC_ORIGIN } from "../config";
+import { longVideos, shortVideos, subscriptionFeed } from "../data";
 import { encodeToken } from "../ids";
-import type { Video } from "./r";
+import { type Video, compactViews, countLabel } from "./r";
 import { make } from "./tpl";
 import { baseVars, videoVars } from "./vars";
 
 export const FEED_PAGE = 24;
+const SHELF_SHORTS = 10;
 
 // a video in a rich grid; signed-out viewers get YouTube's signed-out menu
 export const richLockup = (v: Video, viewer: Viewer) => make(viewer ? "item/video_lockup_rich" : "item/video_lockup_rich_out", { ...baseVars(viewer, `/watch?v=${v.id}`), ...videoVars(v) });
@@ -19,7 +23,29 @@ function page(videos: Video[], viewer: Viewer, next: Record<string, unknown>) {
 	return items;
 }
 
-export const homeItems = async (viewer: Viewer, offset: number) => page(await latestVideos(FEED_PAGE, offset), viewer, { k: "home", o: offset + FEED_PAGE });
+// a Short on home's shelf, with its whole first frame (process.ts frame0)
+function shortLockup(v: Video, viewer: Viewer) {
+	const scale = Math.min(1, 720 / (v.height || 720));
+	const frame = [{ url: `${PUBLIC_ORIGIN}/vi/${v.id}/frame0.jpg`, width: Math.round((v.width || 405) * scale), height: Math.round((v.height || 720) * scale) }];
+	return make("item/shorts_lockup_rich", {
+		...baseVars(viewer, `/shorts/${v.id}`),
+		VIDEO_ID: v.id,
+		TITLE: v.title,
+		VIEWS_SHORT: compactViews(v.view_count),
+		A11Y: `${v.title}, ${countLabel(v.view_count, "view")} - play Short`,
+		THUMBS: frame,
+		REEL_THUMBS: frame,
+	});
+}
+
+export async function homeItems(viewer: Viewer, offset: number) {
+	const items = page(await longVideos(FEED_PAGE, offset), viewer, { k: "home", o: offset + FEED_PAGE });
+	if (offset) return items;
+	// the client moves the shelf to the end of the first row (reflowOptions)
+	const shorts = await shortVideos(SHELF_SHORTS);
+	if (shorts.length) items.splice(Math.min(1, items.length), 0, make("home/shorts_shelf", { ITEMS: shorts.map((v) => shortLockup(v, viewer)) }));
+	return items;
+}
 export const subscriptionsItems = async (viewer: Viewer, offset: number) => page(await subscriptionFeed(viewer, FEED_PAGE, offset), viewer, { k: "subs", o: offset + FEED_PAGE });
 
 export async function homePage(viewer: Viewer) {

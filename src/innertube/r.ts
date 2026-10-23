@@ -22,6 +22,8 @@ export type Video = {
 	created_at: Date;
 	visibility: "public" | "unlisted" | "private";
 	status: string;
+	// has a format to play, while the rest is still processing too
+	playable: boolean;
 	width: number | null;
 	height: number | null;
 	subscriber_count?: number;
@@ -196,8 +198,8 @@ export function signInModal(title: string, body: string, next = "/") {
 }
 
 // ---- images ----
-export function videoThumbnails(videoId: string) {
-	const u = (n: string) => `${PUBLIC_ORIGIN}/vi/${videoId}/${n}.jpg`;
+export function videoThumbnails(videoId: string, version?: string) {
+	const u = (n: string) => `${PUBLIC_ORIGIN}/vi/${videoId}/${n}.jpg${version ? `?v=${version}` : ""}`;
 	return {
 		thumbnails: [
 			{ url: u("default"), width: 120, height: 90 },
@@ -209,11 +211,12 @@ export function videoThumbnails(videoId: string) {
 	};
 }
 
-// 16:9 thumbnails for lockups
+// 16:9 thumbnails for lockups, as YouTube's grids list them: hq720 at the
+// two sizes a grid cell is drawn at (the client picks by cell width)
 export function lockupSources(videoId: string) {
 	return [
-		{ url: `${PUBLIC_ORIGIN}/vi/${videoId}/mqdefault.jpg`, width: 320, height: 180 },
-		{ url: `${PUBLIC_ORIGIN}/vi/${videoId}/hq720.jpg`, width: 1280, height: 720 },
+		{ url: `${PUBLIC_ORIGIN}/vi/${videoId}/hq720.jpg`, width: 360, height: 202 },
+		{ url: `${PUBLIC_ORIGIN}/vi/${videoId}/hq720.jpg`, width: 720, height: 404 },
 	];
 }
 

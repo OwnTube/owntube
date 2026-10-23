@@ -10,8 +10,10 @@ import { PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
 import { sql, textArray } from "../db";
 import { isShort } from "../data";
 import { videoThumbnails } from "../innertube/r";
+import { ensureStills } from "../media/process";
 import { type Mask, applyMask } from "./channel";
 import { feedbackToken } from "./feedback";
+import { thumbnailEditorState } from "./thumbnail";
 
 export type VideoRow = {
 	id: string;
@@ -22,7 +24,12 @@ export type VideoRow = {
 	description: string;
 	visibility: "public" | "unlisted" | "private";
 	status: "uploaded" | "queued" | "processing" | "ready" | "failed";
+	playable: boolean;
 	error: string | null;
+	source_path: string | null;
+	thumbnail_choice: string;
+	// the chosen thumbnail's file, which changes with the choice
+	thumb_path: string | null;
 	duration_ms: number | null;
 	view_count: string | number;
 	like_count: number;
@@ -36,7 +43,8 @@ export type VideoRow = {
 	size?: string | null;
 };
 
-export const VIDEO_COLUMNS = sql`v.id, v.channel_id, v.title, v.description, v.visibility, v.status, v.error, v.duration_ms, v.view_count, v.like_count, v.comment_count,
+export const VIDEO_COLUMNS = sql`v.id, v.channel_id, v.title, v.description, v.visibility, v.status, v.playable, v.error, v.source_path, v.thumbnail_choice,
+	(select t.path from video_thumbnails t where t.video_id = v.id and t.name = 'hqdefault') as thumb_path, v.duration_ms, v.view_count, v.like_count, v.comment_count,
 	v.created_at, v.published_at, v.draft, v.made_for_kids, v.original_filename, v.width, v.height,
 	(select t.received from upload_transfers t where t.video_id = v.id order by t.created_at desc limit 1) as received,
 	(select t.size from upload_transfers t where t.video_id = v.id order by t.created_at desc limit 1) as size`;
@@ -51,12 +59,16 @@ const seconds = (d: Date | null) => (d ? String(Math.floor(new Date(d).getTime()
 const OWNER_PERMISSIONS = ["CREATOR_VIDEO_PERMISSION_READ", "CREATOR_VIDEO_PERMISSION_WATCH", "CREATOR_VIDEO_PERMISSION_WRITE", "CREATOR_VIDEO_PERMISSION_DELETE"];
 
 export function creatorVideo(v: VideoRow): Record<string, unknown> {
+	// processing goes on after the video can be watched (the full set of
+	// formats); until then it is "uploading or processing"
 	const processing = v.status !== "ready" && v.status !== "failed";
+	const busy = !v.playable && v.status !== "failed";
+	const version = Bun.hash(v.thumb_path ?? "").toString(36);
 	const mfk = v.made_for_kids === null ? "VIDEO_MADE_FOR_KIDS_UNKNOWN" : v.made_for_kids ? "VIDEO_MADE_FOR_KIDS_MFK" : "VIDEO_MADE_FOR_KIDS_NOT_MFK";
 	const lengthSeconds = String(Math.round((v.duration_ms ?? 0) / 1000));
 	const watchUrl = `${PUBLIC_ORIGIN}/watch?v=${v.id}`;
-	const effective = v.status === "failed" ? "VIDEO_EFFECTIVE_VISIBILITY_UPLOAD_FAILED" : processing ? "VIDEO_EFFECTIVE_VISIBILITY_UPLOADING_OR_PROCESSING" : "VIDEO_EFFECTIVE_VISIBILITY_USER_CONFIG";
-	const effectiveStatus = v.status === "failed" ? "VIDEO_VISIBILITY_STATUS_UPLOAD_FAILED" : processing ? "VIDEO_VISIBILITY_STATUS_UPLOADING_OR_PROCESSING" : v.draft ? "VIDEO_VISIBILITY_STATUS_DRAFT" : "VIDEO_VISIBILITY_STATUS_USER_CONFIG";
+	const effective = v.status === "failed" && !v.playable ? "VIDEO_EFFECTIVE_VISIBILITY_UPLOAD_FAILED" : busy ? "VIDEO_EFFECTIVE_VISIBILITY_UPLOADING_OR_PROCESSING" : "VIDEO_EFFECTIVE_VISIBILITY_USER_CONFIG";
+	const effectiveStatus = v.status === "failed" && !v.playable ? "VIDEO_VISIBILITY_STATUS_UPLOAD_FAILED" : busy ? "VIDEO_VISIBILITY_STATUS_UPLOADING_OR_PROCESSING" : v.draft ? "VIDEO_VISIBILITY_STATUS_DRAFT" : "VIDEO_VISIBILITY_STATUS_USER_CONFIG";
 	return {
 		videoId: v.id,
 		channelId: v.channel_id,
@@ -121,15 +133,15 @@ export function creatorVideo(v: VideoRow): Record<string, unknown> {
 		status: v.status === "ready" ? "VIDEO_STATUS_PROCESSED" : v.status === "failed" ? "VIDEO_STATUS_FAILED" : "VIDEO_STATUS_UPLOADED",
 		statusDetails: processing ? { feedbackServiceContinuationToken: feedbackToken(v.id) } : {},
 		tags: [],
-		thumbnailDetails: videoThumbnails(v.id),
-		thumbnailEditorState: { stillId: 0, stills: [] },
-		thumbnailUrl: v.status === "ready" ? `${PUBLIC_ORIGIN}/vi/${v.id}/hqdefault.jpg` : "",
+		thumbnailDetails: v.playable ? videoThumbnails(v.id, version) : { thumbnails: [] },
+		thumbnailEditorState: v.playable ? thumbnailEditorState(v.id, v.thumbnail_choice, version) : { stillId: 1, stills: [] },
+		thumbnailUrl: v.playable ? `${PUBLIC_ORIGIN}/vi/${v.id}/hqdefault.jpg?v=${version}` : "",
 		timeCreatedSeconds: seconds(v.created_at),
 		timePublishedSeconds: v.draft ? "" : seconds(v.published_at),
 		uncaptionedReason: "VIDEO_UNCAPTIONED_REASON_UNNECESSARY_OR_NOT_SET",
 		unlistedExpired: false,
 		videoAdvertiserSpecificAgeGates: {},
-		videoStreamUrl: v.status === "ready" ? watchUrl : "",
+		videoStreamUrl: v.playable ? watchUrl : "",
 		viewCountIsHidden: false,
 		publicMetrics: { viewCount: String(v.view_count), commentCount: String(v.comment_count), likeCount: String(v.like_count), dislikeCount: "0" },
 		publicShorts: { isShortsRenderable: isShort(v) },
@@ -146,9 +158,13 @@ export function creatorVideo(v: VideoRow): Record<string, unknown> {
 }
 
 export async function videosFor(channelId: string, ids?: string[]) {
-	return (await sql`select ${VIDEO_COLUMNS} from videos v
+	const rows = (await sql`select ${VIDEO_COLUMNS} from videos v
 		where v.channel_id = ${channelId} and v.deleted_at is null ${ids ? sql`and v.id = any(${textArray(ids)}::text[])` : sql``}
 		order by coalesce(v.published_at, v.created_at) desc`) as unknown as VideoRow[];
+	// one video's details: its thumbnail picker needs the stills, which
+	// videos processed before they were made get now
+	if (ids && ids.length <= 3) await Promise.all(rows.filter((r) => r.playable).map((r) => ensureStills(r.id, r.source_path)));
+	return rows;
 }
 
 // Studio's Content tabs: Shorts are vertical or square and up to three

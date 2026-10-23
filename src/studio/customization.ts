@@ -1,8 +1,8 @@
 // Studio's Customization pages (/editing/profile, /editing/sections):
 // channel_edit/get_channel_page_settings, validate_channel_handle and
 // update_channel_page_settings, and the picture and banner uploads Studio
-// sends first (POST /channel_image_upload/profile|banner, answered with the
-// blob id the update then names).
+// sends first (a resumable upload to /channel_image_upload/profile|banner,
+// scotty.ts, answered with the blob id the update then names).
 //
 // Stored: name, handle, description, picture, banner, links and contact
 // email. The Home tab's layout (shelves, trailer, featured video), the video
@@ -14,14 +14,14 @@
 import { existsSync, mkdirSync, readdirSync, renameSync, rmSync, statSync } from "node:fs";
 import { join } from "node:path";
 import type { Viewer } from "../client/page";
-import { MEDIA_DIR, PUBLIC_ORIGIN, STUDIO_ORIGIN } from "../config";
+import { MEDIA_DIR, PUBLIC_ORIGIN } from "../config";
 import { sql } from "../db";
 import { decodeToken, encodeToken, randomId } from "../ids";
 import { responseContext } from "../innertube/r";
 import { ApiError, type Ctx, route } from "../innertube/router";
 import { make } from "../innertube/tpl";
-import { rateLimit } from "../ratelimit";
 import { creatorChannel } from "./channel";
+import { imageTransfer } from "./scotty";
 
 const DAY = 86_400_000;
 const CHANGES_PER_14_DAYS = 2;
@@ -120,46 +120,31 @@ function cleanLinks(update: any): Link[] | string {
 // ---- picture and banner uploads ----
 
 const PENDING = join(MEDIA_DIR, "channels", "pending");
-function imageType(b: Uint8Array) {
-	const hex = Buffer.from(b.subarray(0, 8)).toString("hex");
-	if (hex.startsWith("ffd8ff")) return "jpg";
-	if (hex.startsWith("89504e470d0a1a0a")) return "png";
-	if (hex.startsWith("47494638")) return "gif";
-	if (hex.startsWith("424d")) return "bmp";
-	return undefined;
-}
 
 export async function imageUploadRoute(req: Request, url: URL, viewer: Viewer): Promise<Response | undefined> {
 	const m = /^\/channel_image_upload\/(profile|banner)$/.exec(url.pathname);
 	if (!m) return undefined;
 	const kind = m[1] as Kind;
-	const fail = (status: number, message: string) => Response.json({ error: { code: status, message } }, { status });
-	if (req.method !== "POST") return fail(405, "method not allowed");
-	if (!viewer) return fail(401, "Sign in to upload.");
-	// cookies authenticate the uploader, so only Studio's own pages may use it
-	const origin = req.headers.get("origin");
-	if (origin && origin !== STUDIO_ORIGIN) return fail(403, "Uploads come from Studio.");
-	const channel = req.headers.get("x-youtube-channelid");
-	if (channel && channel !== viewer.channelId) return fail(403, "You can only change your own channel.");
-	if (!(await rateLimit(`channel-image:${viewer.userId}`, 30, 3600))) return fail(429, "Too many uploads. Try again later.");
-	if (Number(req.headers.get("content-length") ?? 0) > IMAGE_LIMIT[kind]) return fail(413, "The image is too large.");
-	const body = new Uint8Array(await req.arrayBuffer());
-	if (body.length > IMAGE_LIMIT[kind]) return fail(413, "The image is too large.");
-	const ext = imageType(body);
-	if (!ext) return fail(400, "Use a JPG, PNG, GIF or BMP image.");
-	mkdirSync(PENDING, { recursive: true });
-	// uploads the channel never saved are dropped after a day
-	for (const f of readdirSync(PENDING)) if (Date.now() - statSync(join(PENDING, f)).mtimeMs > DAY) rmSync(join(PENDING, f), { force: true });
-	const file = `${randomId(16)}.${ext}`;
-	await Bun.write(join(PENDING, file), body);
-	return Response.json({ encryptedBlobId: encodeToken({ s: 4, u: viewer.userId, k: kind, f: file }) });
+	return imageTransfer(req, url, viewer, {
+		purpose: "channel",
+		limit: IMAGE_LIMIT[kind],
+		finish: async (bytes, ext) => {
+			if (!viewer) return "Sign in to upload.";
+			mkdirSync(PENDING, { recursive: true });
+			// uploads the channel never saved are dropped after a day
+			for (const f of readdirSync(PENDING)) if (Date.now() - statSync(join(PENDING, f)).mtimeMs > DAY) rmSync(join(PENDING, f), { force: true });
+			const file = `${randomId(16)}.${ext}`;
+			await Bun.write(join(PENDING, file), bytes);
+			return { encryptedBlobId: encodeToken({ s: 4, u: viewer.userId, k: kind, f: file }) };
+		},
+	});
 }
 
 // moves an uploaded image into place as the channel's picture or banner;
 // undefined when the blob isn't this user's upload of that kind
 function claimImage(blobId: unknown, kind: Kind, viewer: NonNullable<Viewer>) {
 	const t = decodeToken<{ s?: number; u?: string; k?: string; f?: string }>(blobId);
-	if (t?.s !== 4 || t.u !== viewer.userId || t.k !== kind || !/^[\w-]+\.(jpg|png|gif|bmp)$/.test(String(t.f))) return undefined;
+	if (t?.s !== 4 || t.u !== viewer.userId || t.k !== kind || !/^[\w-]+\.(jpg|png|gif|bmp|webp)$/.test(String(t.f))) return undefined;
 	const from = join(PENDING, String(t.f));
 	if (!existsSync(from)) return undefined;
 	const rel = join("channels", viewer.channelId, `${kind === "profile" ? "avatar" : "banner"}-${Date.now()}.${String(t.f).split(".").pop()}`);
@@ -248,7 +233,7 @@ route(
 		if (b.channelLinksUpdate) {
 			const links = cleanLinks(b.channelLinksUpdate);
 			if (typeof links === "string") failed("channelLinksUpdateStatus", links);
-			else await sql`update channels set links = ${JSON.stringify(links)}::jsonb where id = ${c.id}`;
+			else await sql`update channels set links = ${JSON.stringify(links)}::text::jsonb where id = ${c.id}`;
 		}
 
 		if (b.businessEmailUpdate) {

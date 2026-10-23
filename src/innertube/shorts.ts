@@ -112,7 +112,7 @@ const sequenceToken = (current: string, offset = 0) => encodeToken({ k: "shorts"
 async function shortOrThrow(id: unknown, viewer: Viewer) {
 	if (!isVideoId(id)) throw new ApiError(400, "Invalid video id");
 	const v = await getVideo(id, viewer);
-	if (!v || v.status !== "ready") throw new ApiError(404, "Not found");
+	if (!v?.playable) throw new ApiError(404, "Not found");
 	return v;
 }
 
@@ -142,7 +142,7 @@ export async function shortsPage(url: URL, viewer: Viewer): Promise<PageData | R
 	if (id) {
 		v = isVideoId(id) ? await getVideo(id, viewer) : undefined;
 		if (!v) return undefined;
-		if (!isShort(v) || v.status !== "ready") return Response.redirect(`/watch?v=${id}`, 302);
+		if (!isShort(v) || !v.playable) return Response.redirect(`/watch?v=${id}`, 302);
 	} else {
 		[v] = await shortVideos(1);
 		if (!v) return Response.redirect("/", 302);
