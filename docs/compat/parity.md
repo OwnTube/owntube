@@ -107,7 +107,8 @@ All are browse `SPaccount_*` pages (page type `WEB_PAGE_TYPE_SETTINGS`, served i
 | Notifications bell | masthead | in | `notification/get_unseen_count`, `browse FEnotifications_inbox` | — | implemented | manual | Inbox is always empty |
 | Like / dislike | watch | in | `like/*` | ratings | browser verified | e2e:core | — |
 | Subscribe / unsubscribe, bell preference | watch, channel | in | `subscription/*`, `notification/modify_channel_preference` | subscriptions | browser verified | e2e:core | The bell preference isn't stored |
-| Comments: post, reply, like, sort, delete own | watch | in (read: out) | `comment/*`, `next` continuations | comments, comment_likes | browser verified | e2e:core, manual | Heart, pin, edit, report |
+| Comments: post, reply, like, sort, delete own | watch | in (read: out) | `comment/*`, `next` continuations | comments, comment_likes | browser verified | e2e:core, manual | Pin, edit, report |
+| Creator hearts and held comments on the watch page | watch | out, in | `next` continuations (`toolbar.creatorThumbnailUrl`, `heartState`) | comments.hearted_at, spam_at | browser verified | e2e:studio-comments (a held comment is absent), manual 2026-10-23 (heart with the channel's avatar) | — |
 | GIFs in comments | comment box | in | `/_ot/gifs/*`, `comment/create_comment` | comments.gif, gif_favorites | browser verified | e2e:gifs | Needs `KLIPY_API_KEY` |
 | Comment emoji picker | comment box | in | — | — | not investigated | — | The client's emoji data needs pinning |
 | Save to playlist sheet, Watch later, New playlist | watch, lockup menus | in | `get_panel PAadd_to_playlist`, `browse/edit_playlist`, `playlist/create` | playlists | browser verified | e2e:core, manual | — |
@@ -144,12 +145,13 @@ Studio runs on its own origin. Signed-out visitors are sent to the main origin's
 | Analytics periods (Last 28 days, Lifetime, …) | period menu | `screenConfig.timePeriod` | — | browser verified | e2e:analytics (Lifetime); manual | Days end today (figures are current to the hour); YouTube's end yesterday |
 | Video analytics | video nav | `yta_web/get_screen` (entity `videoId`) | — | captured | survey | No capture of a video's analytics layout; not served |
 | Video details: title, description, visibility | Content row | `creator/get_creator_videos`, `video_manager/metadata_update` | videos | browser verified | manual | Thumbnail upload, playlists, audience, tags, category, language, license, comments settings, scheduling |
-| Video comments | video nav | `comment/get_comments`, `comment/check_creator_comments_bulk_action` | — | captured | survey: both unhandled | — |
+| Video comments | video nav | `comment/get_comments` with `videoId` (Studio route) | comments | browser verified | e2e:studio-comments | `check_creator_comments_bulk_action` gets an empty answer (bulk actions run at once) |
 | Video subtitles | video nav | `crowdsourcing/get_video_translations`, `creator/get_supported_content_languages` | — | captured | survey: unhandled | — |
 | Video editor | video nav | `video_editor/*` (6 methods), `creator/list_creator_info_cards`, `creator/get_creator_endscreens` | — | captured | survey: unhandled; one illustration 404 | — |
 | Video copyright | video nav | `creator/list_creator_received_claims` | — | captured | survey: unhandled | No checking system exists; must not report checks as done |
 | Video details extras | edit page | `get_creator_social_suggestions`, `feature_eligibility/check_feature_rate_limit` | — | captured | survey: unhandled | — |
-| Community: comments | nav | `comment/get_comments`, `comment/check_creator_comments_bulk_action` | comments | captured | survey: unhandled | Moderation, replies, hearts |
+| Community: comments (Published, Held; Unresponded/Responded, questions, search, content type, sort; paging) | nav | `comment/get_comments`, `get_comment_replies` (Studio routes, [`studio/comments.ts`](../../src/studio/comments.ts)) | comments | browser verified | e2e:studio-comments, manual 2026-10-23 (bob) | Pin; Held lists only comments the channel reported (no automatic holding); follow-up and Super Thanks categories match nothing; the batch heart is behind a flag the pinned build leaves off |
+| Comment actions: reply, edit own, like, heart, remove, report as spam, approve; selection with the batch bar | comment row | `comment/create_comment_reply`, `update_comment`, `update_comment_reply`, `perform_comment_action` (Studio routes) | comments, comment_reactions | browser verified | e2e:studio-comments | A removed reply leaves the thread's "1 reply" toggle until the page reloads |
 | Subtitles | nav | `crowdsourcing/list_video_translations`, `get_video_translations`, `creator/get_supported_content_languages` | — | captured | survey: unhandled | — |
 | Copyright | nav | `copyright/list_complaint_videos` | — | captured | survey: unhandled; one icon 404 | — |
 | Earn (`/monetization`, `/monetization/overview`) | nav | — | — | captured | survey: no errors, no unhandled methods | Content not checked |

@@ -27,7 +27,7 @@ export async function latestVideos(limit: number, offset = 0, excludeId = ""): P
 
 // Shorts: vertical or square, up to three minutes (YouTube's definition)
 export const SHORT_MAX_MS = 180_000;
-const SHORT = sql`v.height >= v.width and v.width > 0 and v.duration_ms <= ${SHORT_MAX_MS}`;
+export const SHORT = sql`v.height >= v.width and v.width > 0 and v.duration_ms <= ${SHORT_MAX_MS}`;
 export const isShort = (v: { width?: number | null; height?: number | null; duration_ms?: number | null }) => !!v.width && !!v.height && v.height >= v.width && (v.duration_ms ?? Infinity) <= SHORT_MAX_MS;
 
 export async function shortVideos(limit: number, offset = 0, excludeId = ""): Promise<Video[]> {

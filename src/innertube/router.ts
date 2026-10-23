@@ -5,6 +5,7 @@
 
 import { verifyApiSignature } from "../auth";
 import type { Viewer } from "../client/page";
+import { STUDIO_HOST } from "../config";
 import { recordMiss } from "../diagnostics";
 import { addBadges } from "./badges";
 import { responseContext } from "./r";
@@ -12,9 +13,11 @@ import { responseContext } from "./r";
 export type Ctx = { req: Request; url: URL; body: any; viewer: Viewer; method: string };
 export type Handler = (ctx: Ctx) => Promise<unknown> | unknown;
 
+// Studio and the main client share some method names (comment/*) but expect
+// different renderers; a Studio route answers the same method on Studio's host
 const handlers = new Map<string, { fn: Handler; mutation: boolean }>();
-export function route(method: string, fn: Handler, opts: { mutation?: boolean } = {}) {
-	handlers.set(method, { fn, mutation: !!opts.mutation });
+export function route(method: string, fn: Handler, opts: { mutation?: boolean; studio?: boolean } = {}) {
+	handlers.set(opts.studio ? `studio:${method}` : method, { fn, mutation: !!opts.mutation });
 }
 
 export class ApiError extends Error {
@@ -55,7 +58,7 @@ export async function innertube(req: Request, url: URL, viewer: Viewer): Promise
 		if (e instanceof ApiError) return errorEnvelope(e.status, e.message, e.reason);
 		throw e;
 	}
-	const h = handlers.get(method);
+	const h = (url.host === STUDIO_HOST && handlers.get(`studio:${method}`)) || handlers.get(method);
 	if (!h) {
 		recordMiss(`youtubei ${method}`, JSON.stringify(body).slice(0, 400));
 		return Response.json({ responseContext: responseContext(viewer) });

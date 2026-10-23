@@ -24,7 +24,7 @@ import { baseVars } from "./vars";
 const PAGE = 20;
 const REPLY_PAGE = 10;
 
-type Row = { id: string; video_id: string; parent_id: string | null; text: string; gif: Gif | null; like_count: number; reply_count: number; created_at: Date; author_channel_id: string; author_handle: string; author_title: string; video_channel_id: string; liked: boolean };
+type Row = { id: string; video_id: string; parent_id: string | null; text: string; gif: Gif | null; like_count: number; reply_count: number; created_at: Date; hearted_at: Date | null; author_channel_id: string; author_handle: string; author_title: string; video_channel_id: string; video_channel_handle: string; liked: boolean };
 
 const key = (kind: string, id: string) => Buffer.from(`${kind}:${id}`).toString("base64url");
 const SHARED_KEY = key("shared", "comments");
@@ -95,7 +95,12 @@ function entities(c: Row, viewer: Viewer, vars: Vars) {
 	const mutations = make<any[]>(`comments/entities${c.parent_id ? "_reply" : ""}_${io(viewer)}`, vars);
 	for (const m of mutations) {
 		const p = m.payload;
-		if (p.engagementToolbarStateEntityPayload) p.engagementToolbarStateEntityPayload.likeState = c.liked ? "TOOLBAR_LIKE_STATE_LIKED" : "TOOLBAR_LIKE_STATE_INDIFFERENT";
+		if (p.engagementToolbarStateEntityPayload) {
+			p.engagementToolbarStateEntityPayload.likeState = c.liked ? "TOOLBAR_LIKE_STATE_LIKED" : "TOOLBAR_LIKE_STATE_INDIFFERENT";
+			if (c.hearted_at) p.engagementToolbarStateEntityPayload.heartState = "TOOLBAR_HEART_STATE_HEARTED";
+		}
+		// the video's channel hearted it (in Studio): its avatar on the heart
+		if (p.commentEntityPayload && c.hearted_at) Object.assign(p.commentEntityPayload.toolbar, { creatorThumbnailUrl: avatarUrl(c.video_channel_id, 88), heartActiveTooltip: `❤ by @${c.video_channel_handle}` });
 		if (p.engagementToolbarSurfaceEntityPayload && !(vars.MENU_ITEMS as unknown[] | undefined)?.length) delete p.engagementToolbarSurfaceEntityPayload.menuCommand;
 		// a GIF (gifs.ts), shown by the client under the text
 		if (p.commentSurfaceEntityPayload && c.gif) p.commentSurfaceEntityPayload.imageAttachmentViewModel = imageAttachment(c.gif);
@@ -123,10 +128,10 @@ function replyItem(c: Row, viewer: Viewer) {
 
 async function load(videoId: string, viewer: Viewer, opts: { parent?: string; sort?: string; offset: number; limit: number }): Promise<Row[]> {
 	const order = opts.parent ? sql`c.created_at asc` : opts.sort === "new" ? sql`c.created_at desc` : sql`c.like_count desc, c.reply_count desc, c.created_at desc`;
-	return (await sql`select c.id, c.video_id, c.parent_id, c.text, c.gif, c.like_count, c.reply_count, c.created_at, c.author_channel_id, ch.handle as author_handle, ch.title as author_title,
-		v.channel_id as video_channel_id, exists(select 1 from comment_reactions r where r.comment_id = c.id and r.user_id = ${viewer?.userId ?? "0"} and r.kind = 'like') as liked
-		from comments c join channels ch on ch.id = c.author_channel_id join videos v on v.id = c.video_id
-		where c.video_id = ${videoId} and c.deleted_at is null and ${opts.parent ? sql`c.parent_id = ${opts.parent}` : sql`c.parent_id is null`}
+	return (await sql`select c.id, c.video_id, c.parent_id, c.text, c.gif, c.like_count, c.reply_count, c.created_at, c.hearted_at, c.author_channel_id, ch.handle as author_handle, ch.title as author_title,
+		v.channel_id as video_channel_id, vc.handle as video_channel_handle, exists(select 1 from comment_reactions r where r.comment_id = c.id and r.user_id = ${viewer?.userId ?? "0"} and r.kind = 'like') as liked
+		from comments c join channels ch on ch.id = c.author_channel_id join videos v on v.id = c.video_id join channels vc on vc.id = v.channel_id
+		where c.video_id = ${videoId} and c.deleted_at is null and c.spam_at is null and ${opts.parent ? sql`c.parent_id = ${opts.parent}` : sql`c.parent_id is null`}
 		order by ${order}, c.id limit ${opts.limit} offset ${opts.offset}`) as Row[];
 }
 
@@ -181,7 +186,7 @@ export async function commentsContinuation(tok: { v: string; s?: string; c?: str
 	if (rows.length === PAGE) items.push(continuationItem(encodeToken({ k: "comments", v: tok.v, s: sort, o: offset + PAGE, ...(shorts ? { t: "s" } : {}) }), shorts ? "/youtubei/v1/browse" : "/youtubei/v1/next"));
 	const update = entityUpdate([sharedPayload(viewer), ...threads.flatMap((t) => t.mutations)]);
 	if (offset > 0) return { responseContext: responseContext(viewer), onResponseReceivedEndpoints: [{ appendContinuationItemsAction: { continuationItems: items, targetId: section } }], ...update };
-	const [{ n }] = await sql`select count(*)::int as n from comments where video_id = ${tok.v} and deleted_at is null`;
+	const [{ n }] = await sql`select count(*)::int as n from comments where video_id = ${tok.v} and deleted_at is null and spam_at is null`;
 	return {
 		responseContext: responseContext(viewer),
 		onResponseReceivedEndpoints: [
@@ -212,7 +217,7 @@ async function insertComment(videoId: string, viewer: NonNullable<Viewer>, { tex
 	const id = newCommentId();
 	await sql.begin(async (tx) => {
 		if (parent) {
-			const [p] = await tx`select id from comments where id = ${parent} and video_id = ${videoId} and parent_id is null and deleted_at is null`;
+			const [p] = await tx`select id from comments where id = ${parent} and video_id = ${videoId} and parent_id is null and deleted_at is null and spam_at is null`;
 			if (!p) throw new ApiError(404, "The comment you're replying to was removed.");
 			await tx`update comments set reply_count = reply_count + 1 where id = ${parent}`;
 		}
@@ -267,7 +272,8 @@ route(
 					}
 				});
 				const k = key("toolbarstate", t.c);
-				mutations.push({ entityKey: k, type: "ENTITY_MUTATION_TYPE_REPLACE", payload: { engagementToolbarStateEntityPayload: { key: k, likeState: t.a === "like" ? "TOOLBAR_LIKE_STATE_LIKED" : "TOOLBAR_LIKE_STATE_INDIFFERENT", heartState: "TOOLBAR_HEART_STATE_UNHEARTED" } } });
+				const [{ hearted_at }] = await sql`select hearted_at from comments where id = ${t.c}`;
+				mutations.push({ entityKey: k, type: "ENTITY_MUTATION_TYPE_REPLACE", payload: { engagementToolbarStateEntityPayload: { key: k, likeState: t.a === "like" ? "TOOLBAR_LIKE_STATE_LIKED" : "TOOLBAR_LIKE_STATE_INDIFFERENT", heartState: hearted_at ? "TOOLBAR_HEART_STATE_HEARTED" : "TOOLBAR_HEART_STATE_UNHEARTED" } } });
 			} else if (t.a === "delete") {
 				const [c] = await sql`update comments set deleted_at = now() where id = ${t.c} and author_channel_id = ${viewer!.channelId} and deleted_at is null returning video_id, parent_id`;
 				if (c) {

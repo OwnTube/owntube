@@ -1805,6 +1805,15 @@ function studioAnalytics() {
 	save("studio/analytics_cards", { dayStart, dateId: Number(`${day.getUTCFullYear()}${String(day.getUTCMonth() + 1).padStart(2, "0")}${String(day.getUTCDate()).padStart(2, "0")}`), cards }, [channelId, now]);
 }
 
+// Studio's Comments page: the section YouTube answers get_comments with (its
+// header and batch action bar, and the message for an empty list); the
+// comment threads themselves follow the client's contract (studio/comments.ts)
+function studioComments() {
+	const [[, res]] = bodies("studio-all", /comment_get_comments\.resp$/);
+	const section = clean(res.contents.itemSectionRenderer);
+	save("studio/comments_section", section);
+}
+
 // ======================================================================
 
 // ======================================================================
@@ -2137,6 +2146,7 @@ const steps: [string, () => void][] = [
 	["studio", studio],
 	["studio-dashboard", studioDashboard],
 	["studio-analytics", studioAnalytics],
+	["studio-comments", studioComments],
 	["badges", badges],
 	["settings", settingsPages],
 	["switcher", accountSwitcher],

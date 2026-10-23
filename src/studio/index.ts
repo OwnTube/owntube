@@ -18,6 +18,7 @@ import "./api";
 import "./feedback";
 import "./dashboard";
 import "./screens";
+import "./comments";
 
 // Studio's pages may load images and media from the main origin (avatars,
 // thumbnails, the player's streams) and nothing from anywhere else

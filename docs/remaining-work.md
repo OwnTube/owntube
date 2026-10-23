@@ -43,11 +43,11 @@ The settings pages are served natively and their switches persist ([compat/parit
 
 - Dashboard comments and recent subscribers cards.
 - Content tabs: Posts (`post/list_creator_posts`), Inspiration (`creator/list_video_ideas`), the promotions illustration; then filters and search, views in the list, create/edit playlists. (The "Nn`" errors an earlier survey reported came from URLs that aren't in Studio's route table.)
-- Methods the Studio survey found unhandled, by page: comments `comment/get_comments`, `comment/check_creator_comments_bulk_action`; subtitles `crowdsourcing/get_video_translations`, `crowdsourcing/list_video_translations`, `creator/get_supported_content_languages`; copyright `copyright/list_complaint_videos`, `creator/list_creator_received_claims`; customization `channel_edit/get_channel_page_settings`; audio library `creator_music/list_tracks`; editor `video_editor/*`, `creator/list_creator_info_cards`, `creator/get_creator_endscreens`; video details `get_creator_social_suggestions`, `feature_eligibility/check_feature_rate_limit`.
+- Methods the Studio survey found unhandled, by page: subtitles `crowdsourcing/get_video_translations`, `crowdsourcing/list_video_translations`, `creator/get_supported_content_languages`; copyright `copyright/list_complaint_videos`, `creator/list_creator_received_claims`; customization `channel_edit/get_channel_page_settings`; audio library `creator_music/list_tracks`; editor `video_editor/*`, `creator/list_creator_info_cards`, `creator/get_creator_endscreens`; video details `get_creator_social_suggestions`, `feature_eligibility/check_feature_rate_limit`.
 - Video details: custom thumbnail upload, playlists, audience (made for kids), age restriction, tags, category, language, recording date/location, license, embedding, comments and ratings settings, scheduling.
 - Video editor (trim, blur, audio), end screens, cards, subtitles editor.
 - Analytics: a video's own analytics (needs a capture of its layout); the Content tab's section when opened directly; Advanced mode (explore) queries beyond the ones the cards make; impressions, traffic sources, returning viewers and demographics are not recorded.
-- Community: comments moderation (held for review, likes, hearts, replies, pin), mentions, posts.
+- Community: pinning comments, holding comments for review automatically (Held lists only those the channel reported as spam), mentions, posts.
 - Customization: profile, banner, watermark, layout (trailer, featured sections), handle.
 - Audio library, Copyright, Content detection, Earn (shown as unavailable but navigable).
 - Settings: upload defaults, permissions, community moderation words, channel basics.

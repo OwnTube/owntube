@@ -1,0 +1,64 @@
+{
+	"contents": [
+		{
+			"messageRenderer": {
+				"text": {
+					"runs": [
+						{
+							"text": "No comments found. Try searching for something else or removing filters."
+						}
+					]
+				},
+				"icon": {
+					"iconType": "CREATOR_STUDIO_NO_SEARCH_MATCH"
+				}
+			}
+		}
+	],
+	"header": {
+		"commentsHeaderRenderer": {
+			"batchActionBar": {
+				"commentBatchActionBarRenderer": {
+					"removeButton": {
+						"buttonRenderer": {
+							"style": "STYLE_TEXT",
+							"size": "SIZE_DEFAULT",
+							"icon": {
+								"iconType": "DELETE"
+							},
+							"tooltip": "Remove multiple comments",
+							"accessibilityData": {
+								"accessibilityData": {
+									"label": "Remove multiple comments"
+								}
+							}
+						}
+					},
+					"spamButton": {
+						"buttonRenderer": {
+							"style": "STYLE_TEXT",
+							"size": "SIZE_DEFAULT",
+							"icon": {
+								"iconType": "FLAG"
+							},
+							"tooltip": "Report multiple comments as spam",
+							"accessibilityData": {
+								"accessibilityData": {
+									"label": "Report multiple comments as spam"
+								}
+							}
+						}
+					},
+					"selectedText": {
+						"runs": [
+							{
+								"text": "Selected"
+							}
+						]
+					}
+				}
+			}
+		}
+	},
+	"sectionIdentifier": "comment-item-section"
+}
