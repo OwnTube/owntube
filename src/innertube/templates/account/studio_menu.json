@@ -1,0 +1,353 @@
+{
+	"actions": [
+		{
+			"openPopupAction": {
+				"popup": {
+					"multiPageMenuRenderer": {
+						"header": {
+							"activeAccountHeaderRenderer": {
+								"accountName": {
+									"simpleText": "{{VIEWER_NAME}}"
+								},
+								"accountPhoto": {
+									"thumbnails": "{{VIEWER_PHOTO}}"
+								},
+								"channelEndpoint": {
+									"commandMetadata": {
+										"webCommandMetadata": {
+											"url": "{{ORIGIN}}{{VIEWER_CHANNEL_URL}}",
+											"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+											"rootVe": 83769
+										}
+									},
+									"urlEndpoint": {
+										"url": "{{ORIGIN}}{{VIEWER_CHANNEL_URL}}"
+									}
+								},
+								"channelHandle": {
+									"simpleText": "{{VIEWER_AT_HANDLE}}"
+								}
+							}
+						},
+						"sections": [
+							{
+								"multiPageMenuSectionRenderer": {
+									"items": [
+										{
+											"compactLinkRenderer": {
+												"icon": {
+													"iconType": "ACCOUNT_BOX"
+												},
+												"title": {
+													"runs": [
+														{
+															"text": "Your channel"
+														}
+													]
+												},
+												"navigationEndpoint": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"url": "{{ORIGIN}}{{VIEWER_CHANNEL_URL}}",
+															"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+															"rootVe": 83769
+														}
+													},
+													"urlEndpoint": {
+														"url": "{{ORIGIN}}{{VIEWER_CHANNEL_URL}}"
+													}
+												}
+											}
+										},
+										{
+											"compactLinkRenderer": {
+												"icon": {
+													"iconType": "VIDEO_YOUTUBE"
+												},
+												"title": {
+													"runs": [
+														{
+															"text": "YouTube"
+														}
+													]
+												},
+												"navigationEndpoint": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"url": "{{ORIGIN}}/",
+															"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+															"rootVe": 83769
+														}
+													},
+													"urlEndpoint": {
+														"url": "{{ORIGIN}}/"
+													}
+												}
+											}
+										},
+										{
+											"compactLinkRenderer": {
+												"icon": {
+													"iconType": "SWITCH_ACCOUNTS"
+												},
+												"title": {
+													"runs": [
+														{
+															"text": "Switch account"
+														}
+													]
+												},
+												"secondaryIcon": {
+													"iconType": "CHEVRON_RIGHT"
+												},
+												"serviceEndpoint": {
+													"getAccountSwitcherEndpoint": {
+														"hack": true
+													}
+												}
+											}
+										},
+										{
+											"compactLinkRenderer": {
+												"icon": {
+													"iconType": "EXIT_TO_APP"
+												},
+												"title": {
+													"runs": [
+														{
+															"text": "Sign out"
+														}
+													]
+												},
+												"navigationEndpoint": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"url": "{{ORIGIN}}/logout",
+															"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+															"rootVe": 83769
+														}
+													},
+													"urlEndpoint": {
+														"url": "{{ORIGIN}}/logout"
+													}
+												}
+											}
+										}
+									]
+								}
+							},
+							{
+								"multiPageMenuSectionRenderer": {
+									"items": [
+										{
+											"toggleThemeCompactLinkRenderer": {
+												"primaryIcon": {
+													"iconType": "DARK_THEME"
+												},
+												"secondaryIcon": {
+													"iconType": "CHEVRON_RIGHT"
+												},
+												"serviceEndpoint": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"sendPost": true
+														}
+													},
+													"signalServiceEndpoint": {
+														"signal": "CLIENT_SIGNAL",
+														"actions": [
+															{
+																"getMultiPageMenuAction": {
+																	"menu": {
+																		"multiPageMenuRenderer": {
+																			"header": {
+																				"simpleMenuHeaderRenderer": {
+																					"backButton": {
+																						"buttonRenderer": {
+																							"style": "STYLE_DEFAULT",
+																							"size": "SIZE_DEFAULT",
+																							"isDisabled": false,
+																							"icon": {
+																								"iconType": "BACK"
+																							},
+																							"accessibilityData": {
+																								"accessibilityData": {
+																									"label": "Back"
+																								}
+																							}
+																						}
+																					},
+																					"title": {
+																						"runs": [
+																							{
+																								"text": "Appearance"
+																							}
+																						]
+																					}
+																				}
+																			},
+																			"sections": [
+																				{
+																					"multiPageMenuSectionRenderer": {
+																						"items": [
+																							{
+																								"compactLinkRenderer": {
+																									"title": {
+																										"runs": [
+																											{
+																												"text": "Setting applies to this browser only"
+																											}
+																										]
+																									},
+																									"style": "COMPACT_LINK_STYLE_TYPE_DISCLAIMER"
+																								}
+																							},
+																							{
+																								"compactLinkRenderer": {
+																									"icon": {
+																										"iconType": "CHECK"
+																									},
+																									"title": {
+																										"runs": [
+																											{
+																												"text": "Use device theme"
+																											}
+																										]
+																									},
+																									"serviceEndpoint": {
+																										"commandMetadata": {
+																											"webCommandMetadata": {
+																												"sendPost": true
+																											}
+																										},
+																										"signalServiceEndpoint": {
+																											"signal": "CLIENT_SIGNAL",
+																											"actions": [
+																												{
+																													"signalAction": {
+																														"signal": "TOGGLE_DARK_THEME_DEVICE"
+																													}
+																												}
+																											]
+																										}
+																									},
+																									"style": "COMPACT_LINK_STYLE_TYPE_SELECTION_MENU"
+																								}
+																							},
+																							{
+																								"compactLinkRenderer": {
+																									"title": {
+																										"runs": [
+																											{
+																												"text": "Dark theme"
+																											}
+																										]
+																									},
+																									"serviceEndpoint": {
+																										"commandMetadata": {
+																											"webCommandMetadata": {
+																												"sendPost": true
+																											}
+																										},
+																										"signalServiceEndpoint": {
+																											"signal": "CLIENT_SIGNAL",
+																											"actions": [
+																												{
+																													"signalAction": {
+																														"signal": "TOGGLE_DARK_THEME_ON"
+																													}
+																												}
+																											]
+																										}
+																									},
+																									"style": "COMPACT_LINK_STYLE_TYPE_SELECTION_MENU"
+																								}
+																							},
+																							{
+																								"compactLinkRenderer": {
+																									"title": {
+																										"runs": [
+																											{
+																												"text": "Light theme"
+																											}
+																										]
+																									},
+																									"serviceEndpoint": {
+																										"commandMetadata": {
+																											"webCommandMetadata": {
+																												"sendPost": true
+																											}
+																										},
+																										"signalServiceEndpoint": {
+																											"signal": "CLIENT_SIGNAL",
+																											"actions": [
+																												{
+																													"signalAction": {
+																														"signal": "TOGGLE_DARK_THEME_OFF"
+																													}
+																												}
+																											]
+																										}
+																									},
+																									"style": "COMPACT_LINK_STYLE_TYPE_SELECTION_MENU"
+																								}
+																							}
+																						]
+																					}
+																				}
+																			]
+																		}
+																	}
+																}
+															}
+														]
+													}
+												},
+												"label": {
+													"runs": [
+														{
+															"text": "Appearance: Device theme"
+														}
+													]
+												}
+											}
+										},
+										{
+											"compactLinkRenderer": {
+												"icon": {
+													"iconType": "FEEDBACK"
+												},
+												"title": {
+													"runs": [
+														{
+															"text": "Send feedback"
+														}
+													]
+												},
+												"navigationEndpoint": {
+													"commandMetadata": {
+														"webCommandMetadata": {
+															"url": "{{ORIGIN}}/feedback",
+															"webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+															"rootVe": 83769
+														}
+													},
+													"urlEndpoint": {
+														"url": "{{ORIGIN}}/feedback",
+														"target": "TARGET_NEW_WINDOW"
+													}
+												}
+											}
+										}
+									]
+								}
+							}
+						],
+						"style": "MULTI_PAGE_MENU_STYLE_TYPE_ACCOUNT"
+					}
+				},
+				"popupType": "DROPDOWN"
+			}
+		}
+	]
+}

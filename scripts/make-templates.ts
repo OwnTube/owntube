@@ -1915,6 +1915,36 @@ function accountSwitcher() {
 	save("account/switcher", r);
 }
 
+// Studio's account menu (account/account_menu from studio.youtube.com): Your
+// channel, YouTube, Switch account and Sign out, then Appearance and Send
+// feedback. Its links lead to this instance's main origin; Studio's feedback
+// is Google's in-page form, so it opens /feedback instead.
+function studioMenu() {
+	const r = clean(JSON.parse(body("private/studio-switcher", /account_account_menu\.resp$/)));
+	const m = r.actions[0].openPopupAction.popup.multiPageMenuRenderer;
+	const h = m.header.activeAccountHeaderRenderer;
+	delete h.settingsEndpoint; // the site picker (/select_site)
+	h.accountName = { simpleText: "{{VIEWER_NAME}}" };
+	h.channelHandle = { simpleText: "{{VIEWER_AT_HANDLE}}" };
+	h.accountPhoto.thumbnails = "{{VIEWER_PHOTO}}";
+	h.channelEndpoint = urlCommand("{{ORIGIN}}{{VIEWER_CHANNEL_URL}}");
+	for (const sec of m.sections)
+		for (const it of sec.multiPageMenuSectionRenderer?.items ?? []) {
+			const c = it.compactLinkRenderer;
+			if (!c) continue;
+			const set = (url: string, newWindow = false) => {
+				delete c.serviceEndpoint;
+				c.navigationEndpoint = urlCommand(url, newWindow);
+			};
+			const icon = c.icon?.iconType;
+			if (icon === "ACCOUNT_BOX") set("{{ORIGIN}}{{VIEWER_CHANNEL_URL}}");
+			else if (icon === "VIDEO_YOUTUBE") set("{{ORIGIN}}/");
+			else if (icon === "EXIT_TO_APP") set("{{ORIGIN}}/logout");
+			else if (icon === "FEEDBACK") set("{{ORIGIN}}/feedback", true);
+		}
+	save("account/studio_menu", r);
+}
+
 const only = process.argv.slice(2);
 personalValues();
 const steps: [string, () => void][] = [
@@ -1938,6 +1968,7 @@ const steps: [string, () => void][] = [
 	["badges", badges],
 	["settings", settingsPages],
 	["switcher", accountSwitcher],
+	["studio-menu", studioMenu],
 ];
 for (const [name, fn] of steps) {
 	if (only.length && !only.includes(name)) continue;

@@ -103,9 +103,11 @@ export async function instanceRoutes(req: Request, url: URL, viewer: Viewer): Pr
 	if (path.startsWith("/_ot/")) return instanceAsset(path) ?? new Response("not found", { status: 404 });
 	if (path === "/logout") {
 		if (req.method !== "POST" && req.method !== "GET") return new Response("method not allowed", { status: 405 });
-		// GET only from this origin (the account menu link); a cross-site GET can't sign anyone out
+		// GET only from this origin or Studio's (the account menu links); a
+		// cross-site GET can't sign anyone out
 		const site = req.headers.get("sec-fetch-site");
-		if (req.method === "GET" && site && site !== "same-origin" && site !== "none") return new Response("forbidden", { status: 403 });
+		const fromStudio = site === "same-site" && (req.headers.get("referer") ?? "").startsWith(`${STUDIO_ORIGIN}/`);
+		if (req.method === "GET" && site && site !== "same-origin" && site !== "none" && !fromStudio) return new Response("forbidden", { status: 403 });
 		const headers = new Headers({ location: "/" });
 		for (const c of await destroySession(req)) headers.append("set-cookie", c);
 		return new Response(null, { status: 303, headers });

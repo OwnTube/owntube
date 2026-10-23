@@ -60,9 +60,13 @@ async function survey(signedIn: boolean): Promise<Row[]> {
 			const inner = sel ? Object.keys(sel)[0] : "";
 			const items = sel ? ((Object.values(sel)[0] as any)?.contents ?? []).slice(0, 3).map((x: any) => Object.keys(x)[0]) : [];
 			const alerts = (data?.alerts ?? []).map((a: any) => text((Object.values(a)[0] as any).text));
-			const errorPage = !!document.querySelector("ytd-background-promo-renderer, yt-page-error-view-model, #error-page, ytd-browse[page-subtype] #alerts ytd-alert-with-button-renderer");
-			return { contents, header: data?.header ? Object.keys(data.header)[0] : "", tabs, inner, items, alerts, errorPage, url: location.href, subtype: document.querySelector("ytd-browse:not([hidden])")?.getAttribute("page-subtype") ?? "" };
-		}).catch((e: Error) => ({ contents: [], header: "", tabs: [], inner: "", items: [], alerts: [], errorPage: false, url: page.url(), subtype: `eval ${e.message.slice(0, 60)}` }));
+			// a background promo with a sign-in button is the signed-out state of
+			// a signed-in page (Subscriptions, You), not an error
+			const json = JSON.stringify(data?.contents ?? {});
+			const signinPromo = json.includes('"backgroundPromoRenderer"') && /accounts\/ServiceLogin|\/signin/.test(json);
+			const errorPage = !signinPromo && !!document.querySelector("ytd-background-promo-renderer, yt-page-error-view-model, #error-page, ytd-browse[page-subtype] #alerts ytd-alert-with-button-renderer");
+			return { contents, signinPromo, header: data?.header ? Object.keys(data.header)[0] : "", tabs, inner, items, alerts, errorPage, url: location.href, subtype: document.querySelector("ytd-browse:not([hidden])")?.getAttribute("page-subtype") ?? "" };
+		}).catch((e: Error) => ({ contents: [], header: "", tabs: [], inner: "", items: [], alerts: [], errorPage: false, url: page.url(), signinPromo: false, subtype: `eval ${e.message.slice(0, 60)}` }));
 		page.off("pageerror", onErr);
 		page.off("response", onResp);
 		const misses = (await sql`select key from compat_misses where last_seen >= ${since}`).map((m: any) => m.key);
@@ -71,6 +75,7 @@ async function survey(signedIn: boolean): Promise<Row[]> {
 		if (/\/signin/.test(final)) state = "sign-in gate";
 		else if (final.split("?")[0] !== r.split("?")[0]) state = `redirect`;
 		else if (!info.contents.length) state = "no page data";
+		else if (info.signinPromo) state = "sign-in promo";
 		else if (info.errorPage) state = "error state";
 		else if (!info.inner && !info.items.length && !(info.contents as string[]).includes("twoColumnSearchResultsRenderer")) state = "empty shell";
 		rows.push({ route: r, state, final, shape: `${info.contents.join(",")} hdr=${info.header} tabs=[${info.tabs.join("|")}] ${info.inner}:${info.items.join(",")} ${info.subtype}`, alerts: info.alerts, errors, misses });

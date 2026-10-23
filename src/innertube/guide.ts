@@ -7,7 +7,7 @@
 
 import type { Viewer } from "../client/page";
 import { browserAccounts } from "../auth";
-import { INSTANCE_NAME } from "../config";
+import { INSTANCE_NAME, PUBLIC_ORIGIN, STUDIO_HOST, STUDIO_ORIGIN } from "../config";
 import { subscribedChannels } from "../data";
 import { viewerVars } from "./chrome";
 import { avatarUrl, countLabel, responseContext } from "./r";
@@ -58,8 +58,10 @@ async function guide(viewer: Viewer) {
 
 route("guide", ({ viewer }) => guide(viewer));
 
-route("account/account_menu", ({ viewer }) => {
+route("account/account_menu", ({ viewer, url }) => {
 	if (!viewer) return { responseContext: responseContext(viewer), ...make<object>("account/menu_signed_out", baseVars(viewer)) };
+	// Studio has its own, shorter menu
+	if (url.host === STUDIO_HOST) return { responseContext: responseContext(viewer), ...make<object>("account/studio_menu", { ...baseVars(viewer), ...viewerVars(viewer), ORIGIN: PUBLIC_ORIGIN }) };
 	const r = make("account/menu_signed_in", { ...baseVars(viewer), ...viewerVars(viewer) });
 	if (viewer.isAdmin) {
 		// this instance's admin panel, listed with YouTube Studio
@@ -81,19 +83,35 @@ route("account/account_menu", ({ viewer }) => {
 // accountSigninToken.signinUrl, which makes it active (signin.ts)
 export async function accountSwitcher(req: Request): Promise<Response> {
 	const accounts = await browserAccounts(req);
-	const item = (a: (typeof accounts)[number], i: number) =>
-		make("account/switcher_item", {
+	// the page it was opened on, where choosing an account returns to; from
+	// Studio the links lead to the main origin's sign-in and back to Studio
+	const studio = new URL(req.url).host === STUDIO_HOST;
+	const here = studio ? STUDIO_ORIGIN : PUBLIC_ORIGIN;
+	let next = studio ? `${STUDIO_ORIGIN}/` : "/";
+	try {
+		const ref = new URL(req.headers.get("referer") ?? "");
+		if (ref.origin === here) next = studio ? ref.href : ref.pathname + ref.search;
+	} catch {}
+	const signin = studio ? `${PUBLIC_ORIGIN}/signin` : "/signin";
+	// the active account shows its handle and a larger photo; the others
+	// their name and subscriber count
+	const item = (a: (typeof accounts)[number], i: number) => {
+		const size = a.active ? 48 : 36;
+		const r = make<any>("account/switcher_item", {
 			NAME: a.title,
-			PHOTO: [{ url: avatarUrl(a.channelId, 48), width: 48, height: 48 }],
+			PHOTO: [{ url: avatarUrl(a.channelId, size), width: size, height: size }],
 			SELECTED: a.active,
 			ACCOUNT_ID: a.userId,
 			CACHE_KEY: a.channelId.slice(2),
-			SWITCH_URL: `/signin?action_handle_signin=true&authuser=${i}&next=%2F`,
+			SWITCH_URL: `${signin}?action_handle_signin=true&authuser=${i}&next=${encodeURIComponent(next)}`,
 			DATASYNC_ID: `${a.channelId}||`,
-			NEXT: "/",
+			NEXT: next,
 			BYLINE: countLabel(a.subscribers, "subscriber"),
 			HANDLE: `@${a.handle}`,
 		});
+		if (!a.active) delete r.accountItem.channelHandle;
+		return r;
+	};
 	const sections: any[] = [];
 	const active = accounts.findIndex((a) => a.active);
 	if (active >= 0) sections.push(make("account/switcher_active", { ITEM: item(accounts[active], active), ACCOUNT_NAME: accounts[active].login, ACCOUNT_LINE: `${INSTANCE_NAME} account` }));
@@ -104,7 +122,20 @@ export async function accountSwitcher(req: Request): Promise<Response> {
 		if (sections.length > (active >= 0 ? 1 : 0)) delete s.accountSectionListRenderer.header;
 		sections.push(s);
 	});
-	const body = make("account/switcher", { SECTIONS: sections, ADD_ACCOUNT_URL: "/signin?add=1&next=%2F" });
+	const body = make<any>("account/switcher", { SECTIONS: sections, ADD_ACCOUNT_URL: `${signin}?add=1&next=${encodeURIComponent(next)}` });
+	const footer = body.data.actions[0].getMultiPageMenuAction.menu.multiPageMenuRenderer.footer.multiPageMenuSectionRenderer;
+	// the client asks for the list without Sign out where signing out
+	// doesn't belong (X-YouTube-Account-Switcher-Disable-Signout)
+	if (req.headers.get("x-youtube-account-switcher-disable-signout") === "true") footer.items = footer.items.filter((it: any) => !it.compactLinkRenderer?.navigationEndpoint?.signOutEndpoint);
+	// Studio signs out with a link to the main origin, as on studio.youtube.com
+	else if (studio)
+		for (const it of footer.items) {
+			const e = it.compactLinkRenderer?.navigationEndpoint;
+			if (!e?.signOutEndpoint) continue;
+			delete e.signOutEndpoint;
+			e.commandMetadata.webCommandMetadata.url = `${PUBLIC_ORIGIN}/logout`;
+			e.urlEndpoint = { url: `${PUBLIC_ORIGIN}/logout` };
+		}
 	return new Response(`)]}'\n${JSON.stringify(body)}`, { headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
 }
 
